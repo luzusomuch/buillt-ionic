@@ -1,0 +1,36 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.1"
+  },
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "lodash": "^2.4.1",
+    "angular": "~1.3",
+    "angular-cookies": "~1.2",
+    "restangular": "1.4.0",
+    "angular-ui-router": "~0.2",
+    "angular-animate": "~1.3",
+    "angular-resource": "~1.3",
+    "angular-mocks": "~1.3",
+    "angular-ui-utils": "~0.1",
+    "moment": "~2.5",
+    "angular-file-upload": "~1.1.5",
+    "angular-sanitize": "~1.3",
+    "angular-notify": "~2.5",
+    "angular-loading-bar": "~0.7",
+    "lumx": "~0.3.31",
+    "materialize": "0.96.1",
+    "angular-input-match": "master",
+    "angular-contenteditable": "~0.3.7",
+    "prism": "git://github.com/PrismJS/prism.git",
+    "angular-tooltips": "~0.1.10",
+    "angucomplete-alt": "~1.0.0",
+    "angular-socket-io": "~0.7.0",
+    "jquery-ui": "#1.10.4"
+  },
+  "resolutions": {
+    "angular": "~1.3"
+  }
+}
