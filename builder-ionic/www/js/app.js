@@ -55,6 +55,7 @@ angular.module('buiiltApp', [
   };
 })
 .run(function ($rootScope, $cookieStore, cfpLoadingBar, authService, $location,projectService,$state) {
+    console.log('asdasdasd');
     cfpLoadingBar.start();
     $rootScope.currentProject = {};
     $rootScope.authService = authService;
