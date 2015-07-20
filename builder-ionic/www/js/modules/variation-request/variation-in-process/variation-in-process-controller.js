@@ -8,7 +8,7 @@ angular.module('buiiltApp')
     $scope.variationRequest = variationRequest;
     $scope.variationRequest.to._id.member  = filterFilter($scope.variationRequest.to._id.member , {status : 'Active'});
     $scope.currentUser = {};
-    if ($cookieStore.get('token')) {
+    if (window.localStorage.getItem('token')) {
       $scope.currentUser = userService.get();
     }
     if (variationRequest.packageType == 'BuilderPackage') {

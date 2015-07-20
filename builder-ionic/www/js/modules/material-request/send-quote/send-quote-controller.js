@@ -7,7 +7,7 @@ angular.module('buiiltApp')
   $scope.materialRequest = materialRequest;
   $scope.currentTeam = currentTeam;
   $scope.currentUser = {};
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }
 

@@ -7,7 +7,7 @@ angular.module('buiiltApp')
   $scope.variationRequest = variationRequest;
   $scope.currentTeam = currentTeam;
   $scope.currentUser = {};
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }
 

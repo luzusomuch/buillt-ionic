@@ -219,7 +219,7 @@ angular.module('buiiltApp')
      * Get auth token
      */
     getToken: function() {
-      return $cookieStore.get('token');
+      return window.localStorage.getItem('token');
     },
 
     recoverPassword: function(email, callback){

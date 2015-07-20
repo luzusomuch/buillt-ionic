@@ -10,7 +10,7 @@ angular.module('buiiltApp')
     $state.go('team.manager');
   }
   $scope.currentUser = {};
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }
   $scope.message = {};

@@ -6,7 +6,7 @@ angular.module('buiiltApp')
   $scope.materialRequest = materialRequest;
   $scope.currentTeam = currentTeam;
   $scope.materialRequest.winnerTeam._id.member  = filterFilter($scope.materialRequest.winnerTeam._id.member , {status : 'Active'});
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }
 

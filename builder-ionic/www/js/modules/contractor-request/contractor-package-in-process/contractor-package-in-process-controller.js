@@ -9,7 +9,7 @@ angular.module('buiiltApp')
     $scope.contractorRequest.winnerTeam._id.member  = filterFilter($scope.contractorRequest.winnerTeam._id.member , {status : 'Active'});
 
     $scope.currentUser = {};
-    if ($cookieStore.get('token')) {
+    if (window.localStorage.getItem('token')) {
       $scope.currentUser = userService.get();
     }
 

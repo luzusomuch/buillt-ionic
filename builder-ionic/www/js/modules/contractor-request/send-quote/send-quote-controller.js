@@ -6,7 +6,7 @@ angular.module('buiiltApp')
   $scope.quoteRequest = {};
   $scope.contractorRequest = contractorRequest;
   $scope.currentUser = {};
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }
   $scope.currentTeam = currentTeam;
