@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .factory('variationRequestService', function ($resource,API_URL) {
-    return $resource(API_URL + 'variationRequests/:id/:action', {
+    return $resource(API_URL + 'api/variationRequests/:id/:action', {
       id: '@_id'},
     {
       sendQuote: {

@@ -15,19 +15,19 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('projects.list', {
     url: '/',
-    templateUrl: '/app/modules/project/list-projects/list-projects.html',
+    templateUrl: '/js/modules/project/list-projects/list-projects.html',
     controller: 'ProjectListCtrl',
     authenticate : true
   })
   .state('projects.create', {
     url: '/create',
-    templateUrl: '/app/modules/project/create-project/create-project.html',
+    templateUrl: '/js/modules/project/create-project/create-project.html',
     controller: 'CreateProjectCtrl',
     authenticate : true
   })
   .state('projects.view', {
     url: '/:id',
-    templateUrl: '/app/modules/project/view-project/view.html',
+    templateUrl: '/js/modules/project/view-project/view.html',
     controller: 'ViewProjectCtrl',
     authenticate : true,
     resolve: {

@@ -1,7 +1,7 @@
 angular.module('buiiltApp')
 .factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $cookieStore, $q,$state) {
   var currentUser = {};
-  if ($cookieStore.get('token')) {
+  if (window.localStorage.getItem('token')) {
     currentUser = userService.get();
   }
   return {
@@ -16,12 +16,12 @@ angular.module('buiiltApp')
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
-      $http.post(API_URL + '/auth/local', {
+      $http.post(API_URL + 'auth/local', {
         email: user.email,
         password: user.password
       })
       .success(function(data) {
-        $cookieStore.put('token', data.token);
+        window.localStorage.setItem('token', data.token);
         currentUser = userService.get();
         deferred.resolve(data);
         return cb();
@@ -40,8 +40,9 @@ angular.module('buiiltApp')
      * @param  {Function}
      */
     logout: function() {
-      $cookieStore.remove('token');
+      window.localStorage.removeItem('token');
       currentUser = {};
+      // $state.go('/signin');
     },
     /**
      * Create a new user
@@ -56,7 +57,7 @@ angular.module('buiiltApp')
       return userService.save(user,
       function(data) {
         if (data.emailVerified == true) {
-          $cookieStore.put('token', data.token);
+          window.localStorage.setItem('token', data.token);
           currentUser = userService.get();
           $state.go('team.manager')
         }
@@ -74,7 +75,7 @@ angular.module('buiiltApp')
       return userService.createUserWithInviteToken(user,
       function(data) {
         if (data.emailVerified == true) {
-          $cookieStore.put('token', data.token);
+          window.localStorage.setItem('token', data.token);
           currentUser = userService.get();
           if (data.package.type === 'contractor') {
             $state.go('contractorRequest.sendQuote', {id:data.package.project, packageId: data.package._id});  
@@ -225,7 +226,7 @@ angular.module('buiiltApp')
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
-      $http.post(API_URL +'/auth/recoverPassword', {
+      $http.post(API_URL + 'auth/recoverPassword', {
         email: email
       })
       .success(function(data) {
@@ -244,10 +245,10 @@ angular.module('buiiltApp')
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
-      $http.get(API_URL + '/auth/confirmPasswordResetToken/' + token)
+      $http.get(API_URL + 'auth/confirmPasswordResetToken/' + token)
       .success(function(data) {
         //do login
-        $cookieStore.put('token', data.token);
+        window.localStorage.setItem('token', data.token);
         currentUser = userService.get();
 
         deferred.resolve(data);

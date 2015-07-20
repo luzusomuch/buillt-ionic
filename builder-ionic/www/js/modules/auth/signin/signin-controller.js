@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('SigninCtrl', function ($scope, authService, $window,$stateParams) {
+  .controller('SigninCtrl', function ($scope, authService, $window,$stateParams, $state) {
     $scope.user = {};
     $scope.errors = {};
     $scope.submitted = false;
@@ -16,7 +16,8 @@ angular.module('buiiltApp')
       if (form.$valid) {
         authService.login($scope.user).then(function () {
           //show alert
-          $window.location.href = '/team/manager';
+          $state.go('team.manager');
+          // $window.location.href = '/team/manager';
         }, function (res) {
           $scope.error = true;
           $scope.errorMsg = res.message;

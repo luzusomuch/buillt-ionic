@@ -5,7 +5,7 @@ angular.module('buiiltApp')
     //   currentUser = userService.get();
     // }
 
-    return $resource(API_URL + 'notifications/:id/:action',{
+    return $resource(API_URL + 'api/notifications/:id/:action',{
         id : '@_id'},
       {
         getAll: {

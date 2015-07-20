@@ -92,9 +92,9 @@ angular.module('buiiltApp')
           }
 
           if ($state.current.name == 'team.manager' || $state.current.name == 'dashboard'){
-            setTimeout(function () {
-              $('#tabsMenu').tabs();
-            }, 500);
+            // setTimeout(function () {
+              // $('#tabsMenu').tabs();
+            // }, 500);
           }
         });
       });

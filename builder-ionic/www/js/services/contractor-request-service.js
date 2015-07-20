@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .factory('contractorRequestService', function ($resource, API_URL) {
-    return $resource(API_URL + 'contractorRequests/:id/:action', {
+    return $resource(API_URL + 'api/contractorRequests/:id/:action', {
       id: '@_id'},
     {
       sendQuote: {

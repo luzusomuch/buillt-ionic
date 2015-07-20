@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('userService', function($resource,API_URL) {
-  return $resource(API_URL + 'users/:id/:action', {
+  return $resource(API_URL + 'api/users/:id/:action', {
     id: '@uuid'
   },
   {

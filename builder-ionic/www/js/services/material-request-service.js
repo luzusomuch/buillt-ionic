@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .factory('materialRequestService', function ($resource,API_URL) {
-    return $resource(API_URL + 'materialRequests/:id/:action', {
+    return $resource(API_URL + 'api/materialRequests/:id/:action', {
       id: '@_id'},
     {
       sendQuote: {

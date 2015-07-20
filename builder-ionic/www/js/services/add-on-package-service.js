@@ -1,5 +1,5 @@
 angular.module('buiiltApp').factory('addOnPackageService', function(API_URL,$rootScope, $q, $resource) {
-    return $resource(API_URL + 'addOnPackages/:id/:action', {id: '@_id'},{
+    return $resource(API_URL + 'api/addOnPackages/:id/:action', {id: '@_id'},{
         sendDefect: {
             method: 'POST',
             params: {

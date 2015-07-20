@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('packageInviteService', function($resource,API_URL) {
-  return $resource(API_URL + 'packageInvites/:id/:action', {
+  return $resource(API_URL + 'api/packageInvites/:id/:action', {
     id: '@_id'
   },
   {

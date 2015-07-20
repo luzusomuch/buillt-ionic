@@ -5,7 +5,7 @@ angular.module('buiiltApp')
   //   currentUser = userService.get();
   // }
 
-  return $resource(API_URL + 'quotes/:id/:action',{
+  return $resource(API_URL + 'api/quotes/:id/:action',{
     id : '@_id'},
     {
         index: {

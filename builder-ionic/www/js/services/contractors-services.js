@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('contractorService', function($resource,API_URL) {
-  return $resource(API_URL + 'contractors/:id/:action', {
+  return $resource(API_URL + 'api/contractors/:id/:action', {
     id: '@_id'},{
         createContractorPackage: {
             method: 'POST'

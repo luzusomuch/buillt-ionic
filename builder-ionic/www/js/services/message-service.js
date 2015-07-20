@@ -5,7 +5,7 @@ angular.module('buiiltApp')
     //   currentUser = userService.get();
     // }
 
-    return $resource(API_URL + 'messages/:id/:type/:action',{
+    return $resource(API_URL + 'api/messages/:id/:type/:action',{
         id : '@_id',
         type : '@_type'},
       {

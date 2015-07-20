@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('quote', function(){
     return {
         restrict: 'EA',
-        templateUrl: 'app/directives/quote/quote.html',
+        templateUrl: 'js/directives/quote/quote.html',
         scope:{
             project:'='
         },

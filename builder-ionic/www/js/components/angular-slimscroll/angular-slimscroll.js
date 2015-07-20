@@ -12,7 +12,7 @@ angular.module('buiiltApp')
         }
 
         //run slimscroll
-        var slim = $($elem).slimScroll(option);
+        var slim = angular.element($elem).slimScroll(option);
 
         if ($attr.scrollToBottomCb) {
           slim.bind('slimscroll', function (e, pos) {
@@ -45,7 +45,7 @@ angular.module('buiiltApp')
         }
 
         //run slimscroll
-        $($elem).slimScroll(option).bind('slimscroll', function (e, pos) {
+        angular.element($elem).slimScroll(option).bind('slimscroll', function (e, pos) {
           if (pos === 'top') {
             $scope.$eval($attr.slimscrollLoadPreMessages)();
             top = true;

@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('addon', function(){
     return {
         restrict: 'EA',
-        templateUrl: 'app/directives/addOn/addOn.html',
+        templateUrl: 'js/directives/addOn/addOn.html',
         scope: {
             package: '=',
             type: '@'

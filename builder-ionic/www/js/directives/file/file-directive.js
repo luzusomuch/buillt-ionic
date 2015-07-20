@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('file', function(){
     return {
         restrict: 'EA',
-        templateUrl: 'app/directives/file/file.html',
+        templateUrl: 'js/directives/file/file.html',
         scope:{
             project:'=',
         },

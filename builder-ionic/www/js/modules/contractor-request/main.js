@@ -8,7 +8,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('contractorRequest.sendQuote', {
     url: '/:packageId',
-    templateUrl: '/app/modules/contractor-request/send-quote/send-quote.html',
+    templateUrl: '/js/modules/contractor-request/send-quote/send-quote.html',
     controller: 'SendQuoteContractorPackageCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -26,7 +26,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('contractorRequest.viewContractorRequest', {
     url: '/:packageId/view',
-    templateUrl: '/app/modules/contractor-request/view-contractor-request/view.html',
+    templateUrl: '/js/modules/contractor-request/view-contractor-request/view.html',
     controller: 'ViewContractorRequestCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -44,7 +44,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('contractorRequest.contractorPackageInProcess', {
     url: '/:packageId/processing',
-    templateUrl: '/app/modules/contractor-request/contractor-package-in-process/view.html',
+    templateUrl: '/js/modules/contractor-request/contractor-package-in-process/view.html',
     controller: 'ContractorPackageInProcessCtrl',
     hasCurrentProject : true,
     authenticate : true,

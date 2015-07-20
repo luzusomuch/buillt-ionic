@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('createPackage', function(){
   return {
     restrict: 'EA',
-    templateUrl: 'app/directives/create-package/create-package.html',
+    templateUrl: 'js/directives/create-package/create-package.html',
     controller: function($scope, $rootScope,$state,$stateParams, $cookieStore, staffPackageService,teamService,contractorService,materialPackageService) {
       $scope.currentTeam = $rootScope.currentTeam;
       $scope.available = [];

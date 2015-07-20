@@ -1,5 +1,5 @@
 angular.module('buiiltApp').factory('fileService', function($rootScope, $q, $resource,API_URL) {
-    return $resource(API_URL + 'files/:id/:action', {
+    return $resource(API_URL + 'api/files/:id/:action', {
         id: '@_id'},{
             getByDocument: {
               method: 'GET',

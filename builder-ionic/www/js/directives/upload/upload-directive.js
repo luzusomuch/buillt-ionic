@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('upload', function(){
     return {
         restrict: 'EA',
-        templateUrl: 'app/directives/upload/upload.html',
+        templateUrl: 'js/directives/upload/upload.html',
         scope:{
             project:'=',
             builderPackage: '=',

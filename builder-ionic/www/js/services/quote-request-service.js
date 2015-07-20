@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('quoteRequetService', function($http, API_URL) {
-  var url = API_URL + 'quoteRequests/';
+  var url = API_URL + 'api/quoteRequests/';
   return {
     /**
      * send quote request to user

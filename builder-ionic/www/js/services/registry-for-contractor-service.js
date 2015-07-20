@@ -5,7 +5,7 @@ angular.module('buiiltApp')
   //   currentUser = userService.get();
   // }
 
-  return $resource(API_URL + 'registryForContractors/:id/:action',{
+  return $resource(API_URL + 'api/registryForContractors/:id/:action',{
     id : '@_id'},
     {
         

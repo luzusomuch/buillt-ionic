@@ -2,7 +2,7 @@
 angular.module('buiiltApp').directive('addendum', function(){
     return {
         restrict: 'EA',
-        templateUrl: 'app/directives/addendum/addendum.html',
+        templateUrl: 'js/directives/addendum/addendum.html',
         scope: {
             package: '=',
             type: '@'

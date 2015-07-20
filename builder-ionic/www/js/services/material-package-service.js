@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('materialPackageService', function($resource,API_URL) {
-  return $resource(API_URL + 'materials/:id/:action', {
+  return $resource(API_URL + 'api/materials/:id/:action', {
     id: '@_id'},{
         get : {
           method : 'GET',

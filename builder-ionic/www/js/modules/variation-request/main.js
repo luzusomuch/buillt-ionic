@@ -8,7 +8,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('variationRequest.sendQuote', {
     url: '/:variationId',
-    templateUrl: '/app/modules/variation-request/send-quote/send-quote.html',
+    templateUrl: '/js/modules/variation-request/send-quote/send-quote.html',
     controller: 'SendQuoteVariationCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -26,7 +26,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('variationRequest.viewRequest', {
     url: '/:variationId/view',
-    templateUrl: '/app/modules/variation-request/view-variation-request/view.html',
+    templateUrl: '/js/modules/variation-request/view-variation-request/view.html',
     controller: 'ViewVariationRequestCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -44,7 +44,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('variationRequest.inProcess', {
     url: '/:variationId/processing',
-    templateUrl: '/app/modules/variation-request/variation-in-process/view.html',
+    templateUrl: '/js/modules/variation-request/variation-in-process/view.html',
     controller: 'VariationInProcessCtrl',
     hasCurrentProject : true,
     authenticate : true,

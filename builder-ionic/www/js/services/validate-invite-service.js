@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
 .factory('validateInviteService', function($resource,API_URL) {
-  return $resource(API_URL + 'validateInvites/:id/:action', {
+  return $resource(API_URL + 'api/validateInvites/:id/:action', {
     id: '@_id'
   },
   {

@@ -2,7 +2,7 @@ angular.module('buiiltApp')
   .directive('message', function(){
     return {
       restrict: 'A',
-      templateUrl: 'app/directives/message/message.html',
+      templateUrl: 'js/directives/message/message.html',
       scope:{
         package: '=',
         type : '@'

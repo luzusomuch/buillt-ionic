@@ -2,7 +2,7 @@ angular.module('buiiltApp')
   .directive('task', function(){
   return {
     restrict: 'EA',
-    templateUrl: 'app/directives/task/task.html',
+    templateUrl: 'js/directives/task/task.html',
     scope:{
       package: '=',
       type : '@'

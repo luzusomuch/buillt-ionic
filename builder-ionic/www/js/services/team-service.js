@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .factory('teamService', function ($resource,API_URL) {
-    return $resource(API_URL + 'teams/:id/:action', {
+    return $resource(API_URL + 'api/teams/:id/:action', {
       id: '@_id'},
     {
       create: {

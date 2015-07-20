@@ -21,10 +21,38 @@ angular.module('buiiltApp', [
   'angucomplete-alt',
   'btford.socket-io'
   ])
-.constant('API_URL', 'http://localhost:9000/api/')
+// .constant('API_URL', 'http://localhost:9000/')
+.constant('API_URL', 'http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/')
 
-.config(function($stateProvider, $urlRouterProvider){
+.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, cfpLoadingBarProvider){
   $urlRouterProvider.otherwise('/');
+  $httpProvider.interceptors.push('authInterceptor');
+  cfpLoadingBarProvider.includeSpinner = true;
+})
+.factory('authInterceptor', function ($q, $cookieStore, $location) {
+  return {
+    // Add authorization token to headers
+    request: function (config) {
+      config.headers = config.headers || {};
+      if (window.localStorage.getItem('token')) {
+        config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('token');
+      }
+      return config;
+    },
+    // Intercept 401s and redirect you to login
+    responseError: function (response) {
+      if (response.status === 401) {
+        $location.path('/signin');
+        // $state.go('signin');
+        // remove any stale tokens
+        window.localStorage.removeItem('token');
+        return $q.reject(response);
+      }
+      else {
+        return $q.reject(response);
+      }
+    }
+  };
 })
 .run(function ($rootScope, $cookieStore, cfpLoadingBar, authService, $location,projectService,$state) {
     cfpLoadingBar.start();
@@ -49,7 +77,8 @@ angular.module('buiiltApp', [
 
           }
           if (toState.authenticate && !loggedIn) {
-            $location.path('/signin');
+            // $location.path('/signin');
+            $state.go('signin');
           } else if (!toState.authenticate && loggedIn) {
             $state.go('team.manager')
           }
@@ -88,7 +117,7 @@ angular.module('buiiltApp', [
 
               } else {
                 $rootScope.currentProject = null;
-                $location.path('/team/manager');
+                $state.go('team.manager');
               }
             })
         }

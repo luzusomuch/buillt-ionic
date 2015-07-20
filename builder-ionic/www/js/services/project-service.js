@@ -1,7 +1,7 @@
 angular.module('buiiltApp')
 .factory('projectService', function($rootScope, $q, $resource,API_URL) {
 
-  return $resource(API_URL + 'projects/:id/:action',{
+  return $resource(API_URL + 'api/projects/:id/:action',{
     id : '@_id'},
     {
         create: {
