@@ -1,8 +1,9 @@
-<div class="col s12" style="margin-top: -10px;">
-  <h5 class="secondary-content">Dashboard</h5>
-</div>
+
 <div class="col s12">
-  <div class="col s3">
+  <div class="col s12" style="margin-top: -10px;">
+    <h5 class="secondary-content">Dashboard</h5>
+  </div>
+  <div class="col s12">
     <a ng-if="currentTeam.type == 'builder' && isLeader" class="dropdown-button btn-large col s12" href="#!" data-activates="createNew" dropdown data-gutter="15" style="margin-top: 8px; margin-bottom: 15px">Create New</a>
     <ul id="createNew" class="dropdown-content" style="margin-top: 15px">
       <li><a class="modal-trigger" href="#newContractorPackage">Contractor Package</a></li>
@@ -16,7 +17,7 @@
       <a href="#" class="collection-item" ng-click="showDocs()" ng-class="{'active' : currentList == 'docs'}">Docs<span ng-if="myFiles.length > 0" class="new badge">{{myFiles.length}}</span></a>
     </div>
   </div>
-  <div class="col s9">
+  <div class="col s12">
     <div class="col s12" style="height:700px; overflow-y:auto">
       <ul class="collapsible task-dashboard" data-collapsible="accordion" ng-if="currentList == 'tasks'">
         <li class="" ng-repeat="task in myTasks | orderBy : ['dateEnd']">

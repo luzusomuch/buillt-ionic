@@ -3,7 +3,7 @@ angular.module('buiiltApp')
     $stateProvider
       .state('team', {
         url: '/team',
-        template: '<div ui-view></div>'
+        template: '<div ui-view style="width:100%;"></div>'
       })
       .state('team.manager', {
         url: '/manager',

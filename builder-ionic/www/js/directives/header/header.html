@@ -2,8 +2,10 @@
   <nav>
     <div class="nav-wrapper container">
       <a ui-sref="home" class="brand-logo">buiilt</a>
-      
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <a href="#" data-activates="nav-mobile" class="button-collapse top-nav" data-sidenav="left" data-closeonclick="false"><i
+            class="mdi-navigation-menu"></i></a>
+
+      <ul id="nav-mobile" class="side-nav fixed">
         <li ng-if="!user._id"><a ui-sref="signin">Login</a></li>
         <li ng-if="!user._id"><a ui-sref="signup">Register</a></li>
         <li ng-if="user._id">
@@ -13,18 +15,6 @@
             <li ng-repeat="project in projects | unique:project">
               <a ui-sref="dashboard({id: project._id})">{{project.name}}</a>
             </li>
-            <!-- <li ng-repeat="project in projectsBuilder | unique:'project'" ng-if="projectsBuilder"> -->
-              <!-- <a ui-sref="dashboard({id: project._id})">{{project.name}}</a> -->
-            <!-- </li> -->
-            <!--<li ng-repeat="project in projectsContractor | unique:'project'" ng-if="projectsContractor">-->
-              <!--<a ui-sref="dashboard({id: project.project._id})">{{project.project.name}}</a>-->
-            <!--</li>-->
-            <!--<li ng-repeat="project in projectsSupplier | unique:'project'" ng-if="projectsSupplier">-->
-              <!--<a ui-sref="dashboard({id: project.project._id})">{{project.project.name}}</a>-->
-            <!--</li>-->
-            <!-- <li ng-repeat="project in projectsHomeOwner" ng-if="projectsHomeOwner">
-              <a ui-sref="projects.view({id: project._id})">{{project.name}}</a>
-            </li> -->
             <li class="divider"></li>
             <li ng-if="currentTeam.type == 'homeOwner' || currentTeam.type == 'builder' && isLeader">
               <a href="#createProject" class="modal-trigger">Create project</a>
@@ -44,20 +34,24 @@
         </li>
         <div sp-notification  ng-if="user._id"></div>
 
+        <li ng-if="tabs">
+          <a ng-repeat="tab in tabs" ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
+        </li>
+
       </ul>
     </div>
   </nav>
-  <div class="z-depth-1" style="background-color: white;" ng-if="tabs">
+  <!-- <div class="z-depth-1" style="background-color: white;" ng-if="tabs">
     <div class="col s12 container">
       <ul class="tabs" tabs id="tabsMenu">
         <li class="tab col" ng-repeat="tab in tabs">
           <a ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
-        </li>
+        </li> -->
         <!-- <li class="tab col" ng-repeat="tab in tabs" ng-if="!projectParamId">
           <a ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
         </li> -->
-      </ul>
+      <!-- </ul>
     </div>
-  </div>
+  </div> -->
   <div ng-include="'js/modules/project/create-project/create-project.html'"></div>
 </header>
