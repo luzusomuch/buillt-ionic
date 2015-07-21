@@ -61,18 +61,18 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="leader in currentTeam.leader">
-                      <td class="col s3">{{leader.email}}</td>
-                      <td class="col s3">{{leader.firstName}} {{leader.lastName}}</td>
-                      <td class="col s2">Admin</td>
-                      <td class="col s2">Active</td>
+                      <td class="col s3" style="word-break:break-all">{{leader.email}}</td>
+                      <td class="col s3" style="word-break:break-all">{{leader.firstName}} {{leader.lastName}}</td>
+                      <td class="col s2" style="word-break:break-all">Admin</td>
+                      <td class="col s2" style="word-break:break-all">Active</td>
                       <td class="col s2 center-align">
                       </td>
                     </tr>
                     <tr ng-repeat="member in currentTeam.member | orderBy : ['status']">
-                      <td class="col s3">{{(member.email) ? member.email : member._id.email}}</td>
-                      <td class="col s3">{{(member._id) ? member._id.firstName + ' ' + member._id.lastName : '&nbsp;'}}</td>
-                      <td class="col s2">Member</td>
-                      <td class="col s2">{{member.status}}</td>
+                      <td class="col s3" style="word-break:break-all">{{(member.email) ? member.email : member._id.email}}</td>
+                      <td class="col s3" style="word-break:break-all">{{(member._id) ? member._id.firstName + ' ' + member._id.lastName : '&nbsp;'}}</td>
+                      <td class="col s2" style="word-break:break-all">Member</td>
+                      <td class="col s2" style="word-break:break-all">{{member.status}}</td>
                       <td class="col s2 center-align">
                         <a class="waves-effect waves-light" name="action" ng-click="assignLeader(member)"
                            ng-if="isLeader && leader._id != user._id && member._id && member.status == 'Active'">
