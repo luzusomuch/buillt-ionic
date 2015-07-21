@@ -2,7 +2,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   $stateProvider
     .state('error', {
       url: '/error/:status',
-      templateUrl: '/js/modules/error/views/index.html',
+      templateUrl: 'js/modules/error/views/index.html',
       controller: 'ErrorCtrl',
       noFooter : true,
       noHeader : true

@@ -7,7 +7,7 @@ angular.module('buiiltApp')
       })
       .state('team.manager', {
         url: '/manager',
-        templateUrl: '/js/modules/team/manager-team/manager.html',
+        templateUrl: 'js/modules/team/manager-team/manager.html',
         controller: 'TeamCtrl',
         authenticate : true,
         resolve: {
@@ -39,7 +39,7 @@ angular.module('buiiltApp')
       })
       .state('team.create', {
         url: '/create',
-        templateUrl: '/js/modules/team/create-team/create.html',
+        templateUrl: 'js/modules/team/create-team/create.html',
         controller: 'CreateTeamCtrl',
         authenticate : true
       });

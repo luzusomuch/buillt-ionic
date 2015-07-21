@@ -23,7 +23,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
     })
     .state('staff.index', {
       url: '/',
-      templateUrl: '/js/modules/staff/views/index.html',
+      templateUrl: 'js/modules/staff/views/index.html',
       controller: 'StaffCtrl',
       hasCurrentProject : true,
       authenticate : true,
@@ -39,7 +39,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
     })
     .state('staff.view', {
       url: '/:packageId/',
-      templateUrl: '/js/modules/staff/views/view.html',
+      templateUrl: 'js/modules/staff/views/view.html',
       controller: 'StaffViewCtrl',
       hasCurrentProject : true,
       authenticate : true,

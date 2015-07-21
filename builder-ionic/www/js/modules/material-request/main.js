@@ -9,7 +9,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('materialRequest.sendQuote', {
     url: '/:packageId',
-    templateUrl: '/js/modules/material-request/send-quote/send-quote.html',
+    templateUrl: 'js/modules/material-request/send-quote/send-quote.html',
     controller: 'SendQuoteMaterialPackageCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -27,7 +27,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('materialRequest.viewMaterialRequest', {
     url: '/:packageId/view',
-    templateUrl: '/js/modules/material-request/view-material-request/view.html',
+    templateUrl: 'js/modules/material-request/view-material-request/view.html',
     controller: 'ViewMaterialRequestCtrl',
     hasCurrentProject : true,
     authenticate : true,
@@ -45,7 +45,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('materialRequest.materialPackageInProcess', {
     url: '/:packageId/processing',
-    templateUrl: '/js/modules/material-request/material-package-in-process/view.html',
+    templateUrl: 'js/modules/material-request/material-package-in-process/view.html',
     controller: 'MaterialPackageInProcessCtrl',
     hasCurrentProject : true,
     authenticate : true,
