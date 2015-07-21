@@ -2,7 +2,7 @@
    <h5 class="col s8">Material Package {{materialRequest.name}} in tender</h5>
    
    <div class="col s4" style="margin-top:15px">
-       <a class='dropdown-button btn-flat right tooltipped' data-position="top" data-delay="1" data-tooltip="Attach..." href='#'
+       <a class='dropdown-button btn-flat right tooltipped' data-position="top" data-delay="1" data-tooltip="Attach..."
           data-activates='itemSendQuote' data-gutter="-30" dropdown data-constrainwidth="false" data-beloworigin="true">
         <i class="mdi-navigation-more-vert"></i>
        </a>
@@ -50,7 +50,7 @@
          
        <li class="collection-item" ng-repeat="message in messages.messages">
          <div class="row valign-wrapper" style="margin-bottom: -5px">
-           <a href="#!" class="btn-flat col s1">
+           <a class="btn-flat col s1">
              <i class="mdi-toggle-radio-button-on valign center-align" ></i>
            </a>
            
@@ -113,7 +113,7 @@
       <div class="modal-footer">
         <!-- <button class="waves-effect waves-light btn" ng-disabled="createContractorPackageForm.$invalid">Create Package!</button> -->
            <!-- <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Create Package!</a> -->
-       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+       <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
       </div>
     </form>
   </div>
@@ -142,7 +142,7 @@
       <div class="modal-footer">
         <!-- <button class="waves-effect waves-light btn" ng-disabled="createContractorPackageForm.$invalid">Create Package!</button> -->
            <!-- <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Create Package!</a> -->
-       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+       <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
       </div>
     </form>
   </div>
@@ -160,62 +160,62 @@
             <li class="collection-item vlalign-wrapper">
               <div class="row" style="margin-bottom: 0px">
                 <div class="col s6 valign center-align background-hover">
-                  <a ng-click="addLineWithRate()" class="waves-effect waves-light btn-flat">Add Line with Rate</a>
+                  <a ng-click="addLineWithRate()" class="waves-effect waves-light" style="color:#000">Add Line with Rate</a>
                 </div>
                 <div ng-click="addLineWithPrice()" class="col s6 valign center-align background-hover">
-                  <a class="waves-effect waves-light btn-flat">Add Line with Price</a>
+                  <a class="waves-effect waves-light" style="color:#000">Add Line with Price</a>
                 </div>
               </div>
             </li>
             <li class="">
               <div class="row form" style="margin-bottom: 0px;padding:10px;background-color: #FFF" ng-repeat="lineWithRate in lineWithRates track by $index">
-                <div class="input-field col s6">
+                <div class="input-field col s12 m6">
                    <textarea value="This is a line item with Rate - note the field for qty is editable"id="description" class="materialize-textarea" ng-model="rate.lineWithRate.rateDescription[$index]" required></textarea>
                        <label for="description">Description of Item</label>
                     </div>
-                <div class="input-field col s2" style="margin-top: 67px">
+                <div class="input-field col s12 m2" style="margin-top: 67px">
                         <input id="rate" name="rate" type="text" class="validate" ng-model="rate.lineWithRate.rate[$index]" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" required>
                         <label for="rate">Rate</label>
                         <p class="validate-message" ng-show="sendQuoteForm.rate.$invalid && sendQuoteForm.rate.$dirty">Limit 2 decimals!!!</p>
                     </div>
-                <div class="input-field col s1" style="margin-top: 67px">
+                <div class="input-field col s12 m1" style="margin-top: 67px">
                         <input id="quantity" type="text" class="validate" ng-model="rate.lineWithRate.rateQuantity[$index]" required>
                         <label for="quantity">Qty</label>
                     </div>
                     <span style="display:none">{{rate.lineWithRate.rateTotal[$index] = (rate.lineWithRate.rate[$index] * rate.lineWithRate.rateQuantity[$index]).toFixed(2)}}</span>
-                <div class="input-field col s2" style="margin-top: 67px" ng-hide="rate.lineWithRate.rateTotal[$index] != 'NaN'">
+                <div class="input-field col s6 m2" style="margin-top: 67px" ng-hide="rate.lineWithRate.rateTotal[$index] != 'NaN'">
                   <input type="text" disabled id="rateTotal">
                   <label for="rateTotal">Line total</label>
                 </div>
-                <div class="input-field col s2" style="margin-top: 67px" ng-show="rate.lineWithRate.rateTotal[$index] != 'NaN'">
+                <div class="input-field col s6 m2" style="margin-top: 67px" ng-show="rate.lineWithRate.rateTotal[$index] != 'NaN'">
                         <input disabled id="total" type="text" class="validate" ng-model="rate.lineWithRate.rateTotal[$index]">
                         <label for="total" ng-if="rate.lineWithRate.rateTotal[$index] != 'NaN'">Line total</label>
                     </div>
-                <div class="input-field col s1" style="margin-top: 67px">
+                <div class="input-field col s6 m1" style="margin-top: 67px">
                         <i class="small mdi-action-highlight-remove" ng-click="removeLineWithRate($index)"></i>
                     </div>
               </div>
             </li>
             <li class="">
               <div class="row form" style="margin-bottom: 0px;padding:10px;background-color: #FFF" ng-repeat="lineWithPrice in lineWithPrices track by $index">
-                <div class="input-field col s6">
+                <div class="input-field col s12 m6">
                    <textarea value="This is a line item with Price - the Qty field is set to 1 and only price can be changed."id="description" class="materialize-textarea" ng-model="price.lineWithPrice.description[$index]" required></textarea>
                        <label for="description">Description of Item</label>
                     </div>
-                <div class="input-field col s2" style="margin-top: 67px">
+                <div class="input-field col s12 m2" style="margin-top: 67px">
                         <input id="price" name="price" type="text" class="validate" ng-model="price.lineWithPrice.price[$index]" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" required>
                         <label for="price">Price</label>
                         <p class="validate-message" ng-show="sendQuoteForm.price.$invalid && sendQuoteForm.price.$dirty">Limit 2 decimals!!!</p>
                     </div>
-                <div class="input-field col s1" style="margin-top: 67px">
+                <div class="input-field col s12 m1" style="margin-top: 67px">
                         <input disabled value="1" id="quantity" type="text" class="validate" ng-model="price.lineWithPrice.quantity[$index]">
                         <label for="quantity">1</label>
                     </div>
-                <div class="input-field col s2" style="margin-top: 67px">
+                <div class="input-field col s6 m2" style="margin-top: 67px">
                         <input disabled id="total" type="text" class="validate" ng-model="price.lineWithPrice.price[$index]">
                         <label for="total">Line Total</label>
                     </div>
-                <div class="input-field col s1" style="margin-top: 67px">
+                <div class="input-field col s6 m1" style="margin-top: 67px">
                         <i class="small mdi-action-highlight-remove" ng-click="removeLineWithPrice($index)"></i>
                     </div>
               </div>
@@ -257,7 +257,7 @@
     <div class="modal-footer">
       <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" ng-disable="sendQuoteForm.$invalid" ng-click="uploadAll()"> Send quote!</button>
          <!-- <a href="#!" ng-click="sendQuote()" class="modal-action modal-close waves-effect waves-green btn-flat ">Send Quote!</a> -->
-     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+     <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
      </form>
   
