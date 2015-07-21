@@ -8,7 +8,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
   })
   .state('user.teamInvitation', {
     url: '/team/invitation',
-    templateUrl: 'js/modules/user/team-invitation/index.html',
+    // templateUrl: 'js/modules/user/team-invitation/index.html',
     controller: 'TeamInvitationCtrl',
     resolve : {
       invitations : [

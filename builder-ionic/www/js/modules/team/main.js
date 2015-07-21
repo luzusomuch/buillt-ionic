@@ -39,7 +39,7 @@ angular.module('buiiltApp')
       })
       .state('team.create', {
         url: '/create',
-        templateUrl: 'js/modules/team/create-team/create.html',
+        // templateUrl: 'js/modules/team/create-team/create.html',
         controller: 'CreateTeamCtrl',
         authenticate : true
       });
