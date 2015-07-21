@@ -2,7 +2,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col s10">
-        <div class="col s4">
+        <div class="col s12">
           <a class="dropdown-button btn-flat ng-isolate-scope" data-gutter="5" style="margin-top: 15px" href="#" data-activates="threadSelector" dropdown="" data-beloworigin="true"><span class="ng-scope">
             {{(currentThread) ? currentThread.name : 'no Thread' | elipsis : 20}}
             </span><i class="mdi-navigation-arrow-drop-down ng-scope"></i>
@@ -13,7 +13,7 @@
               </li>
           </ul>
         </div>
-        <div class="col s8" ng-if="currentThread.users">
+        <div class="col s12" ng-if="currentThread.users">
           <p style="margin-top: 15px">{{currentThread.users | threadUsers}}</p>
           <!--<div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in currentThread.users" ng-class="{'admin' : user.team.role == 'admin'}">-->
             <!--{{user.email}}-->

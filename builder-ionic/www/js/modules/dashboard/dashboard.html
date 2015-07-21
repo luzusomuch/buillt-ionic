@@ -26,33 +26,33 @@
               <i ng-if="!task.completed" class="mdi-toggle-check-box-outline-blank"></i>
               <i ng-if="task.completed" class="mdi-toggle-check-box"></i>
             </a>
-            <span class="col s8" ng-class="{'completed' : task.completed}" ng-click="showTask(task)">{{task.name}}</span>
-            <button type="button" ng-click="editTask(task)" class="btn-flat secondary-content col s1" style="font-size: 12px;">
+            <span class="col s5" ng-class="{'completed' : task.completed}" ng-click="showTask(task)" style="word-break: break-all; display:block; line-height:20px;">{{task.name}}</span>
+            <button type="button" ng-click="editTask(task)" class="btn-flat secondary-content col s2" style="font-size: 12px;">
               Edit
             </button>
             <a ng-if="task.type == 'builder'"
                ui-sref="client({id : task.project})"
-               class="btn-flat secondary-content new badge col s2" style="font-size: 12px;">
+               class="btn-flat secondary-content new badge col s4" style="font-size: 12px; display:block; line-height:20px;">
               Go to Task
             </a>
             <a ng-if="task.type == 'contractor'"
                ui-sref="contractorRequest.contractorPackageInProcess({id : task.project, packageId : task.package._id})"
-               class="btn-flat secondary-content new badge col s2" style="font-size: 12px;">
+               class="btn-flat secondary-content new badge col s4" style="font-size: 12px; display:block; line-height:20px;">
               Go to Task
             </a>
             <a ng-if="task.type == 'staff'"
                ui-sref="staff.view({id : task.project, packageId : task.package._id})"
-               class="btn-flat secondary-content new badge col s2" style="font-size: 12px;">
+               class="btn-flat secondary-content new badge col s4" style="font-size: 12px; display:block; line-height:20px;">
               Go to Task
             </a>
             <a ng-if="task.type == 'material'"
                ui-sref="materialRequest.materialPackageInProcess({id : task.project, packageId : task.package._id})"
-               class="btn-flat secondary-content new badge col s2" style="font-size: 12px;">
+               class="btn-flat secondary-content new badge col s4" style="font-size: 12px; display:block; line-height:20px;">
               Go to Task
             </a>
             <a ng-if="task.type == 'variation'"
                ui-sref="variationRequest.inProcess({id : task.project, variationId : task.package._id})"
-               class="btn-flat secondary-content new badge col s2" style="font-size: 12px;">
+               class="btn-flat secondary-content new badge col s4" style="font-size: 12px; display:block; line-height:20px;">
               Go to Task
             </a>
       
@@ -178,15 +178,17 @@
       <ul class="collapsible" data-collapsible="accordion" ng-if="currentList == 'docs'">
         <li ng-repeat="file in myFiles | unique: file">
           <div class="collapsible-header">
-            {{file.element.file.title}}
-            <a class="btn-flat secondary-content" style="font-size: 12px;" ng-click="goToDocument(file)">
-              Go to Document
-            </a>
-      
-            <a href="#!" class="btn-flat secondary-content" style="font-size: 12px;">
-              <span ng-if="file.element.file.version == 0">New document</span>
-              <span ng-if="file.element.file.version > 0">Reversion {{file.element.file.version +1}}</span>
-            </a>
+            <div>
+              <span class="col s4" style="word-break: break-all; display:block; line-height:20px;">{{file.element.file.title}}</span>
+              <a class="btn-flat secondary-content col s4" style="font-size: 12px; display:block; line-height:20px;" ng-click="goToDocument(file)">
+                Go to Document
+              </a>
+        
+              <a href="#!" class="btn-flat secondary-content col s4" style="font-size: 12px; display:block; line-height:20px;">
+                <span ng-if="file.element.file.version == 0">New document</span>
+                <span ng-if="file.element.file.version > 0">Reversion {{file.element.file.version +1}}</span>
+              </a>
+            </div>
           </div>
           <div class="collapsible-body">
       

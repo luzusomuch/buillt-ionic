@@ -58,7 +58,7 @@
                 <p style="">Current Assignees:</p>
                 <p class="validate-message" ng-if="assgineesError">Current assignees must be at least 1 item</p>
                 <div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="staff in package.staffs">
-                  {{staff | name}} <span><a href="#!" ng-click="staffRevoke(staff,$index)"><i class="mdi-navigation-cancel" style="margin-left: 5px"></i></a></span>
+                  {{staff | name}} <span><a ng-click="staffRevoke(staff,$index)"><i class="mdi-navigation-cancel" style="margin-left: 5px"></i></a></span>
                 </div>
               </div>
 
@@ -66,7 +66,7 @@
 
               <div class="row available-assign">
                 <p style="">Available Assignee's:</p>
-                <a href="#!" ng-click="staffAssign(staff,$index)" ng-repeat="staff in available track by $index">
+                <a ng-click="staffAssign(staff,$index)" ng-repeat="staff in available track by $index">
                   <div class="card col" style="padding: 5px; margin-left: 10px" >
                     {{staff | name}}
                   </div>
@@ -95,13 +95,13 @@
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s8">
+        <div class="input-field col s12 m8">
           <input id="project_name" name="name" type="text" class="validate" ng-model="contractor.name" required
                  ng-class="{'invalid' : contractorForm.name.$invalid && contractorSubmitted}">
           <label for="project_name">Contractor Package Title</label>
           <p class="validate-message" ng-if="contractorForm.name.$error.required && contractorSubmitted">Package name is required</p>
         </div>
-        <div class="input-field col s4">
+        <div class="input-field col s12 m4">
           <label for="date_required" class="active">Date Required</label>
           <input type="text"
                  ng-model="contractor.dateStart"
@@ -127,22 +127,22 @@
             <li class="collection-item vlalign-wrapper">
               <div class="row form" style="margin-bottom: 0px">
                 <div class="col s12"><p>Enter work descriptions below:</p></div>
-                <div class="input-field col s10">
+                <div class="input-field col s8 m10">
                   <textarea id="description" class="materialize-textarea" ng-model="description" ng-class="{'invalid' : contractorDescriptionError}"></textarea>
                   <label for="description" class="">Description</label>
                   <p class="validate-message" ng-if="contractorDescriptionError">Scope of work at least 1 item</p>
                 </div>
-                <div class="valign col s2">
+                <div class="valign col s2 m2">
                   <button class="btn" type="button" name="action" style="margin-top: 78px" ng-click="addDescriptionContractor(description)">Add</button>
                 </div>
               </div>
             </li>
             <li class="collection-item vlalign" ng-repeat="description in contractor.descriptions track by $index">
               <div class="row" style="margin-bottom: 0px">
-                <div class="col s10">
-                  <p>{{description}}</p>
+                <div class="col s6 m10">
+                  <p style="word-break:break-all;">{{description}}</p>
                 </div>
-                <div class="col s2">
+                <div class="col s2 m2">
                   <button type="button" class="btn-flat btn-flat" ng-click="removeDescriptionContractor($index)">Remove</button>
                 </div>
               </div>
@@ -159,7 +159,7 @@
               <div class="row form" style="margin-bottom: 0px">
                 <div class="col s12"><p>Enter tradesmen's details below:</p></div>
                 <p class="validate-message" ng-if="trademenError">Tradesmen's details at least 1 item</p>
-                <div class="input-field col s7">
+                <div class="input-field col s12 m7">
                   <!-- <input id="email_address" ng-model="newEmail" type="email" name="email" class="validate"> -->
                   <angucomplete-alt id="ex1"
                                     pause="100"
@@ -172,13 +172,13 @@
                                     template-url="/my-custom-template.html"
                                     input-class="col s12"></angucomplete-alt>
                 </div>
-                <div class="input-field col s3">
+                <div class="input-field col s6 m3">
                   <input id="phone_number" ng-model="newPhoneNumber" type="number" name="phoneNumber" class="validate">
                   <label for="phone_number">Phone number</label>
                   <p class="validate-message" ng-if="contractorForm.phoneNumber.$valid == false">Please input number</p>  
                 </div>
-                <div class="valign col s2">
-                  <a href="#" ng-if="contractorForm.phoneNumber.$valid == true" ng-click="contractorAddUser()" class="btn" style="margin-top: 28px">Add</a>
+                <div class="valign col s2 m2">
+                  <a ng-if="contractorForm.phoneNumber.$valid == true" ng-click="contractorAddUser()" class="btn" style="margin-top: 28px">Add</a>
                   <!-- <button class="btn" type="submit" ng-submit="addUser()" name="action" style="margin-top: 28px">Add</button> -->
                 </div>
               </div>
@@ -186,9 +186,9 @@
 
             <li class="collection-item vlalign" ng-repeat="emailPhone in contractorMember.emailsPhone">
               <div class="row" style="margin-bottom: 0px">
-                <div class="col s7">{{emailPhone.email}}</div>
-                <div class="col s3">{{emailPhone.phoneNumber}}</div>
-                <div class="col s2" style="float:right"><a class="btn-flat btn-flat" ng-click="contractorRemoveUser($index)" >Remove</a></div>
+                <div class="col s12 m7">{{emailPhone.email}}</div>
+                <div class="col s6 m3" style="word-break:break-all">{{emailPhone.phoneNumber}}</div>
+                <div class="col s6 m2" style="float:right"><a class="btn-flat btn-flat" ng-click="contractorRemoveUser($index)" >Remove</a></div>
               </div>
             </li>
           </ul>
@@ -197,7 +197,7 @@
     </div>
     <div class="modal-footer">
       <button type="submit" class="waves-effect waves-light btn modal-action">Create Package!</button>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
   </form>
 </div>
@@ -343,7 +343,7 @@
     </div>
     <div class="modal-footer">
       <button type="submit" class="modal-action waves-effect waves-green btn modal-action">Create Package!</button>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
   </form>
 </div>

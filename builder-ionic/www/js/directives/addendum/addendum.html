@@ -95,7 +95,7 @@
             <li class="collection-item vlalign-wrapper">
               <div class="row form" style="margin-bottom: 0px">
                 <div class="col s12"><p>Edit your scope of work below:</p></div>
-                <div class="input-field col s10">
+                <div class="input-field col s8 m10">
                    <textarea id="description" class="materialize-textarea" ng-model="addendum.scopeDescription"></textarea>
                        <label for="description">Description</label>
                     </div>
@@ -103,7 +103,7 @@
                         <input id="quantity" type="number" class="validate" ng-model="addendum.quantity">
                         <label for="quantity">Quantity</label>
                     </div> -->
-                <div class="valign col s2">
+                <div class="valign col s2 m2">
                   <a ng-click="addAddendum()" class="btn" type="submit" name="action" style="margin-top: 78px;">Add</a>
                 </div>
               </div>
@@ -111,7 +111,7 @@
               <li class="collection-item vlalign" ng-repeat="addendum in addendumsScope">
                 <div class="row" style="margin-bottom: 0px">
                   <div class="col s8">
-                    <p>{{addendum.scopeDescription}}</p>
+                    <p style="word-break:break-all;">{{addendum.scopeDescription}}</p>
                   </div>
                   <!-- <div class="col s3">
                     <p>{{addendum.quantity}}</p>
@@ -173,7 +173,7 @@
   <div class="divider"></div>
     <div class="modal-footer">
         <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">Send Addendum!</button>
-     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+     <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
     </div>
     </form>
 </div>

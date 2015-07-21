@@ -14,6 +14,7 @@ angular.module('buiiltApp').directive('addon', function(){
                 $scope.isStaff = (_.find($scope.package.staffs,{_id: data._id})) ? true: false;
             });
             $scope.currentTeam = authService.getCurrentTeam();
+            console.log($scope.package);
             
             // $scope.documents = [];
             fileService.getFileByStateParam({'id': $scope.package._id})
@@ -128,6 +129,8 @@ angular.module('buiiltApp').directive('addon', function(){
                         $scope.variation.descriptions = [];
                         $scope.lineWithRates = [];
                         $scope.lineWithPrices = [];
+                        $scope.rate = {};
+                        $scope.price = {};
                       // $scope.messages = data;
                     });
                 }
@@ -222,6 +225,8 @@ angular.module('buiiltApp').directive('addon', function(){
                     $scope.lineWithPrices = [];
                     $scope.lineWithRates = [];
                     $scope.invoice = {};
+                    $scope.rate = {};
+                    $scope.price = {};
                 });
             };
 
