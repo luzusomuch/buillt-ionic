@@ -165,7 +165,7 @@ span.disabled {
 .notification-list {
   opacity: 0;
   visibility:hidden;
-  width: 500px;
+  /*width: 500px;*/
   background-color: #FFF;
   position: absolute;
   z-index: 1000;
