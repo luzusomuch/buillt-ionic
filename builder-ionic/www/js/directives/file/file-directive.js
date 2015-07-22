@@ -6,10 +6,11 @@ angular.module('buiiltApp').directive('file', function(){
         scope:{
             project:'=',
         },
-        controller: function($scope,$state,$window, $stateParams, $cookieStore, fileService,FileUploader, authService) {
+        controller: function(API_URL,$scope,$state,$window, $stateParams, $cookieStore, fileService,FileUploader, authService) {
             $scope.documents = [];
             $scope.files = [];
             $scope.file = {};
+            $scope.apiUrl = API_URL;
             $scope.isInterested = false;
             authService.getCurrentUser().$promise.then(function(data){
                 $scope.currentUser = data;
@@ -18,6 +19,7 @@ angular.module('buiiltApp').directive('file', function(){
                     $scope.files = data;
                     _.each($scope.files, function(file){
                         file.totalLike = file.usersInterestedIn.length;
+                        file.thumbnail = API_URL+'/media/files/'+file._id +'-' + file.title + '.jpg';
                         if (_.find(file.usersInterestedIn,{_id: $scope.currentUser._id})) {
                             file.isInterested = true;
                         }
@@ -60,9 +62,9 @@ angular.module('buiiltApp').directive('file', function(){
             // };
             
             var uploader = $scope.uploader = new FileUploader({
-                url: 'api/uploads/'+ $stateParams.id + '/file',
+                url: API_URL+ 'api/uploads/'+ $stateParams.id + '/file',
                 headers : {
-                  Authorization: 'Bearer ' + $cookieStore.get('token')
+                  Authorization: 'Bearer ' + window.localStorage.getItem('token')
                 },
                 formData: [$scope.formData]
             });

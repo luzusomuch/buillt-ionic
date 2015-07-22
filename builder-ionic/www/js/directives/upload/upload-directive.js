@@ -10,7 +10,7 @@ angular.module('buiiltApp').directive('upload', function(){
             fileId: '=',
             package: '='
         },
-        controller: function($scope, $state, $cookieStore, $stateParams, $rootScope, $location, fileService, packageService, userService, projectService, FileUploader, documentService) {
+        controller: function(API_URL,$scope, $state, $cookieStore, $stateParams, $rootScope, $location, fileService, packageService, userService, projectService, FileUploader, documentService) {
             $scope.errors = {};
             $scope.success = {};
             $scope.file = {};
@@ -35,27 +35,27 @@ angular.module('buiiltApp').directive('upload', function(){
 
             if ($stateParams.packageId) {
                 var uploader = $scope.uploader = new FileUploader({
-                    url: 'api/uploads/'+ $stateParams.packageId + '/file-package',
+                    url: API_URL+ 'api/uploads/'+ $stateParams.packageId + '/file-package',
                     headers : {
-                      Authorization: 'Bearer ' + $cookieStore.get('token')
+                      Authorization: 'Bearer ' + window.localStorage.getItem('token')
                     },
                     formData: [$scope.formData]
                 });
             }
             else if($scope.package && $scope.package != '') {
                 var uploader = $scope.uploader = new FileUploader({
-                    url: 'api/uploads/'+ $scope.package._id + '/file-package',
+                    url: API_URL+ 'api/uploads/'+ $scope.package._id + '/file-package',
                     headers : {
-                      Authorization: 'Bearer ' + $cookieStore.get('token')
+                      Authorization: 'Bearer ' + window.localStorage.getItem('token')
                     },
                     formData: [$scope.formData]
                 });
             }
             else {
                 var uploader = $scope.uploader = new FileUploader({
-                    url: 'api/uploads/'+ $stateParams.id + '/file',
+                    url: API_URL+ 'api/uploads/'+ $stateParams.id + '/file',
                     headers : {
-                      Authorization: 'Bearer ' + $cookieStore.get('token')
+                      Authorization: 'Bearer ' + window.localStorage.getItem('token')
                     },
                     formData: [$scope.formData]
                 });

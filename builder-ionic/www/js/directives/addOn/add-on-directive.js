@@ -7,7 +7,7 @@ angular.module('buiiltApp').directive('addon', function(){
             package: '=',
             type: '@'
         },
-        controller: function($scope, $state,$window, $stateParams, authService,addOnPackageService, FileUploader, $cookieStore, fileService, contractorRequestService, materialRequestService, variationRequestService) {
+        controller: function(API_URL,$scope, $state,$window, $stateParams, authService,addOnPackageService, FileUploader, $cookieStore, fileService, contractorRequestService, materialRequestService, variationRequestService) {
             $scope.allItemsText = 'All items';
             authService.getCurrentUser().$promise.then(function(data){
                 $scope.currentUser = data;
@@ -271,9 +271,9 @@ angular.module('buiiltApp').directive('addon', function(){
             };
 
             var uploader = $scope.uploader = new FileUploader({
-                url: 'api/uploads/'+ $scope.package._id + '/file-package',
+                url: API_URL+ 'api/uploads/'+ $scope.package._id + '/file-package',
                 headers : {
-                    Authorization: 'Bearer ' + $cookieStore.get('token')
+                    Authorization: 'Bearer ' + window.localStorage.getItem('token')
                 },
                 formData: [$scope.formData]
             });
