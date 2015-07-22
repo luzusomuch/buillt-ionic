@@ -47,8 +47,65 @@
             </div>
           </div>
           <div id="members1" class="col s12">
-            <div class="tab-content">
-              <div class="row">
+            <div class="tab-content" style="padding:0px;">
+              <div class="row" ng-if="deviceWidth <= 600">
+                <div class="">
+                  <div class="row" ng-repeat="leader in currentTeam.leader">
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Member email</strong></div>
+                      <div class="col s7">{{leader.email}}</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Member name</strong></div>
+                      <div class="col s7">{{leader.firstName}} {{leader.lastName}}</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Type</strong></div>
+                      <div class="col s7">Admin</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Status</strong></div>
+                      <div class="col s7">Active</div>
+                    </div>
+                    <div class="row"></div>
+                    <hr>
+                  </div>
+
+                  <div class="row" ng-repeat="member in currentTeam.member | orderBy : ['status']">
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Member email</strong></div>
+                      <div class="col s7">{{(member.email) ? member.email : member._id.email}}</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Member name</strong></div>
+                      <div class="col s7">{{(member._id) ? member._id.firstName + ' ' + member._id.lastName : '&nbsp;'}}</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Type</strong></div>
+                      <div class="col s7">Member</div>
+                    </div>
+                    <div class="row" style="margin:0px;">
+                      <div class="col s5"><strong>Status</strong></div>
+                      <div class="col s7">{{member.status}}</div>
+                    </div>
+                    <div class="row">
+                      <div class="col s5"><strong>Action</strong></div>
+                      <div class="col s7">
+                        <a class="waves-effect waves-light" name="action" ng-click="assignLeader(member)"
+                           ng-if="isLeader && leader._id != user._id && member._id && member.status == 'Active'">
+                          <i class="material-icons">supervisor_account</i>
+                        </a>
+                        <a class="waves-effect waves-light" name="action" ng-click="removeMember(member)"
+                           ng-if="isLeader && leader._id != user._id">
+                          <i class="mdi-action-highlight-remove tiny"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+                </div>
+              </div>
+              <div class="row" ng-if="deviceWidth > 600 && deviceWidth <= 960">
                 <div class="">
                   <a href=""></a>
                   <table class="team bordered">

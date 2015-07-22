@@ -165,11 +165,11 @@ span.disabled {
 .notification-list {
   opacity: 0;
   visibility:hidden;
-  /*width: 500px;*/
+  width: 88%;
   background-color: #FFF;
   position: absolute;
   z-index: 1000;
-  right: 22px;
+  /*right: 22px;*/
   transition:visibility 0s linear 0.3s,opacity 0.3s linear;
 }
 

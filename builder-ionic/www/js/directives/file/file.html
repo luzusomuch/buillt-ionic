@@ -1,6 +1,6 @@
 
 <div ng-repeat="file in files">
-    <div class="col s12">
+    <div class="col s12 m6">
         <div class="card">
             <div class="card-image" ng-switch="file.mimeType">
               <span ng-switch-when="image/jpeg">
@@ -25,7 +25,7 @@
                 <a href='{{file.fileUrl}}' download="file.name">Download</a>
               </p>
               <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p>
-              <a href='#!' class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a>
+              <a class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a>
             </div>
             <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{file.title}} <i class="mdi-navigation-close right"></i></span>
@@ -36,7 +36,7 @@
                             <input type="file" nv-file-select="" uploader="uploader"/>
                           </div>
                         </div>
-                        <div class="input-field col s8 offset-s2" style="margin-top: 25px">
+                        <div class="input-field col s8 offset-s2" style="margin-top: 55px">
                           <textarea class="materialize-textarea" ng-model="file.title" id="textarea1"></textarea>
                           <label for="">Title</label>
                         </div>
