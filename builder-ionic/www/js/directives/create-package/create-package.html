@@ -32,7 +32,7 @@
                   <p class="validate-message" ng-if="descriptionError">Scope of work at least 1 item</p>
                 </div>
                 <div class="valign col s2 m2">
-                  <button class="btn" type="button" name="action" style="margin-top: 78px" ng-click="addDescription(description)">Add</button>
+                  <button class="btn" type="button" name="action" style="margin-top: 78px" ng-click="addDescription(description)">+</button>
                 </div>
               </div>
             </li>
@@ -42,7 +42,7 @@
                   <p>{{description}}</p>
                 </div>
                 <div class="col s2 m2">
-                  <button class="btn-flat btn-flat" ng-click="removeDescription($index)">Remove</button>
+                  <button class="btn-flat btn-flat" ng-click="removeDescription($index)">X</button>
                 </div>
               </div>
             </li>
@@ -133,17 +133,17 @@
                   <p class="validate-message" ng-if="contractorDescriptionError">Scope of work at least 1 item</p>
                 </div>
                 <div class="valign col s2 m2">
-                  <button class="btn" type="button" name="action" style="margin-top: 78px" ng-click="addDescriptionContractor(description)">Add</button>
+                  <button class="btn" type="button" name="action" style="margin-top: 78px" ng-click="addDescriptionContractor(description)">+</button>
                 </div>
               </div>
             </li>
             <li class="collection-item vlalign" ng-repeat="description in contractor.descriptions track by $index">
               <div class="row" style="margin-bottom: 0px">
-                <div class="col s6 m10">
+                <div class="col s8 m10">
                   <p style="word-break:break-all;">{{description}}</p>
                 </div>
                 <div class="col s2 m2">
-                  <button type="button" class="btn-flat btn-flat" ng-click="removeDescriptionContractor($index)">Remove</button>
+                  <button type="button" class="btn-flat btn-flat" ng-click="removeDescriptionContractor($index)">X</button>
                 </div>
               </div>
             </li>
@@ -172,13 +172,13 @@
                                     template-url="/my-custom-template.html"
                                     input-class="col s12"></angucomplete-alt>
                 </div>
-                <div class="input-field col s6 m3">
+                <div class="input-field col s8 m3">
                   <input id="phone_number" ng-model="newPhoneNumber" type="number" name="phoneNumber" class="validate">
                   <label for="phone_number">Phone number</label>
                   <p class="validate-message" ng-if="contractorForm.phoneNumber.$valid == false">Please input number</p>  
                 </div>
                 <div class="valign col s2 m2">
-                  <a ng-if="contractorForm.phoneNumber.$valid == true" ng-click="contractorAddUser()" class="btn" style="margin-top: 28px">Add</a>
+                  <a ng-if="contractorForm.phoneNumber.$valid == true" ng-click="contractorAddUser()" class="btn" style="margin-top: 28px">+</a>
                   <!-- <button class="btn" type="submit" ng-submit="addUser()" name="action" style="margin-top: 28px">Add</button> -->
                 </div>
               </div>
@@ -188,7 +188,7 @@
               <div class="row" style="margin-bottom: 0px">
                 <div class="col s12 m7">{{emailPhone.email}}</div>
                 <div class="col s6 m3" style="word-break:break-all">{{emailPhone.phoneNumber}}</div>
-                <div class="col s6 m2" style="float:right"><a class="btn-flat btn-flat" ng-click="contractorRemoveUser($index)" >Remove</a></div>
+                <div class="col s6 m2" style="float:right"><a class="btn-flat btn-flat" ng-click="contractorRemoveUser($index)" >X</a></div>
               </div>
             </li>
           </ul>
@@ -244,7 +244,7 @@
                   <p class="validate-message" ng-if="materialDescriptionError">Scope of work at least 1 item</p>
                 </div>
                 <div class="valign col s2">
-                  <a class="btn" name="action" style="margin-top: 78px" ng-click="addDescriptionMaterial(description1)">Add</a>
+                  <a class="btn" name="action" style="margin-top: 78px" ng-click="addDescriptionMaterial(description1)">+</a>
                 </div>
               </div>
             </li>
@@ -254,7 +254,7 @@
                   <p>{{description}}</p>
                 </div>
                 <div class="col s2">
-                  <a class="btn-flat btn-flat" ng-click="removeDescriptionMaterial($index)">Remove</a>
+                  <a class="btn-flat btn-flat" ng-click="removeDescriptionMaterial($index)">X</a>
                 </div>
               </div>
             </li>
@@ -281,7 +281,7 @@
                 </div>
                 <div class="valign col s6 m2">
                   <a ng-if="materialForm.requiredQuantity.$valid == true" name="action" class="btn" style="margin-top:78px;"
-                     ng-click="addNewRequire()">Add</a>
+                     ng-click="addNewRequire()">+</a>
                 </div>
               </div>
             </li>
@@ -290,7 +290,7 @@
                 <div class="col s12 m7">{{requirement.description}}</div>
                 <div class="col s6 m3">{{requirement.quantity}}</div>
                 <div class="col s6 m2">
-                  <a class="btn-flat btn-flat" ng-click="removeRequire($index)">Remove</a>
+                  <a class="btn-flat btn-flat" ng-click="removeRequire($index)">X</a>
                 </div>
               </div>
             </li>
@@ -324,7 +324,7 @@
                   <p class="validate-message" ng-if="materialForm.phoneNumber.$valid == false">Please input number</p>             
                 </div>
                 <div class="valign col s6 m2">
-                  <a name="action" ng-if="materialForm.requiredQuantity.$valid == true" class="btn" style="margin-top:28px;" ng-click="addNewSupplier()">Add</a>
+                  <a name="action" ng-if="materialForm.requiredQuantity.$valid == true" class="btn" style="margin-top:28px;" ng-click="addNewSupplier()">+</a>
                 </div>
               </div>
             </li>
@@ -333,7 +333,7 @@
                 <div class="col s12 m7">{{emailPhone.email}}</div>
                 <div class="col s6 m3">{{emailPhone.phoneNumber}}</div>
                 <div class="col s6 m2" style="float:right">
-                  <a class="btn-flat btn-flat" ng-click="removeSupplier($index)">Remove</a>
+                  <a class="btn-flat btn-flat" ng-click="removeSupplier($index)">X</a>
                 </div>
               </div>
             </li>

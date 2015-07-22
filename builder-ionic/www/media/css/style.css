@@ -263,3 +263,7 @@ span.disabled {
 .toast {
   height: auto !important;
 }
+
+@media screen and (max-width:600px) {
+  
+}

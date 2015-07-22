@@ -101,9 +101,9 @@
   <div class="col s12">
     <ul class="collapsible" data-collapsible="accordion">
       <li ng-repeat="toContractor in contractorRequest.to | filter: {isDecline:false}">
-        <div class="collapsible-header">
-          Tenderer #{{$index+1}} - {{toContractor.email}}
-          <a ng-if="toContractor.quote._id" class="btn-flat btn-flat secondary-content modal-trigger" href='#modal_viewQuote_{{toContractor.quote._id}}' style="font-size:12px; margin-top: 8px">View Quote</a>
+        <div class="collapsible-header" id="view-quote-collapsible-header">
+          <span class="col s10">{{toContractor.email}}</span>
+          <a ng-if="toContractor.quote._id" class="btn-flat btn-flat secondary-content modal-trigger col s2" href='#modal_viewQuote_{{toContractor.quote._id}}' style="font-size:12px; line-height:20px">View Quote</a>
         </div>
         <div class="collapsible-body" style="background-color: #FFF; padding:10px">
           <div class="row">
@@ -116,9 +116,9 @@
                 Total: {{toContractor.quote.total}}
               </div>
               <div ng-if="toContractor.quote._id">
-                <a style="margin: 0px -15px;" class="btn-flat btn-flat modal-trigger" href="#modal_viewQuote_{{toContractor.quote._id}}">View quote</a>
-                <button style="margin: 0px -15px;" ng-click="selectQuote(toContractor.quote._id)" class="btn-flat btn-flat valign">Select quote</button>
-                <button style="margin: 0px -15px;" ng-click="declineQuote(toContractor._id)" class="btn-flat btn-flat valign">Decline quote</button>
+                <a style="text-align:center" class="btn-flat btn-flat valign modal-trigger col s12" href="#modal_viewQuote_{{toContractor.quote._id}}">View quote</a>
+                <button ng-click="selectQuote(toContractor.quote._id)" class="btn-flat btn-flat valign col s12">Select quote</button>
+                <button ng-click="declineQuote(toContractor._id)" class="btn-flat btn-flat valign col s12">Decline quote</button>
               </div>
             </div>
             <div class="col s12 m6">
