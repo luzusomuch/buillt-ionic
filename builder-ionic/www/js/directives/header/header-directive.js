@@ -43,7 +43,7 @@ angular.module('buiiltApp')
                 $rootScope.user = $scope.user = res;
 
                 if ($state.current.name == 'dashboard' && ! res.emailVerified) {
-                  Materialize.toast('<span>You must confirm your email to hide this message!</span><a class="btn-flat yellow-text" id="sendVerification">Send Verification Email Again<a>', $scope.duration,'rounded');
+                  Materialize.toast('<p>You must confirm your email to hide this message!</br><a class="yellow-text" id="sendVerification">Send Verification Email Again<a></p>', $scope.duration,'rounded');
                 }
                 $rootScope.isLeader = ($scope.user.team.role == 'admin')
                 authService.getCurrentTeam().$promise
