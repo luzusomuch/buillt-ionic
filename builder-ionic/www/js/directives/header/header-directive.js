@@ -120,7 +120,20 @@ angular.module('buiiltApp')
         }
       });
 
-
+      $scope.goBack = function(){
+        if ($rootScope.previousParams.id && !$rootScope.previousParams.packageId && !$rootScope.previousParams.variationId) {
+          $state.go($rootScope.previousState.name, {id: $rootScope.previousParams.id});
+        }
+        else if ($rootScope.previousParams.packageId) {
+          $state.go($rootScope.previousState.name, {id: $rootScope.previousParams.id, packageId: $rootScope.previousParams.packageId}); 
+        }
+        else if ($rootScope.previousParams.variationId) {
+          $state.go($rootScope.previousState.name, {id: $rootScope.previousParams.id, variationId: $rootScope.previousParams.variationId});  
+        }
+        else {
+          $state.go($rootScope.previousState.name);
+        }
+      };
 
 
       $rootScope.sendVerification = function() {
@@ -154,6 +167,10 @@ angular.module('buiiltApp')
 
       $scope.inputChanged = function(str) {
         $scope.textString = str;
+      };
+
+      $scope.closeSideNav = function(){
+        $('#sidenav-overlay').trigger( "click" );
       };
 
 

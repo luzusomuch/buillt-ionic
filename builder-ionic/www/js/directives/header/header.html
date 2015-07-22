@@ -2,22 +2,23 @@
   <nav>
     <div class="nav-wrapper container">
       <a ui-sref="home" class="brand-logo">buiilt</a>
+      <a ng-click="goBack()" style="position:absolute;top:15px;left:-20px;"><i class="material-icons">keyboard_arrow_left</i></a>
       <a href="#" data-activates="nav-mobile" class="button-collapse top-nav" data-sidenav="left" data-closeonclick="false"><i
             class="mdi-navigation-menu"></i></a>
 
       <ul id="nav-mobile" class="side-nav fixed">
-        <li ng-if="!user._id"><a ui-sref="signin">Login</a></li>
-        <li ng-if="!user._id"><a ui-sref="signup">Register</a></li>
+        <li ng-if="!user._id"><a ng-click="closeSideNav()" ui-sref="signin">Login</a></li>
+        <li ng-if="!user._id"><a ng-click="closeSideNav()" ui-sref="signup">Register</a></li>
         <li ng-if="user._id">
           <a class="dropdown-button" href="#!" data-activates="projectSelect" dropdown data-gutter="-30" data-constrainwidth="false">
             {{(currentProject) ? currentProject.name : 'Project name'}}<i class="mdi-navigation-arrow-drop-down right"></i></a>
           <ul id="projectSelect" class="dropdown-content" style="margin-top: 15px">
             <li ng-repeat="project in projects | unique:project">
-              <a ui-sref="dashboard({id: project._id})">{{project.name}}</a>
+              <a ng-click="closeSideNav()" ui-sref="dashboard({id: project._id})">{{project.name}}</a>
             </li>
             <li class="divider"></li>
             <li ng-if="currentTeam.type == 'homeOwner' || currentTeam.type == 'builder' && isLeader">
-              <a href="#createProject" class="modal-trigger">Create project</a>
+              <a ng-click="closeSideNav()" href="#createProject" class="modal-trigger">Create project</a>
             </li>
           </ul>
         </li>
@@ -28,14 +29,14 @@
           </a>
           
           <ul id="userSettings" class="dropdown-content"  style="margin-top: 15px">
-            <li><a ui-sref="team.manager">Settings</a></li>
-            <li><a ui-sref="signout">Sign out</a></li>
+            <li><a ng-click="closeSideNav()" ui-sref="team.manager">Settings</a></li>
+            <li><a ng-click="closeSideNav()" ui-sref="signout">Sign out</a></li>
           </ul>
         </li>
         <div sp-notification  ng-if="user._id"></div>
 
         <li ng-if="tabs">
-          <a ng-repeat="tab in tabs" ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
+          <a ng-click="closeSideNav()" ng-repeat="tab in tabs" ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
         </li>
 
       </ul>

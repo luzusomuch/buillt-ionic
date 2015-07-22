@@ -152,16 +152,17 @@
                             minlength="1"
                             input-changed="inputChanged"
                             template-url="/my-custom-template.html"
-                            input-class="col s9"></angucomplete-alt>
+                            input-class="col s9" 
+                            class="col s7 m9"></angucomplete-alt>
 
           <a class="btn waves-effect waves-light right" name="action" ng-click="addUser()"> <i class="mdi-content-add tiny"></i></a>
 
           <ul>
             <li class="collection-item vlalign" ng-repeat="email in member.emails">
               <div class="row" style="margin-bottom: 5px">
-                <div class="col s8">{{email.email}}</div>
-                <div class="col s4">
-                  <a class="btn waves-effect waves-light right" name="action" ng-click="removeUser($index)"> <i class="mdi-content-remove tiny"></i></a>
+                <div class="col s6 m8" style="word-break: break-all;">{{email.email}}</div>
+                <div class="col s4 m4">
+                  <a class="btn waves-effect waves-light" name="action" ng-click="removeUser($index)"> <i class="mdi-content-remove tiny"></i></a>
                 </div>
               </div>
             </li>
@@ -170,7 +171,7 @@
         </div>
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" style="height:auto">
       <button class="modal-action modal-close waves-effect waves-green btn-flat" ng-disabled="team.emails.length <= 0" type="submit">Add new member</button>
       <button class="modal-action modal-close btn-flat" type="button">Close</button>
     </div>

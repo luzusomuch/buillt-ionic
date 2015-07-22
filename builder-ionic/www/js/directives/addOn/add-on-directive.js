@@ -14,7 +14,6 @@ angular.module('buiiltApp').directive('addon', function(){
                 $scope.isStaff = (_.find($scope.package.staffs,{_id: data._id})) ? true: false;
             });
             $scope.currentTeam = authService.getCurrentTeam();
-            console.log($scope.package);
             
             // $scope.documents = [];
             fileService.getFileByStateParam({'id': $scope.package._id})

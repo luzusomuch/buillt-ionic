@@ -130,6 +130,11 @@ angular.module('buiiltApp', [
       $rootScope.hasCurrentProject=toState.hasCurrentProject;
     });
 
+    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
+      $rootScope.previousState = from;
+      $rootScope.previousParams = fromParams;
+    });
+
     $rootScope.overlay = false;
 
   })

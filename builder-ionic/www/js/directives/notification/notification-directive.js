@@ -257,6 +257,7 @@ angular.module('buiiltApp')
           notificationService.markAsRead({_id : notification._id}).$promise
             .then(function(res) {
               $rootScope.$emit('notification:read',notification);
+              $('#sidenav-overlay').trigger( "click" );
             })
         };
       }
@@ -304,6 +305,7 @@ angular.module('buiiltApp')
                 $scope.total = 0;
                 $rootScope.$emit('notification:allRead');
                 $('#slimScrollDiv').hide();
+                $('#sidenav-overlay').trigger( "click" );
               })
           };
 
