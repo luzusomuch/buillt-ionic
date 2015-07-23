@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <style>
+      .angular-google-map-container {
+          width: 100%;
+          height: 504px;
+      }
+    </style>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+
+    <script>
+// Ionic Starter App
+
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+// 'starter.services' is found in services.js
+// 'starter.controllers' is found in controllers.js
+angular.module('app', ['ionic'])
+
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
+})
+
+.config(function($stateProvider, $urlRouterProvider) {
+
+  // Ionic uses AngularUI Router which uses the concept of states
+  // Learn more here: https://github.com/angular-ui/ui-router
+  // Set up the various states which the app can be in.
+  // Each state's controller can be found in controllers.js
+  $stateProvider
+    
+    .state('page1', {
+      url: '/login',
+      templateUrl: 'page1.html'
+    })
+    
+    .state('page2', {
+      url: '/projects',
+      templateUrl: 'page2.html'
+    })
+    
+    .state('page3', {
+      url: '/project-name',
+      templateUrl: 'page3.html'
+    })
+    
+    .state('page4', {
+      url: '/package-name',
+      templateUrl: 'page4.html'
+    })
+    
+    .state('page5', {
+      url: '/thread-detail',
+      templateUrl: 'page5.html'
+    })
+    
+    .state('page6', {
+      url: '/task-name',
+      templateUrl: 'page6.html'
+    })
+    
+    .state('page7', {
+      url: '/document-name',
+      templateUrl: 'page7.html'
+    })
+    ;
+
+  // if none of the above states are matched, use this as the fallback
+  
+  $urlRouterProvider.otherwise('/login');
+  
+
+});
+
+
+    </script>
+  </head>
+  <body ng-app="app" animation="slide-left-right-ios7">
+  <div>
+    <div>
+        <ion-nav-bar class="bar-stable">
+            <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </div>
+</div>
+<script id="page1.html" type="text/ng-template">
+<ion-view title="Login">
+    <ion-content padding="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" placeholder="">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+            <a href="#/projects" class="button button-stable button-block ">Log in</a>
+        </form>
+    </ion-content>
+</ion-view></script>
+<script id="page2.html" type="text/ng-template">
+<ion-view title="Projects">
+    <ion-content padding="false" class="has-header">
+        <ion-list>
+            <ion-item href="#/project-name">Project 1</ion-item>
+            <ion-item href="#/project-name">Project 2</ion-item>
+            <ion-item href="#/project-name">Project 3</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view></script>
+<script id="page3.html" type="text/ng-template">
+<ion-view title="Project Name">
+    <ion-content padding="false" class="has-header">
+        <ion-list>
+            <label class="item item-select">
+                <span class="input-label">Heading Name</span>
+                <select></select>
+            </label>
+            <ion-item class="item-divider"></ion-item>
+            <ion-item href="#/package-name">Package 1</ion-item>
+            <ion-item href="#/package-name">Package 2</ion-item>
+            <ion-item href="#/package-name">Package 3</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view></script>
+<script id="page4.html" type="text/ng-template">
+<ion-view title="Package Name">
+    <ion-tabs class="tabs-stable tabs-icon-top">
+        <ion-tab title="Detail" icon="ion-ios7-cog-outline">
+            <ion-content padding="true" class="has-header">
+                <div>
+                    <p>Some Information about this Package.</p>
+                </div>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Messages" icon="ion-ios7-chatboxes-outline">
+            <ion-content padding="false" class="has-header">
+                <ion-list>
+                    <ion-item href="#/thread-detail">Thread 1</ion-item>
+                    <ion-item href="#/thread-detail">Thread 2</ion-item>
+                    <ion-item href="#/thread-detail">Thread 3</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Tasks" icon="ion-ios7-checkmark-outline">
+            <ion-content padding="false" class="has-header">
+                <ion-list>
+                    <ion-item href="#/task-name">Task 1</ion-item>
+                    <ion-item href="#/task-name">Task 2</ion-item>
+                    <ion-item href="#/task-name">Task 3</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Documents" icon="ion-ios7-bookmarks-outline">
+            <ion-content padding="false" class="has-header">
+                <ion-list>
+                    <ion-item href="#/document-name">Document 1</ion-item>
+                    <ion-item href="#/document-name">Document 2</ion-item>
+                    <ion-item href="#/document-name">Document 3</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-tab>
+    </ion-tabs>
+</ion-view></script>
+<script id="page5.html" type="text/ng-template">
+<ion-view title="Thread Name">
+    <ion-content padding="true" class="has-header has-footer">
+        <div class="list card">
+            <div class="item item-body">
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="item item-body">
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="item item-body">
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view></script>
+<script id="page6.html" type="text/ng-template">
+<ion-view title="Task Name">
+    <ion-content padding="true" class="has-header">
+        <div class="list card">
+            <div class="item item-body">
+                <div>
+                    <p>Task Description</p>
+
+                    <p>Task Due Date</p>
+
+                    <p>Task Assignee</p>
+                </div>
+            </div>
+        </div>
+        <button class="button button-positive button-block ">Complete!</button>
+    </ion-content>
+</ion-view></script>
+<script id="page7.html" type="text/ng-template">
+<ion-view title="Document Name">
+    <ion-content padding="true" class="has-header has-footer">
+        <div class="list card">
+            <div class="item item-body">
+                <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; width: 100%; height: auto; background-color: rgb(255, 255, 255);">
+                    <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+                </div>
+            </div>
+            <div class="item item-divider">Document Version # of #</div>
+        </div>
+    </ion-content>
+</ion-view></script>
+  </body>
+</html>
