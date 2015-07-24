@@ -56,7 +56,7 @@
 
             <ion-item class="item-divider"></ion-item>
 
-            <ion-item ui-sref="client({id: builderPackage.project})" ng-show="showBuilderPackage">
+            <ion-item ui-sref="client({id: builderPackage.project._id})" ng-show="showBuilderPackage">
                 {{builderPackage.name}}
             </ion-item>
             <ion-item ng-show="showContractorPackages" ui-sref="contractorRequest.contractorPackageInProcess({id:package.project, packageId: package._id})" ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}">

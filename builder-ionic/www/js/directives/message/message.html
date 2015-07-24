@@ -1,4 +1,4 @@
-<ul class="card collection">
+<!-- <ul class="card collection">
   <div class="card-header">
     <div class="row">
       <div class="col s10">
@@ -15,9 +15,6 @@
         </div>
         <div class="col s12" ng-if="currentThread.users">
           <p style="margin-top: 15px">{{currentThread.users | threadUsers}}</p>
-          <!--<div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in currentThread.users" ng-class="{'admin' : user.team.role == 'admin'}">-->
-            <!--{{user.email}}-->
-          <!--</div>-->
         </div>
       </div>
       <div class="col s2">
@@ -95,3 +92,49 @@
     </form>
   </div>
 </ul>
+ -->
+
+  
+  <ion-content padding="false" class="has-header">
+    <div><a class="activator" ng-click="newThread()">New Thread</a></div>
+    <div ng-show="addThread">
+      <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="isNew">New Thread<i class="material icons">remove</i></span>
+      <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="!isNew">Edit Thread<i class="material icons">remove</i></span>
+      <form class="col s12" name="form" novalidate ng-submit="saveThread(form)">
+        <ion-list>
+          <label class="item item-input">
+            <span class="input-label">Name</span>
+            <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+            <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
+          </label>
+          <label class="item item-input current-assign">
+            <div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in thread.users" ng-class="{'admin' : user.team.role == 'admin'}">
+              {{user | name}} 
+              <span><a ng-click="revoke(user,$index)"><i class="mdi-navigation-cancel" style="margin-left: 5px"></i></a></span>
+            </div>
+            <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+            <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
+          </label>
+          <label class="row available-assign">
+            <p style="">Available user:</p>
+            <a ng-click="assign(user,$index)" ng-repeat="user in available track by $index" >
+              <div class="card col" style="padding: 5px; margin-left: 10px" ng-class="{'admin' : user.team.role == 'admin'}">
+                {{user | name}}
+              </div>
+            </a>
+          </label>
+          <label>
+            <button class="button button-stable button-block" type="submit">Save</button>
+          </label>
+        </ion-list>
+      </form>
+    </div>
+    <ion-list>
+      <ion-item ng-repeat="thread in threads">{{thread.name}}</ion-item>
+      <ion-item class="item-accordion" ng-repeat="item in group.items" ng-show="isGroupShown(group)">
+            {{item}}
+          </ion-item>
+      <ion-item ng-click="toggleGroup(thread)" ng-class="{active: isGroupShown(thread)}">Thread 2</ion-item>
+      <ion-item>Thread 3</ion-item>
+    </ion-list>             
+  </ion-content>

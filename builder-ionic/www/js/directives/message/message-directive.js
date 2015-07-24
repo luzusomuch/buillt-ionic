@@ -8,26 +8,28 @@ angular.module('buiiltApp')
         type : '@'
       },
       controller:
-        function($scope,$rootScope,messageService, authService,socket,$timeout,$anchorScroll,$location,filterFilter, $cookieStore, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
+        function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $cookieStore, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
           $scope.currentProject = $rootScope.currentProject;
           authService.getCurrentUser().$promise.then(function(res) {
             $scope.currentUser = res;
-            authService.getCurrentTeam().$promise.then(function(res) {
-              $scope.currentTeam = res;
-              $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
-              getAvailableUser($scope.type);
-            });
+          });
+          authService.getCurrentTeam().$promise.then(function(data){
+            $scope.currentTeam = data;
+            $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
+            getAvailableUser($scope.type);
           });
           $scope.submitted = false;
           $scope.isNew = true;
+          $scope.addThread = false;
 
           //Get Available assignee to assign to task
           var getAvailableUser = function(type) {
+            
             switch(type) {
               case 'builder' :
                 $scope.available = [];
-                $scope.available = _.union($scope.available,$scope.currentTeam.leader);
+                $scope.available = angular.copy($scope.currentTeam.leader);
                 if ($scope.currentTeam._id == $scope.package.owner._id && $scope.isLeader) {
                   if ($scope.package.to.team) {
                     _.forEach($scope.package.to.team.leader, function (leader) {
@@ -156,6 +158,8 @@ angular.module('buiiltApp')
             };
             getAvailableUser($scope.type);
             $scope.isNew = true;
+            $scope.addThread = true;
+            console.log('asdasdsad');
           };
 
           //Function fired when click edit task
@@ -184,13 +188,13 @@ angular.module('buiiltApp')
           $scope.selectThread = function(thread) {
             $scope.currentThread = thread;
 
-            socket.emit('join',thread._id);
+            // socket.emit('join',thread._id);
           };
 
-          socket.on('message:new', function (thread) {
-            $scope.currentThread = thread;
-            console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
-          });
+          // socket.on('message:new', function (thread) {
+          //   $scope.currentThread = thread;
+          //   console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
+          // });
 
           $scope.enterMessage = function ($event) {
             if ($event.keyCode === 13) {
@@ -212,7 +216,8 @@ angular.module('buiiltApp')
           };
 
           $scope.close = function() {
-            $scope.submitted = false
+            $scope.submitted = false;
+            $scope.addThread = false;
           }
 
           $scope.saveThread = function(form) {
@@ -223,7 +228,7 @@ angular.module('buiiltApp')
                   .then(function (res) {
                     $('.card-title').trigger('click');
                     $scope.currentThread = res;
-                    socket.emit('join',res._id);
+                    // socket.emit('join',res._id);
                     updateThread();
                   })
               } else {
