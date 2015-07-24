@@ -1,57 +1,73 @@
-<div class="row">
-    <div class="">
-        <div class="row" style="margin-top: 18px">
-            <h5 class="col s8">{{project.name}}</h5>
-            <div class="col s4" style="margin-top:15px">
-                 <a class='dropdown-button btn-flat right' href="#!"
-                    data-activates="itemDownload" dropdown data-constrainwidth="false" data-beloworigin="true">
-                    <i class="mdi-navigation-more-vert"></i>
-                 </a>
+<!-- <div class="col s12">
+    <h3>{{project.name}}</h3>
 
-                 <!-- Dropdown Structure -->
-                 <ul id='itemDownload' class='dropdown-content'>
-                    <li ng-show="isLeader && currentTeam.type == 'builder'"><a class="modal-trigger" data-target="upload" href="#attachDocument">Upload document</a></li>
-                    <li>
-                        <a id="downloadAll">Download All Documents</a>
-                        <span ng-repeat="file in files" style="display:none">
-                            <a class="downloadFile" href='{{file.fileUrl}}' download="file.name">{{file.title}}</a>
-                        </span>
-                    </li>
-                 </ul>
-           </div>
-        </div>
-        <div class="row">
-            <p class="col s12">{{project.description}}</p>    
-        </div>      
-        <div class="row">
-          <file></file>   
-        </div>
-    </div>
-</div>
+    <a class="dropdown-button col s12" data-activates="headingName" data-position="top" data-delay="1" dropdown data-beloworigin="true">
+        <span>{{(headingName) ? headingName : "Choose type here"}}</span>
+    </a>
 
-<div id="attachDocument" class="modal modal-fixed-footer">
-  
-    <upload package=""></upload>
-</div>
+    <ul id="headingName" class='dropdown-content'>
+        <li ng-if="team.type == 'homeOwner'"><span ng-click="clientClick()">Builder</span></li>
 
-<script>
-$(document).ready(function(){
-    $("#downloadAll").click(function(){
-        $('a.downloadFile').each(function(){
-            $(this).simulateClick("click");
-        });
-    });
-});
-jQuery.fn.simulateClick = function() {
-    return this.each(function() {
-        if('createEvent' in document) {
-            var doc = this.ownerDocument,
-                evt = doc.createEvent('MouseEvents');
-            evt.initMouseEvent('click', true, true, doc.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-            this.dispatchEvent(evt);
-        } else {
-            this.click(); // IE Boss!
-        }
-    });
-}
-</script>
+        <li ng-if="team.type == 'contractor'"><span ng-click="contractorPackageClick()">Contracts</span></li>
+
+        <li ng-if="team.type == 'supplier'"><span ng-click="materialPackageClick()">Materials</span></li>
+
+        <li ng-if="team.type == 'builder'"><span ng-click="clientClick()">Client</span></li>
+        <li ng-if="team.type == 'builder'"><span ng-click="contractorPackageClick()">Subcontractors</span></li>
+        <li ng-if="team.type == 'builder'"><span ng-click="materialPackageClick()">Suppliers</span></li>
+        <li ng-if="team.type == 'builder'"><span ng-click="staffPackageClick()">Employees</span></li>
+    </ul>
+    <ul>
+        <li ng-show="showBuilderPackage">
+            <a ui-sref="client({id: builderPackage._id})">{{builderPackage.name}}</a>
+        </li>
+        <li ng-show="showContractorPackages" ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}">
+            <a ui-sref="contractorRequest.contractorPackageInProcess({id:package.project, packageId: package._id})">{{package.name}}</a>
+        </li>
+        <li ng-show="showMaterialPackages" ng-repeat="package in materialPackages | filter:{isAccept: true, isCompleted: false}">
+            <a ui-sref="materialRequest.materialPackageInProcess({id:package.project, packageId: package._id})">{{package.name}}</a>
+        </li>
+        <li ng-show="showStaffPackages" ng-repeat="package in staffPackages">
+            <a ui-sref="staff.view({id:package.project, packageId: package._id})">{{package.name}}</a>
+        </li>
+    </ul>
+</div> -->
+
+
+<ion-view title='Project'>
+    <ion-content padding="false" class="has-header">
+        <ion-list>
+            <div class="item item-select">
+                <span class="input-label">{{(headingName) ? headingName : "Heading name"}}</span>
+                <select ng-model="type" ng-change="clickChange(type)">
+                    <option ng-if="team.type == 'homeOwner'" ng-init="type = 'client'">  Builder
+                    </option>
+
+                    <option ng-if="team.type == 'contractor'" ng-init="type ='contractor'">Contracts</option>
+
+                    <option ng-if="team.type == 'supplier'" ng-init="type ='material'">Materials</option>
+
+                    <option ng-if="team.type == 'builder'" ng-init="type ='client'">Client</option>
+                    <option ng-if="team.type == 'builder'" ng-init="type ='contractor'">Subcontractors</option>
+                    <option ng-if="team.type == 'builder'" ng-init="type ='supplier'">Suppliers</option>
+                    <option ng-if="team.type == 'builder'" ng-init="type ='staff'">Employees</option>
+                </select>
+            </div>
+
+            <ion-item class="item-divider"></ion-item>
+
+            <ion-item ui-sref="client({id: builderPackage.project})" ng-show="showBuilderPackage">
+                {{builderPackage.name}}
+            </ion-item>
+            <ion-item ng-show="showContractorPackages" ui-sref="contractorRequest.contractorPackageInProcess({id:package.project, packageId: package._id})" ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}">
+                {{package.name}}
+            </ion-item>
+            <ion-item ng-show="showMaterialPackages" ng-repeat="package in materialPackages | filter:{isAccept: true, isCompleted: false}" ui-sref="materialRequest.materialPackageInProcess({id:package.project, packageId: package._id})">
+                {{package.name}}
+            </ion-item>
+            <ion-item ng-show="showStaffPackages" ng-repeat="package in staffPackages" ui-sref="staff.view({id:package.project, packageId: package._id})">
+                {{package.name}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

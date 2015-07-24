@@ -10,7 +10,7 @@ angular.module('buiiltApp')
     controller:
       function($scope,$rootScope,taskService, authService,filterFilter, $cookieStore, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
         //Init Params
-
+        $scope.deviceWidth = $rootScope.deviceWidth;
         $scope.currentProject = $rootScope.currentProject;
         authService.getCurrentUser().$promise.then(function(res) {
            $scope.currentUser = res;

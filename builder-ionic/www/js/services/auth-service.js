@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $cookieStore, $q,$state) {
+.factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $q,$state) {
   var currentUser = {};
   if (window.localStorage.getItem('token')) {
     currentUser = userService.get();
@@ -59,7 +59,7 @@ angular.module('buiiltApp')
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
           currentUser = userService.get();
-          $state.go('team.manager')
+          $state.go('user')
         }
         return cb(user);
       },

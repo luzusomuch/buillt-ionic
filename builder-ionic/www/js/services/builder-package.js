@@ -4,7 +4,17 @@ angular.module('buiiltApp')
         id: '@_id'},
       {
         findDefaultByProject : {
-          method : 'GET'
+          method : 'GET',
+          params: {
+            id: 'id'
+          }
+        },
+        getByProject: {
+          method: 'get',
+          params: {
+            id: 'id',
+            action: 'find-by-project'
+          }
         }
       }
     );

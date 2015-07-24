@@ -31,8 +31,23 @@ angular.module('buiiltApp').config(function($stateProvider) {
     controller: 'ViewProjectCtrl',
     authenticate : true,
     resolve: {
+      team: function(authService){
+        return authService.getCurrentTeam().$promise;
+      },
       project: function($stateParams, projectService) {
         return projectService.get({id: $stateParams.id});
+      },
+      builderPackage: function(builderPackageService, $stateParams) {
+        return builderPackageService.findDefaultByProject({id : $stateParams.id});
+      },
+      contractorPackages : function(contractorService,$stateParams) {
+        return contractorService.get({id : $stateParams.id});
+      },
+      materialPackages : function(materialPackageService,$stateParams) {
+        return materialPackageService.get({id : $stateParams.id});
+      },
+      staffPackages: function(staffPackageService, $stateParams) {
+        return staffPackageService.getAll({id: $stateParams.id});
       }
     },
     hasCurrentProject : true

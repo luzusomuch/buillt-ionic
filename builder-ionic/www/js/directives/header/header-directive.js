@@ -22,7 +22,8 @@ angular.module('buiiltApp')
         supplier: [{sref: 'dashboard({id :  currentProject._id})', label: 'Dashboard'},
           {sref: 'materials({id :  currentProject._id})', label: 'Materials'},
           {sref: 'projects.view({id :  currentProject._id})', label: 'Documentation'}],
-        other : [{sref: 'team.manager', label: 'Team manager'},
+        other : [
+          // {sref: 'team.manager', label: 'Team manager'},
           {sref: 'user', label: 'User profile'}]
       };
 
@@ -42,9 +43,9 @@ angular.module('buiiltApp')
               .then(function(res) {
                 $rootScope.user = $scope.user = res;
 
-                if ($state.current.name == 'dashboard' && ! res.emailVerified) {
-                  Materialize.toast('<p>You must confirm your email to hide this message!</br><a class="yellow-text" id="sendVerification">Send Verification Email Again<a></p>', $scope.duration,'rounded');
-                }
+                // if ($state.current.name == 'dashboard' && ! res.emailVerified) {
+                //   Materialize.toast('<p>You must confirm your email to hide this message!</br><a class="yellow-text" id="sendVerification">Send Verification Email Again<a></p>', $scope.duration,'rounded');
+                // }
                 $rootScope.isLeader = ($scope.user.team.role == 'admin')
                 authService.getCurrentTeam().$promise
                   .then(function(res) {

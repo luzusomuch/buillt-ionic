@@ -5,6 +5,7 @@ angular.module('buiiltApp').directive('createPackage', function(){
     templateUrl: 'js/directives/create-package/create-package.html',
     controller: function($scope, $rootScope,$state,$stateParams, $cookieStore, staffPackageService,teamService,contractorService,materialPackageService) {
       $scope.currentTeam = $rootScope.currentTeam;
+      $scope.deviceWidth = $rootScope.deviceWidth;
       $scope.available = [];
       $scope.package = {
         staffs : [],

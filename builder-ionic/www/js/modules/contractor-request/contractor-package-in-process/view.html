@@ -1,59 +1,52 @@
-<div class="row" style="margin-top: 18px">
-  <h5 class="col s8">{{contractorRequest.name}}</h5>
- <div class="col s4" style="margin-top:15px">
-   <a class='dropdown-button btn-flat right tooltipped' data-position="top" data-delay="1" data-tooltip="Attach..." href='#'
-      data-activates='itemActions' dropdown data-beloworigin="true" data-constrainwidth="false">
-      <i class="mdi-navigation-more-vert"></i>
-   </a>
+<div class="col s12">
+    <h4>{{contractorRequest.name}}</h4>
 
-   <!-- Dropdown Structure -->
-   <ul id='itemActions' class='dropdown-content'>
-    <li>
-      <a ng-show="currentTeam.type == 'builder'" class="modal-trigger" href="#modal_attachVariation">Attach Variation</a>
-      <a ng-show="currentTeam.type == 'contractor'" class="modal-trigger" href="#attachVariationWithQuote">Attach Variation</a>
-    </li>
-     <li ng-if="currentTeam.type == 'builder'"><a class="modal-trigger" href="#modal_attachDefect">Attach Defect</a></li>
-     <li><a class="modal-trigger" href="#modal_attachDocument">Attach Document</a></li>
-     <li ng-if="currentTeam.type == 'contractor'"><a class="modal-trigger" href="#attachInvoice">Attach Invoice</a></li>
-     <div class="divider"  ng-if="isLeader"></div>
-     <li><a class="modal-trigger" ng-if="isLeader && currentTeam.type =='builder' && !contractorRequest.isCompleted" href="#modal_complete">Mark as complete</a></li>
-     <li><a class="modal-trigger" ng-if="isLeader && currentTeam.type =='builder' && contractorRequest.isCompleted" href="#modal_complete">Mark as in progress</a></li>
-   </ul>
- </div>
-</div>
-<div class="row">
-  <div class="col s12">
-    <ul class="collapsible" data-collapsible="accordion">
-      <li>
-        <div class="collapsible-header"><i class=""></i>Details</div>
-        <div class="collapsible-body" style="background-color: #FFF; padding:10px">
-          <table class="bordered centered">
+    <div class="col s12">
+        <table>
             <thead>
-            <tr>
-              <th>#</th>
-              <th>Scope of works</th>
-            </tr>
+                <th>#</th>
+                <th>Description</th>
             </thead>
             <tbody>
-            <tr ng-repeat="description in contractorRequest.descriptions">
-              <td>{{$index + 1}}</td>
-              <td>{{description}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </li>
+                <tr ng-repeat="addendum in contractorRequest.addendums | filter:{isHidden:false}">
+                    <td>{{$index + 1}}</td>
+                    <td>{{addendum.addendumsScope.description}}</td>
+                </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div message package="contractorRequest">    
+    </div>
+
+    <div task package="contractorRequest"></div>
+</div>
+
+<div class="tab-in-package">
+    <ul class="tabs" tabs style="height:auto;">
+        <li class="tab col s3" style="height:auto;">
+            <a class="active">
+                <i class="material-icons">library_books</i>
+                <span style="display:block">Detail</span>
+            </a>
+        </li>
+        <li class="tab col s3" style="height:auto;">
+            <a>
+                <i class="material-icons">chat_bubble_outline</i>
+                <span style="display:block">Messages</span>
+            </a>
+        </li>
+        <li class="tab col s3" style="height:auto;">
+            <a>
+                <i class="material-icons">check_circle</i>
+                <span style="display:block">Tasks</span>
+            </a>
+        </li>
+        <li class="tab col s3" style="height:auto;">
+            <a>
+                <i class="material-icons">insert_drive_file</i>
+                <span style="display:block">Documents</span>
+            </a>
+        </li>
     </ul>
-  </div>
 </div>
-
-           
-<div class="row">
- <div task package="contractorRequest" type="contractor"></div>
-  <addOn package="contractorRequest" type="contractor"></addOn>
-</div>
-               
-
-<div message package="contractorRequest" type="contractor"></div>
-<div ng-include="'js/modules/contractor-request/contractor-package-in-process/complete.modal.html'"></div>
-

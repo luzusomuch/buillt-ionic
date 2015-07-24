@@ -9,7 +9,7 @@ angular.module('buiiltApp')
     $scope.clear = false;
     $scope.isEdit = false;
     $scope.isLeader = (currentUser.team.role == 'admin');
-    $scope.deviceWidth = $(window).width();
+    $scope.deviceWidth = $rootScope.deviceWidth;
 
     var getLocalData = function() {
       _.forEach($scope.currentTeam.member,function(member) {

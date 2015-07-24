@@ -1,20 +1,28 @@
-<div class="col s12">
+<div class="">
   <ul class="card collection">
-    <div class="card-header">
+    <!-- <div class="card-header">
       <div class="row">
-        <div class="col s10 task-filter" style="padding-top: 15px">
+        <div ng-if="deviceWidth <= 600" class="col s10 task-filter" style="padding-top: 15px">
+          <a class="btn-flat" style="font-size: 12px" ng-click="filter = 'all'" ng-class="{'active' : filter == 'all'}">All Tasks</a> <br>
+          <a class="btn-flat" style="font-size: 12px" ng-click="filter = {'myTask' : currentUser._id}" ng-class="{'active' : filter.myTask == currentUser._id}">My Tasks</a> <br>
+          <a class="btn-flat" style="font-size: 12px" ng-click="filter = 'completed'"  ng-class="{'active' : filter == 'completed'}">Completed Tasks</a>
+        </div>
+        <div ng-if="deviceWidth > 600" class="col s10 task-filter" style="padding-top: 15px">
           <a class="btn-flat" style="font-size: 12px" ng-click="filter = 'all'" ng-class="{'active' : filter == 'all'}">All Tasks</a>
           <a class="btn-flat" style="font-size: 12px" ng-click="filter = {'myTask' : currentUser._id}" ng-class="{'active' : filter.myTask == currentUser._id}">My Tasks</a>
           <a class="btn-flat" style="font-size: 12px" ng-click="filter = 'completed'"  ng-class="{'active' : filter == 'completed'}">Completed Tasks</a>
         </div>
         <div class="col s2">
-          <a class="dropdown-button btn-flat btn-flat right activator" style="margin-top: 15px" ng-click="newTask()">
-            <i class=" mdi-content-add"></i>
-          </a>
+          
         </div>
       </div>
     </div>
-    <div class="divider"></div>
+    <div class="divider"></div> -->
+    <div class="card-header">
+      <a class="dropdown-button btn-flat btn-flat right activator" style="margin-top: 15px" ng-click="newTask()">
+        <i class="mdi-content-add"></i>
+      </a>
+    </div>
     <div style="height:300px; overflow-y: auto">
       <li class="collection-item row" ng-repeat="task in tasks | taskFilter : filter | orderBy : ['dateEnd'] ">
         <div>

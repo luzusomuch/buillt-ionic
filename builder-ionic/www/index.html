@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="buiiltApp">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
-    <!-- <link href="lib/ionic/css/ionic.css" rel="stylesheet"> -->
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <!-- <link href="css/style.css" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.css" />
+    <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="lib/angular-notify/angular-notify.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="dist/app.full.css" data-concat="false" />
     <link rel="stylesheet" href="lib/lumx/dist/lumx.css">
     <link rel="stylesheet" href="lib/materialize/bin/materialize.css">
     <link rel="stylesheet" href="lib/prism/themes/prism.css">
-    <link rel="stylesheet" href="lib/angular-tooltips/dist/angular-tooltips.min.css">
     <link rel="stylesheet" href="media/css/main.css">
     <link rel="stylesheet" href="media/css/normalize.css">
     <link rel="stylesheet" href="media/css/style.css">
-    <link rel="stylesheet" href="media/css/materialize.css">
+    <link rel="stylesheet" href="media/css/materialize.css"> -->
 
     <!-- IF using Sass (run gulp sass first), then remove the CSS include above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -37,19 +37,19 @@
     
 
     
-  </head>
+</head>
 
-  <body ng-app="buiiltApp">
-    <built-header ng-if="hasHeader"></built-header>
-
-    <main class="row">
-
-        <div ui-view class="row"></div>
-        <div ng-include="'js/components/modal/modal.html'"></div>
-    </main>
-        <div ng-if="authService.isLoggedIn()" sp-socket></div>
+<body animation="slide-left-right-ios7">
+    <div>
+        <div>
+            <ion-nav-bar class="bar-stable">
+                <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-nav-view></ion-nav-view>
+        </div>
+    </div>
   
-    <built-footer  ng-if="hasFooter"></built-footer>
+    <!-- <built-footer  ng-if="hasFooter"></built-footer> -->
 
     <script src="lib/jquery-ui/ui/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
@@ -64,9 +64,7 @@
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-resource/angular-resource.js"></script>
     <script src="lib/angular-ui-utils/ui-utils.js"></script>
-    <script src="lib/angular-tooltips/dist/angular-tooltips.min.js"></script>
     <script src="lib/angular-socket-io/socket.min.js"></script>
-    <script src="lib/es5-shim/es5-shim.min.js"></script>
     <script src="lib/angular-file-upload/angular-file-upload.js"></script>
     <script src="lib/angular-notify/angular-notify.js"></script>
     <script src="lib/angular-loading-bar/build/loading-bar.js"></script>
@@ -74,19 +72,18 @@
     <script src="lib/moment/min/moment-with-langs.js"></script>
     <script src="lib/lumx/dist/lumx.js"></script>
     <script src="lib/restangular/src/restangular.js"></script>
-    <script src="lib/angular-contenteditable/angular-contenteditable.js"></script>
 
     <script src="js/components/angular-materialize/src/angular-materialize.js"></script>
     <script src="js/components/filters.js"></script>
     <script src="js/components/directive.js"></script>
     <script src="js/components/angular-slimscroll/angular-slimscroll.js"></script>
-    <script src="js/components/socket/socket.service.js"></script>
+    <!--<script src="js/components/socket/socket.service.js"></script>-->
     <script src="js/components/modal/modal.service.js"></script>
 
     <!--<script src="http://localhost:9000/socket.io-client/socket.io.js"></script>-->
 
-    <script src="http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/socket.io-client/socket.io.js"></script>
-    <script src="js/directives/footer/footer-directive.js"></script>
+    <!--<script src="http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/socket.io-client/socket.io.js"></script>-->
+    <!--<script src="js/directives/footer/footer-directive.js"></script>-->
     <script src="js/directives/header/header-directive.js"></script>
     <script src="js/directives/quote/quote-directive.js"></script>
     <script src="js/directives/upload/upload-directive.js"></script>
@@ -127,12 +124,8 @@
     <script src="js/services/variation-request-service.js"></script>
 
     <script src="js/modules/auth/main.js"></script>
-    <script src="js/modules/auth/signup/signup-controller.js"></script>
     <script src="js/modules/auth/signin/signin-controller.js"></script>
-    <script src="js/modules/auth/signup-with-invite/signup-with-invite-controller.js"></script>
     <script src="js/modules/auth/signout/signout-controller.js"></script>
-    <script src="js/modules/auth/forgot-password/forgot-password-controller.js"></script>
-    <script src="js/modules/auth/reset-password/reset-password-controller.js"></script>
 
     <script src="js/modules/client/main.js"></script>
     <script src="js/modules/client/client-controller.js"></script>

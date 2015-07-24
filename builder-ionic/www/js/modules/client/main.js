@@ -8,7 +8,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
     authenticate : true,
     resolve: {
       builderPackage: function(builderPackageService, $stateParams) {
-            return builderPackageService.findDefaultByProject({id : $stateParams.id}).$promise;
+          return builderPackageService.getByProject({id : $stateParams.id}).$promise;
         },
       team: function(authService){
         return authService.getCurrentTeam().$promise;

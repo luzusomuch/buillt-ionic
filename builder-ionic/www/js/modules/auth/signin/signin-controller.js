@@ -16,7 +16,7 @@ angular.module('buiiltApp')
       if (form.$valid) {
         authService.login($scope.user).then(function () {
           //show alert
-          $state.go('team.manager');
+          $state.go('dashboard');
           // $window.location.href = '/team/manager';
         }, function (res) {
           $scope.error = true;

@@ -7,7 +7,8 @@ angular.module('buiiltApp').directive('addon', function(){
             package: '=',
             type: '@'
         },
-        controller: function(API_URL,$scope, $state,$window, $stateParams, authService,addOnPackageService, FileUploader, $cookieStore, fileService, contractorRequestService, materialRequestService, variationRequestService) {
+        controller: function(API_URL,$scope, $rootScope, $state,$window, $stateParams, authService,addOnPackageService, FileUploader, $cookieStore, fileService, contractorRequestService, materialRequestService, variationRequestService) {
+            $scope.deviceWidth = $rootScope.deviceWidth;
             $scope.allItemsText = 'All items';
             authService.getCurrentUser().$promise.then(function(data){
                 $scope.currentUser = data;
