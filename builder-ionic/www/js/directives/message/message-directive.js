@@ -8,7 +8,7 @@ angular.module('buiiltApp')
         type : '@'
       },
       controller:
-        function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $cookieStore, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
+        function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
           $scope.currentProject = $rootScope.currentProject;
           authService.getCurrentUser().$promise.then(function(res) {
@@ -159,7 +159,6 @@ angular.module('buiiltApp')
             getAvailableUser($scope.type);
             $scope.isNew = true;
             $scope.addThread = true;
-            console.log('asdasdsad');
           };
 
           //Function fired when click edit task
@@ -193,7 +192,7 @@ angular.module('buiiltApp')
 
           // socket.on('message:new', function (thread) {
           //   $scope.currentThread = thread;
-          //   console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
+          //   // console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
           // });
 
           $scope.enterMessage = function ($event) {
@@ -218,15 +217,29 @@ angular.module('buiiltApp')
           $scope.close = function() {
             $scope.submitted = false;
             $scope.addThread = false;
-          }
+          };
+
+          $scope.toggleThread = function(thread) {
+            if ($scope.isThreadShown(thread)) {
+              $scope.shownThread = null;
+            } else {
+              $scope.shownThread = thread;
+            }
+          };
+          $scope.isThreadShown = function(thread) {
+            return $scope.shownThread === thread;
+          };
 
           $scope.saveThread = function(form) {
             $scope.submitted = true;
             if (form.$valid) {
+              console.log($scope.isNew);
               if ($scope.isNew) {
+                console.log('1');
                 messageService.create({id: $scope.package._id, type: $scope.type}, $scope.thread).$promise
                   .then(function (res) {
-                    $('.card-title').trigger('click');
+                    console.log(res);
+                    // $('.card-title').trigger('click');
                     $scope.currentThread = res;
                     // socket.emit('join',res._id);
                     updateThread();
@@ -234,7 +247,7 @@ angular.module('buiiltApp')
               } else {
                 messageService.update({id : $scope.thread._id, type : $scope.type},$scope.thread).$promise
                   .then(function(res) {
-                    $('.card-title').trigger('click');
+                    // $('.card-title').trigger('click');
                     updateThread();
                   })
               }

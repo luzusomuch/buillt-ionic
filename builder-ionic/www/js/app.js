@@ -9,7 +9,7 @@ angular.module('buiiltApp', [
   'ui.router',
   'ngAnimate',
   'angularFileUpload',
-  'ngCookies',
+  // 'ngCookies',
   'ngSanitize',
   'ngResource',
   'angular-loading-bar',
