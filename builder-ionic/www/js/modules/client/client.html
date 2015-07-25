@@ -1,67 +1,6 @@
-<!-- <div layout="column" style="">
-	
-	<div class="row" style="margin-top: 18px">
-	   <h5 class="col s8">{{builderPackage.name}}</h5>
-	   
-	   <div class="col s4" style="margin-top:15px">
-		     <a class='dropdown-button btn-flat right tooltipped' data-position="top" data-delay="1" data-tooltip="Attach..." href='#' data-activates='itemActions' dropdown data-beloworigin="true" data-constrainwidth="false">
-		     	<i class="mdi-navigation-more-vert"></i>
-		     </a>
-
-		     <ul id='itemActions' class='dropdown-content'  style="left:956.0625px">
-		       <li><a class="modal-trigger" href="#attachInvoice">Attach Invoice</a></li>
-		       <li>
-            <a ng-if="currentTeam.type == 'builder'" class="modal-trigger" href="#attachVariationWithQuote">Attach Variation</a>
-            <a ng-if="currentTeam.type == 'homeOwner'" class="modal-trigger" href="#modal_attachVariation">Attach Variation</a>
-          </li>
-		       <li><a class="modal-trigger" href="#modal_attachDocument">Attach Document</a></li>
-		     </ul>
-	   </div>
-   </div>
-
-  <div class="row" style="margin-top: 18px">
-    <div class="col s12">
-      <ul class="collapsible" data-collapsible="accordion">
-        <li>
-          <div class="collapsible-header"><i class=""></i>Details</div>
-          <div class="collapsible-body" style="background-color: #FFF; padding:10px">
-            <p class="col s12">Package description : <span class="highlight">{{builderPackage.description}}</span></p>
-            <p class="col s12">Location : </p>
-            <ul style="margin-left: 50px">
-              <li>Address : <span class="highlight">{{builderPackage.location.address}}</span></li>
-              <li>Suburb : <span class="highlight">{{builderPackage.location.suburb}}</span></li>
-              <li>Postcode: <span class="highlight">{{builderPackage.location.postcode}}</span></li>
-            </ul>
-            </div>
-
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-   
-   <div class="row">
-	   <div task package="builderPackage" type="builder"></div>
-	   
-   </div>
-   <div class="row">
-     <addon package="builderPackage" type="BuilderPackage"></addon>
-     
-   </div>
-   
-   <div class="row">
-     <div class="col s12">
-	    <div message package="builderPackage" type="builder"></div>
-     </div>
-   </div>
-	
-</div>
-
-
-
- -->
 
 <ion-view title='{{builderPackage.name}}'>
+  <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
   <ion-tabs class="tabs-stable tabs-icon-top">
     <ion-tab title="Detail" icon="ion-ios7-cog-outline">
       <ion-content padding="true" class="has-header" style="margin-top: 40px;">
@@ -76,15 +15,6 @@
         </div>
       </ion-content>
     </ion-tab>
-    <!-- <ion-tab title="Messages" icon="ion-ios7-chatboxes-outline">
-        <ion-content padding="false" class="has-header">
-            <ion-list>
-                <ion-item href="#/thread-detail">Thread 1</ion-item>
-                <ion-item href="#/thread-detail">Thread 2</ion-item>
-                <ion-item href="#/thread-detail">Thread 3</ion-item>
-            </ion-list>
-        </ion-content>
-    </ion-tab> -->
     <ion-tab title="Messages" icon="ion-ios7-chatboxes-outline">
       <div message package="builderPackage" type="builder"></div>
     </ion-tab>
