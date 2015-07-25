@@ -238,7 +238,8 @@ angular.module('buiiltApp')
               if ($scope.isNew) {
                 messageService.create({id: $scope.package._id, type: $scope.type}, $scope.thread).$promise
                   .then(function (res) {
-                    $('.card-title').trigger('click');
+                    // $('.card-title').trigger('click');
+                    $scope.addThread = false;
                     $scope.currentThread = res;
                     // socket.emit('join',res._id);
                     updateThread();
@@ -246,7 +247,7 @@ angular.module('buiiltApp')
               } else {
                 messageService.update({id : $scope.thread._id, type : $scope.type},$scope.thread).$promise
                   .then(function(res) {
-                    $('.card-title').trigger('click');
+                    // $('.card-title').trigger('click');
                     updateThread();
                   })
               }

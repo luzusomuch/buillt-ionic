@@ -96,10 +96,10 @@
 
   
   <ion-content padding="false" class="has-header">
-    <div><a class="activator" ng-click="newThread()">New Thread</a></div>
+    <div><a class="activator button button-stable button-block" ng-click="newThread()"><strong>New Thread</strong></a></div>
     <div ng-show="addThread">
-      <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="isNew">New Thread<i style="float:right" class="icon ion-close-round"></i></span>
-      <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="!isNew">Edit Thread<i style="float:right" class="icon ion-close-round"></i></span>
+      <span ng-click="close()" class="card-title button button-stable button-block" ng-if="isNew">New Thread<i style="float:right" class="icon ion-close-round"></i></span>
+      <!-- <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="!isNew">Edit Thread<i style="float:right" class="icon ion-close-round"></i></span> -->
       <form name="form" novalidate ng-submit="saveThread(form)">
         <ion-list>
           <label class="item item-input">

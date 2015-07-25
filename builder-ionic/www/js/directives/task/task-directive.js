@@ -8,7 +8,7 @@ angular.module('buiiltApp')
       type : '@'
     },
     controller:
-      function($scope,$rootScope,taskService, authService,filterFilter, $cookieStore, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
+      function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
         //Init Params
         $scope.deviceWidth = $rootScope.deviceWidth;
         $scope.currentProject = $rootScope.currentProject;
@@ -140,6 +140,7 @@ angular.module('buiiltApp')
           getAvailableAssignee($scope.type);
           $scope.isNew = true;
           $scope.isShow = false;
+          $scope.addTask = true;
         };
 
         $scope.showTask = function(task) {
@@ -203,19 +204,35 @@ angular.module('buiiltApp')
             })
         };
 
+        $scope.toggleTask = function(task) {
+          if ($scope.isTaskShown(task)) {
+            $scope.shownTask = null;
+          } else {
+            $scope.shownTask = task;
+          }
+        };
+        $scope.isTaskShown = function(task) {
+          return $scope.shownTask === task;
+        };
+
+        $scope.cancelTask = function(){
+          $scope.addTask = false;          
+        };
+
         //Submit form function
         $scope.save = function(form) {
           if (form.$valid) {
             if ($scope.isNew) {
               taskService.create({id : $scope.package._id, type : $scope.type},$scope.task).$promise
                 .then(function(res) {
-                  $('.card-title').trigger('click');
+                  // $('.card-title').trigger('click');
                   updateTasks();
+                  $scope.addTask = false;
                 })
             } else {
               taskService.update({id : $scope.task._id, type : $scope.type},$scope.task).$promise
                 .then(function(res) {
-                  $('.card-title').trigger('click');
+                  // $('.card-title').trigger('click');
                   updateTasks();
                 })
             }
