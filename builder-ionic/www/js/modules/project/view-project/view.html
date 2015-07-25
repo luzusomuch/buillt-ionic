@@ -1,9 +1,12 @@
-<ion-view title='Project {{project.name}}'>
+<ion-view title='{{project.name}}'>
+    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     <ion-content padding="false" class="has-header">
         <ion-list>
-            <label class="item item-select">
-                <span class="input-label">{{(headingName) ? headingName : "Heading name"}}</span>
+            <label class="item item-input item-select">
+                <!-- <span class="input-label">{{(headingName) ? headingName : "Heading name"}}</span> -->
+                <span class="input-label">Choose package</span>
                 <select ng-model="type" ng-change="clickChange(type)">
+                    <!-- <option ng-model="defaultType" selected></option> -->
                     <option ng-if="team.type == 'homeOwner'">  Builder
                     </option>
 

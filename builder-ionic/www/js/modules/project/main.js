@@ -34,9 +34,6 @@ angular.module('buiiltApp').config(function($stateProvider) {
       team: function(authService){
         return authService.getCurrentTeam().$promise;
       },
-      project: function($stateParams, projectService) {
-        return projectService.get({id: $stateParams.id});
-      },
       builderPackage: function(builderPackageService, $stateParams) {
         return builderPackageService.findDefaultByProject({id : $stateParams.id});
       },
