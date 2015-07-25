@@ -15,8 +15,6 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
   $scope.staffPackages = staffPackages
   $scope.team = team;
 
-  $scope.defaultType = "Choose package";
-
   $scope.headingName = "Heading name";
   $scope.showBuilderPackage = false;
   $scope.showContractorPackages = false;
