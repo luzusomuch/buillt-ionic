@@ -202,12 +202,14 @@ angular.module('buiiltApp')
             }
           };
 
-          $scope.sendMessage = function() {
+          $scope.message = {};
+          $scope.sendMessage = function(thread) {
             if ($scope.message.text != '') {
-              messageService.sendMessage({id: $scope.currentThread._id, type: $scope.type}, $scope.message).$promise
+              messageService.sendMessage({id: thread._id, type: $scope.type}, $scope.message).$promise
                 .then(function (res) {
+                  // console.log(res);
                   //$scope.currentThread = res;
-                  //updateThread();
+                  updateThread();
                   $scope.message.text = '';
                 });
             }
@@ -233,13 +235,10 @@ angular.module('buiiltApp')
           $scope.saveThread = function(form) {
             $scope.submitted = true;
             if (form.$valid) {
-              console.log($scope.isNew);
               if ($scope.isNew) {
-                console.log('1');
                 messageService.create({id: $scope.package._id, type: $scope.type}, $scope.thread).$promise
                   .then(function (res) {
-                    console.log(res);
-                    // $('.card-title').trigger('click');
+                    $('.card-title').trigger('click');
                     $scope.currentThread = res;
                     // socket.emit('join',res._id);
                     updateThread();
@@ -247,7 +246,7 @@ angular.module('buiiltApp')
               } else {
                 messageService.update({id : $scope.thread._id, type : $scope.type},$scope.thread).$promise
                   .then(function(res) {
-                    // $('.card-title').trigger('click');
+                    $('.card-title').trigger('click');
                     updateThread();
                   })
               }
