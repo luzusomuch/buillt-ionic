@@ -107,16 +107,17 @@
             <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
             <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
           </label>
-          <label class="current-assign">
-            <div style="padding: 5px; margin-left: 10px" ng-repeat="user in thread.users" ng-class="{'admin' : user.team.role == 'admin'}">
+          <div class="row current-assign">
+            <p>Current assign</p>
+            <div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in thread.users" ng-class="{'admin' : user.team.role == 'admin'}">
               {{user | name}} 
               <span><a ng-click="revoke(user,$index)"><i class="icon ion-close-round" style="margin-left: 5px"></i></a></span>
             </div>
-          </label>
-          <div class="available-assign">
+          </div>
+          <div class="row available-assign">
             <p style="">Available user:</p>
             <a ng-repeat="user in available track by $index" >
-              <div ng-click="assign(user,$index)" style="padding: 5px; margin-left: 10px" ng-class="{'admin' : user.team.role == 'admin'}">
+              <div class="card col" ng-click="assign(user,$index)" style="padding: 5px; margin-left: 10px" ng-class="{'admin' : user.team.role == 'admin'}">
                 {{user | name}}
               </div>
             </a>
@@ -132,8 +133,8 @@
         <ion-item class="item-stable" ng-click="toggleThread(thread)" ng-class="{active: isThreadShown(thread)}">{{thread.name}}</ion-item>
 
         <ion-item class="item-accordion" ng-show="isThreadShown(thread)">
-          <div ng-repeat="message in thread.messages">{{message.text}}</div>
-          <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage(thread)">
+          <div ng-repeat="message in thread.messages"><strong>{{message.user.name}}:</strong> {{message.text}}</div>
+          <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage(thread)" style="margin-top: 10px;">
             <div class="item item-input">
               <textarea name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text"
                         ng-keydown="enterMessage($event);">
