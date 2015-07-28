@@ -24,10 +24,7 @@
     <!-- IF using Sass (run gulp sass first), then remove the CSS include above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-    <script type="text/javascript" charset="utf-8">
-        window.deviceToken = 'abc';
-        window.deviceplatform = 'ios';
-    </script>
+    
 
     <!-- ionic/angularjs js -->
     <script src="lib/jquery/dist/jquery.js"></script>
@@ -35,7 +32,62 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
+    
+    <script src="plugins/com.phonegap.plugins.PushPlugin/www/PushNotification.js"></script>
+    <script>
+        window.deviceToken = '';
+        window.deviceplatform = '';
+        
+        var pushNotification;
+        
+        function onNotificationAPN(event) {
+            if (event.alert) {
+                navigator.notification.alert(event.alert);
+            }
+            
+            if (event.sound) {
+                var snd = new Media(event.sound);
+                snd.play();
+            }
+            
+            if (event.badge) {
+                pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
+            }
+        }
+    function errorHandler(error) {
+        console.log('error = ' + error);
+        alert('error = ' + error);
+    }
+    
+    function tokenHandler(result) {
+        // Your iOS push server needs to know the token before it can push to this device
+        // here is where you might want to send it the token for later use.
+        console.log('device token = ' + result);
+        window.deviceToken = result;
+        alert(result);
+    }
+    
+    document.addEventListener("deviceready", function () {
+                              pushNotification = window.plugins.pushNotification;
+                              
+                              window.deviceplatform = device.platform.toLowerCase();
+                              alert(window.deviceplatform);
+                              if (window.deviceplatform === 'ios' ) {
+                              alert('ddddd');
+                              //ios
+                              console.log('<li>registering ' + device.platform + '</li>');
+                              pushNotification.register(
+                                                        tokenHandler,
+                                                        errorHandler,
+                                                        {
+                                                        "badge": "true",
+                                                        "sound": "true",
+                                                        "alert": "true",
+                                                        "ecb": "onNotificationAPN"
+                                                        });
+                              }
+                              });
+        </script>
     <!-- your app's js -->
     <script src="js/app.js"></script>
     
