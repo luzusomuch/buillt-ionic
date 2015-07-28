@@ -1,17 +1,19 @@
 angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootScope,$scope,$stateParams,
-  team,projectService,contractorService,materialPackageService,staffPackages,builderPackage) {
+  team,projectService,materialPackages,contractorPackages,staffPackages,builderPackage) {
 
   projectService.get({id: $stateParams.id}).$promise.then(function(project){
     $scope.project=project;
   });
 
   $scope.builderPackage = builderPackage;
-  contractorService.get({id : $stateParams.id}).$promise.then(function(contractorPackages){
-    $scope.contractorPackages = contractorPackages;
-  });
-  materialPackageService.get({id : $stateParams.id}).$promise.then(function(materialPackages){
-    $scope.materialPackages = materialPackages;
-  });
+  // contractorService.get({id : $stateParams.id}).$promise.then(function(contractorPackages){
+  //   $scope.contractorPackages = contractorPackages;
+  // });
+  // materialPackageService.get({id : $stateParams.id}).$promise.then(function(materialPackages){
+  //   $scope.materialPackages = materialPackages;
+  // });
+  $scope.contractorPackages = contractorPackages;
+  $scope.materialPackages = materialPackages;
   $scope.staffPackages = staffPackages
   $scope.team = team;
 

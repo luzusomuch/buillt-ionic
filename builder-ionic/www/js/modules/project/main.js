@@ -37,6 +37,12 @@ angular.module('buiiltApp').config(function($stateProvider) {
       builderPackage: function(builderPackageService, $stateParams) {
         return builderPackageService.findDefaultByProject({id : $stateParams.id});
       },
+      contractorPackages: function(contractorService, $stateParams) {
+        return contractorService.get({id : $stateParams.id});
+      },
+      materialPackages: function(materialPackageService, $stateParams) {
+        return materialPackageService.get({id : $stateParams.id});
+      },
       staffPackages: function(staffPackageService, $stateParams) {
         return staffPackageService.getAll({id: $stateParams.id});
       }
