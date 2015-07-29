@@ -25,3 +25,4 @@ More info on this can be found on the Ionic [Getting Started](http://ionicframew
 Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
 
 UDID dc6d0fa8a3a88babdcd9445723a3abb078eda8f8
+UDID a03eb7fa5bbdf8620e4528ae1c2057732afa80f5
