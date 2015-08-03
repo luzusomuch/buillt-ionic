@@ -2,7 +2,7 @@
 <ion-view title='{{builderPackage.name}}'>
   <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
   <ion-tabs class="tabs-stable tabs-icon-top">
-    <ion-tab title="Detail" icon="ion-ios7-cog-outline">
+    <ion-tab ng-click="selectTabWithIndex(0)" title="Detail" icon="ion-ios7-cog-outline">
       <ion-content padding="true" class="has-header" style="margin-top: 40px;">
         <div>
           <p>Package description : {{builderPackage.desription}}</p>
@@ -15,13 +15,13 @@
         </div>
       </ion-content>
     </ion-tab>
-    <ion-tab title="Messages" icon="ion-ios7-chatboxes-outline">
+    <ion-tab ng-click="selectTabWithIndex(1)" id="messageTab" title="Messages" icon="ion-ios7-chatboxes-outline">
       <div message package="builderPackage" type="builder"></div>
     </ion-tab>
-    <ion-tab title="Tasks" icon="ion-ios7-checkmark-outline">
+    <ion-tab ng-click="selectTabWithIndex(2)" id="taskTab" title="Tasks" icon="ion-ios7-checkmark-outline">
       <div task package="builderPackage" type="builder"></div>
     </ion-tab>
-    <ion-tab title="Documents" icon="ion-ios7-bookmarks-outline">
+    <ion-tab ng-click="selectTabWithIndex(3)" title="Documents" icon="ion-ios7-bookmarks-outline">
         <ion-content padding="false" class="has-header">
             <ion-list>
               <div style="margin-top: 50px;">

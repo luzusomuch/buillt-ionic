@@ -1,11 +1,21 @@
 angular.module('buiiltApp')
   .controller('StaffViewCtrl',
-  function(fileService,API_URL,$scope, $rootScope,filterFilter,staffPackage,staffPackageService,currentUser,notificationService) {
+  function($ionicTabsDelegate,fileService,API_URL,$scope, $rootScope,filterFilter,staffPackage,staffPackageService,currentUser,notificationService) {
     $scope.staffPackage = staffPackage;
     $scope.currentUser = currentUser;
     notificationService.markReadByPackage({_id : staffPackage._id}).$promise
       .then(function(res) {
       });
+
+    $scope.selectTabWithIndex = function(value){
+        $ionicTabsDelegate.select(value);
+        if (value == 1 || value == 2) {
+            $rootScope.isShowAddIcon = true;
+        }
+        else
+            $rootScope.isShowAddIcon = false;
+    };
+
     $scope.complete = function() {
       staffPackageService.complete({_id : $scope.staffPackage._id}).$promise
         .then(function(res) {

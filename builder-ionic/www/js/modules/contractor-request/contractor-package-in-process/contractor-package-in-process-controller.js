@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .controller('ContractorPackageInProcessCtrl',
-  function(API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, fileService, authService, userService, contractorRequest, contractorRequestService, quoteService,notificationService) {
+  function($ionicTabsDelegate,API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, fileService, authService, userService, contractorRequest, contractorRequestService, quoteService,notificationService) {
     /**
      * quote data
      */
@@ -12,6 +12,15 @@ angular.module('buiiltApp')
     if (window.localStorage.getItem('token')) {
       $scope.currentUser = userService.get();
     }
+
+    $scope.selectTabWithIndex = function(value){
+        $ionicTabsDelegate.select(value);
+        if (value == 1 || value == 2) {
+            $rootScope.isShowAddIcon = true;
+        }
+        else
+            $rootScope.isShowAddIcon = false;
+    };
 
     if (currentTeam.type == 'supplier' || currentTeam.type == 'homeOwner') {
       $state.go('team.manager');

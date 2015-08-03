@@ -1,11 +1,21 @@
 angular.module('buiiltApp')
-.controller('MaterialPackageInProcessCtrl', function(fileService, API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, materialRequest, fileService, authService, userService,materialRequestService,notificationService) {
+.controller('MaterialPackageInProcessCtrl', function($ionicTabsDelegate,fileService, API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, materialRequest, fileService, authService, userService,materialRequestService,notificationService) {
   /**
    * quote data
    */
   $scope.materialRequest = materialRequest;
   $scope.currentTeam = currentTeam;
   $scope.materialRequest.winnerTeam._id.member  = filterFilter($scope.materialRequest.winnerTeam._id.member , {status : 'Active'});
+
+  $scope.selectTabWithIndex = function(value){
+    $ionicTabsDelegate.select(value);
+    if (value == 1 || value == 2) {
+      $rootScope.isShowAddIcon = true;
+    }
+    else
+      $rootScope.isShowAddIcon = false;
+  };
+
   if (window.localStorage.getItem('token')) {
     $scope.currentUser = userService.get();
   }

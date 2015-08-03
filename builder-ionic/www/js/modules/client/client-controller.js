@@ -1,7 +1,16 @@
-angular.module('buiiltApp').controller('ClientCtrl', function(API_URL,authService, $stateParams,$scope, fileService, team, $state, $rootScope, builderPackage) {
+angular.module('buiiltApp').controller('ClientCtrl', function($ionicTabsDelegate,API_URL,authService, $stateParams,$scope, fileService, team, $state, $rootScope, builderPackage) {
     $scope.currentProject = $rootScope.currentProject;
     $scope.builderPackage = builderPackage;
     $scope.currentTeam = team;
+
+    $scope.selectTabWithIndex = function(value){
+        $ionicTabsDelegate.select(value);
+        if (value == 1 || value == 2) {
+            $rootScope.isShowAddIcon = true;
+        }
+        else
+            $rootScope.isShowAddIcon = false;
+    };
 
     authService.getCurrentUser().$promise.then(function(data){
         $scope.currentUser = data;
