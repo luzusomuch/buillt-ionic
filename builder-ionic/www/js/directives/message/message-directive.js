@@ -10,6 +10,11 @@ angular.module('buiiltApp')
       controller:
         function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
+
+          $("a#newTaskOrMessage").on('click', function(){
+            $("a#createThread").trigger('click');
+          });
+
           $scope.currentProject = $rootScope.currentProject;
           authService.getCurrentUser().$promise.then(function(res) {
             $scope.currentUser = res;

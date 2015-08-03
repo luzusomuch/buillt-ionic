@@ -53,7 +53,7 @@ angular.module('buiiltApp', [
     }
   };
 })
-.run(function ($rootScope, authService, $location,projectService,$state, $ionicPlatform) {
+.run(function ($rootScope, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
     // cfpLoadingBar.start();
 
     $ionicPlatform.ready(function() {
@@ -91,6 +91,7 @@ angular.module('buiiltApp', [
       }
     };
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
+      $rootScope.currentState = toState;
         authService.isLoggedInAsync(function (loggedIn) {
           if (loggedIn) {
 
