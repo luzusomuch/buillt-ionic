@@ -1,5 +1,5 @@
 angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootScope,$scope,$stateParams,
-  team,projectService,materialPackages,contractorPackages,staffPackages,builderPackage) {
+  team,projectService,materialPackages,contractorPackages,staffPackages,builderPackage, documents) {
 
   projectService.get({id: $stateParams.id}).$promise.then(function(project){
     $scope.project=project;
@@ -16,12 +16,14 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
   $scope.materialPackages = materialPackages;
   $scope.staffPackages = staffPackages
   $scope.team = team;
+  $scope.documents = documents;
 
   $scope.headingName = "Choose package";
   $scope.showBuilderPackage = false;
   $scope.showContractorPackages = false;
   $scope.showMaterialPackages = false;
   $scope.showStaffPackages = false;
+  $scope.showDocumentation = false;
 
   // if (team.type == 'client') {
   //   $scope.showBuilderPackage = true;
@@ -63,6 +65,7 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
       $scope.showContractorPackages = true;
       $scope.showMaterialPackages = false;
       $scope.showStaffPackages = false;
+      $scope.showDocumentation = false;
     }
     else if (value === 'Materials' || value === 'Suppliers') {
       // if (team.type == 'material') {
@@ -75,6 +78,7 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
       $scope.showContractorPackages = false;
       $scope.showMaterialPackages = true;
       $scope.showStaffPackages = false;
+      $scope.showDocumentation = false;
     }
     else if (value === 'Employees') {
       // $scope.headingName = 'Employees';
@@ -82,6 +86,14 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
       $scope.showContractorPackages = false;
       $scope.showMaterialPackages = false;
       $scope.showStaffPackages = true;
+      $scope.showDocumentation = false;
+    }
+    else if (value === 'Documentation') {
+      $scope.showBuilderPackage = false;
+      $scope.showContractorPackages = false;
+      $scope.showMaterialPackages = false;
+      $scope.showStaffPackages = false;
+      $scope.showDocumentation = true;
     }
   };
 });

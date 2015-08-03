@@ -18,6 +18,7 @@
                     <option ng-if="team.type == 'builder'">Subcontractors</option>
                     <option ng-if="team.type == 'builder'">Suppliers</option>
                     <option ng-if="team.type == 'builder'">Employees</option>
+                    <option>Documentation</option>
                 </select>
             </div>
 
@@ -34,6 +35,9 @@
             </ion-item>
             <ion-item ng-show="showStaffPackages" ng-repeat="package in staffPackages" ui-sref="staffView({id:package.project, packageId: package._id})">
                 {{package.name}}
+            </ion-item>
+            <ion-item ng-show="showDocumentation" ng-repeat="document in documents" ui-sref="fileDetail({fileId: document._id})">
+                {{document.title}}
             </ion-item>
         </div>
     </ion-content>

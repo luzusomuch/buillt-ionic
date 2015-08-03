@@ -45,6 +45,9 @@ angular.module('buiiltApp').config(function($stateProvider) {
       },
       staffPackages: function(staffPackageService, $stateParams) {
         return staffPackageService.getAll({id: $stateParams.id});
+      },
+      documents: function(fileService, $stateParams) {
+        return fileService.getFileByStateParam({'id': $stateParams.id});
       }
     },
     hasCurrentProject : true
