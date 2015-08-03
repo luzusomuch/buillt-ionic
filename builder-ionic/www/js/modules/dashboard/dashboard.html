@@ -7,6 +7,7 @@
     </ul>
 </div> -->
 <ion-view title="Projects">
+    <a class="button button-icon" style="float:right; z-index:999;" ui-sref="signout">Sign out</a>
     <ion-content padding="false" class="has-header">
         <ion-list>
             <ion-item ui-sref="project({id:project._id})" ng-repeat="project in projects | unique:project">{{project.name}}</ion-item>

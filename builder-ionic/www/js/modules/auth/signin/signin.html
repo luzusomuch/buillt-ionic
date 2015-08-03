@@ -39,14 +39,14 @@
     <form method="post" name="form" ng-submit="signin(form)" style="padding:10px 50px;" novalidate>
       <ion-list>
         <label class="item item-input">
-          <span class="input-label">Email</span>
-          <input type="email" placeholder="" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}">
+          <!-- <span class="input-label">Email</span> -->
+          <input type="email" placeholder="Email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}">
           <p class="validate-message" ng-show="form.email.$error.required && submitted">Email is required</p>
           <p class="validate-message" ng-show="form.email.$error.email && submitted">Wrong email format</p>
         </label>
         <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input ng-model="user.password" name="password" required type="password" ng-class="{'invalid' : form.password.$invalid && submitted}">
+          <!-- <span class="input-label">Password</span> -->
+          <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="password">
           <p class="validate-message" ng-show="form.password.$error.required && submitted">Password is required</p>
         </label>
       </ion-list>

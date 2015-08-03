@@ -1,11 +1,11 @@
 <ion-view title='{{project.name}}'>
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     <ion-content padding="false" class="has-header">
-        <ion-list>
-            <label class="item item-input item-select">
+        <div class="list">
+            <div class="item item-select">
                 <!-- <span class="input-label">{{(headingName) ? headingName : "Heading name"}}</span> -->
-                <span class="input-label">Choose package</span>
-                <select ng-model="type" ng-change="clickChange(type)">
+                <div class="input-label">{{(headingName) ? headingName : "Choose package"}}</div>
+                <select ng-model="type" ng-change="clickChange(type)" style="padding: 0px 45px 0px 0px">
                     <!-- <option ng-model="defaultType" selected></option> -->
                     <option ng-if="team.type == 'homeOwner'">  Builder
                     </option>
@@ -19,7 +19,7 @@
                     <option ng-if="team.type == 'builder'">Suppliers</option>
                     <option ng-if="team.type == 'builder'">Employees</option>
                 </select>
-            </label>
+            </div>
 
             <ion-item class="item-divider"></ion-item>
 
@@ -35,6 +35,6 @@
             <ion-item ng-show="showStaffPackages" ng-repeat="package in staffPackages" ui-sref="staffView({id:package.project, packageId: package._id})">
                 {{package.name}}
             </ion-item>
-        </ion-list>
+        </div>
     </ion-content>
 </ion-view>

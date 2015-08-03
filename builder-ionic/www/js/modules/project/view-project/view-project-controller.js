@@ -17,7 +17,7 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
   $scope.staffPackages = staffPackages
   $scope.team = team;
 
-  $scope.headingName = "Heading name";
+  $scope.headingName = "Choose package";
   $scope.showBuilderPackage = false;
   $scope.showContractorPackages = false;
   $scope.showMaterialPackages = false;
@@ -38,6 +38,7 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
 
   $scope.clickChange = function(value){
     // console.log(value);
+    $scope.headingName = " ";
     if (value === 'Client' || value === 'Builder') {
       // if (team.type == 'homeOwner') {
       //   $scope.headingName = 'Builder';
@@ -52,31 +53,31 @@ angular.module('buiiltApp').controller('ViewProjectCtrl', function($state,$rootS
       $state.go("client",{id: builderPackage.project._id});
     }
     else if (value === 'Contracts' || value === 'Subcontractors') {
-      if (team.type == 'contractor') {
-        $scope.headingName = 'Contracts';
-      }
-      else if (team.type == 'builder') {
-        $scope.headingName = 'Subcontractors';
-      }
+      // if (team.type == 'contractor') {
+      //   $scope.headingName = 'Contracts';
+      // }
+      // else if (team.type == 'builder') {
+      //   $scope.headingName = 'Subcontractors';
+      // }
       $scope.showBuilderPackage = false;
       $scope.showContractorPackages = true;
       $scope.showMaterialPackages = false;
       $scope.showStaffPackages = false;
     }
     else if (value === 'Materials' || value === 'Suppliers') {
-      if (team.type == 'material') {
-        $scope.headingName = 'Materials';
-      }
-      else if (team.type == 'builder') {
-        $scope.headingName = 'Suppliers';
-      }
+      // if (team.type == 'material') {
+      //   $scope.headingName = 'Materials';
+      // }
+      // else if (team.type == 'builder') {
+      //   $scope.headingName = 'Suppliers';
+      // }
       $scope.showBuilderPackage = false;
       $scope.showContractorPackages = false;
       $scope.showMaterialPackages = true;
       $scope.showStaffPackages = false;
     }
     else if (value === 'Employees') {
-      $scope.headingName = 'Employees';
+      // $scope.headingName = 'Employees';
       $scope.showBuilderPackage = false;
       $scope.showContractorPackages = false;
       $scope.showMaterialPackages = false;
