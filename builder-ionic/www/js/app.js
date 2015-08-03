@@ -93,6 +93,8 @@ angular.module('buiiltApp', [
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
       $rootScope.isShowAddIcon = false;
       $rootScope.currentState = toState;
+      console.log(toState);
+      console.log($rootScope.isShowAddIcon);
         authService.isLoggedInAsync(function (loggedIn) {
           if (loggedIn) {
 

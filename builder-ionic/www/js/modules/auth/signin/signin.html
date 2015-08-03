@@ -36,7 +36,7 @@
 
 <ion-view title="Login">
   <ion-content padding="true" class="has-header">
-    <form method="post" name="form" ng-submit="signin(form)" style="padding:10px 50px;" novalidate>
+    <form method="post" name="form" ng-submit="signin(form)" novalidate>
       <ion-list>
         <label class="item item-input">
           <!-- <span class="input-label">Email</span> -->
@@ -49,10 +49,11 @@
           <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="password">
           <p class="validate-message" ng-show="form.password.$error.required && submitted">Password is required</p>
         </label>
-        <label class="checkbox">
-          <input type="checkbox" ng-model="rememberMe">
+        <label class="checkbox" style="padding: 0px; margin-top: 7px;">
+          <input type="checkbox" ng-model="rememberMe" style="display:inline-block">
+          <p style="display:inline-block">Keep me sign in</p>
         </label>
-        Keep me sign in
+        
       </ion-list>
       <div class="spacer" style="height: 40px;"></div>
       <button class="button button-stable button-block ">Log in</button>

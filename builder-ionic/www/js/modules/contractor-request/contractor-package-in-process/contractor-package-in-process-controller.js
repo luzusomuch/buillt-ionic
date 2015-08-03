@@ -1,6 +1,6 @@
 angular.module('buiiltApp')
   .controller('ContractorPackageInProcessCtrl',
-  function($ionicTabsDelegate,API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, fileService, authService, userService, contractorRequest, contractorRequestService, quoteService,notificationService) {
+  function($rootScope,$ionicTabsDelegate,API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, fileService, authService, userService, contractorRequest, contractorRequestService, quoteService,notificationService) {
     /**
      * quote data
      */

@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('MaterialPackageInProcessCtrl', function($ionicTabsDelegate,fileService, API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, materialRequest, fileService, authService, userService,materialRequestService,notificationService) {
+.controller('MaterialPackageInProcessCtrl', function($rootScope,$ionicTabsDelegate,fileService, API_URL,$scope, $state, $stateParams, filterFilter, currentTeam, materialRequest, fileService, authService, userService,materialRequestService,notificationService) {
   /**
    * quote data
    */
