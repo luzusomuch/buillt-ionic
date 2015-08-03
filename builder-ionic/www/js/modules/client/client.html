@@ -26,9 +26,9 @@
             <ion-list>
               <div style="margin-top: 50px;">
                 <div ng-repeat="file in files">
-                  <ion-item class="item-stable" ng-click="toggleFile(file)" ng-class="{active: isFileShown(file)}">{{file.title}}</ion-item>
+                  <ion-item class="item-stable" ui-sref="fileDetail({fileId: file._id})">{{file.title}}</ion-item>
                 
-                  <ion-item class="item-accordion" ng-show="isFileShown(file)">
+                  <!-- <ion-item class="item-accordion" ng-show="isFileShown(file)">
                     <div class="card-image" ng-switch="file.mimeType">
                       <span ng-switch-when="image/jpeg">
                         <img src="{{file.thumbnail}}" alt="" style="width: 100%;">
@@ -51,10 +51,10 @@
                       <p style="cursor:pointer;">
                         <a href='{{file.fileUrl}}' download="file.name">Download</a>
                       </p>
-                      <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p>
+                      <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p> -->
                       <!-- <a class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a> -->
-                    </div>
-                  </ion-item>
+                    <!-- </div> -->
+                  <!-- </ion-item> -->
                 </div>
               </div>
             </ion-list>

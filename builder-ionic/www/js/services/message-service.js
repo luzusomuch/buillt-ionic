@@ -41,6 +41,9 @@ angular.module('buiiltApp')
           params : {
             action : 'message'
           }
+        },
+        getById: {
+          method: 'get'
         }
         //update: {
         //  method: 'PUT'

@@ -34,7 +34,7 @@
     </div>
     <ion-list>
       <div ng-repeat="thread in threads">
-        <ion-item class="item-stable" ng-click="toggleThread(thread)" ng-class="{active: isThreadShown(thread)}">{{thread.name}}</ion-item>
+        <!-- <ion-item class="item-stable" ng-click="toggleThread(thread)" ng-class="{active: isThreadShown(thread)}">{{thread.name}}</ion-item>
 
         <ion-item class="item-accordion" ng-show="isThreadShown(thread)">
           <div ng-repeat="message in thread.messages"><strong>{{message.user.name}}:</strong> {{message.text}}</div>
@@ -50,6 +50,9 @@
               </button>
             </div>
           </form>
+        </ion-item> -->
+        <ion-item ui-sref="threadDetail({id: thread.project, threadId: thread._id})">
+        {{thread.name}}
         </ion-item>
       </div>
     </ion-list>             

@@ -49,7 +49,10 @@
   </div>
   <ion-list>
     <div ng-repeat="task in tasks | taskFilter : filter | orderBy : ['dateEnd'] ">
-      <ion-item class="item-stable" ng-click="toggleTask(task)" ng-class="{active: isTaskShown(task)}">{{task.name}}</ion-item>
+      <ion-item ui-sref="taskDetail({id: task.project, taskId: task._id})">
+        {{task.name}}
+        </ion-item>
+      <!-- <ion-item class="item-stable" ng-click="toggleTask(task)" ng-class="{active: isTaskShown(task)}">{{task.name}}</ion-item>
 
       <ion-item class="item-accordion" ng-show="isTaskShown(task)">
         <ul>
@@ -62,13 +65,7 @@
             </ul>
           </li>
         </ul>
-      </ion-item>
+      </ion-item> -->
     </div>
   </ion-list>             
 </ion-content>
-       
-<script>
-  $("a #newTaskOrMessage").click(function(){
-    console.log('asdasdsad');
-  });
-</script>

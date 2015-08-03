@@ -36,6 +36,9 @@ angular.module('buiiltApp')
         update : {
           method : 'PUT'
         },
+        getOne: {
+          method: 'get'
+        }
         //update: {
         //  method: 'PUT'
         //},
