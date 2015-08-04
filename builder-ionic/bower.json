@@ -28,7 +28,10 @@
     "angular-tooltips": "~0.1.10",
     "angucomplete-alt": "~1.0.0",
     "angular-socket-io": "~0.7.0",
-    "jquery-ui": "#1.10.4"
+    "jquery-ui": "#1.10.4",
+    "ng-cordova": "~0.0.3",
+    "ngCordova": "~0.1.18-alpha",
+    "ng-cordova-oauth": "~0.1.4"
   },
   "resolutions": {
     "angular": "~1.3"
