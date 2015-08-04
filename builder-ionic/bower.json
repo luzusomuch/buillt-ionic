@@ -31,7 +31,7 @@
     "jquery-ui": "#1.10.4",
     "ng-cordova": "~0.0.3",
     "ngCordova": "~0.1.18-alpha",
-    "ng-cordova-oauth": "~0.1.4"
+    "ng-cordova-oauth": "~0.1.4" 
   },
   "resolutions": {
     "angular": "~1.3"
