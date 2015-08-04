@@ -26,3 +26,8 @@ Issues have been disabled on this repo, if you do find an issue or have a questi
 
 UDID dc6d0fa8a3a88babdcd9445723a3abb078eda8f8
 UDID a03eb7fa5bbdf8620e4528ae1c2057732afa80f5
+
+run these following cmd:
+    -cordova plugin add https://github.com/phonegap-build/PushPlugin.git
+    -cordova plugin add cordova-plugin-device
+    -cordova plugin add cordova-plugin-file-transfer

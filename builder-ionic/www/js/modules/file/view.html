@@ -4,13 +4,13 @@
         <ion-item>
             <div class="card-image" ng-switch="file.mimeType">
                 <span ng-switch-when="image/jpeg">
-                    <img src="{{file.thumbnail}}" alt="" style="width: 100%;">
+                    <img src="{{thumbnail}}" alt="" style="width: 100%;">
                 </span>
                 <span ng-switch-when="image/png">
-                    <img src="{{file.thumbnail}}" alt="" style="width: 100%;">
+                    <img src="{{thumbnail}}" alt="" style="width: 100%;">
                 </span>
                 <span ng-switch-when="application/pdf" style="width: 100%;">
-                    <img src="{{file.thumbnail}}" alt="" style="height:250px;width:100%;">
+                    <img src="{{thumbnail}}" alt="" style="height:250px;width:100%;">
                 </span>
                 <span ng-switch-default>
                     <img src="../../media/sample-1.jpg" alt="" style="width: 100%;">
@@ -18,8 +18,8 @@
             </div>
             <div class="card-action">
                 <span style="cursor:pointer;" ng-click="likeDocument(file);">
-                    <div>{{(file.isInterested) ? 'Dislike' : 'Like'}}</div>
-                    <div class="secondary-content">{{file.totalLike}} Like</div>
+                    <div>{{(isInterested) ? 'Dislike' : 'Like'}}</div>
+                    <div class="secondary-content">{{totalLike}} Like</div>
                 </span>
                 <p style="cursor:pointer;">
                     <a href='{{file.fileUrl}}' download="file.name">Download</a>
