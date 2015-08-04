@@ -22,7 +22,7 @@
                     <div class="secondary-content">{{totalLike}} Like</div>
                 </span>
                 <p style="cursor:pointer;">
-                    <a href='{{file.fileUrl}}' download="file.name">Download</a>
+                    <a ng-click="downloadFile(file)">Download</a>
                 </p>
                 <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p>
               <!-- <a class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a> -->

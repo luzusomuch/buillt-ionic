@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('FileDetailCtrl', function(API_URL,$scope,file,authService,fileService) {
+.controller('FileDetailCtrl', function($timeout,API_URL,$scope,file,authService,fileService,$cordovaFileTransfer) {
     $scope.isInterested = false;
     $scope.file = file;
     $scope.totalLike = file.usersInterestedIn.length;
@@ -24,5 +24,31 @@ angular.module('buiiltApp')
                 $scope.totalLike = $scope.totalLike -1;
            }
         });
+    };
+
+    
+
+    $scope.downloadFile = function(value){
+        alert('11111');
+        document.addEventListener('deviceready', function () {
+            alert('22222222222');
+            var url = value.fileUrl;
+            var targetPath = cordova.file.documentsDirectory + value.name + ".jpg";
+            var trustHosts = true
+            var options = {};
+
+            $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+            .then(function(result) {
+                alert(result);
+            // Success!
+            }, function(err) {
+                alert('error ' + err);
+                // Error
+            }, function (progress) {
+                $timeout(function () {
+                    $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                })
+            });
+        }, false);
     };
 });

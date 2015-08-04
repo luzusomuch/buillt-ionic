@@ -5,6 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('buiiltApp', [
   'ionic',
+  'ngCordova',
   'ui.utils',
   'ui.router',
   'ngAnimate',
