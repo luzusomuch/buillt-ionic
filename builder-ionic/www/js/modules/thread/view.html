@@ -3,17 +3,22 @@
     <ion-content padding="false" class="has-header">
         <div class="list">
             <div ng-repeat="message in thread.messages">
-                <strong>{{message.user.name}}:</strong> {{message.text}}
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <strong>{{message.user.name}}:</strong> {{message.text}}
+                    </div>
+                </div>
             </div>
             <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage()" style="margin-top: 10px;">
                 <div class="item item-input">
-                    <textarea name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keydown="enterMessage($event);">
+                    <textarea style="width:90%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keydown="enterMessage($event);">
                     </textarea>
-                </div>
-                <div class="">
-                    <button class="button button-stable button-block" type="submit" style="margin-top: 47px" name="action">Send
+                    <button class="button button-stable button-block" type="submit" style="width:10%" name="action">Send
                         <i class="mdi-content-send right"></i>
                     </button>
+                </div>
+                <div class="">
+                    
                 </div>
             </form>
         </div>

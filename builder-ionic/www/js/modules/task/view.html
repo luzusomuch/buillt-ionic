@@ -2,15 +2,24 @@
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     <ion-content padding="false" class="has-header">
         <ion-item>
-            <ul>
-                <li>Due date: {{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
-                <li>Assignees:
-                <ul style="margin-left: 20px;">
-                    <li ng-repeat="assignee in task.assignees" ng-if="assignee.firstName">{{assignee.firstName}} {{assignee.lastName}}</li>
-                    <li ng-repeat="assignee in task.assignees" ng-if="!assignee.firstName">{{assignee.email}} </li>
-                </ul>
-              </li>
-            </ul>
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <ul>
+                        <li>Task due date: {{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
+                        <li>Task assignees:
+                        <ul style="margin-left: 20px;">
+                            <li ng-repeat="assignee in task.assignees" ng-if="assignee.firstName">{{assignee.firstName}} {{assignee.lastName}}</li>
+                            <li ng-repeat="assignee in task.assignees" ng-if="!assignee.firstName">{{assignee.email}} </li>
+                        </ul>
+                      </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <button class="button button-full button-positive" ng-click="complete(task)">
+                    {{(task.completed) ? "Re-open!!!" : "Completed!!!"}}
+                </button>
+            </div>
         </ion-item>
     </ion-content>
 </ion-view>

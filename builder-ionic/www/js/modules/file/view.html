@@ -1,22 +1,24 @@
 <ion-view title='{{file.title}}'>
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     <ion-content padding="false" class="has-header">
-        <ion-item>
-            <div class="card-image" ng-switch="file.mimeType">
-                <span ng-switch-when="image/jpeg">
-                    <img src="{{thumbnail}}" alt="" style="width: 100%;">
-                </span>
-                <span ng-switch-when="image/png">
-                    <img src="{{thumbnail}}" alt="" style="width: 100%;">
-                </span>
-                <span ng-switch-when="application/pdf" style="width: 100%;">
-                    <img src="{{thumbnail}}" alt="" style="height:250px;width:100%;">
-                </span>
-                <span ng-switch-default>
-                    <img src="../../media/sample-1.jpg" alt="" style="width: 100%;">
-                </span>
+        <div class="card">
+            <div class="item item-text-wrap">
+                <div class="card-image" ng-switch="file.mimeType">
+                    <span ng-switch-when="image/jpeg">
+                        <img src="{{thumbnail}}" alt="" style="width: 100%;">
+                    </span>
+                    <span ng-switch-when="image/png">
+                        <img src="{{thumbnail}}" alt="" style="width: 100%;">
+                    </span>
+                    <span ng-switch-when="application/pdf" style="width: 100%;">
+                        <img src="{{thumbnail}}" alt="" style="height:250px;width:100%;">
+                    </span>
+                    <span ng-switch-default>
+                        <img src="../../media/sample-1.jpg" alt="" style="width: 100%;">
+                    </span>
+                </div>
             </div>
-            <div class="card-action">
+            <div class="item item-divider">
                 <span style="cursor:pointer;" ng-click="likeDocument(file);">
                     <div>{{(isInterested) ? 'Dislike' : 'Like'}}</div>
                     <div class="secondary-content">{{totalLike}} Like</div>
@@ -25,8 +27,21 @@
                     <a ng-click="downloadFile(file)">Download</a>
                 </p>
                 <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p>
-              <!-- <a class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a> -->
             </div>
-        </ion-item>
+        </div>
+        <!-- <ion-item>
+            
+            <div class="card-action">
+                <span style="cursor:pointer;" ng-click="likeDocument(file);">
+                    <div>{{(isInterested) ? 'Dislike' : 'Like'}}</div>
+                    <div class="secondary-content">{{totalLike}} Like</div>
+                </span>
+                <p style="cursor:pointer;">
+                    <a ng-click="downloadFile(file)">Download</a>
+                </p>
+                <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p> -->
+              <!-- <a class="activator" ng-show="isLeader && currentTeam.type == 'builder'">Upload Revision</a> -->
+            <!-- </div> -->
+        <!-- </ion-item> -->
     </ion-content>
 </ion-view>
