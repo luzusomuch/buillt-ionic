@@ -72,16 +72,16 @@ angular.module('buiiltApp')
                                       .then(function(result) {
                                             alert('Success!!');
                                             var success = function(msg){
-                                            alert(msg);
+                                            console.log(msg);
                                             };
                                             
                                             var error = function(err){
-                                            alert(err);
+                                            console.log(err);
                                             };
                                             saveImageToPhone(targetPath, success, error);
                                             // Success!
                                             }, function(err) {
-                                            alert('error ' + err);
+                                            console.log('error ' + err);
                                             // Error
                                             }, function (progress) {
                                             $timeout(function () {

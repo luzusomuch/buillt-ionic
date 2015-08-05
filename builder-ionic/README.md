@@ -34,3 +34,4 @@ run these following cmd:
     -cordova plugin add https://github.com/phonegap-build/PushPlugin.git
     -cordova plugin add cordova-plugin-device
     -cordova plugin add cordova-plugin-file-transfer
+    -cordova plugin add https://github.com/devgeeks/Canvas2ImagePlugin.git
