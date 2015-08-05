@@ -103,19 +103,18 @@
             <ion-nav-bar class="bar-stable">
                 <ion-nav-back-button side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
                 
-                <ion-nav-button side="right">
-                    <a ng-if="currentState.name == 'dashboard'" class="button button-icon" style="float:right; z-index:999;" ui-sref="signout">Sign Out</a>
+                <ion-nav-buttons side="right">
+                    <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a>
                     
                     <a ng-if="(currentState.name == 'client' || 
                         currentState.name == 'materialRequestInProcess' ||
                         currentState.name == 'contractorRequestInProgress' ||
                         currentState.name == 'staffView') && isShowAddIcon" 
                         class="button button-icon" 
-                        id="newTaskOrMessage" 
-                        style="float:right; z-index:999;">
+                        id="newTaskOrMessage">
                         <i class="icon ion-ios-plus-empty"></i>
                     </a>
-                </ion-nav-button>
+                </ion-nav-buttons>
                 
             </ion-nav-bar>
             <ion-nav-view></ion-nav-view>
