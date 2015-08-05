@@ -11,4 +11,11 @@ angular.module('buiiltApp')
             });
         }
     };
+
+    $scope.enterMessage = function ($event) {
+        if ($event.keyCode === 13) {
+            $event.preventDefault();
+            $scope.sendMessage();
+        }
+    };
 });
