@@ -103,6 +103,17 @@ angular.module('buiiltApp')
           $scope.notifications = [];
           var limit = 10;
 
+          $("div#notification-alert").click(function(){
+            var notificationDropdownStyle = $("select#notification-dropdown").css('display');
+            console.log(notificationDropdownStyle);
+            if (notificationDropdownStyle == 'none') {
+              $("select#notification-dropdown").css('display','block');
+            }
+          });
+          $("select#notification-dropdown").mouseleave(function(){
+            $("select#notification-dropdown").css('display','none');
+          });
+
           $scope.clickChange = function(value) {
             if (value == 'readAll') {
               notificationService.markAllAsRead().$promise
