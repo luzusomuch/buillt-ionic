@@ -103,16 +103,17 @@ angular.module('buiiltApp')
           $scope.notifications = [];
           var limit = 10;
 
-          $("div#notification-alert").click(function(){
+          $("div#notification-alert").click(function(event){
+            event.stopPropagation();
             var notificationDropdownStyle = $("select#notification-dropdown").css('display');
-            console.log(notificationDropdownStyle);
             if (notificationDropdownStyle == 'none') {
               $("select#notification-dropdown").css('display','block');
             }
           });
-          $("select#notification-dropdown").mouseleave(function(){
+          $('html').click(function(event){
             $("select#notification-dropdown").css('display','none');
-          });
+            
+          })
 
           $scope.clickChange = function(value) {
             if (value == 'readAll') {
