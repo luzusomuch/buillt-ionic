@@ -49,30 +49,30 @@ angular.module('buiiltApp')
 
         var text;
         if (scope.notification.type === 'task-assign') {
-          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
         }
         if (scope.notification.type === 'task-revoke') {
-          text = params.fromUser() + ' has revoked ' + params.toUser() + ' from task ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has revoked ' + params.toUser() + ' from task ' + params.element;
         }
         if (scope.notification.type === 'task-reopened') {
-          text = params.fromUser() + ' has reopened task ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has reopened task ' + params.element;
         }
         if (scope.notification.type === 'task-completed') {
-          text = params.fromUser() + ' has completed task ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has completed task ' + params.element;
         }
         if (scope.notification.type === 'thread-assign') {
-          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
         }
         if (scope.notification.type === 'thread-remove') {
-          text = params.fromUser() + ' has removed ' + params.toUser() + ' to thread ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has removed ' + params.toUser() + ' to thread ' + params.element;
         }
         if (scope.notification.type === 'thread-message') {
-          text = params.fromUser() + ' has send new message in thread ' + params.element + ' at ' + params.time;
+          text = params.fromUser() + ' has send new message in thread ' + params.element;
         }
 
         scope.notification.sref = getSref(scope.notification);
 
-        element.html('<option>'+ text + '</option>').show();
+        element.html('<option value='+scope.notification._id+'>'+ text + '</option>').show();
         $compile(element.contents())(scope);
       },
       controller: function ($scope, $rootScope, taskService, authService, $state, notificationService) {
@@ -84,9 +84,8 @@ angular.module('buiiltApp')
             })
         };
         authService.getCurrentUser().$promise.then(function(currentUser){
-          $scope.currentUser = currentUser;
+          $rootScope.currentUser = $scope.currentUser = currentUser;
         });
-        
       }
     }
   })
@@ -96,13 +95,42 @@ angular.module('buiiltApp')
       replace : true,
       templateUrl: 'js/directives/notification/notification.html',
       controller: [
-        '$scope', '$rootScope','notificationService','socket','authService',
-        function ($scope, $rootScope, notificationService,socket,authService ) {
+        '$scope', '$rootScope','notificationService','socket','authService','$state',
+        function ($scope, $rootScope, notificationService,socket,authService,$state) {
           $scope.slimScrollOptions = {height: '390px'};
           $scope.readMore = true;
           $scope.currentUser = $rootScope.user;
           $scope.notifications = [];
           var limit = 10;
+
+          $scope.clickChange = function(value) {
+            if (value == 'readAll') {
+              notificationService.markAllAsRead().$promise
+              .then(function(res) {
+                $scope.notifications = [];
+                $scope.total = 0;
+                $rootScope.$emit('notification:allRead');
+                // $('#slimScrollDiv').hide();
+                // $('#sidenav-overlay').trigger( "click" );
+              })
+            }
+            else if (value == '') {
+
+            }
+            else {
+              notificationService.markAsRead({_id : value}).$promise
+              .then(function(res){});
+              notificationService.getOne({id: value}).$promise.then(function(notification){
+                if (notification.referenceTo == 'task') {
+                   
+                  $state.go('taskDetail', {id: notification.element.project, taskId: notification.element._id});
+                }
+                else if (notification.referenceTo == 'thread') {
+                  $state.go('threadDetail', {id: notification.element.project, threadId: notification.element._id});
+                }
+              });
+            }
+          };
 
           notificationService.getTotalForIos().$promise
             .then(function(res) {

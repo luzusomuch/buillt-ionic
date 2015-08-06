@@ -74,6 +74,12 @@ angular.module('buiiltApp')
           params : {
             action : 'dashboard-read-document'
           }
+        },
+        getOne: {
+          method: 'get',
+          params: {
+            action: 'get-one'
+          }
         }
         //update: {
         //  method: 'PUT'

@@ -43,6 +43,7 @@ angular.module('buiiltApp')
     logout: function() {
       window.localStorage.removeItem('token');
       currentUser = {};
+      $rootScope.currentUser = {};
       $state.go('signin');
     },
     /**

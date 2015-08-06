@@ -53,6 +53,9 @@
           <input type="checkbox" ng-model="rememberMe" style="display:inline-block;vertical-align: middle">
           <p style="display:inline-block">Keep me sign in</p>
         </label>
+        <label class="item item-input" ng-if="error">
+          <p>{{errorMsg}}</p>
+        </label>
         
       </ion-list>
       <div class="spacer" style="height: 40px;"></div>
