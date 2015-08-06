@@ -19,9 +19,9 @@ angular.module('buiiltApp', [
   // 'lumx',
   // 'ui.materialize',
   // 'angucomplete-alt',
-  // 'btford.socket-io'
+  'btford.socket-io'
   ])
-//.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'http://localhost:9000/')
  .constant('API_URL', 'http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/')
 
 .config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
@@ -54,7 +54,7 @@ angular.module('buiiltApp', [
     }
   };
 })
-.run(function ($rootScope, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
+.run(function ($rootScope,userService, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
     // cfpLoadingBar.start();
 
     $ionicPlatform.ready(function() {
@@ -74,6 +74,12 @@ angular.module('buiiltApp', [
         StatusBar.styleDefault();
       }
     });
+
+    if (window.localStorage.getItem('token')) {
+      userService.get().$promise.then(function(currentUser){
+        $rootScope.currentUser = currentUser;  
+      });
+    }
 
     $rootScope.deviceWidth = $(window).width();
     $rootScope.currentProject = {};
@@ -96,7 +102,7 @@ angular.module('buiiltApp', [
       $rootScope.currentState = toState;
         authService.isLoggedInAsync(function (loggedIn) {
           if (loggedIn) {
-
+            
           }
           if (toState.authenticate && !loggedIn) {
             // $location.path('/signin');

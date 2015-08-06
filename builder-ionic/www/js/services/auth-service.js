@@ -23,6 +23,7 @@ angular.module('buiiltApp')
       .success(function(data) {
         window.localStorage.setItem('token', data.token);
         currentUser = userService.get();
+        $rootScope.currentUser = currentUser; 
         deferred.resolve(data);
         return cb();
       })

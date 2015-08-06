@@ -104,8 +104,8 @@
                 <ion-nav-back-button side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
                 
                 <ion-nav-buttons side="right">
-                    <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a>
-                    
+                    <!-- <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a> -->
+                    <div sp-notification  ng-if="currentUser._id"></div>
                     <a ng-if="(currentState.name == 'client' || 
                         currentState.name == 'materialRequestInProcess' ||
                         currentState.name == 'contractorRequestInProgress' ||
@@ -149,12 +149,12 @@
     <script src="js/components/filters.js"></script>
     <script src="js/components/directive.js"></script>
     <!--<script src="js/components/angular-slimscroll/angular-slimscroll.js"></script>-->
-    <!--<script src="js/components/socket/socket.service.js"></script>-->
+    <script src="js/components/socket/socket.service.js"></script>
     <script src="js/components/modal/modal.service.js"></script>
 
     <!--<script src="http://localhost:9000/socket.io-client/socket.io.js"></script>-->
 
-    <!--<script src="http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/socket.io-client/socket.io.js"></script>-->
+    <script src="http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/socket.io-client/socket.io.js"></script>
     <!--<script src="js/directives/footer/footer-directive.js"></script>-->
     <script src="js/directives/header/header-directive.js"></script>
     <script src="js/directives/quote/quote-directive.js"></script>
@@ -205,44 +205,19 @@
 
     <script src="js/modules/contractor-request/main.js"></script>
     <script src="js/modules/contractor-request/contractor-package-in-process/contractor-package-in-process-controller.js"></script>
-    <script src="js/modules/contractor-request/send-quote/send-quote-controller.js"></script>
-    <script src="js/modules/contractor-request/view-contractor-request/view-contractor-request-controller.js"></script>
-
-    <script src="js/modules/contractors/main.js"></script>
-    <script src="js/modules/contractors/contractors-controller.js"></script>
 
     <script src="js/modules/dashboard/main.js"></script>
     <script src="js/modules/dashboard/dashboard-controller.js"></script>
 
-    <script src="js/modules/error/main.js"></script>
-    <script src="js/modules/error/error-controller.js"></script>
-
     <script src="js/modules/material-request/main.js"></script>
     <script src="js/modules/material-request/material-package-in-process/material-package-in-process-controller.js"></script>
-    <script src="js/modules/material-request/send-quote/send-quote-controller.js"></script>
-    <script src="js/modules/material-request/view-material-request/view-material-request-controller.js"></script>
-
-    <script src="js/modules/materials/main.js"></script>
-    <script src="js/modules/materials/materials-controller.js"></script>
 
     <script src="js/modules/project/main.js"></script>
-    <script src="js/modules/project/create-project/create-project-controller.js"></script>
-    <script src="js/modules/project/list-projects/list-projects-controller.js"></script>
     <script src="js/modules/project/view-project/view-project-controller.js"></script>
 
     <script src="js/modules/staff/main.js"></script>
     <script src="js/modules/staff/staff-controller.js"></script>
 
-    <script src="js/modules/team/main.js"></script>
-    <script src="js/modules/team/manager-team/manager-team-controller.js"></script>
-
-    <script src="js/modules/user/main.js"></script>
-    <script src="js/modules/user/user-controller.js"></script>
-
-    <script src="js/modules/variation-request/main.js"></script>
-    <script src="js/modules/variation-request/variation-in-process/variation-in-process-controller.js"></script>
-    <script src="js/modules/variation-request/send-quote/send-quote-controller.js"></script>
-    <script src="js/modules/variation-request/view-variation-request/view-variation-request-controller.js"></script>
     <script src="js/modules/thread/main.js"></script>
     <script src="js/modules/thread/thread-detail-controller.js"></script>
     <script src="js/modules/task/main.js"></script>

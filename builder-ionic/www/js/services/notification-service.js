@@ -62,6 +62,13 @@ angular.module('buiiltApp')
             action : 'get-total'
           }
         },
+        getTotalForIos : {
+          method : 'GET',
+          params : {
+            action : 'get-total-ios'
+          },
+          isArray: true
+        },
         readDocumentDashboard : {
           method : 'PUT',
           params : {
