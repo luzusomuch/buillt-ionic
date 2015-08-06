@@ -100,20 +100,27 @@ angular.module('buiiltApp')
           $scope.slimScrollOptions = {height: '390px'};
           $scope.readMore = true;
           $scope.currentUser = $rootScope.user;
+          $scope.currentState = $rootScope.currentState;
+                   console.log($scope.currentState);
           $scope.notifications = [];
-          var limit = 10;
+          var limit = 60;
+                   
+                   $scope.getDropdownStyle = function(){
+                   var notificationDropdownStyle = $("select#notification-dropdown").css('display');
+                   //alert(notificationDropdownStyle);
+                   //console.log(notificationDropdownStyle);
+                   if (notificationDropdownStyle == 'none') {
+                   $("select#notification-dropdown").css('display','block');
+                   }
+                   else if (notificationDropdownStyle == 'block') {
+                   $("select#notification-dropdown").css('display','none');
+                   }
+                   };
 
           $("div#notification-alert").click(function(event){
-            event.stopPropagation();
-            var notificationDropdownStyle = $("select#notification-dropdown").css('display');
-            if (notificationDropdownStyle == 'none') {
-              $("select#notification-dropdown").css('display','block');
-            }
-          });
-          $('html').click(function(event){
-            $("select#notification-dropdown").css('display','none');
+            //event.stopPropagation();
             
-          })
+          });
 
           $scope.clickChange = function(value) {
             if (value == 'readAll') {

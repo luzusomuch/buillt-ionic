@@ -1,6 +1,6 @@
 <li class="notification-open" style="list-style-type: none;">
   <div class="list" style="position:relative;">
-      <div id="notification-alert" class="input-label" style="width:60px;position:absolute;right:5px">
+      <div ng-click="getDropdownStyle()" id="notification-alert" class="input-label" style="width:60px;position:absolute;right:5px">
         <i ng-if="total == 0" class="icon ion-ios-bell-outline"></i>
         <i ng-if="total > 0" class="icon ion-ios-bell"></i>{{total}}
       </div>
