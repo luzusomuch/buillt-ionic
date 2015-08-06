@@ -1,14 +1,16 @@
 <li class="notification-open" style="list-style-type: none;">
   <div class="list" style="position:relative;">
-      <div id="notification-alert" class="input-label" style="width:60px;position:absolute;right:5px">
-        <i ng-if="total == 0" class="icon ion-ios-bell-outline"></i>
-        <i ng-if="total > 0" class="icon ion-ios-bell"></i>{{total}}
+      <div class="item item-select">
+        <div id="notification-alert" class="input-label" style="width:60px;position:absolute;right:5px">
+          <i ng-if="total == 0" class="icon ion-ios-bell-outline"></i>
+          <i ng-if="total > 0" class="icon ion-ios-bell"></i>{{total}}
+        </div>
+        <select id="notification-dropdown" style="width:80%; display:none;margin-top:26px;" ng-model="sel" ng-change="clickChange(sel)">
+          <option value="">Please select</option>
+          <option value="readAll">Mark all as read</option>
+          <option notification="notification" current-user='currentUser' ng-repeat="notification in notifications" value='{{notification._id}}'></option>
+        </select>
       </div>
-      <select id="notification-dropdown" style="width:80%; display:none;margin-top:26px;" ng-model="sel" ng-change="clickChange(sel)">
-        <option value="">Please select</option>
-        <option value="readAll">Mark all as read</option>
-        <option notification="notification" current-user='currentUser' ng-repeat="notification in notifications" value='{{notification._id}}'></option>
-      </select>
     </div>
   <!-- <div class="notification-list z-depth-1">
     <header class="z-depth-1">
