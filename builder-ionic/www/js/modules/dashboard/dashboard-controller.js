@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function($scope,$state, authService, $rootScope,$ionicTabsDelegate) {
+  .controller('DashboardCtrl', function($scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){
     $rootScope.user = $scope.user = user;
@@ -10,6 +10,11 @@ angular.module('buiiltApp')
       $scope.projects = team.project;
     });
   });
+              notificationService.getTotalForIos().$promise
+              .then(function(res) {
+                    if (res.length > 0)
+                      $scope.total = res.length;
+                    });
 
   $scope.selectTabWithIndex = function(value){
     $ionicTabsDelegate.select(value);
