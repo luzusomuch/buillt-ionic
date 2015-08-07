@@ -104,8 +104,8 @@
                 <ion-nav-back-button side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
                 
                 <ion-nav-buttons side="right">
-                    <!-- <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a> -->
-                    <div sp-notification  ng-if="currentUser._id"></div>
+                    <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a>
+                    
                     <a ng-if="(currentState.name == 'client' || 
                         currentState.name == 'materialRequestInProcess' ||
                         currentState.name == 'contractorRequestInProgress' ||
