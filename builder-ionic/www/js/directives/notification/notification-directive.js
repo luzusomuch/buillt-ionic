@@ -35,7 +35,7 @@ angular.module('buiiltApp')
           builderOrHomeOwner: '<span class="highlight">{{(notification.element.to.type == "homeOwner") ? "home owner" : "builder"}}</span> ',
           time : '<span class="highlight">{{notification.createdAt | date : "yyyy/MM/dd hh:mm a"}}</span>'
         };
-        var serviceTaskArray = ['task-assign','task-revoke','task-reopened','task-completed'];
+        var serviceTaskArray = ['task-assign','task-reopened','task-completed'];
         var serviceThreadArray = ['thread-assign','thread-message'];
         
         var getSref = function(notification) {
@@ -51,9 +51,6 @@ angular.module('buiiltApp')
         if (scope.notification.type === 'task-assign') {
           text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
         }
-        if (scope.notification.type === 'task-revoke') {
-          text = params.fromUser() + ' has revoked ' + params.toUser() + ' from task ' + params.element;
-        }
         if (scope.notification.type === 'task-reopened') {
           text = params.fromUser() + ' has reopened task ' + params.element;
         }
@@ -63,16 +60,13 @@ angular.module('buiiltApp')
         if (scope.notification.type === 'thread-assign') {
           text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
         }
-        if (scope.notification.type === 'thread-remove') {
-          text = params.fromUser() + ' has removed ' + params.toUser() + ' to thread ' + params.element;
-        }
         if (scope.notification.type === 'thread-message') {
           text = params.fromUser() + ' has send new message in thread ' + params.element;
         }
 
         scope.notification.sref = getSref(scope.notification);
-
-        element.html('<option value='+scope.notification._id+'>'+ text + '</option>').show();
+        element.html('<ion-item ui-sref="{{notification.sref}}" ui-sref-opts="{reload: true}" ng-click="click(notification)" style="padding: 0px"><div class="_notification"><p>' + text + '</p></div></ion-item>').show();
+        // element.html('<option value='+scope.notification._id+'>'+ text + '</option>').show();
         $compile(element.contents())(scope);
       },
       controller: function ($scope, $rootScope, taskService, authService, $state, notificationService) {
@@ -105,67 +99,31 @@ angular.module('buiiltApp')
           $scope.notifications = [];
           var limit = 60;
                    
-                   $scope.getDropdownStyle = function(){
-                   var notificationDropdownStyle = $("select#notification-dropdown").css('display');
-                   //alert(notificationDropdownStyle);
-                   //console.log(notificationDropdownStyle);
-                   if (notificationDropdownStyle == 'none') {
-                   $("select#notification-dropdown").css('display','block');
-                   }
-                   else if (notificationDropdownStyle == 'block') {
-                   $("select#notification-dropdown").css('display','none');
-                   }
-                   };
-
-          $("div#notification-alert").click(function(event){
-            //event.stopPropagation();
-            
-          });
-
-          $scope.clickChange = function(value) {
-            if (value == 'readAll') {
-              notificationService.markAllAsRead().$promise
-              .then(function(res) {
-                $scope.notifications = [];
-                $scope.total = 0;
-                $rootScope.$emit('notification:allRead');
-                // $('#slimScrollDiv').hide();
-                // $('#sidenav-overlay').trigger( "click" );
-              })
-            }
-            else if (value == '') {
-
-            }
-            else {
-              notificationService.markAsRead({_id : value}).$promise
-              .then(function(res){});
-              notificationService.getOne({id: value}).$promise.then(function(notification){
-                if (notification.referenceTo == 'task') {
                    
-                  $state.go('taskDetail', {id: notification.element.project, taskId: notification.element._id});
-                }
-                else if (notification.referenceTo == 'thread') {
-                  $state.go('threadDetail', {id: notification.element.project, threadId: notification.element._id});
-                }
-              });
-            }
-          };
 
           notificationService.getTotalForIos().$promise
             .then(function(res) {
-              $scope.total = res.length;
+              $rootScope.totalNotification = $scope.total = res.length;
+              $scope.notifications = res;
             });
-          var getNotifications = function(limit) {
-            if ($scope.readMore) {
-              notificationService.get({limit : limit}).$promise
-                .then(function(res) {
-                  $scope.notifications = res;
-                  if (limit > res.length) {
-                    $scope.readMore = false;
-                  }
-                })
-            }
-          };
+
+            // notificationService.getTotal().$promise
+            // .then(function(res) {
+            //   $rootScope.totalNotification = $scope.total = res.count;
+            // });
+
+
+          // var getNotifications = function(limit) {
+          //   if ($scope.readMore) {
+          //     notificationService.get({limit : limit}).$promise
+          //       .then(function(res) {
+          //         $scope.notifications = res;
+          //         if (limit > res.length) {
+          //           $scope.readMore = false;
+          //         }
+          //       })
+          //   }
+          // };
 
           $scope.loadMore = function() {
             limit += 10;
@@ -195,7 +153,7 @@ angular.module('buiiltApp')
             $scope.total--;
           });
 
-          getNotifications(limit);
+          // getNotifications(limit);
           socket.on('notification:new', function (notification) {
             if (notification) {
               $scope.notifications.unshift(notification);

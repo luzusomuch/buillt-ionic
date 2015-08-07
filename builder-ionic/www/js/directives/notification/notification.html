@@ -1,29 +1,11 @@
-<li class="notification-open" style="list-style-type: none;">
-  <div class="list" style="position:relative;">
-      <div ng-click="getDropdownStyle()" id="notification-alert" class="input-label" style="width:60px;position:absolute;right:5px">
-        <i ng-if="total == 0" class="icon ion-ios-bell-outline"></i>
-        <i ng-if="total > 0" class="icon ion-ios-bell"></i>{{total}}
-      </div>
-      <select id="notification-dropdown" style="width:80%; display:none;margin-top:26px;" ng-model="sel" ng-change="clickChange(sel)">
-        <option value="">Please select</option>
-        <option value="readAll">Mark all as read</option>
-        <option notification="notification" current-user='currentUser' ng-repeat="notification in notifications" value='{{notification._id}}'></option>
-      </select>
-    </div>
-  <!-- <div class="notification-list z-depth-1">
-    <header class="z-depth-1">
-      <h5 >Notification</h5>
-      <a class="btn waves-effect waves-yellow" ng-click="markAllAsRead()" style="height:40px;line-height:40px;">Mark all as read</a>
-    </header>
-    <div class="list-empty" ng-if="total == 0">
-      <p style="text-align: center">No notifications</p>
-    </div>
-  </div> -->
-    
-    <!-- <div slimscroll slimscroll-option="slimScrollOptions" scroll-to-bottom-cb="loadMore" ng-if="total > 0">
-      
 
-      </div>
-    </div> -->
 
-</li>
+
+
+
+<ion-content padding="false" class="has-header">
+  <ion-list>
+    <ion-item style="margin-top: 40px;" ng-click="markAllAsRead()">{{total}} Notification - Mark all as read</ion-item>
+    <div notification="notification" current-user='currentUser' ng-repeat="notification in notifications"></div>
+  </ion-list>
+</ion-content>
