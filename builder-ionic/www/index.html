@@ -109,9 +109,17 @@
                     <a ng-if="(currentState.name == 'client' || 
                         currentState.name == 'materialRequestInProcess' ||
                         currentState.name == 'contractorRequestInProgress' ||
-                        currentState.name == 'staffView') && isShowAddIcon" 
+                        currentState.name == 'staffView') && isShowAddIcon && isInMessageTab" 
                         class="button button-icon" 
-                        id="newTaskOrMessage">
+                        id="newMessage">
+                        <i class="icon ion-ios-plus-empty"></i>
+                    </a>
+                    <a ng-if="(currentState.name == 'client' || 
+                        currentState.name == 'materialRequestInProcess' ||
+                        currentState.name == 'contractorRequestInProgress' ||
+                        currentState.name == 'staffView') && isShowAddIcon && isInTaskTab" 
+                        class="button button-icon" 
+                        id="newTask">
                         <i class="icon ion-ios-plus-empty"></i>
                     </a>
                 </ion-nav-buttons>

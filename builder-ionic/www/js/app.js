@@ -87,6 +87,8 @@ angular.module('buiiltApp', [
     $rootScope.currentTeam = {};
     $rootScope.hasHeader = true;
     $rootScope.hasFooter = true;
+    
+
     $rootScope.safeApply = function (fn) {
       var phase = $rootScope.$$phase;
       if (phase === '$apply' || phase === '$digest') {
@@ -99,6 +101,8 @@ angular.module('buiiltApp', [
     };
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
       $rootScope.isShowAddIcon = false;
+      $rootScope.isInMessageTab = false;
+      $rootScope.isInTaskTab = false;
       $rootScope.currentState = toState;
         authService.isLoggedInAsync(function (loggedIn) {
           if (loggedIn) {

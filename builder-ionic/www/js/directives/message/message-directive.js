@@ -10,10 +10,25 @@ angular.module('buiiltApp')
       controller:
         function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
-
-          $("a#newTaskOrMessage").on('click', function(){
-            $("a#createThread").trigger('click');
-          });
+          $scope.showMessageList = true;
+          console.log($rootScope.isInMessageTab);
+        console.log($rootScope.isInTaskTab);
+          console.log('2222222222');
+            $("a#newMessage").on('click', function(){
+              console.log('aaaaaaa');
+              if ($("a#newMessage > i.icon").hasClass('ion-ios-plus-empty')) {
+                $("a#newMessage > i.icon").removeClass('ion-ios-plus-empty');
+                $("a#newMessage > i.icon").addClass('ion-ios-close-empty');
+                $("a#createThread").trigger('click');
+                console.log('bbbbbb');
+              }
+              else if ($("a#newMessage > i.icon").hasClass('ion-ios-close-empty')) {
+                $("a#newMessage > i.icon").removeClass('ion-ios-close-empty');
+                $("a#newMessage > i.icon").addClass('ion-ios-plus-empty');
+                $("span.close-thread").trigger('click');
+                console.log('cccccc');
+              }
+            });
 
           $scope.currentProject = $rootScope.currentProject;
           authService.getCurrentUser().$promise.then(function(res) {
@@ -164,6 +179,7 @@ angular.module('buiiltApp')
             getAvailableUser($scope.type);
             $scope.isNew = true;
             $scope.addThread = true;
+            $scope.showMessageList = false;
           };
 
           //Function fired when click edit task
@@ -224,6 +240,7 @@ angular.module('buiiltApp')
           $scope.close = function() {
             $scope.submitted = false;
             $scope.addThread = false;
+            $scope.showMessageList = true;
           };
 
           $scope.toggleThread = function(thread) {
@@ -246,6 +263,7 @@ angular.module('buiiltApp')
                     // $('.card-title').trigger('click');
                     $scope.addThread = false;
                     $scope.currentThread = res;
+                    $scope.showMessageList = true;
                     // socket.emit('join',res._id);
                     updateThread();
                   })

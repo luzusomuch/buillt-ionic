@@ -10,19 +10,26 @@ angular.module('buiiltApp')
     controller:
       function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
         //Init Params
-        $("a#newTaskOrMessage").on('click', function(){
-          if ($("a#newTaskOrMessage > i.icon").hasClass('ion-ios-plus-empty')) {
-            $("a#newTaskOrMessage i.icon").removeClass('ion-ios-plus-empty');
-            $("a#newTaskOrMessage i.icon").addClass('ion-ios-close-empty');
-            $("a#createTask").trigger('click');
-          }
-          else if ($("a#newTaskOrMessage > i.icon").hasClass('ion-ios-close-empty')) {
-            $("a#newTaskOrMessage i.icon").removeClass('ion-ios-close-empty');
-            $("a#newTaskOrMessage i.icon").addClass('ion-ios-plus-empty');
-            $("button.cancel-task").trigger('click');
-          }
+        $scope.showListTask = true;
+        console.log($rootScope.isInMessageTab);
+        console.log($rootScope.isInTaskTab);
 
-        });
+        console.log('1111111111111');
+          $("a#newTask").on('click', function(){
+            console.log('aaaaaaa');
+            if ($("a#newTask > i.icon").hasClass('ion-ios-plus-empty')) {
+              $("a#newTask > i.icon").removeClass('ion-ios-plus-empty');
+              $("a#newTask > i.icon").addClass('ion-ios-close-empty');
+              $("a#createTask").trigger('click');
+              console.log('bbbbbbbb');
+            }
+            else if ($("a#newTask > i.icon").hasClass('ion-ios-close-empty')) {
+              $("a#newTask > i.icon").removeClass('ion-ios-close-empty');
+              $("a#newTask > i.icon").addClass('ion-ios-plus-empty');
+              $("button.cancel-task").trigger('click');
+              console.log('cccccccc');
+            }
+          });
 
         $scope.deviceWidth = $rootScope.deviceWidth;
         $scope.currentProject = $rootScope.currentProject;
@@ -155,6 +162,7 @@ angular.module('buiiltApp')
           $scope.isNew = true;
           $scope.isShow = false;
           $scope.addTask = true;
+          $scope.showListTask = false;
         };
 
         $scope.showTask = function(task) {
@@ -231,6 +239,7 @@ angular.module('buiiltApp')
 
         $scope.cancelTask = function(){
           $scope.addTask = false;          
+          $scope.showListTask = true;
         };
 
         //Submit form function
@@ -242,6 +251,7 @@ angular.module('buiiltApp')
                   // $('.card-title').trigger('click');
                   updateTasks();
                   $scope.addTask = false;
+                  $scope.showListTask = true;
                 })
             } else {
               taskService.update({id : $scope.task._id, type : $scope.type},$scope.task).$promise

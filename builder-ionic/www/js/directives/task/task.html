@@ -28,7 +28,7 @@
       <div class="current-assign">
         <p style="">Current Assignee's:</p>
         <div class="card col"  ng-if="!isShow"  style="padding: 5px; margin-left: 10px" ng-repeat="assignee in task.assignees" ng-class="{'admin' : assignee.team.role == 'admin'}">
-          <span ng-if="assignee.canRevoke"><a ng-click="revoke(assignee,$index)"><i class="icon ion-ios-close-empty" style="margin-left: 5px"></i></a></span> {{assignee | name}} 
+          <span ng-if="assignee.canRevoke"><a ng-click="revoke(assignee,$index)"><i class="icon ion-close-round" style="margin-left: 5px"></i></a></span>  {{assignee | name}} 
         </div>
         <div class="card col"  ng-if="isShow"  style="padding: 5px; margin-left: 10px" ng-repeat="assignee in task.assignees" ng-class="{'admin' : assignee.team.role == 'admin'}">
           {{assignee | name}}
@@ -55,7 +55,7 @@
       </div>
     </form>
   </div>
-  <ion-list>
+  <div class="list" ng-if="showListTask">
     <div ng-repeat="task in tasks | taskFilter : filter | orderBy : ['dateEnd'] ">
       <ion-item ui-sref="taskDetail({id: task.project, taskId: task._id})">
         {{task.name}}
@@ -75,5 +75,5 @@
         </ul>
       </ion-item> -->
     </div>
-  </ion-list>             
+  </div>             
 </ion-content>

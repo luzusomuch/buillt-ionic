@@ -2,37 +2,34 @@
 
     <div style="display:none"><a id="createThread" class="activator button button-stable button-block" ng-click="newThread()"><strong>New Thread</strong></a></div>
     <div ng-show="addThread">
-      <span ng-click="close()" class="card-title button button-stable button-block" ng-if="isNew">New Thread<i style="float:right" class="icon ion-close-round"></i></span>
+      <span style="display:none" ng-click="close()" class="close-thread card-title button button-stable button-block" ng-if="isNew">New Thread<i style="float:right;" class="icon ion-close-round"></i></span>
       <!-- <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="!isNew">Edit Thread<i style="float:right" class="icon ion-close-round"></i></span> -->
       <form name="form" novalidate ng-submit="saveThread(form)">
-        <ion-list>
-          <label class="item item-input">
-            <span class="input-label">Name</span>
-            <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-            <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
-          </label>
-          <div class="row current-assign">
-            <p>Current assign</p>
-            <div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in thread.users" ng-class="{'admin' : user.team.role == 'admin'}">
-              {{user | name}} 
-              <span><a ng-click="revoke(user,$index)"><i class="icon ion-close-round" style="margin-left: 5px"></i></a></span>
+        <div class="item item-input">
+          <span class="input-label">Name</span>
+          <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+          <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
+        </div>
+        <div class="current-assign">
+          <p>Current assign</p>
+          <div class="card col" style="padding: 5px; margin-left: 10px" ng-repeat="user in thread.users" ng-class="{'admin' : user.team.role == 'admin'}">
+            <span><a ng-click="revoke(user,$index)"><i class="icon ion-close-round" style="margin-left: 5px"></i></a></span>{{user | name}} 
+          </div>
+        </div>
+        <div class="available-assign">
+          <p style="">Available user:</p>
+          <a ng-repeat="user in available track by $index" >
+            <div class="card col" ng-click="assign(user,$index)" style="padding: 5px; margin-left: 10px" ng-class="{'admin' : user.team.role == 'admin'}">
+              {{user | name}}
             </div>
-          </div>
-          <div class="row available-assign">
-            <p style="">Available user:</p>
-            <a ng-repeat="user in available track by $index" >
-              <div class="card col" ng-click="assign(user,$index)" style="padding: 5px; margin-left: 10px" ng-class="{'admin' : user.team.role == 'admin'}">
-                {{user | name}}
-              </div>
-            </a>
-          </div>
-          <label>
-            <button class="button button-stable button-block" type="submit">Save</button>
-          </label>
-        </ion-list>
+          </a>
+        </div>
+        <div class="item item-input">
+          <button class="button button-stable button-block" type="submit">Save</button>
+        </div>
       </form>
     </div>
-    <ion-list>
+    <div class="list" ng-if="showMessageList">
       <div ng-repeat="thread in threads">
         <!-- <ion-item class="item-stable" ng-click="toggleThread(thread)" ng-class="{active: isThreadShown(thread)}">{{thread.name}}</ion-item>
 
@@ -55,5 +52,5 @@
         {{thread.name}}
         </ion-item>
       </div>
-    </ion-list>             
+    </div>             
   </ion-content>
