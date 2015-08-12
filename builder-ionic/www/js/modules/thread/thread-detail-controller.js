@@ -1,6 +1,7 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($scope,thread,messageService) {
+.controller('ThreadDetailCtrl', function($scope,thread,messageService, $anchorScroll) {
     $scope.thread = thread;
+    $anchorScroll();
     $scope.message = {};
     $scope.sendMessage = function() {
         if ($scope.message.text != '') {

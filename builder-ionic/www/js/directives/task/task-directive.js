@@ -11,7 +11,17 @@ angular.module('buiiltApp')
       function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
         //Init Params
         $("a#newTaskOrMessage").on('click', function(){
-          $("a#createTask").trigger('click');
+          if ($("a#newTaskOrMessage > i.icon").hasClass('ion-ios-plus-empty')) {
+            $("a#newTaskOrMessage i.icon").removeClass('ion-ios-plus-empty');
+            $("a#newTaskOrMessage i.icon").addClass('ion-ios-close-empty');
+            $("a#createTask").trigger('click');
+          }
+          else if ($("a#newTaskOrMessage > i.icon").hasClass('ion-ios-close-empty')) {
+            $("a#newTaskOrMessage i.icon").removeClass('ion-ios-close-empty');
+            $("a#newTaskOrMessage i.icon").addClass('ion-ios-plus-empty');
+            $("button.cancel-task").trigger('click');
+          }
+
         });
 
         $scope.deviceWidth = $rootScope.deviceWidth;

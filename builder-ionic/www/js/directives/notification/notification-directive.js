@@ -48,20 +48,35 @@ angular.module('buiiltApp')
         };
 
         var text;
+        // if (scope.notification.type === 'task-assign') {
+        //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
+        // }
         if (scope.notification.type === 'task-assign') {
-          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
+          text = 'New task: ' + params.element;
         }
+        // if (scope.notification.type === 'task-reopened') {
+        //   text =  params.fromUser() + ' has reopened task ' + params.element;
+        // }
+        // if (scope.notification.type === 'task-completed') {
+        //   text = params.fromUser() + ' has completed task ' + params.element;
+        // }
         if (scope.notification.type === 'task-reopened') {
-          text = params.fromUser() + ' has reopened task ' + params.element;
+          text = 'Reopened task: ' + params.element;
         }
         if (scope.notification.type === 'task-completed') {
-          text = params.fromUser() + ' has completed task ' + params.element;
+          text = 'Completed task: ' + params.element;
         }
+        // if (scope.notification.type === 'thread-assign') {
+        //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
+        // }
+        // if (scope.notification.type === 'thread-message') {
+        //   text = params.fromUser() + ' has send new message in thread ' + params.element;
+        // }
         if (scope.notification.type === 'thread-assign') {
-          text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
+          text = 'New thread: ' + params.element;
         }
         if (scope.notification.type === 'thread-message') {
-          text = params.fromUser() + ' has send new message in thread ' + params.element;
+          text = 'New message: '+ params.element;
         }
 
         scope.notification.sref = getSref(scope.notification);
@@ -95,7 +110,6 @@ angular.module('buiiltApp')
           $scope.readMore = true;
           $scope.currentUser = $rootScope.user;
           $scope.currentState = $rootScope.currentState;
-                   console.log($scope.currentState);
           $scope.notifications = [];
           var limit = 60;
                    
