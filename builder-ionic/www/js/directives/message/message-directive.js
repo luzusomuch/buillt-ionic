@@ -10,6 +10,7 @@ angular.module('buiiltApp')
       controller:
         function($scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
+          console.log('asdsadasdsad');
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
           $("#createThreadForm").css('height', contentHeight + 'px');
           console.log(contentHeight);

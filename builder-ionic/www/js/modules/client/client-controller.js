@@ -6,6 +6,7 @@ angular.module('buiiltApp').controller('ClientCtrl', function($ionicTabsDelegate
     $scope.selectTabWithIndex = function(value){
         $ionicTabsDelegate.select(value);
         if (value == 1) {
+            $state.reload();
             $rootScope.isShowAddIcon = true;
             $rootScope.isInTaskTab = false;
             $rootScope.isInMessageTab = true;
