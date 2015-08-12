@@ -1,10 +1,10 @@
-  <ion-content padding="false" class="has-header">
+  <ion-content padding="false" class="has-header messages-list-content">
 
     <div style="display:none"><a id="createThread" class="activator button button-stable button-block" ng-click="newThread()"><strong>New Thread</strong></a></div>
     <div ng-show="addThread">
       <span style="display:none" ng-click="close()" class="close-thread card-title button button-stable button-block" ng-if="isNew">New Thread<i style="float:right;" class="icon ion-close-round"></i></span>
       <!-- <span ng-click="close()" class="card-title grey-text text-darken-4" ng-if="!isNew">Edit Thread<i style="float:right" class="icon ion-close-round"></i></span> -->
-      <form name="form" novalidate ng-submit="saveThread(form)">
+      <form id="createThreadForm" name="form" novalidate ng-submit="saveThread(form)">
         <div class="item item-input">
           <span class="input-label">Name</span>
           <input id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
@@ -24,7 +24,7 @@
             </div>
           </a>
         </div>
-        <div class="item item-input">
+        <div class="item item-input" style="position: absolute; bottom: 0px; left: 1px; right: 1px;">
           <button class="button button-stable button-block" type="submit">Save</button>
         </div>
       </form>

@@ -11,25 +11,23 @@ angular.module('buiiltApp')
       function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
         //Init Params
         $scope.showListTask = true;
-        console.log($rootScope.isInMessageTab);
-        console.log($rootScope.isInTaskTab);
 
-        console.log('1111111111111');
-          $("a#newTask").on('click', function(){
-            console.log('aaaaaaa');
-            if ($("a#newTask > i.icon").hasClass('ion-ios-plus-empty')) {
-              $("a#newTask > i.icon").removeClass('ion-ios-plus-empty');
-              $("a#newTask > i.icon").addClass('ion-ios-close-empty');
-              $("a#createTask").trigger('click');
-              console.log('bbbbbbbb');
-            }
-            else if ($("a#newTask > i.icon").hasClass('ion-ios-close-empty')) {
-              $("a#newTask > i.icon").removeClass('ion-ios-close-empty');
-              $("a#newTask > i.icon").addClass('ion-ios-plus-empty');
-              $("button.cancel-task").trigger('click');
-              console.log('cccccccc');
-            }
-          });
+        var contentHeight = $(".tasks-list-content").height() - $("div.tab-nav.tabs").height();
+        $("#createTaskForm").css('height', contentHeight + 'px');
+        console.log(contentHeight);
+
+        $("a#newTask").on('click', function(){
+          if ($("a#newTask > i.icon").hasClass('ion-ios-plus-empty')) {
+            $("a#newTask > i.icon").removeClass('ion-ios-plus-empty');
+            $("a#newTask > i.icon").addClass('ion-ios-close-empty');
+            $("a#createTask").trigger('click');
+          }
+          else if ($("a#newTask > i.icon").hasClass('ion-ios-close-empty')) {
+            $("a#newTask > i.icon").removeClass('ion-ios-close-empty');
+            $("a#newTask > i.icon").addClass('ion-ios-plus-empty');
+            $("button.cancel-task").trigger('click');
+          }
+        });
 
         $scope.deviceWidth = $rootScope.deviceWidth;
         $scope.currentProject = $rootScope.currentProject;

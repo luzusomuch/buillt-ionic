@@ -6,6 +6,9 @@ angular.module('buiiltApp')
         $scope.currentUser = res;
     });
 
+    var contentHeight = $(".task-content").height() - $("div.tab-nav.tabs").height();
+    $(".task-content-detail").css('height', contentHeight + 'px');
+
     $scope.complete = function(task) {
         task.completed = !task.completed;
         if (task.completed) {

@@ -8,27 +8,25 @@ angular.module('buiiltApp')
         type : '@'
       },
       controller:
-        function($scope,$rootScope,messageService, authService,$timeout,$anchorScroll,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
+        function($scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
+          var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
+          $("#createThreadForm").css('height', contentHeight + 'px');
+          console.log(contentHeight);
           $scope.showMessageList = true;
-          console.log($rootScope.isInMessageTab);
-        console.log($rootScope.isInTaskTab);
-          console.log('2222222222');
-            $("a#newMessage").on('click', function(){
-              console.log('aaaaaaa');
-              if ($("a#newMessage > i.icon").hasClass('ion-ios-plus-empty')) {
-                $("a#newMessage > i.icon").removeClass('ion-ios-plus-empty');
-                $("a#newMessage > i.icon").addClass('ion-ios-close-empty');
-                $("a#createThread").trigger('click');
-                console.log('bbbbbb');
-              }
-              else if ($("a#newMessage > i.icon").hasClass('ion-ios-close-empty')) {
-                $("a#newMessage > i.icon").removeClass('ion-ios-close-empty');
-                $("a#newMessage > i.icon").addClass('ion-ios-plus-empty');
-                $("span.close-thread").trigger('click');
-                console.log('cccccc');
-              }
-            });
+
+          $("a#newMessage").on('click', function(){
+            if ($("a#newMessage > i.icon").hasClass('ion-ios-plus-empty')) {
+              $("a#newMessage > i.icon").removeClass('ion-ios-plus-empty');
+              $("a#newMessage > i.icon").addClass('ion-ios-close-empty');
+              $("a#createThread").trigger('click');
+            }
+            else if ($("a#newMessage > i.icon").hasClass('ion-ios-close-empty')) {
+              $("a#newMessage > i.icon").removeClass('ion-ios-close-empty');
+              $("a#newMessage > i.icon").addClass('ion-ios-plus-empty');
+              $("span.close-thread").trigger('click');
+            }
+          });
 
           $scope.currentProject = $rootScope.currentProject;
           authService.getCurrentUser().$promise.then(function(res) {
