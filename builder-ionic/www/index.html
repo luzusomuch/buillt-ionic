@@ -7,9 +7,9 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <!-- <link href="css/style.css" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material%20Icons" rel="stylesheet">
     <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="lib/angular-notify/angular-notify.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="dist/app.full.css" data-concat="false" />
@@ -104,22 +104,18 @@
                 <ion-nav-back-button side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
                 
                 <ion-nav-buttons side="right">
-                    <a ng-if="currentState.name == 'dashboard'" class="button button-icon" ui-sref="signout">Sign Out</a>
+                    <a ng-if="currentState.name == &apos;dashboard&apos;" class="button button-icon" ui-sref="signout">Sign Out</a>
                     
-                    <a ng-if="(currentState.name == 'client' || 
-                        currentState.name == 'materialRequestInProcess' ||
-                        currentState.name == 'contractorRequestInProgress' ||
-                        currentState.name == 'staffView') && isShowAddIcon && isInMessageTab" 
-                        class="button button-icon" 
-                        id="newMessage">
+                    <a ng-if="(currentState.name == &apos;client&apos; || 
+                        currentState.name == &apos;materialRequestInProcess&apos; ||
+                        currentState.name == &apos;contractorRequestInProgress&apos; ||
+                        currentState.name == &apos;staffView&apos;) &amp;&amp; isShowAddIcon &amp;&amp; isInMessageTab" class="button button-icon" id="newMessage">
                         <i class="icon ion-ios-plus-empty"></i>
                     </a>
-                    <a ng-if="(currentState.name == 'client' || 
-                        currentState.name == 'materialRequestInProcess' ||
-                        currentState.name == 'contractorRequestInProgress' ||
-                        currentState.name == 'staffView') && isShowAddIcon && isInTaskTab" 
-                        class="button button-icon" 
-                        id="newTask">
+                    <a ng-if="(currentState.name == &apos;client&apos; || 
+                        currentState.name == &apos;materialRequestInProcess&apos; ||
+                        currentState.name == &apos;contractorRequestInProgress&apos; ||
+                        currentState.name == &apos;staffView&apos;) &amp;&amp; isShowAddIcon &amp;&amp; isInTaskTab" class="button button-icon" id="newTask">
                         <i class="icon ion-ios-plus-empty"></i>
                     </a>
                 </ion-nav-buttons>
