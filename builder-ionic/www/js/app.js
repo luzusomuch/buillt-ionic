@@ -74,11 +74,10 @@ angular.module('buiiltApp', [
         StatusBar.styleDefault();
       }
     });
-    alert(window.localStorage.getItem('selectTabs'));
-    if (window.localStorage.getItem('selectTabs') == 2) {
-      alert('aaaa');
+
+    document.addEventListener("resume", function(){
       $rootScope.selectedTabs = 1;
-    }
+    }, false)
 
     if (window.localStorage.getItem('token')) {
       userService.get().$promise.then(function(currentUser){

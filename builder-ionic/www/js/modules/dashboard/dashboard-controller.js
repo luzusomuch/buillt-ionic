@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function($scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  .controller('DashboardCtrl', function($timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){
     $rootScope.user = $scope.user = user;
@@ -10,27 +10,40 @@ angular.module('buiiltApp')
       $scope.projects = team.project;
     });
   });
-              notificationService.getTotalForIos().$promise
-              .then(function(res) {
-                    if (res.length > 0)
-                      $scope.total = res.length;
-                    });
+  notificationService.getTotalForIos().$promise
+  .then(function(res) {
+    if (res.length > 0)
+      $scope.total = res.length;
+    });
 
   $scope.selectTabWithIndex = function(value){
+    console.log(value);
     $ionicTabsDelegate.select(value);
     if (value == 0) {
       window.location.reload();
     }
   };
 
-  alert($rootScope.selectedTabs);
-  if ($rootScope.selectedTabs == 1) {
-    alert('22222222222');
-    $ionicTabsDelegate.select(1);
-  }
-  else {
-    alert('33333333333');
-  }
+  // var selectedTab = $rootScope.selectedTabs;
+  // $scope.selectedTab = $rootScope.selectedTabs;
+  // if ($rootScope.selectedTabs == 1) {
+  //   $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
+  //   alert('22222222222');
+  // }
+  // else {
+  //   alert('33333333333');
+  // }
+
+  jQuery(document).ready(function(){
+    if ($rootScope.selectedTabs == 1) {
+      $timeout(function(){
+        $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
+      },3000)
+    }
+  });
+
+  
+  
 
   // alert(window.localStorage.getItem('selectTabs'))
   // if (window.localStorage.getItem('selectTabs') == '2') {
