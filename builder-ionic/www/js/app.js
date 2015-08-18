@@ -75,6 +75,14 @@ angular.module('buiiltApp', [
       }
     });
 
+    document.addEventListener("resume", function(){
+        alert('/#/dashboard');
+        window.localStorage.setItem("selectTabs", "2");
+        $state.go('dashboard');
+        // window.location.href="/dashboard";
+                              alert('asdasdasd');
+    }, false)
+
     if (window.localStorage.getItem('token')) {
       userService.get().$promise.then(function(currentUser){
         $rootScope.currentUser = currentUser;  
