@@ -67,11 +67,17 @@ angular.module('buiiltApp')
                   }
                 });
                 _.remove($scope.available,{_id : $scope.currentUser._id});
+                _.each($scope.available, function(assignee) {
+                  assignee.isSelect = false;
+                });
                 break;
               case 'staff' :
                 $scope.available =  angular.copy($scope.package.staffs);
                 $scope.available = _.union($scope.available,$scope.currentTeam.leader);
                 _.remove($scope.available,{_id : $scope.currentUser._id});
+                _.each($scope.available, function(assignee) {
+                  assignee.isSelect = false;
+                });
                 break;
               case 'contractor' :
                 $scope.available = [];
@@ -92,6 +98,9 @@ angular.module('buiiltApp')
                   }
                 });
                 _.remove($scope.available,{_id : $scope.currentUser._id});
+                _.each($scope.available, function(assignee) {
+                  assignee.isSelect = false;
+                });
                 break;
               case 'material' :
                 $scope.available = [];
@@ -112,6 +121,9 @@ angular.module('buiiltApp')
                   }
                 });
                 _.remove($scope.available,{_id : $scope.currentUser._id});
+                _.each($scope.available, function(assignee) {
+                  assignee.isSelect = false;
+                });
                 break;
               case 'variation' :
                 $scope.available = [];
@@ -132,6 +144,9 @@ angular.module('buiiltApp')
                   }
                 });
                 _.remove($scope.available,{_id : $scope.currentUser._id});
+                _.each($scope.available, function(assignee) {
+                  assignee.isSelect = false;
+                });
               default :
                 break
             }
@@ -194,8 +209,16 @@ angular.module('buiiltApp')
 
           //Assign people to task
           $scope.assign = function(user,index) {
-            $scope.thread.users.push(user);
-            $scope.available.splice(index,1);
+            if (user.isSelect == false) {
+              user.isSelect = true;
+              $scope.thread.users.push(user);
+            }
+            else if (user.isSelect == true) {
+              user.isSelect = false;
+              _.remove($scope.thread.users, {_id: user._id});
+            }
+            // $scope.thread.users.push(user);
+            // $scope.available.splice(index,1);
           };
 
           //Revoke people to task

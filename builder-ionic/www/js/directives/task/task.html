@@ -3,17 +3,17 @@
   <div ng-show="addTask">
     <form id="createTaskForm" name="form" class="col s12" ng-submit="save(form)">
       <div class="item item-input">
-        <span class="input-label">Task</span>
+        <span class="input-label">Description</span>
         <input id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
                ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow">
         <p class="validate-message" ng-show="form.name.$error.required && submitted">Task name is required</p>
       </div>
-      <div class="item item-input">
+      <!-- <div class="item item-input">
         <span class="input-label">Description</span>
         <input id="task_description" type="text" ng-model="task.description" name="description" maxlength="80"
                ng-class="{'invalid' : form.description.$invalid && submitted}" ng-disabled="isShow">
         <p class="validate-message" ng-show="form.description.$error.required && submitted">Task description is required</p>
-      </div>
+      </div> -->
       <div class="item item-input">
         <span class="input-label">Due date</span>
         <input type="date"
@@ -25,7 +25,7 @@
           />
       </div>
 
-      <div class="current-assign">
+      <!-- <div class="current-assign">
         <p style="">Current Assignee's:</p>
         <div class="card col"  ng-if="!isShow"  style="padding: 5px; margin-left: 10px" ng-repeat="assignee in task.assignees" ng-class="{'admin' : assignee.team.role == 'admin'}">
           <span ng-if="assignee.canRevoke"><a ng-click="revoke(assignee,$index)"><i class="icon ion-close-round" style="margin-left: 5px"></i></a></span>  {{assignee | name}} 
@@ -35,15 +35,23 @@
         </div>
       </div>
 
-      <div class="divider"></div>
+      <div class="divider"></div> -->
 
-      <div class="available-assign"  ng-if="!isShow" >
+      <div class="available-assign"  ng-if="!isShow" style="padding: 15px 0px;">
         <p style="">Available Assignee's:</p>
-        <a ng-click="assign(staff,$index)" ng-repeat="staff in available track by $index">
+        <ul class="list">
+          <li class="item item-checkbox" ng-repeat="staff in available track by $index">
+            <div class="checkbox">
+              <input type="checkbox" ng-click="assign(staff, $index)">
+            </div>
+            {{staff | name}}
+          </li>
+        </ul>
+        <!-- <a ng-click="assign(staff,$index)" ng-repeat="staff in available track by $index">
           <div class="card col" style="padding: 5px; margin-left: 10px"  ng-class="{'admin' : staff.team.role == 'admin'}">
             {{staff | name}}
           </div>
-        </a>
+        </a> -->
       </div>
 
       <div class="row" style="position: absolute; bottom: 0px; left: 1px; right: 1px">
