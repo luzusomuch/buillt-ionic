@@ -90,7 +90,9 @@
                               }
                               });
     document.addEventListener("resume", function(){
-        $.mobile.changePage("/#/559a211dbb1528e81490f7ac");
+        alert('/#/dashboard');
+        window.localStorage.setItem("selectTabs", "2");
+        window.location.href="/#/dashboard";
     }, false)
         </script>
     <!-- your app's js -->

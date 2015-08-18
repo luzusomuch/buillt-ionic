@@ -22,4 +22,9 @@ angular.module('buiiltApp')
       window.location.reload();
     }
   };
+
+  if (window.localStorage.setItem("selectTabs") == '2') {
+    $ionicTabsDelegate.select(1);
+    (window.localStorage.removeItem("selectTabs");
+  }
 });
