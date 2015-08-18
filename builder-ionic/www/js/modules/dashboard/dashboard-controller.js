@@ -22,9 +22,13 @@ angular.module('buiiltApp')
       window.location.reload();
     }
   };
-
-  if (window.localStorage.getItem("selectTabs") == '2') {
+  alert(window.localStorage.getItem('selectTabs'))
+  if (window.localStorage.getItem('selectTabs') == '2') {
+    alert('1111111111');
     $ionicTabsDelegate.select(1);
     window.localStorage.removeItem("selectTabs");
+  }
+  else {
+    alert('22222222222');
   }
 });

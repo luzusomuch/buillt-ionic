@@ -77,7 +77,7 @@ angular.module('buiiltApp', [
 
     document.addEventListener("resume", function(){
         alert('/#/dashboard');
-        window.localStorage.setItem("selectTabs", "2");
+        window.localStorage.setItem('selectTabs', '2');
         $state.go('dashboard');
         // window.location.href="/dashboard";
                               alert('asdasdasd');
