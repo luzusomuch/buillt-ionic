@@ -22,13 +22,25 @@ angular.module('buiiltApp')
       window.location.reload();
     }
   };
-  alert(window.localStorage.getItem('selectTabs'))
-  if (window.localStorage.getItem('selectTabs') == '2') {
-    alert('1111111111');
+
+  alert($rootScope.selectedTabs);
+  if ($rootScope.selectedTabs == 1) {
+    alert('22222222222');
     $ionicTabsDelegate.select(1);
-    window.localStorage.removeItem("selectTabs");
   }
   else {
-    alert('22222222222');
+    alert('33333333333');
   }
+
+  // alert(window.localStorage.getItem('selectTabs'))
+  // if (window.localStorage.getItem('selectTabs') == '2') {
+  //   alert('1111111111');
+  //   $scope.selectTabWithIndex(1);
+  //   $ionicTabsDelegate.select(1);
+  //   console.log($ionicTabsDelegate.select(1));
+  //   window.localStorage.removeItem("selectTabs");
+  // }
+  // else {
+  //   alert('22222222222');
+  // }
 });

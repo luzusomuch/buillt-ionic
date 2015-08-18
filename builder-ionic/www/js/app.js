@@ -74,14 +74,11 @@ angular.module('buiiltApp', [
         StatusBar.styleDefault();
       }
     });
-
-    document.addEventListener("resume", function(){
-        alert('/#/dashboard');
-        window.localStorage.setItem('selectTabs', '2');
-        $state.go('dashboard');
-        // window.location.href="/dashboard";
-                              alert('asdasdasd');
-    }, false)
+    alert(window.localStorage.getItem('selectTabs'));
+    if (window.localStorage.getItem('selectTabs') == 2) {
+      alert('aaaa');
+      $rootScope.selectedTabs = 1;
+    }
 
     if (window.localStorage.getItem('token')) {
       userService.get().$promise.then(function(currentUser){
