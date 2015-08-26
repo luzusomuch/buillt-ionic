@@ -44,6 +44,15 @@
         var pushNotification;
         
         function onNotificationAPN(event) {
+            var relatedTo = event.relatedTo;
+            window.localStorage.setItem('push',event.push);
+            window.localStorage.setItem('relatedId',event.id);
+            window.localStorage.setItem('projectId',event.projectId);
+            if (relatedTo == 'task'){
+                window.localStorage.setItem('relatedTo','task');
+            }
+            else
+                window.localStorage.setItem('relatedTo','thread');
             if (event.alert) {
                 navigator.notification.alert(event.alert);
             }

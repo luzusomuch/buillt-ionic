@@ -81,6 +81,31 @@ angular.module('buiiltApp', [
       });
     }
 
+    $rootScope.push = false;
+    $rootScope.push = window.localStorage.getItem('push');
+    alert($rootScope.push);
+    if ($rootScope.push) {
+      var id = window.localStorage.getItem('relatedId');
+      var projectId = window.localStorage.getItem('projectId');
+      var type = window.localStorage.getItem('relatedTo');
+      if (type == 'task') {
+        $state.go('taskDetail',{id: projectId, taskId: id});
+        $rootScope.push = false;
+        window.localStorage.removeItem('push');
+        window.localStorage.removeItem('relatedId');
+        window.localStorage.removeItem('projectId');
+        window.localStorage.removeItem('relatedTo');
+      }
+      else if (type == 'thread') {
+        $state.go('threadDetail',{id: projectId, taskId: id});
+        $rootScope.push = false;
+        window.localStorage.removeItem('push');
+        window.localStorage.removeItem('relatedId');
+        window.localStorage.removeItem('projectId');
+        window.localStorage.removeItem('relatedTo');
+      }
+    }
+
     $rootScope.deviceWidth = $(window).width();
     $rootScope.currentProject = {};
     $rootScope.authService = authService;
