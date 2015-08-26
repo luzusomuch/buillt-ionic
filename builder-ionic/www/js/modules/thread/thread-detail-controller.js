@@ -1,7 +1,14 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($state,$timeout,$scope,thread,messageService, $anchorScroll, $location) {
+.controller('ThreadDetailCtrl', function(socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location) {
     $scope.thread = thread;
     $scope.message = {};
+
+    socket.emit('join',$scope.thread._id);
+
+    socket.on('message:new', function (thread) {
+        $scope.thread = thread;
+        // console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
+    });
 
     // $("div#chatBox").scrollTop($("div#chatBox")[0].scrollHeight);
     // console.log($('div#chatBox').height());
