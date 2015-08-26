@@ -1,29 +1,69 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function($ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  .controller('DashboardCtrl', function(fileService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
   
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
 
+  $scope.contractorPackages = [];
+  $scope.materialPackages = [];
+  $scope.staffPackages = [];
+  $scope.files = [];
+  $scope.projectId = '';
+
   $scope.clickChange = function(value) {
-    console.log(value);
-    builderPackage: function(builderPackageService, $stateParams) {
-        return builderPackageService.findDefaultByProject({id : value.id});
-      },
-      contractorPackages: function(contractorService, $stateParams) {
-        return contractorService.get({id : value.id});
-      },
-      materialPackages: function(materialPackageService, $stateParams) {
-        return materialPackageService.get({id : value.id});
-      },
-      staffPackages: function(staffPackageService, $stateParams) {
-        return staffPackageService.getAll({id: value.id});
-      },
-      documents: function(fileService, $stateParams) {
-        return fileService.getFileByStateParam({'id': value.id});
-      }
+    $scope.projectId = value;
+    contractorService.get({id : value}).$promise.then(function(contractorPackages){
+      $scope.contractorPackages = contractorPackages;
+    });
+    materialPackageService.get({id : value}).$promise.then(function(materialPackages){
+      $scope.materialPackages = materialPackages;
+    });
+    staffPackageService.getAll({id: value}).$promise.then(function(staffPackages){
+      $scope.staffPackages = staffPackages;
+    });
+    fileService.getFileByStateParam({'id': value}).$promise.then(function(files){
+      $scope.files = files;
+    });
   };
 
+  $scope.isShowContractorPackage = false;
+  $scope.isShowMaterialPackage = false;
+  $scope.isShowStaffPackage = false;
+  $scope.isShowDocumentation = false;
+  $scope.choosePackage = function(value) {
+    if (value == 1) {
+      $scope.isShowContractorPackage = false;
+      $scope.isShowMaterialPackage = false;
+      $scope.isShowStaffPackage = false;
+      $scope.isShowDocumentation = false;
+      $state.go('client',{id: $scope.projectId});
+    }
+    else if (value == 2) {
+      $scope.isShowContractorPackage = true;
+      $scope.isShowMaterialPackage = false;
+      $scope.isShowStaffPackage = false;
+      $scope.isShowDocumentation = false;
+    }
+    else if (value == 3) {
+      $scope.isShowContractorPackage = false;
+      $scope.isShowMaterialPackage = true;
+      $scope.isShowStaffPackage = false;
+      $scope.isShowDocumentation = false;
+    }
+    else if (value == 4) {
+      $scope.isShowContractorPackage = false;
+      $scope.isShowMaterialPackage = false;
+      $scope.isShowStaffPackage = true;
+      $scope.isShowDocumentation = false;
+    }
+    else if (value == 5) {
+      $scope.isShowContractorPackage = false;
+      $scope.isShowMaterialPackage = false;
+      $scope.isShowStaffPackage = false;
+      $scope.isShowDocumentation = true;
+    }
+  };
 
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){

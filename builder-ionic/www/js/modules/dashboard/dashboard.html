@@ -23,11 +23,26 @@
                         </select>
                     </label>
                     <ion-item class="item-divider"></ion-item>
-                    <ion-item>Client</ion-item>
-                    <ion-item>Subcontractors</ion-item>
-                    <ion-item>Suppliers</ion-item>
-                    <ion-item>Employees</ion-item>
-                    <ion-item>Documentation</ion-item>
+                    <ion-item ng-if="currentTeam.type == 'builder'" ng-click="choosePackage(1)">
+                        Client
+                    </ion-item>
+                    <ion-item ng-if="currentTeam.type == 'homeOwner'" ng-click="choosePackage(1)">
+                        Builder
+                    </ion-item>
+                    <ion-item ng-if="currentTeam.type == 'builder'" ng-click="choosePackage(2)">
+                        Subcontractors
+                    </ion-item>
+                    <ion-item ng-if="currentTeam.type == 'contractor'" ng-click="choosePackage(2)">
+                        Contracts
+                    </ion-item>
+                    <ion-item ng-if="currentTeam.type == 'builder'" ng-click="choosePackage(3)">
+                        Suppliers
+                    </ion-item>
+                    <ion-item ng-if="currentTeam.type == 'supplier'" ng-click="choosePackage(3)">
+                        Materials
+                    </ion-item>
+                    <ion-item ng-click="choosePackage(4)">Employees</ion-item>
+                    <ion-item ng-click="choosePackage(5)">Documentation</ion-item>
                 </ion-list>
                 <div class="spacer" style="width: 255px; height: 64px;"></div>
                 <a ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
@@ -35,11 +50,22 @@
         </ion-side-menu>
         <ion-pane ion-side-menu-content="">
             <ion-content padding="false">
-                <ion-list>
-                    <ion-item href="#/package-name">Package 1</ion-item>
-                    <ion-item href="#/package-name">Package 2</ion-item>
-                    <ion-item href="#/package-name">Package 3</ion-item>
-                </ion-list>
+                <!-- show contractor packages list -->
+                <div ng-if="isShowContractorPackage" class="list">
+                    <ion-item ui-sref="contractorRequestInProgress({id:package.project, packageId: package._id})" ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}">{{package.name}}</ion-item>
+                </div>
+                <!-- show material packages list -->
+                <div ng-if="isShowMaterialPackage" class="list">
+                    <ion-item ui-sref="materialRequestInProcess({id:package.project, packageId: package._id})" ng-repeat="package in materialPackages | filter:{isSelect: true, isCompleted: false}">{{package.name}}</ion-item>
+                </div>
+                <!-- show staff packages list -->
+                <div ng-if="isShowStaffPackage" class="list">
+                    <ion-item ui-sref="staffView({id:package.project, packageId: package._id})" ng-repeat="package in staffPackages">{{package.name}}</ion-item>
+                </div>
+                <!-- show documentations list -->
+                <div ng-if="isShowDocumentation" class="list">
+                    <ion-item ui-sref="fileDetail({fileId: file._id})" ng-repeat="file in files">{{file.title}}</ion-item>
+                </div>
             </ion-content>
         </ion-pane>
     </ion-side-menus>
