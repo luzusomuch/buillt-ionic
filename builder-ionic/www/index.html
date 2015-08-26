@@ -87,11 +87,14 @@
                                                         "alert": "true",
                                                         "ecb": "onNotificationAPN"
                                                         });
+                              
                               }
+                              document.addEventListener("resume", function(){
+                                                        //alert("aaaaaa");
+                                                        window.localStorage.setItem("selectTabs", 1);
+                                                        },false);
                               });
-    // document.addEventListener("resume", function(){
-    //     window.localStorage.setItem("selectTabs", 2);
-    // }, false)
+                                                            
         </script>
     <!-- your app's js -->
     <script src="js/app.js"></script>

@@ -34,13 +34,25 @@ angular.module('buiiltApp')
   //   alert('33333333333');
   // }
 
-  jQuery(document).ready(function(){
-    if ($rootScope.selectedTabs == 1) {
-      $timeout(function(){
-        $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
-      },3000)
-    }
+  $(document).ready(function(){
+                    //alert("dashboard "+$rootScope.selectedTabs);
+                    if ($rootScope.selectedTabs == 1) {
+                    $timeout(function(){
+                             $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
+                             $rootScope.selectedTabs = 0;
+                             alert("after click "+$rootScope.selectedTabs);
+                             },3000);
+                    
+                    }
+    
   });
+              //alert("out of document ready");
+              //alert("dashboard "+$rootScope.selectedTabs);
+              //if ($rootScope.selectedTabs == 1) {
+              //$timeout(function(){
+               //        $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
+                //       },3000)
+              //}
 
   
   
