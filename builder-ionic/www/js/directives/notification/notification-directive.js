@@ -37,6 +37,7 @@ angular.module('buiiltApp')
         };
         var serviceTaskArray = ['task-assign','task-reopened','task-completed'];
         var serviceThreadArray = ['thread-assign','thread-message'];
+        // var serviceDocumentArray = ['uploadNewDocumentVersion','uploadDocument'];
         
         var getSref = function(notification) {
           if (serviceTaskArray.indexOf(notification.type) != -1)  {
@@ -45,6 +46,22 @@ angular.module('buiiltApp')
           if (serviceThreadArray.indexOf(notification.type) != -1)  {
             return 'threadDetail({id : notification.element.project, threadId : notification.element._id})';
           }
+          // if (serviceDocumentArray.indexOf(notification.type) != -1) {
+          //   switch(notification.referenceTo){
+          //     case 'DocumentInProject': 
+          //       return 'projects.view({id: notification.element.projectId})';
+          //     case 'DocumentContractorPackage': 
+          //       return 'contractorRequest.contractorPackageInProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
+          //     case 'DocumentMaterialPackage': 
+          //       return 'materialRequest.materialPackageInProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
+          //     case 'DocumentStaffPackage': 
+          //       return 'staff.view({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
+          //     // case 'DocumentVariation': 
+          //       // return 'variationRequest.inProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
+          //     case 'DocumentBuilderPackage': 
+          //       return 'client({id: notification.element.projectId})';
+          //   }
+          // }
         };
 
         var text;
@@ -66,6 +83,12 @@ angular.module('buiiltApp')
         if (scope.notification.type === 'task-completed') {
           text = 'Completed task: ' + params.element;
         }
+        // if (scope.notification.type === 'uploadDocument') {
+        //   text = params.fromUser()  + 'has added a new document ' + params.fileName + ' to ' + params.place;
+        // }
+        // if (scope.notification.type === 'uploadNewDocumentVersion') {
+        //   text = params.fromUser()  + 'has updated the document ' + params.fileName + ' in project ' + params.place;
+        // }
         // if (scope.notification.type === 'thread-assign') {
         //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
         // }

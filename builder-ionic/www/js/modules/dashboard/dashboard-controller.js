@@ -22,8 +22,14 @@ angular.module('buiiltApp')
     staffPackageService.getAll({id: value}).$promise.then(function(staffPackages){
       $scope.staffPackages = staffPackages;
     });
-    fileService.getFileByStateParam({'id': value}).$promise.then(function(files){
+    fileService.getFileByStateParamIos({'id': value}).$promise.then(function(files){
       $scope.files = files;
+      console.log(files);
+      _.each($scope.files, function(file){
+        if (file.isNewNotification == 'undefined') {
+          file.isNewNotification = false;
+        }
+      });
     });
   };
 

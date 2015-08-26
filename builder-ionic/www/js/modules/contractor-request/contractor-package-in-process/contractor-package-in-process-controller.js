@@ -55,7 +55,7 @@ angular.module('buiiltApp')
         })
     };
 
-    fileService.getFileByStateParam({'id': $scope.contractorRequest._id}).$promise.then(function(data) {
+    fileService.getFileByStateParamIos({'id': $scope.contractorRequest._id}).$promise.then(function(data) {
         $scope.files = data;
         _.each($scope.files, function(file){
             file.totalLike = file.usersInterestedIn.length;
@@ -65,6 +65,10 @@ angular.module('buiiltApp')
             }
             else {
                 file.isInterested = false;
+            }
+
+            if (file.isNewNotification == 'undefined') {
+                file.isNewNotification = false;
             }
         })
     });

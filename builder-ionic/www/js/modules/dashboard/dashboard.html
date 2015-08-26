@@ -64,7 +64,13 @@
                 </div>
                 <!-- show documentations list -->
                 <div ng-if="isShowDocumentation" class="list">
-                    <ion-item ui-sref="fileDetail({fileId: file._id})" ng-repeat="file in files">{{file.title}}</ion-item>
+                    <ion-item ui-sref="fileDetail({fileId: file._id})" ng-repeat="file in files">
+                        <h2 ng-if="file.isNewNotification"><strong>{{file.title}}</strong></h2>
+                        <p ng-if="file.isNewNotification"><strong>{{file.description}}</strong></p>
+
+                        <h2 ng-if="!file.isNewNotification">{{file.title}}</h2>
+                        <p ng-if="!file.isNewNotification">{{file.description}}</p>
+                    </ion-item>
                 </div>
             </ion-content>
         </ion-pane>

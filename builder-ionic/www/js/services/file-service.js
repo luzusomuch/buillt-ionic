@@ -37,6 +37,14 @@ angular.module('buiiltApp').factory('fileService', function($rootScope, $q, $res
               },
               isArray: true
             },
+            getFileByStateParamIos: {
+              method: 'GET',
+              params: {
+                id: 'id',
+                action: 'params-ios'
+              },
+              isArray: true
+            },
             downloadFile: {
               method: 'GET',
               params: {

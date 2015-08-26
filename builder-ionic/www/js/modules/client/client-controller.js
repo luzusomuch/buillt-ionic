@@ -24,7 +24,7 @@ angular.module('buiiltApp').controller('ClientCtrl', function($ionicTabsDelegate
         $scope.currentUser = data;
     });
 
-    fileService.getFileByStateParam({'id': $scope.builderPackage._id}).$promise.then(function(data) {
+    fileService.getFileByStateParamIos({'id': $scope.builderPackage._id}).$promise.then(function(data) {
         $scope.files = data;
         _.each($scope.files, function(file){
             file.totalLike = file.usersInterestedIn.length;
@@ -34,6 +34,10 @@ angular.module('buiiltApp').controller('ClientCtrl', function($ionicTabsDelegate
             }
             else {
                 file.isInterested = false;
+            }
+
+            if (file.isNewNotification == 'undefined') {
+                file.isNewNotification = false;
             }
         })
     });

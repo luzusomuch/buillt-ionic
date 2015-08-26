@@ -26,7 +26,13 @@
             <ion-list>
               <!-- <div style="margin-top: 50px;"> -->
                 <div ng-repeat="file in files">
-                  <ion-item ui-sref="fileDetail({fileId: file._id})">{{file.title}}</ion-item>
+                  <ion-item ui-sref="fileDetail({fileId: file._id})">
+                    <h2 ng-if="file.isNewNotification"><strong>{{file.title}}</strong></h2>
+                    <p ng-if="file.isNewNotification"><strong>{{file.description}}</strong></p>
+
+                    <h2 ng-if="!file.isNewNotification">{{file.title}}</h2>
+                    <p ng-if="!file.isNewNotification">{{file.description}}</p>
+                  </ion-item>
                 
                   <!-- <ion-item class="item-accordion" ng-show="isFileShown(file)">
                     <div class="card-image" ng-switch="file.mimeType">
