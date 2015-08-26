@@ -49,6 +49,7 @@
           <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Password">
           <p class="validate-message" ng-show="form.password.$error.required && submitted">Password is required</p>
         </label>
+        <div class="spacer" style="height: 40px;"></div>
         <label class="checkbox" style="padding: 0px; margin-top: 7px;">
           <input type="checkbox" ng-model="rememberMe" style="display:inline-block;vertical-align: middle">
           <p style="display:inline-block">Keep me sign in</p>
@@ -58,8 +59,8 @@
         </label>
         
       </ion-list>
-      <div class="spacer" style="height: 40px;"></div>
-      <button class="button button-stable button-block ">Log in</button>
+      
+      <button class="button button-positive button-outline button-block">Log in</button>
       <!-- <a href="#/projects" class="button button-stable button-block ">Log in</a> -->
     </form>
   </ion-content>

@@ -1,5 +1,30 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function($timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  .controller('DashboardCtrl', function($ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  
+  $scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+
+  $scope.clickChange = function(value) {
+    console.log(value);
+    builderPackage: function(builderPackageService, $stateParams) {
+        return builderPackageService.findDefaultByProject({id : value.id});
+      },
+      contractorPackages: function(contractorService, $stateParams) {
+        return contractorService.get({id : value.id});
+      },
+      materialPackages: function(materialPackageService, $stateParams) {
+        return materialPackageService.get({id : value.id});
+      },
+      staffPackages: function(staffPackageService, $stateParams) {
+        return staffPackageService.getAll({id: value.id});
+      },
+      documents: function(fileService, $stateParams) {
+        return fileService.getFileByStateParam({'id': value.id});
+      }
+  };
+
+
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){
     $rootScope.user = $scope.user = user;
@@ -16,13 +41,13 @@ angular.module('buiiltApp')
       $scope.total = res.length;
     });
 
-  $scope.selectTabWithIndex = function(value){
-    console.log(value);
-    $ionicTabsDelegate.select(value);
-    if (value == 0) {
-      window.location.reload();
-    }
-  };
+  // $scope.selectTabWithIndex = function(value){
+  //   console.log(value);
+  //   $ionicTabsDelegate.select(value);
+  //   if (value == 0) {
+  //     window.location.reload();
+  //   }
+  // };
 
   // var selectedTab = $rootScope.selectedTabs;
   // $scope.selectedTab = $rootScope.selectedTabs;
@@ -34,13 +59,13 @@ angular.module('buiiltApp')
   //   alert('33333333333');
   // }
 
-  jQuery(document).ready(function(){
-    if ($rootScope.selectedTabs == 1) {
-      $timeout(function(){
-        $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
-      },3000)
-    }
-  });
+  // jQuery(document).ready(function(){
+  //   if ($rootScope.selectedTabs == 1) {
+  //     $timeout(function(){
+  //       $("div.tab-nav.tabs a.tab-item:last-child").trigger('click');
+  //     },3000)
+  //   }
+  // });
 
   
   
