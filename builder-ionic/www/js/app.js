@@ -74,11 +74,35 @@ angular.module('buiiltApp', [
         StatusBar.styleDefault();
       }
     });
+     //$rootScope.selectedTabs =1;
+    //document.addEventListener("resume", function(){
+      //$rootScope.selectedTabs = 1;
+                              //alert("app js "+$rootScope.selectedTabs);
+                              //$state.go("dashboard", {}, {reload:true});
 
-    document.addEventListener("resume", function(){
-      $rootScope.selectedTabs = 1;
-    }, false)
-
+    //}, false)
+     $rootScope.selectedTabs = 0;
+     if (window.localStorage.getItem("selectTabs") == 1){
+     //alert("bbbbbb");
+     $rootScope.selectedTabs = 1;
+     $state.go("dashboard");
+     }
+     //document.addEventListener("resume", function(){
+                               //alert('aaaaaaaaa');
+                               //$rootScope.selectedTabs = 1;
+                               //$state.go("dashboard");
+                               //window.localStorage.setItem("selectTabs", 1);
+                               //}, false)
+     
+     //alert(window.localStorage.getItem("selectTabs"));
+     //if (window.localStorage.getItem("selectTabs") == 1) {
+     
+     //}
+     //else {
+     //$rootScope.selectedTabs = 0;
+     //}
+     alert($rootScope.selectedTabs);
+     
     if (window.localStorage.getItem('token')) {
       userService.get().$promise.then(function(currentUser){
         $rootScope.currentUser = currentUser;  
@@ -104,7 +128,8 @@ angular.module('buiiltApp', [
       }
     };
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-      $rootScope.isShowAddIcon = false;
+                   
+                   $rootScope.isShowAddIcon = false;
       $rootScope.isInMessageTab = false;
       $rootScope.isInTaskTab = false;
       $rootScope.currentState = toState;
@@ -166,6 +191,7 @@ angular.module('buiiltApp', [
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
+                   
       $rootScope.previousState = from;
       $rootScope.previousParams = fromParams;
     });
