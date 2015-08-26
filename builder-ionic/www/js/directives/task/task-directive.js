@@ -14,7 +14,6 @@ angular.module('buiiltApp')
 
         var contentHeight = $(".tasks-list-content").height() - $("div.tab-nav.tabs").height();
         $("#createTaskForm").css('height', contentHeight + 'px');
-        console.log(contentHeight);
 
         $("a#newTask").on('click', function(){
           if ($("a#newTask > i.icon").hasClass('ion-ios-plus-empty')) {
@@ -155,13 +154,25 @@ angular.module('buiiltApp')
 
         //Update Task List
         var updateTasks = function() {
+          var dueToday = new Date();
+          var dueTomorrow = new Date();
+          dueTomorrow.setDate(dueTomorrow.getDate() +1);
+          
           taskService.get({id : $scope.package._id, type : $scope.type}).$promise
             .then(function(res) {
               $scope.tasks = res;
               _.forEach($scope.tasks,function(task) {
+                var endDate = new Date(task.dateEnd);
                 task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
                 task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
-              })
+                task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
+                if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
+                  task.dueDateTomorrow = true;
+                }
+                else {
+                  task.dueDateTomorrow = false;
+                }
+              });
             });
         };
 

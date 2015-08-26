@@ -54,7 +54,7 @@ angular.module('buiiltApp', [
     }
   };
 })
-.run(function ($rootScope,userService, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
+.run(function ($rootScope,notificationService,userService, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
     // cfpLoadingBar.start();
 
     $ionicPlatform.ready(function() {
@@ -105,6 +105,13 @@ angular.module('buiiltApp', [
       $rootScope.isInMessageTab = false;
       $rootScope.isInTaskTab = false;
       $rootScope.currentState = toState;
+      if (toState.name == 'dashboard') {
+        notificationService.getTotalForIos().$promise
+        .then(function(res) {
+          if (res.length > 0)
+            $rootScope.totalNotification = res.length;
+          });
+      }
         authService.isLoggedInAsync(function (loggedIn) {
           if (loggedIn) {
             

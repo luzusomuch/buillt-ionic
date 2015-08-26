@@ -66,8 +66,14 @@
   <div class="list" ng-if="showListTask">
     <div ng-repeat="task in tasks | taskFilter : filter | orderBy : ['dateEnd'] ">
       <ion-item ui-sref="taskDetail({id: task.project, taskId: task._id})">
-        {{task.name}}
-        </ion-item>
+        <h2 ng-if="task.dueDateTomorrow || task.dueDateToday"><strong>{{task.name}}</strong></h2>
+        <h2>{{task.name}}</h2>
+        <p>
+          <span ng-if="task.dueDateToday">Due Today</span>
+          <span ng-if="task.dueDateTomorrow">Due Tomorrow</span>
+          <span ng-if="!task.dueDateTomorrow && !task.dueDateToday">Due {{task.dateEnd | date: longDate}}</span>
+        </p>
+      </ion-item>
       <!-- <ion-item class="item-stable" ng-click="toggleTask(task)" ng-class="{active: isTaskShown(task)}">{{task.name}}</ion-item>
 
       <ion-item class="item-accordion" ng-show="isTaskShown(task)">
