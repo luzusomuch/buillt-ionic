@@ -8,7 +8,7 @@ angular.module('buiiltApp')
         type : '@'
       },
       controller:
-        function($scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
+        function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
           //Init Params
           console.log('asdsadasdsad');
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
@@ -154,7 +154,7 @@ angular.module('buiiltApp')
 
           //Update Thread List
           var updateThread = function() {
-            messageService.get({id : $scope.package._id, type : $scope.type}).$promise
+            messageService.getIos({id : $scope.package._id, type : $scope.type}).$promise
               .then(function(res) {
                 $scope.threads = res;
                 //$scope.currentThread = $scope.threads[0];
@@ -167,6 +167,9 @@ angular.module('buiiltApp')
                   } else {
                     thread.canSee = false;
                     thread.isOwner = false
+                  }
+                  if (thread.isNewNotification == 'undefined') {
+                    thread.isNewNotification = false;
                   }
                 });
                 if ($scope.currentThread) {
@@ -274,6 +277,10 @@ angular.module('buiiltApp')
           };
           $scope.isThreadShown = function(thread) {
             return $scope.shownThread === thread;
+          };
+
+          $scope.goToThreadDetail = function(thread){
+            notificationService.read({_id : thread._id}).$promise.then();
           };
 
           $scope.saveThread = function(form) {

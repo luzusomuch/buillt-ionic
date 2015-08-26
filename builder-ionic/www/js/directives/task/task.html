@@ -67,7 +67,7 @@
     <div ng-repeat="task in tasks | taskFilter : filter | orderBy : ['dateEnd'] ">
       <ion-item ui-sref="taskDetail({id: task.project, taskId: task._id})">
         <h2 ng-if="task.dueDateTomorrow || task.dueDateToday"><strong>{{task.name}}</strong></h2>
-        <h2>{{task.name}}</h2>
+        <h2 ng-if="!task.dueDateTomorrow && !task.dueDateToday">{{task.name}}</h2>
         <p>
           <span ng-if="task.dueDateToday">Due Today</span>
           <span ng-if="task.dueDateTomorrow">Due Tomorrow</span>

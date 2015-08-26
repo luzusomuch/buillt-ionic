@@ -56,8 +56,13 @@
             </div>
           </form>
         </ion-item> -->
-        <ion-item ui-sref="threadDetail({id: thread.project, threadId: thread._id})">
-        {{thread.name}}
+        <ion-item ng-click="goToThreadDetail(thread)" ui-sref="threadDetail({id: thread.project, threadId: thread._id})">
+          <h2 ng-if="thread.isNewNotification"><strong>{{thread.name}}</strong></h2>
+          <h2 ng-if="!thread.isNewNotification">{{thread.name}}</h2>
+          <p ng-repeat="message in thread.messages" ng-if="$last">
+            <span ng-if="thread.isNewNotification"><strong>{{message.user.firstName + ' ' + message.user.lastName+': '+ message.text}}</strong></span>
+            <span ng-if="!thread.isNewNotification">{{message.user.firstName + ' ' + message.user.lastName+': '+ message.text}}</span>
+          </p>
         </ion-item>
       </div>
     </div>             

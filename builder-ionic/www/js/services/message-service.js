@@ -29,6 +29,13 @@ angular.module('buiiltApp')
           params: {
           }
         },
+        getIos : {
+          method : 'GET',
+          isArray : true,
+          params: {
+            action: 'ios'
+          }
+        },
         create: {
           method: 'POST'
         },
