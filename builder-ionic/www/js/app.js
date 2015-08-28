@@ -84,6 +84,7 @@ angular.module('buiiltApp', [
     $rootScope.push = false;
     $rootScope.push = window.localStorage.getItem('push');
     alert($rootScope.push);
+     alert(window.localStorage.getItem('relatedId'));
     if ($rootScope.push) {
       var id = window.localStorage.getItem('relatedId');
       var projectId = window.localStorage.getItem('projectId');

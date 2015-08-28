@@ -45,6 +45,7 @@
         
         function onNotificationAPN(event) {
             var relatedTo = event.relatedTo;
+            alert(relatedTo);
             window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('relatedId',event.id);
             window.localStorage.setItem('projectId',event.projectId);
@@ -96,6 +97,10 @@
                                                         "alert": "true",
                                                         "ecb": "onNotificationAPN"
                                                         });
+                              	document.addEventListener("resume", onResume, false);
+                              function onResume(){
+                              alert(window.localStorage.getItem("push"));
+                              }
                               }
                           });
                                                             
