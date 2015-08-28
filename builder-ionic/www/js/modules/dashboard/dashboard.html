@@ -15,7 +15,7 @@
             <ion-content padding="false" scroll="false" class="has-header">
                 <ion-list>
                     <label class="item item-select">
-                        <span class="input-label">Select a Project</span>
+                        <span class="input-label">Project</span>
                         <select ng-model="type" ng-change="clickChange(type)">
                             <option value="{{project._id}}" ng-repeat="project in projects | unique:project">
                                 {{project.name}}
@@ -45,6 +45,7 @@
                     <ion-item ng-click="choosePackage(5)">Documentation</ion-item>
                 </ion-list>
                 <div class="spacer" style="width: 255px; height: 64px;"></div>
+                <a class="button button-positive button-clear button-block " ui-sref="notifications"><i class="icon ion-ios7-bell"></i>{{total}} Notification</a>
                 <a ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
             </ion-content>
         </ion-side-menu>
