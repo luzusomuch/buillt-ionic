@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
     <h5>Notification</h5>
   <a class="btn waves-effect waves-yellow" style="font-size: 12px" ng-click="markAllAsRead()">Mark all as read</a>
     <ul class="collection notifications">
@@ -6,4 +6,9 @@
         <div notification="notification" ng-class="{'read' : !notification.unread}"></div>
       </li>
     </ul>
-</div>
+</div> -->
+<ion-view title='Notifications'>
+    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+
+    <div sp-notification  ng-if="currentUser._id"></div>
+</ion-view>

@@ -18,4 +18,12 @@ angular.module('buiiltApp').config(function($stateProvider) {
   //    ]
   //  }
   //});
+
+  $stateProvider
+  .state('notifications', {
+    url: '/notifications',
+    templateUrl: 'js/modules/notification/view-notification/view.html',
+    controller: 'ViewNotificationCtrl',
+    authenticate: true
+  })
 });
