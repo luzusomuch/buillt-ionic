@@ -44,6 +44,7 @@
         var pushNotification;
         
         function onNotificationAPN(event) {
+            alert(event);
             var relatedto = event.relatedto;
             alert(relatedto);
             window.localStorage.setItem('push',event.push);
