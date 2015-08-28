@@ -81,31 +81,33 @@ angular.module('buiiltApp', [
       });
     }
 
-    $rootScope.push = false;
-    $rootScope.push = window.localStorage.getItem('push');
-    alert($rootScope.push);
-     alert(window.localStorage.getItem('id'));
-    if ($rootScope.push) {
-      var id = window.localStorage.getItem('id');
-      var projectId = window.localStorage.getItem('projectid');
-      var type = window.localStorage.getItem('relatedto');
-      if (type == 'task') {
-        $state.go('taskDetail',{id: projectId, taskId: id});
-        $rootScope.push = false;
-        window.localStorage.removeItem('push');
-        window.localStorage.removeItem('id');
-        window.localStorage.removeItem('projectid');
-        window.localStorage.removeItem('relatedto');
-      }
-      else if (type == 'thread') {
-        $state.go('threadDetail',{id: projectId, taskId: id});
-        $rootScope.push = false;
-        window.localStorage.removeItem('push');
-        window.localStorage.removeItem('id');
-        window.localStorage.removeItem('projectid');
-        window.localStorage.removeItem('relatedto');
-      }
-    }
+//    $rootScope.push = false;
+//    $rootScope.push = window.localStorage.getItem('push');
+//    alert($rootScope.push);
+//     alert(window.localStorage.getItem('id'));
+//    if ($rootScope.push) {
+//      var id = window.localStorage.getItem('id');
+//      var projectId = window.localStorage.getItem('projectid');
+//      var type = window.localStorage.getItem('relatedto');
+//      if (type == 'task') {
+//        $state.go('taskDetail',{id: projectId, taskId: id});
+//        $rootScope.push = false;
+//        window.localStorage.removeItem('push');
+//        window.localStorage.removeItem('id');
+//        window.localStorage.removeItem('projectid');
+//        window.localStorage.removeItem('relatedto');
+//      }
+//      else if (type == 'thread') {
+//        $state.go('threadDetail',{id: projectId, taskId: id});
+//        $rootScope.push = false;
+//        window.localStorage.removeItem('push');
+//        window.localStorage.removeItem('id');
+//        window.localStorage.removeItem('projectid');
+//        window.localStorage.removeItem('relatedto');
+//      }
+//    }
+     
+     
 
     $rootScope.deviceWidth = $(window).width();
     $rootScope.currentProject = {};

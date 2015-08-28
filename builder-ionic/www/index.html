@@ -44,16 +44,15 @@
         var pushNotification;
         
         function onNotificationAPN(event) {
-            alert(event);
+            //alert(event.payload.relatedto);
             var relatedto = event.relatedto;
-            alert(relatedto);
             window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('id',event.id);
             window.localStorage.setItem('projectid',event.projectid);
             if (relatedto == 'task'){
                 window.localStorage.setItem('relatedto','task');
             }
-            else
+            else if(relatedto == 'message')
                 window.localStorage.setItem('relatedto','thread');
             if (event.alert) {
                 navigator.notification.alert(event.alert);
@@ -100,8 +99,32 @@
                                                         });
                               	document.addEventListener("resume", onResume, false);
                               function onResume(){
-                                alert('aaaaaaaaaa');
-                              alert(window.localStorage.getItem("push"));
+                                var push = 0;
+                                push = window.localStorage.getItem('push');
+                                var related = window.localStorage.getItem('relatedto');
+                                var id = window.localStorage.getItem('id');
+                                var projectid = window.localStorage.getItem('projectid');
+                                if (push == 1){
+                                    if (related == 'task'){
+                              
+                                        window.location.href = "#/"+projectid+"/task/"+id;
+                              push = 0;
+                              window.localStorage.removeItem('relatedto');
+                              window.localStorage.removeItem('push');
+                              window.localStorage.removeItem('id');
+                              window.localStorage.removeItem('projectid');
+                                    }
+                                    else if (related == 'thread') {
+                                        window.location.href = "#/"+projectid+"/thread/"+id;
+                              push = 0;
+                              window.localStorage.removeItem('relatedto');
+                              window.localStorage.removeItem('push');
+                              window.localStorage.removeItem('id');
+                              window.localStorage.removeItem('projectid');
+                                    }
+                              
+                                }
+                              
                               }
                               }
                           });
