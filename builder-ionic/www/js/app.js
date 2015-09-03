@@ -22,7 +22,8 @@ angular.module('buiiltApp', [
   'btford.socket-io'
   ])
 // .constant('API_URL', 'http://localhost:9000/')
- .constant('API_URL', 'http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/')
+ //.constant('API_URL', 'http://ec2-52-25-224-160.us-west-2.compute.amazonaws.com:9000/')
+.constant('API_URL', 'http://www.buiilt.com.au/')
 
 .config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');

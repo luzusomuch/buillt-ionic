@@ -7,6 +7,9 @@
     </ul>
 </div> -->
 <ion-view title="Projects">
+    <ion-nav-buttons side="left">
+        <a ng-click="toggleMenu()" class="button button-icon"><i class="icon ion-navicon-round"></i></a>
+    </ion-nav-buttons>
     <ion-side-menus>
         <ion-side-menu side="left">
             <ion-header-bar class="bar-stable">
@@ -44,7 +47,7 @@
                     <ion-item ng-click="choosePackage(4)">Employees</ion-item>
                     <ion-item ng-click="choosePackage(5)">Documentation</ion-item>
                 </ion-list>
-                <div class="spacer" style="width: 255px; height: 64px;"></div>
+                <div class="spacer" style="width: 255px; height: 34px;"></div>
                 <a class="button button-positive button-clear button-block " ui-sref="notifications"><i class="icon ion-ios7-bell"></i>{{total}} Notification</a>
                 <a ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
             </ion-content>

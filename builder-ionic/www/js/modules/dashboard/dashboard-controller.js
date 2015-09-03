@@ -4,6 +4,10 @@ angular.module('buiiltApp')
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
+              
+              $scope.toggleMenu = function(){
+              $(".menu-content.pane").toggle();
+              };
 
   $scope.contractorPackages = [];
   $scope.materialPackages = [];
