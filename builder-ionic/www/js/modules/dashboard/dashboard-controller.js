@@ -1,13 +1,20 @@
 angular.module('buiiltApp')
   .controller('DashboardCtrl', function(fileService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
-  
+  $scope.headingName = "Project";
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
               
-              $scope.toggleMenu = function(){
-              $(".menu-content.pane").toggle();
-              };
+  $scope.toggleMenu = function(){
+    var transform = $(".menu-content.pane").css('transform');
+    var values = transform.match(/-?[\d\.]+/g);
+    if (values == null || values[4] == "0") {
+      $(".menu-content.pane").css({transform: 'translate3d(275px,0px,0px)'});
+    }
+    else {
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+    }
+  };
 
   $scope.contractorPackages = [];
   $scope.materialPackages = [];
@@ -16,6 +23,7 @@ angular.module('buiiltApp')
   $scope.projectId = '';
 
   $scope.clickChange = function(value) {
+    $scope.headingName = " ";
     $scope.projectId = value;
     contractorService.get({id : value}).$promise.then(function(contractorPackages){
       $scope.contractorPackages = contractorPackages;
@@ -28,7 +36,6 @@ angular.module('buiiltApp')
     });
     fileService.getFileByStateParamIos({'id': value}).$promise.then(function(files){
       $scope.files = files;
-      console.log(files);
       _.each($scope.files, function(file){
         if (file.isNewNotification == 'undefined') {
           file.isNewNotification = false;
@@ -36,42 +43,52 @@ angular.module('buiiltApp')
       });
     });
   };
-
+  $scope.isShowDefault = true;
   $scope.isShowContractorPackage = false;
   $scope.isShowMaterialPackage = false;
   $scope.isShowStaffPackage = false;
   $scope.isShowDocumentation = false;
   $scope.choosePackage = function(value) {
     if (value == 1) {
+      $scope.isShowDefault = false;
       $scope.isShowContractorPackage = false;
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = false;
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
       $state.go('client',{id: $scope.projectId});
     }
     else if (value == 2) {
+      $scope.isShowDefault = false;
       $scope.isShowContractorPackage = true;
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = false;
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 3) {
+      $scope.isShowDefault = false;
       $scope.isShowContractorPackage = false;
       $scope.isShowMaterialPackage = true;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = false;
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 4) {
+      $scope.isShowDefault = false;
       $scope.isShowContractorPackage = false;
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = true;
       $scope.isShowDocumentation = false;
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 5) {
+      $scope.isShowDefault = false;
       $scope.isShowContractorPackage = false;
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = true;
+      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
   };
 

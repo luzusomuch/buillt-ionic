@@ -7,14 +7,17 @@ angular.module('buiiltApp')
   $scope.currentTeam = currentTeam;
   $scope.materialRequest.winnerTeam._id.member  = filterFilter($scope.materialRequest.winnerTeam._id.member , {status : 'Active'});
 
+  $rootScope.isShowAddIcon = true;
+  $rootScope.isInTaskTab = false;
+  $rootScope.isInMessageTab = true;
   $scope.selectTabWithIndex = function(value){
     $ionicTabsDelegate.select(value);
-    if (value == 1) {
+    if (value == 0) {
       $rootScope.isShowAddIcon = true;
       $rootScope.isInTaskTab = false;
       $rootScope.isInMessageTab = true;
     }
-    else if (value ==2 ) {
+    else if (value ==1 ) {
       $rootScope.isShowAddIcon = true;
       $rootScope.isInTaskTab = true;
       $rootScope.isInMessageTab = false;

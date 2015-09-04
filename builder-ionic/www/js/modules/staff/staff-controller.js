@@ -7,20 +7,21 @@ angular.module('buiiltApp')
       .then(function(res) {
       });
 
+    $rootScope.isShowAddIcon = true;
+    $rootScope.isInTaskTab = false;
+    $rootScope.isInMessageTab = true;
     $scope.selectTabWithIndex = function(value){
         $ionicTabsDelegate.select(value);
-        if (value == 1 || value == 2) {
+        if (value == 0) {
             $rootScope.isShowAddIcon = true;
             $rootScope.isInTaskTab = false;
             $rootScope.isInMessageTab = true;
         }
-        else if (value ==2) {
+        else if (value ==1) {
           $rootScope.isShowAddIcon = true;
           $rootScope.isInTaskTab = true;
           $rootScope.isInMessageTab = false;
         }
-        else
-            $rootScope.isShowAddIcon = false;
     };
 
     $scope.complete = function() {

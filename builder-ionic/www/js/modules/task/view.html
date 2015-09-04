@@ -5,19 +5,20 @@
             <div class="card">
                 <div class="item item-text-wrap">
                     <ul>
-                        <li>Task description: {{task.description}}</li>
-                        <li>Task due date: {{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
+                        <li>Task name: {{task.name}}</li>
+                        <li style="margin-top: 7px;">Task due date: {{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
+                        <li class="spacer" style="height: 20px;"></li>
                         <li>Task assignees:
-                        <ul style="margin-left: 20px;">
-                            <li ng-repeat="assignee in task.assignees" ng-if="assignee.firstName">{{assignee.firstName}} {{assignee.lastName}}</li>
-                            <li ng-repeat="assignee in task.assignees" ng-if="!assignee.firstName">{{assignee.email}} </li>
-                        </ul>
-                      </li>
+                            <ul style="margin-left: 20px;">
+                                <li ng-repeat="assignee in task.assignees" ng-if="assignee.firstName" style="margin-top: 10px;">{{assignee.firstName}} {{assignee.lastName}}</li>
+                                <li ng-repeat="assignee in task.assignees" ng-if="!assignee.firstName" style="margin-top: 10px;">{{assignee.email}} </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
-            <div style="position: absolute; bottom: 0px; left: 1px; right:1px">
-                <button class="button button-full button-positive" ng-click="complete(task)">
+            <div style="position: absolute; bottom: 0px; left: 25px; right:25px">
+                <button class="button button-positive button-outline button-block" ng-click="complete(task)">
                     {{(task.completed) ? "Re-open!" : "Completed!"}}
                 </button>
             </div>

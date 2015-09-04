@@ -3,21 +3,21 @@ angular.module('buiiltApp').controller('ClientCtrl', function($ionicTabsDelegate
     $scope.builderPackage = builderPackage;
     $scope.currentTeam = team;
 
+    $rootScope.isShowAddIcon = true;
+    $rootScope.isInTaskTab = false;
+    $rootScope.isInMessageTab = true;
     $scope.selectTabWithIndex = function(value){
         $ionicTabsDelegate.select(value);
-        if (value == 1) {
-            $state.reload();
+        if (value == 0) {
             $rootScope.isShowAddIcon = true;
             $rootScope.isInTaskTab = false;
             $rootScope.isInMessageTab = true;
         }
-        else if (value == 2) {
+        else if (value == 1) {
             $rootScope.isShowAddIcon = true;
             $rootScope.isInTaskTab = true;
             $rootScope.isInMessageTab = false;
         }
-        else
-            $rootScope.isShowAddIcon = false;
     };
 
     authService.getCurrentUser().$promise.then(function(data){

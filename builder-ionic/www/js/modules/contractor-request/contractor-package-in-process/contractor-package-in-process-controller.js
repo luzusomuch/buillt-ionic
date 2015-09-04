@@ -13,20 +13,21 @@ angular.module('buiiltApp')
       $scope.currentUser = userService.get();
     }
 
+    $rootScope.isShowAddIcon = true;
+    $rootScope.isInTaskTab = false;
+    $rootScope.isInMessageTab = true;
     $scope.selectTabWithIndex = function(value){
         $ionicTabsDelegate.select(value);
-        if (value == 1) {
+        if (value == 0) {
             $rootScope.isShowAddIcon = true;
             $rootScope.isInTaskTab = false;
             $rootScope.isInMessageTab = true;
         }
-        else if (value == 2) {
+        else if (value == 1) {
           $rootScope.isShowAddIcon = true;
           $rootScope.isInTaskTab = true;
           $rootScope.isInMessageTab = false;
         }
-        else
-            $rootScope.isShowAddIcon = false;
     };
 
     if (currentTeam.type == 'supplier' || currentTeam.type == 'homeOwner') {

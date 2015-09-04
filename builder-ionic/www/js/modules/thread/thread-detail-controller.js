@@ -1,6 +1,18 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function(socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location) {
+.controller('ThreadDetailCtrl', function(authService,socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location) {
     $scope.thread = thread;
+
+    authService.getCurrentUser().$promise.then(function(user){
+        _.each($scope.thread.messages, function(message){
+            if (message.user._id == user._id) {
+                message.owner = true;
+            }
+            else {
+                message.owner = false;
+            }
+        });
+    });
+
     $scope.message = {};
 
     socket.emit('join',$scope.thread._id);
@@ -15,7 +27,6 @@ angular.module('buiiltApp')
     // $("div#chatBox").animate({ scrollTop: $("div#chatBox")[0].scrollHeight}, 500);
 
     $timeout(function(){
-        $state.reload();
         $location.hash('bottom');
         $anchorScroll();
     });

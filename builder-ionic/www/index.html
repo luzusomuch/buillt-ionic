@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="lib/prism/themes/prism.css">
     <link rel="stylesheet" href="media/css/main.css">
     <link rel="stylesheet" href="media/css/normalize.css">-->
-    <!-- <link rel="stylesheet" href="media/css/style.css"> -->
+    <link rel="stylesheet" href="media/css/style.css">
     <!--<link rel="stylesheet" href="media/css/materialize.css"> -->
 
     <!-- IF using Sass (run gulp sass first), then remove the CSS include above
@@ -216,7 +216,7 @@
     <div>
         <div>
             <ion-nav-bar class="bar-stable">
-                <ion-nav-back-button side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+                <ion-nav-back-button ng-hide="currentState.name == 'dashboard'" side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
                 <!-- <ion-nav-buttons side="left"> -->
                     <!-- <a ng-if="currentState.name == &apos;dashboard&apos;" class="button button-icon" ui-sref="notifications"><i class="icon ion-ios7-bell"></i>{{totalNotification}} Notification</a> -->
                 <!-- </ion-nav-buttons> -->

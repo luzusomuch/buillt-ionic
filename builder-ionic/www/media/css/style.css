@@ -1,10 +1,9 @@
-select#notification-dropdown{
-    visibility:hidden;
-    opacity:0;
+
+.fromOther {
+    background-color: #E3F2FE !important;
 }
 
-select#notification-dropdown:hover {
-    visibility: visible;
-    opacity: 1;
+.fromMe {
+    background-color:#f5f5f5;
 }
     
