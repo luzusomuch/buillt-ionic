@@ -9,16 +9,11 @@ angular.module('buiiltApp', [
   'ui.utils',
   'ui.router',
   'ngAnimate',
-  'angularFileUpload',
-  // 'ngCookies',
   'ngSanitize',
   'ngResource',
   'angular-loading-bar',
   'cgNotify',
   'restangular',
-  // 'lumx',
-  // 'ui.materialize',
-  // 'angucomplete-alt',
   'btford.socket-io'
   ])
 // .constant('API_URL', 'http://localhost:9000/')
