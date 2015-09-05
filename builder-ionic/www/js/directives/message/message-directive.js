@@ -8,7 +8,7 @@ angular.module('buiiltApp')
         type : '@'
       },
       controller:
-        function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, FileUploader, documentService) {
+        function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, documentService) {
           //Init Params
           console.log('asdsadasdsad');
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();

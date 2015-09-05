@@ -8,7 +8,7 @@ angular.module('buiiltApp')
       type : '@'
     },
     controller:
-      function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, FileUploader, documentService) {
+      function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, documentService) {
         //Init Params
         $scope.showListTask = true;
 
