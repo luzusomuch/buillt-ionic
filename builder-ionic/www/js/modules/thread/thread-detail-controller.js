@@ -4,12 +4,10 @@ angular.module('buiiltApp')
 
     authService.getCurrentUser().$promise.then(function(user){
         $scope.user = user;
-        console.log($scope.thread.messages);
         $scope.thread.orderedMessages = [];
         for (var i = $scope.thread.messages.length -1; i >= 0; i--) {
             $scope.thread.orderedMessages.push($scope.thread.messages[i]);
         };
-        console.log($scope.thread.orderedMessages);
         _.each($scope.thread.orderedMessages, function(message){
             if (message.user._id == user._id) {
                 message.owner = true;
@@ -38,16 +36,6 @@ angular.module('buiiltApp')
                 message.owner = false;
             }
         });
-        // console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
-    });
-
-    // $("div#chatBox").scrollTop($("div#chatBox")[0].scrollHeight);
-    // console.log($('div#chatBox').height());
-    // $("div#chatBox").animate({ scrollTop: $("div#chatBox")[0].scrollHeight}, 500);
-
-    $timeout(function(){
-        $location.hash('bottom');
-        $anchorScroll();
     });
 
     $scope.sendMessage = function() {
@@ -68,14 +56,48 @@ angular.module('buiiltApp')
                         message.owner = false;
                     }
                 });
+                $("textarea#textarea1").css('height', 0+'px');
             });
         }
     };
 
-    $scope.enterMessage = function ($event) {
-        if ($event.keyCode === 13) {
-            $event.preventDefault();
-            $scope.sendMessage();
+    // $scope.enterMessage = function ($event) {
+    //     if ($event.keyCode === 13) {
+    //         $event.preventDefault();
+    //         $scope.sendMessage();
+    //     }
+    // };
+})
+.directive('textarea', function() {
+  return {
+    restrict: 'E',
+    controller: function($scope, $element) {
+      $element.css('overflow-y','hidden');
+      $element.css('resize','none');
+      resetHeight();
+      adjustHeight();
+
+      function resetHeight() {
+        $element.css('height', 0 + 'px');
+      }
+
+      function adjustHeight() {
+        var height = angular.element($element)[0]
+          .scrollHeight + 1;
+        $element.css('height', height + 'px');
+        $element.css('max-height', height + 'px');
+      }
+
+      function keyPress(event) {
+        // this handles backspace and delete
+        if (_.contains([8, 46], event.keyCode)) {
+          resetHeight();
         }
-    };
+        adjustHeight();
+      }
+
+      $element.bind('keyup change blur', keyPress);
+
+    }
+  };
 });
