@@ -108,6 +108,7 @@ angular.module('buiiltApp', [
 
     $rootScope.deviceWidth = $(window).width();
     $rootScope.currentProject = {};
+    $rootScope.currentProjectId = '';
     $rootScope.authService = authService;
     $rootScope.currentTeam = {};
     $rootScope.hasHeader = true;
@@ -125,11 +126,18 @@ angular.module('buiiltApp', [
       }
     };
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-                   
-                   $rootScope.isShowAddIcon = false;
+      $rootScope.isShowAddIcon = false;
       $rootScope.isInMessageTab = false;
       $rootScope.isInTaskTab = false;
       $rootScope.currentState = toState;
+
+      if ($rootScope.currentProjectId != '') {
+        projectService.get({id: $rootScope.currentProjectId}).$promise.then(function(data){
+          $rootScope.currentProject = data;
+          console.log(data);
+        });
+      }
+
       if (toState.name == 'dashboard') {
         notificationService.getTotalForIos().$promise
         .then(function(res) {

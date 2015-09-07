@@ -21,7 +21,7 @@
                         <span class="input-label">{{(headingName) ? headingName : "Project"}}</span>
                         <select ng-model="type" ng-change="clickChange(type)" style="padding: 0px 45px 0px 0px">
                             <option value="{{project._id}}" ng-repeat="project in projects | unique:project">
-                                {{project.name}}
+                                {{(currentProject.name) ? currentProject.name : project.name}}
                             </option>
                         </select>
                     </label>

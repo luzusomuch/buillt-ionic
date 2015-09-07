@@ -3,7 +3,14 @@ angular.module('buiiltApp')
     $scope.thread = thread;
 
     authService.getCurrentUser().$promise.then(function(user){
-        _.each($scope.thread.messages, function(message){
+        $scope.user = user;
+        console.log($scope.thread.messages);
+        $scope.thread.orderedMessages = [];
+        for (var i = $scope.thread.messages.length -1; i >= 0; i--) {
+            $scope.thread.orderedMessages.push($scope.thread.messages[i]);
+        };
+        console.log($scope.thread.orderedMessages);
+        _.each($scope.thread.orderedMessages, function(message){
             if (message.user._id == user._id) {
                 message.owner = true;
             }
@@ -19,6 +26,18 @@ angular.module('buiiltApp')
 
     socket.on('message:new', function (thread) {
         $scope.thread = thread;
+        $scope.thread.orderedMessages = [];
+        for (var i = $scope.thread.messages.length-1; i >= 0; i--) {
+            $scope.thread.orderedMessages.push($scope.thread.messages[i]);
+        };
+        _.each($scope.thread.messages, function(message){
+            if (message.user._id == $scope.user._id) {
+                message.owner = true;
+            }
+            else {
+                message.owner = false;
+            }
+        });
         // console.log($scope.scrollHeight = $('#messages')[0].scrollHeight);
     });
 
@@ -35,8 +54,20 @@ angular.module('buiiltApp')
         if ($scope.message.text != '') {
             messageService.sendMessage({id: $scope.thread._id, type: $scope.thread.type}, $scope.message).$promise
             .then(function (res) {
-              $scope.message.text = '';
-              $scope.thread = res;
+                $scope.message.text = '';
+                $scope.thread = res;
+                $scope.thread.orderedMessages = [];
+                for (var i = $scope.thread.messages.length-1; i >= 0; i--) {
+                    $scope.thread.orderedMessages.push($scope.thread.messages[i]);
+                };
+                _.each($scope.thread.orderedMessages, function(message){
+                    if (message.user._id == $scope.user._id) {
+                        message.owner = true;
+                    }
+                    else {
+                        message.owner = false;
+                    }
+                });
             });
         }
     };

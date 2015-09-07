@@ -7,8 +7,8 @@
       <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
 
       <div class="item item-input">
-        <span class="input-label">Description</span>
-        <input id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
+        <!-- <span class="input-label">Description</span> -->
+        <input placeholder="Task Description" id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
                ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow">
         <p class="validate-message" ng-show="form.name.$error.required && submitted">Task name is required</p>
       </div>
@@ -16,8 +16,8 @@
       <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
 
       <div class="item item-input">
-        <span class="input-label">Due date</span>
-        <input type="date"
+        <!-- <span class="input-label">Due date</span> -->
+        <input placeholder="Due Date" type="date"
                name="created"
                id="dueDate"
                ng-model="task.dateEnd"
@@ -42,7 +42,7 @@
 
       <div class="spacer" style="width: 300px; height: 44px;"></div>
 
-      <div class="row" style="position: absolute; bottom: 0px; left: 1px; right: 1px">
+      <div class="row" style="">
         <button class="button button-positive button-outline button-block" type="submit" ng-if="!isShow" name="action">Add Task
         </button>
       </div>

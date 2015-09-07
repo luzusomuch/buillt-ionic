@@ -22,9 +22,15 @@ angular.module('buiiltApp')
   $scope.files = [];
   $scope.projectId = '';
 
-  $scope.clickChange = function(value) {
-    $scope.headingName = " ";
-    $scope.projectId = value;
+  console.log($rootScope.currentProject);
+  console.log($rootScope.currentProject._id);
+  if ($rootScope.currentProject._id) {
+    $scope.currentProject = $rootScope.currentProject;
+    console.log($scope.currentProject);
+    findPackageByProject($scope.currentProject._id);
+  }
+
+  function findPackageByProject(value){
     contractorService.get({id : value}).$promise.then(function(contractorPackages){
       $scope.contractorPackages = contractorPackages;
     });
@@ -42,6 +48,12 @@ angular.module('buiiltApp')
         }
       });
     });
+  };
+
+  $scope.clickChange = function(value) {
+    $scope.headingName = " ";
+    $rootScope.currentProjectId = $scope.projectId = value;
+    findPackageByProject(value);
   };
   $scope.isShowDefault = true;
   $scope.isShowContractorPackage = false;
