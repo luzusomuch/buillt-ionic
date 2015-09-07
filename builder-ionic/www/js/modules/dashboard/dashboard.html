@@ -20,8 +20,8 @@
                     <label class="item item-select">
                         <span class="input-label">{{(headingName) ? headingName : "Project"}}</span>
                         <select ng-model="type" ng-change="clickChange(type)" style="padding: 0px 45px 0px 0px">
-                            <option value="{{project._id}}" ng-repeat="project in projects | unique:project">
-                                {{(currentProject.name) ? currentProject.name : project.name}}
+                            <option ng-selected="project._id == selectProject._id" ng-if="!hasCurrentProject" value="{{project._id}}" ng-repeat="project in projects | unique:project">
+                                {{project.name}}
                             </option>
                         </select>
                     </label>

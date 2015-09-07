@@ -78,42 +78,13 @@ angular.module('buiiltApp', [
       });
     }
 
-//    $rootScope.push = false;
-//    $rootScope.push = window.localStorage.getItem('push');
-//    alert($rootScope.push);
-//     alert(window.localStorage.getItem('id'));
-//    if ($rootScope.push) {
-//      var id = window.localStorage.getItem('id');
-//      var projectId = window.localStorage.getItem('projectid');
-//      var type = window.localStorage.getItem('relatedto');
-//      if (type == 'task') {
-//        $state.go('taskDetail',{id: projectId, taskId: id});
-//        $rootScope.push = false;
-//        window.localStorage.removeItem('push');
-//        window.localStorage.removeItem('id');
-//        window.localStorage.removeItem('projectid');
-//        window.localStorage.removeItem('relatedto');
-//      }
-//      else if (type == 'thread') {
-//        $state.go('threadDetail',{id: projectId, taskId: id});
-//        $rootScope.push = false;
-//        window.localStorage.removeItem('push');
-//        window.localStorage.removeItem('id');
-//        window.localStorage.removeItem('projectid');
-//        window.localStorage.removeItem('relatedto');
-//      }
-//    }
-     
-     
-
     $rootScope.deviceWidth = $(window).width();
-    $rootScope.currentProject = {};
+    // $rootScope.currentProject = {};
     $rootScope.currentProjectId = '';
     $rootScope.authService = authService;
     $rootScope.currentTeam = {};
     $rootScope.hasHeader = true;
     $rootScope.hasFooter = true;
-    
 
     $rootScope.safeApply = function (fn) {
       var phase = $rootScope.$$phase;
@@ -133,9 +104,10 @@ angular.module('buiiltApp', [
 
       if ($rootScope.currentProjectId != '') {
         projectService.get({id: $rootScope.currentProjectId}).$promise.then(function(data){
-          $rootScope.currentProject = data;
-          console.log(data);
+          $rootScope.selectProject = data;
         });
+      } else {
+        $rootScope.selectProject = {};
       }
 
       if (toState.name == 'dashboard') {
@@ -163,22 +135,6 @@ angular.module('buiiltApp', [
       if (toState.noFooter) {
         $rootScope.hasFooter = false;
       }
-
-      // if (toState.canAccess) {
-      //   authService.getCurrentTeam().$promise
-      //     .then(function(res) {
-      //       if (toState.canAccess.indexOf(res.type) == -1) {
-      //         if (toState.hasCurrentProject) {
-      //           $state.go('projects.view',{id : toParams.id })
-      //         } else {
-      //           // $state.go('dashboard');
-      //         }
-      //       } else {
-      //         // console.log('false')
-      //       }
-      //     });
-
-      // }
 
       if (toState.hasCurrentProject) {
         
@@ -211,23 +167,3 @@ angular.module('buiiltApp', [
     $rootScope.overlay = false;
 
   })
-
-// .run(function($ionicPlatform) {
-//   $ionicPlatform.ready(function() {
-//     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-//     // for form inputs).
-//     // The reason we default this to hidden is that native apps don't usually show an accessory bar, at
-//     // least on iOS. It's a dead giveaway that an app is using a Web View. However, it's sometimes
-//     // useful especially with forms, though we would prefer giving the user a little more room
-//     // to interact with the app.
-//     if (window.cordova && window.cordova.plugins.Keyboard) {
-//       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-//       cordova.plugins.Keyboard.disableScroll(true);
-//     }
-//     if (window.StatusBar) {
-//       // Set the statusbar to use the default style, tweak this to
-//       // remove the status bar on iOS or change it to use white instead of dark colors.
-//       StatusBar.styleDefault();
-//     }
-//   });
-// });

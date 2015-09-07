@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(fileService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  .controller('DashboardCtrl', function(projectService,fileService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
   $scope.headingName = "Project";
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
@@ -22,14 +22,6 @@ angular.module('buiiltApp')
   $scope.files = [];
   $scope.projectId = '';
 
-  console.log($rootScope.currentProject);
-  console.log($rootScope.currentProject._id);
-  if ($rootScope.currentProject._id) {
-    $scope.currentProject = $rootScope.currentProject;
-    console.log($scope.currentProject);
-    findPackageByProject($scope.currentProject._id);
-  }
-
   function findPackageByProject(value){
     contractorService.get({id : value}).$promise.then(function(contractorPackages){
       $scope.contractorPackages = contractorPackages;
@@ -50,11 +42,19 @@ angular.module('buiiltApp')
     });
   };
 
+  if ($rootScope.selectProject._id) {
+    $scope.headingName = " ";
+    $scope.selectProject = $rootScope.selectProject;
+    $scope.projectId = $scope.selectProject._id;
+    findPackageByProject($scope.selectProject._id);
+  }
+
   $scope.clickChange = function(value) {
     $scope.headingName = " ";
     $rootScope.currentProjectId = $scope.projectId = value;
     findPackageByProject(value);
   };
+
   $scope.isShowDefault = true;
   $scope.isShowContractorPackage = false;
   $scope.isShowMaterialPackage = false;

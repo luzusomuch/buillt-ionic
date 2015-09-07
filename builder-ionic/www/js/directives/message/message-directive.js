@@ -10,10 +10,8 @@ angular.module('buiiltApp')
       controller:
         function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, documentService) {
           //Init Params
-          console.log('asdsadasdsad');
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
           $("#createThreadForm").css('height', contentHeight + 'px');
-          console.log(contentHeight);
           $scope.showMessageList = true;
 
           $("a#newMessage").on('click', function(){
