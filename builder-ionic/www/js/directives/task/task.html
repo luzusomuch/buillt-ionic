@@ -17,7 +17,8 @@
 
       <div class="item item-input">
         <!-- <span class="input-label">Due date</span> -->
-        <input placeholder="Due Date" type="date"
+        <input placeholder="Due Date" type="text" onblur="(this.type == 'text')"
+         onfocus="(this.type == 'date')"
                name="created"
                id="dueDate"
                ng-model="task.dateEnd"
