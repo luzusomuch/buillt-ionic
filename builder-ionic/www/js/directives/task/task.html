@@ -16,9 +16,8 @@
       <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
 
       <div class="item item-input">
-        <!-- <span class="input-label">Due date</span> -->
-        <input placeholder="Due Date" type="text" onblur="(this.type == 'text')"
-         onfocus="(this.type == 'date')"
+        <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
+        <input ng-if="isShowInputDate" type="date" placeholder="Due Date"
                name="created"
                id="dueDate"
                ng-model="task.dateEnd"

@@ -291,6 +291,8 @@ angular.module('buiiltApp')
                     $scope.addThread = false;
                     $scope.currentThread = res;
                     $scope.showMessageList = true;
+                    $("a#newMessage > i.icon").removeClass('ion-ios-close-empty');
+                    $("a#newMessage > i.icon").addClass('ion-ios-plus-empty');
                     // socket.emit('join',res._id);
                     updateThread();
                   })

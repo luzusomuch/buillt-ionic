@@ -11,6 +11,11 @@ angular.module('buiiltApp')
       function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, documentService) {
         //Init Params
         $scope.showListTask = true;
+        $scope.isShowInputDate = false;
+        $scope.callDateInput = function(){
+          $scope.isShowInputDate = true;
+          $("input#dueDate").trigger('click');
+        };
 
         var contentHeight = $(".tasks-list-content").height() - $("div.tab-nav.tabs").height();
         $("#createTaskForm").css('height', contentHeight + 'px');
@@ -271,6 +276,7 @@ angular.module('buiiltApp')
         $scope.cancelTask = function(){
           $scope.addTask = false;          
           $scope.showListTask = true;
+          $scope.isShowInputDate = false;
         };
 
         //Submit form function
@@ -283,6 +289,9 @@ angular.module('buiiltApp')
                   updateTasks();
                   $scope.addTask = false;
                   $scope.showListTask = true;
+                  $scope.isShowInputDate = false;
+                  $("a#newTask > i.icon").removeClass('ion-ios-close-empty');
+                  $("a#newTask > i.icon").addClass('ion-ios-plus-empty');
                 })
             } else {
               taskService.update({id : $scope.task._id, type : $scope.type},$scope.task).$promise
