@@ -54,13 +54,24 @@ angular.module('buiiltApp')
     $rootScope.currentProjectId = $scope.projectId = value;
     findPackageByProject(value);
   };
-
   $scope.isShowDefault = true;
   $scope.isShowContractorPackage = false;
   $scope.isShowMaterialPackage = false;
   $scope.isShowStaffPackage = false;
   $scope.isShowDocumentation = false;
+
+  if ($rootScope.hasResourceType) {
+    $scope.isShowDefault = false;
+  }
+
+  function resetCurrentResource(){
+    $rootScope.hasResourceType = false;
+    $rootScope.currentResource = [];
+    $rootScope.currentSelectResource = [];
+  };
+
   $scope.choosePackage = function(value) {
+    resetCurrentResource();
     if (value == 1) {
       $scope.isShowDefault = false;
       $scope.isShowContractorPackage = false;
@@ -76,6 +87,8 @@ angular.module('buiiltApp')
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = false;
+      $rootScope.hasResourceType = true;
+      $rootScope.currentResource = $scope.contractorPackages;
       $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 3) {
@@ -84,6 +97,8 @@ angular.module('buiiltApp')
       $scope.isShowMaterialPackage = true;
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = false;
+      $rootScope.hasResourceType = true;
+      $rootScope.currentResource = $scope.materialPackages;
       $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 4) {
@@ -92,6 +107,8 @@ angular.module('buiiltApp')
       $scope.isShowMaterialPackage = false;
       $scope.isShowStaffPackage = true;
       $scope.isShowDocumentation = false;
+      $rootScope.hasResourceType = true;
+      $rootScope.currentResource = $scope.staffPackages;
       $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
     }
     else if (value == 5) {
@@ -101,6 +118,18 @@ angular.module('buiiltApp')
       $scope.isShowStaffPackage = false;
       $scope.isShowDocumentation = true;
       $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+    }
+  };
+
+  $scope.goToResourceDetail = function(resource) {
+    if (resource.type == 'contractor') {
+      $state.go('contractorRequestInProgress',{id:resource.project, packageId: resource._id});
+    }
+    else if (resource.type == 'material') {
+      $state.go('materialRequestInProcess',{id:resource.project, packageId: resource._id});
+    }
+    else if (resource.type == 'staffPackage') {
+      $state.go('staffView',{id:package.project, packageId: package._id});
     }
   };
 

@@ -44,7 +44,7 @@
                     <ion-item ng-if="currentTeam.type == 'supplier'" ng-click="choosePackage(3)">
                         Materials
                     </ion-item>
-                    <ion-item ng-click="choosePackage(4)">Employees</ion-item>
+                    <ion-item ng-if="currentTeam.type == 'builder'" ng-click="choosePackage(4)">Employees</ion-item>
                     <!-- <ion-item ng-click="choosePackage(5)">Documentation</ion-item> -->
                 </ion-list>
                 <div class="spacer" style="width: 255px; height: 34px;"></div>
@@ -54,6 +54,11 @@
         </ion-side-menu>
         <ion-pane ion-side-menu-content="">
             <ion-content padding="false">
+                <div class="list" ng-if="hasResourceType">
+                    <ion-item ng-click="goToResourceDetail(package)" ng-repeat="package in currentSelectResource">
+                        {{package.name}}
+                    </ion-item>
+                </div>
                 <!-- show contractor packages list -->
                 <div ng-if="isShowDefault" style="padding-left:20px;">
                     <h5>Select a Project from Menu above</h5>
