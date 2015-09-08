@@ -129,7 +129,7 @@ angular.module('buiiltApp')
       $state.go('materialRequestInProcess',{id:resource.project, packageId: resource._id});
     }
     else if (resource.type == 'staffPackage') {
-      $state.go('staffView',{id:package.project, packageId: package._id});
+      $state.go('staffView',{id:resource.project, packageId: resource._id});
     }
   };
 
