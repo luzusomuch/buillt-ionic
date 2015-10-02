@@ -1,7 +1,7 @@
 angular.module('buiiltApp').config(function($stateProvider) {
     $stateProvider
     .state('taskDetail', {
-        url: '/:id/task/:taskId',
+        url: '/task/:taskId',
         templateUrl: 'js/modules/task/view.html',
         controller: 'TaskDetailCtrl',
         authenticate : true,

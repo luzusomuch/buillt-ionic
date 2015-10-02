@@ -2,26 +2,13 @@
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     <ion-content padding="false" class="has-header">
         <div class="card">
-            <div class="item item-text-wrap">
-                <div class="card-image" ng-switch="file.mimeType">
-                    <span ng-switch-when="image/jpeg">
-                        <img src="{{thumbnail}}" alt="" style="width: 100%;">
-                    </span>
-                    <span ng-switch-when="image/png">
-                        <img src="{{thumbnail}}" alt="" style="width: 100%;">
-                    </span>
-                    <span ng-switch-when="application/pdf" style="width: 100%;">
-                        <img src="{{thumbnail}}" alt="" style="height:250px;width:100%;">
-                    </span>
-                    <span ng-switch-default>
-                        <img src="../../media/sample-1.jpg" alt="" style="width: 100%;">
-                    </span>
-                </div>
+            <div class="item item-body">
+                <img ng-src="{{file.path}}">
             </div>
             <div class="item item-divider">
-                <p style="cursor:pointer;">
+                <!-- <p style="cursor:pointer;">
                     <a ng-click="downloadFile(file)">Download</a>
-                </p>
+                </p> -->
                 <p>{{file.title}} <span><em>Revision {{file.version +1 }} of {{file.version +1 }}</em></span></p>
             </div>
         </div>

@@ -1,12 +1,12 @@
 <ion-content padding="false" class="has-header messages-list-content">
     <div class="list" ng-if="showDefault">
-        <ion-item ng-repeat="document in documents">
+        <ion-item ng-repeat="document in documents" ui-sref="fileDetail({fileId: document.element.file._id})">
             {{document.element.file.title}}
         </ion-item>
     </div>
 
     <div class="list" ng-if="!showDefault">
-        <ion-item ng-repeat="document in documents">
+        <ion-item ng-repeat="document in documents" ui-sref="fileDetail({fileId: document._id})">
             {{document.title}}
         </ion-item>
     </div>
