@@ -19,13 +19,39 @@ angular.module('buiiltApp')
           $scope.$on('getProject', function(event, value){
             messageService.getAllByProject({id: value}).$promise.then(function(res){
               $scope.threads = res;
-              console.log(res);
+              _.forEach($scope.threads,function(thread) {
+                if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+                  thread.canSee = true;
+                } else if (thread.owner == $scope.currentUser._id) {
+                  thread.canSee = true;
+                  thread.isOwner = true;
+                } else {
+                  thread.canSee = false;
+                  thread.isOwner = false
+                }
+                if (thread.isNewNotification == 'undefined') {
+                  thread.isNewNotification = false;
+                }
+              });
             });
           });
 
           messageService.getAllByUser().$promise.then(function(res){
             $scope.threads = res;
-            console.log(res);
+            _.forEach($scope.threads,function(thread) {
+              if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+                thread.canSee = true;
+              } else if (thread.owner == $scope.currentUser._id) {
+                thread.canSee = true;
+                thread.isOwner = true;
+              } else {
+                thread.canSee = false;
+                thread.isOwner = false
+              }
+              if (thread.isNewNotification == 'undefined') {
+                thread.isNewNotification = false;
+              }
+            });
           });
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
           $("#createThreadForm").css('height', contentHeight + 'px');
@@ -171,7 +197,6 @@ angular.module('buiiltApp')
           var updateThread = function(packageId, type) {
             messageService.getIos({id : packageId, type : type}).$promise
               .then(function(res) {
-                console.log(res);
                 $scope.threads = res;
                 //$scope.currentThread = $scope.threads[0];
                 _.forEach($scope.threads,function(thread) {

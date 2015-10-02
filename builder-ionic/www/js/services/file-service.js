@@ -59,6 +59,13 @@ angular.module('buiiltApp').factory('fileService', function($rootScope, $q, $res
                 action: 'download-all'
               },
               isArray: true
+            },
+            getAllByUser: {
+              method: 'get', 
+              params: {
+                action: 'get-all-by-user'
+              },
+              isArray: true
             }
     });
 });
