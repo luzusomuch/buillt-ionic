@@ -3,10 +3,10 @@ angular.module('buiiltApp')
   return {
     restrict: 'EA',
     templateUrl: 'js/directives/task/task.html',
-    scope:{
-      package: '=',
-      type : '@'
-    },
+    // scope:{
+    //   package: '=',
+    //   type : '@'
+    // },
     controller:
       function($scope,$rootScope,taskService, authService,filterFilter, $stateParams, $rootScope, $location , packageService, userService, projectService, documentService) {
         //Init Params
@@ -16,6 +16,52 @@ angular.module('buiiltApp')
           $scope.isShowInputDate = true;
           $("input#dueDate").trigger('click');
         };
+
+        $scope.$on('getPackage', function(event, value){
+          $scope.package = value.package;
+          $scope.type = value.type;
+          updateTasks($scope.package._id, $scope.type);
+        });
+
+        $scope.$on('getProject', function(event, value){
+          taskService.getAllByProject({id: value}).$promise.then(function(res){
+            var dueToday = new Date();
+            var dueTomorrow = new Date();
+            dueTomorrow.setDate(dueTomorrow.getDate() +1);
+            $scope.tasks = res;
+            _.forEach($scope.tasks,function(task) {
+              var endDate = new Date(task.dateEnd);
+              task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
+              task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
+              task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
+              if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
+                task.dueDateTomorrow = true;
+              }
+              else {
+                task.dueDateTomorrow = false;
+              }
+            });
+          });
+        });
+
+        taskService.getAllByUser().$promise.then(function(res){
+          var dueToday = new Date();
+          var dueTomorrow = new Date();
+          dueTomorrow.setDate(dueTomorrow.getDate() +1);
+          $scope.tasks = res;
+          _.forEach($scope.tasks,function(task) {
+            var endDate = new Date(task.dateEnd);
+            task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
+            task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
+            task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
+            if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
+              task.dueDateTomorrow = true;
+            }
+            else {
+              task.dueDateTomorrow = false;
+            }
+          });
+        });
 
         var contentHeight = $(".tasks-list-content").height() - $("div.tab-nav.tabs").height();
         $("#createTaskForm").css('height', contentHeight + 'px');
@@ -42,8 +88,6 @@ angular.module('buiiltApp')
               $scope.currentTeam = res;
               $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
               getAvailableAssignee($scope.type);
-              updateTasks();
-
             });
         });
 
@@ -158,12 +202,12 @@ angular.module('buiiltApp')
 
 
         //Update Task List
-        var updateTasks = function() {
+        var updateTasks = function(packageId, type) {
           var dueToday = new Date();
           var dueTomorrow = new Date();
           dueTomorrow.setDate(dueTomorrow.getDate() +1);
           
-          taskService.get({id : $scope.package._id, type : $scope.type}).$promise
+          taskService.get({id : packageId, type : type}).$promise
             .then(function(res) {
               $scope.tasks = res;
               _.forEach($scope.tasks,function(task) {
