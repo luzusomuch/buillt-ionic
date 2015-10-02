@@ -21,6 +21,8 @@ angular.module('buiiltApp')
           $scope.package = value.package;
           $scope.type = value.type;
           updateTasks($scope.package._id, $scope.type);
+          getAvailableAssignee($scope.type);
+          $rootScope.$broadcast('taskAvaiableAssignees', $scope.available);
         });
 
         $scope.$on('getProject', function(event, value){
@@ -42,6 +44,23 @@ angular.module('buiiltApp')
               }
             });
           });
+        });
+
+        $scope.$on('inComingNewTask', function(event, task){
+          var dueToday = new Date();
+          var dueTomorrow = new Date();
+          dueTomorrow.setDate(dueTomorrow.getDate() +1);
+          var endDate = new Date(task.dateEnd);
+          task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
+          task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
+          task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
+          if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
+            task.dueDateTomorrow = true;
+          }
+          else {
+            task.dueDateTomorrow = false;
+          }
+          $scope.tasks.push(task);
         });
 
         taskService.getAllByUser().$promise.then(function(res){
@@ -87,7 +106,7 @@ angular.module('buiiltApp')
             authService.getCurrentTeam().$promise.then(function(res) {
               $scope.currentTeam = res;
               $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
-              getAvailableAssignee($scope.type);
+              // getAvailableAssignee($scope.type);
             });
         });
 

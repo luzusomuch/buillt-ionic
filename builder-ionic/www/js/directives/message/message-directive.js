@@ -14,6 +14,8 @@ angular.module('buiiltApp')
             $scope.package = value.package;
             $scope.type = value.type;
             updateThread($scope.package._id, $scope.type);
+            getAvailableUser($scope.type);
+            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
           });
 
           $scope.$on('getProject', function(event, value){
@@ -34,6 +36,22 @@ angular.module('buiiltApp')
                 }
               });
             });
+          });
+
+          $scope.$on('inComingNewThread', function(event, thread){
+            if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+              thread.canSee = true;
+            } else if (thread.owner == $scope.currentUser._id) {
+              thread.canSee = true;
+              thread.isOwner = true;
+            } else {
+              thread.canSee = false;
+              thread.isOwner = false
+            }
+            if (thread.isNewNotification == 'undefined') {
+              thread.isNewNotification = false;
+            }
+            $scope.threads.push(thread);
           });
 
           messageService.getAllByUser().$promise.then(function(res){
@@ -77,7 +95,7 @@ angular.module('buiiltApp')
           authService.getCurrentTeam().$promise.then(function(data){
             $scope.currentTeam = data;
             $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
-            getAvailableUser($scope.type);
+            // getAvailableUser($scope.type);
           });
           $scope.submitted = false;
           $scope.isNew = true;

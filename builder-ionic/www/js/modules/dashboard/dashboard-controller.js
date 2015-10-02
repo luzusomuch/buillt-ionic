@@ -1,6 +1,19 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal) {
+  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService) {
   $scope.headingName = "Project";
+
+  $scope.currentTab = 'thread';
+  $scope.selectTabWithIndex = function(value){
+    $ionicTabsDelegate.select(value);
+    if (value == 0) {
+      $scope.currentTab = 'thread';
+    } else if (value == 1) {
+      $scope.currentTab = 'task';
+    } else if (value == 2) {
+      $scope.currentTab = 'document';
+    }
+  };
+
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
@@ -185,4 +198,93 @@ angular.module('buiiltApp')
     $scope.modalChoosePackage.hide();
     $rootScope.$broadcast('getPackage', {package: $scope.currentPackage, type: $scope.packageType});
   };
+
+  //create new task
+  $ionicModal.fromTemplateUrl('modalCreateTask.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalCreateTask = modal;
+  });
+
+  $scope.isShowInputDate = false;
+  $scope.callDateInput = function(){
+    $scope.isShowInputDate = true;
+    $("input#dueDate").trigger('click');
+  };
+
+  $scope.$on('taskAvaiableAssignees', function(event, value){
+    $scope.available = value;
+  });
+
+  $scope.task = {
+    assignees : []
+  };
+
+  $scope.assign = function(staff,index) {
+    if (staff.isSelect == false) {
+      staff.isSelect = true;
+      $scope.task.assignees.push(staff);
+    }
+    else if (staff.isSelect == true) {
+      staff.isSelect = false;
+      _.remove($scope.task.assignees, {_id: staff._id});
+    }
+  };
+
+  $scope.createNewTask = function(form) {
+    if (form.$valid) {
+      taskService.create({id : $scope.currentPackage._id, type : $scope.packageType},$scope.task)
+      .$promise.then(function(res) {
+        $rootScope.$broadcast('inComingNewTask', res);
+        $scope.modalCreateTask.hide();
+      });
+    }
+  };
+
+  //create new thread
+  $ionicModal.fromTemplateUrl('modalCreateThread.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalCreateThread = modal;
+  });
+
+  $scope.$on('availableAssigneeInThread', function(event, value){
+    $scope.availableAssigneesInThread = value;
+  });
+
+  $scope.thread = {
+    users : []
+  };
+
+  $scope.assignInThread = function(user,index) {
+    if (user.isSelect == false) {
+      user.isSelect = true;
+      $scope.thread.users.push(user);
+    }
+    else if (user.isSelect == true) {
+      user.isSelect = false;
+      _.remove($scope.thread.users, {_id: user._id});
+    }
+  };
+
+  $scope.createNewThread = function(form) {
+    messageService.create({id: $scope.currentPackage._id, type: $scope.packageType}, $scope.thread)
+    .$promise.then(function (res) {
+      $rootScope.$broadcast('inComingNewThread', res);
+      $scope.modalCreateThread.hide();
+    });
+  };
+
+  $scope.createTaskThreadDocument = function(){
+    console.log($scope.currentTab);
+    if ($scope.currentTab == 'thread') {
+      $scope.modalCreateThread.show();
+    } else if ($scope.currentTab == 'task') {
+      $scope.modalCreateTask.show();
+    } else if ($scope.currentTab == 'document') {
+      $scope.modalCreateDocument.show();
+    }
+  }
 });
