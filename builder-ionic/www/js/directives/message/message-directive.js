@@ -3,13 +3,30 @@ angular.module('buiiltApp')
     return {
       restrict: 'A',
       templateUrl: 'js/directives/message/message.html',
-      scope:{
-        package: '=',
-        type : '@'
-      },
+      // scope:{
+      //   package: '=',
+      //   type : '='
+      // },
       controller:
         function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, documentService) {
           //Init Params
+          $scope.$on('getPackage', function(event, value){
+            $scope.package = value.package;
+            $scope.type = value.type;
+            updateThread($scope.package._id, $scope.type);
+          });
+
+          $scope.$on('getProject', function(event, value){
+            messageService.getAllByProject({id: value}).$promise.then(function(res){
+              $scope.threads = res;
+              console.log(res);
+            });
+          });
+
+          messageService.getAllByUser().$promise.then(function(res){
+            $scope.threads = res;
+            console.log(res);
+          });
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
           $("#createThreadForm").css('height', contentHeight + 'px');
           $scope.showMessageList = true;
@@ -151,9 +168,10 @@ angular.module('buiiltApp')
           };
 
           //Update Thread List
-          var updateThread = function() {
-            messageService.getIos({id : $scope.package._id, type : $scope.type}).$promise
+          var updateThread = function(packageId, type) {
+            messageService.getIos({id : packageId, type : type}).$promise
               .then(function(res) {
+                console.log(res);
                 $scope.threads = res;
                 //$scope.currentThread = $scope.threads[0];
                 _.forEach($scope.threads,function(thread) {
@@ -175,7 +193,7 @@ angular.module('buiiltApp')
                 }
               });
           };
-          updateThread();
+          // updateThread();
 
           var getMessage = function() {
             if ($scope.currentThread)

@@ -16,8 +16,8 @@ angular.module('buiiltApp', [
   'restangular',
   'btford.socket-io'
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'http://www.buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'http://www.buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');
@@ -39,7 +39,7 @@ angular.module('buiiltApp', [
     // Intercept 401s and redirect you to login
     responseError: function (response) {
       if (response.status === 401) {
-        $location.path('/dashboard');
+        $location.path('/login');
         // $state.go('signin');
         // remove any stale tokens
         window.localStorage.removeItem('token');

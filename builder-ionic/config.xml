@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--ios id com.hoanvu.buiilt
-  android id com.myles.buiiilt -->
-<widget id="com.hoanvu.buiilt" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  android id com.myles.buiilt -->
+<widget id="com.hoanvu.buiilt" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>buiilt</name>
   <description>&#xD;
         Built project.&#xD;
@@ -11,6 +11,7 @@
     </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <allow-navigation href="*" />
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>

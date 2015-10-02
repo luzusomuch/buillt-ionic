@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(projectService,fileService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService) {
+  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal) {
   $scope.headingName = "Project";
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
@@ -21,8 +21,12 @@ angular.module('buiiltApp')
   $scope.staffPackages = [];
   $scope.files = [];
   $scope.projectId = '';
+  $scope.selectedProject = {};
 
   function findPackageByProject(value){
+    builderPackageService.findDefaultByProject({id: value}).$promise.then(function(builderPackage){
+      $scope.builderPackage = builderPackage;
+    });
     contractorService.get({id : value}).$promise.then(function(contractorPackages){
       $scope.contractorPackages = contractorPackages;
     });
@@ -44,15 +48,18 @@ angular.module('buiiltApp')
 
   if ($rootScope.selectProject._id) {
     $scope.headingName = " ";
-    $scope.selectProject = $rootScope.selectProject;
-    $scope.projectId = $scope.selectProject._id;
-    findPackageByProject($scope.selectProject._id);
+    $scope.selectedProject = $rootScope.selectProject;
+    $scope.projectId = $scope.selectedProject._id;
+    findPackageByProject($scope.selectedProject._id);
   }
 
   $scope.clickChange = function(value) {
     $scope.headingName = " ";
-    $rootScope.currentProjectId = $scope.projectId = value;
-    findPackageByProject(value);
+    $scope.selectedProject = value;
+    $rootScope.currentProjectId = $scope.projectId = value._id;
+    findPackageByProject(value._id);
+    $scope.modalChooseProject.hide();
+    $rootScope.$broadcast('getProject', value._id);
   };
   $scope.isShowDefault = true;
   $scope.isShowContractorPackage = false;
@@ -143,4 +150,39 @@ angular.module('buiiltApp')
       $scope.projects = team.project;
     });
   });
+
+  $ionicModal.fromTemplateUrl('modal1.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalChooseProject = modal;
+  });
+
+  $scope.chooseProject = function(){
+    $scope.modalChooseProject.show();
+  };
+
+  $ionicModal.fromTemplateUrl('modalPackage.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalChoosePackage = modal;
+  });
+
+  $scope.choosePackageModal = function(){
+    $scope.modalChoosePackage.show();
+  };
+
+  $scope.getPackage = function(value) {
+    $scope.currentPackage = value;
+    if (value.type == 'BuilderPackage') {
+      $scope.packageType = 'builder';
+    } else if (value.type == 'staffPackage') {
+      $scope.packageType = 'staff';
+    } else {
+      $scope.packageType = value.type;
+    }
+    $scope.modalChoosePackage.hide();
+    $rootScope.$broadcast('getPackage', {package: $scope.currentPackage, type: $scope.packageType});
+  };
 });

@@ -51,6 +51,20 @@ angular.module('buiiltApp')
         },
         getById: {
           method: 'get'
+        },
+        getAllByUser: {
+          method: 'get',
+          params: {
+            action: 'list-by-user'
+          },
+          isArray: true
+        },
+        getAllByProject: {
+          method: 'get',
+          params: {
+            action: 'list-by-project'
+          },
+          isArray: true
         }
         //update: {
         //  method: 'PUT'
