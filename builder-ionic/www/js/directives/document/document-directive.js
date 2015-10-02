@@ -19,6 +19,10 @@ angular.module('buiiltApp')
                 getDocument(value);
             });
 
+            $scope.$on('inComingNewDocument', function(event, value){
+                $scope.documents.push(value);
+            });
+
             var getDocument = function(id) {
                 fileService.getFileByStateParamIos({id: id}).$promise.then(function(res){
                     $scope.documents = res;

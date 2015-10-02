@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService) {
+  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
   $scope.headingName = "Project";
 
   $scope.currentTab = 'thread';
@@ -277,8 +277,53 @@ angular.module('buiiltApp')
     });
   };
 
+  //upload new document
+  $ionicModal.fromTemplateUrl('createNewDocument.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalCreateDocument = modal;
+  });
+
+  $scope.uploadFile = {};
+  $scope.pickFile = pickFile;
+
+  $scope.onSuccess = onSuccess;
+
+  function pickFile(){
+    filepickerService.pick(
+      {mimetype: 'image/*'},
+      onSuccess
+    );
+  };
+
+  function onSuccess(file){
+    $scope.uploadFile = {
+      file: file,
+      _id: ($scope.fileId) ? $scope.fileId : '',
+      belongToType: ($scope.packageType) ? $scope.packageType : 'project',
+      tags: [],
+      isQuote: $scope.isQuote
+    };
+  };
+
+  $scope.uploadNewDocument = function() {
+    if ($scope.currentPackage) {
+      uploadService.uploadInPackage({id: $scope.currentPackage._id, file: $scope.uploadFile})
+      .$promise.then(function(res){
+        $rootScope.$broadcast('inComingNewDocument', res);
+        $scope.modalCreateDocument.hide();
+      });
+    } else {
+      uploadService.upload({id: $rootScope.currentProjectId, file: $scope.uploadFile})
+      .$promise.then(function(res){
+        $rootScope.$broadcast('inComingNewDocument', res);
+        $scope.modalCreateDocument.hide();
+      });
+    }
+  };
+
   $scope.createTaskThreadDocument = function(){
-    console.log($scope.currentTab);
     if ($scope.currentTab == 'thread') {
       $scope.modalCreateThread.show();
     } else if ($scope.currentTab == 'task') {

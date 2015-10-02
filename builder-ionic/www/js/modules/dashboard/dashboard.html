@@ -257,3 +257,34 @@
         </ion-content>
     </div>
 </script>
+
+<script id="createNewDocument.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h class="title">Create new task</h>
+        </ion-header-bar>
+        <form ng-submit="uploadNewDocument()" name="uploadForm">
+            <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+            <div class="item item-input">
+                <input placeholder="Document title" type="text" ng-model="uploadFile.title" required name="title" ng-class="{'invalid' : uploadForm.name.$invalid && submitted}">
+                <p class="validate-message" ng-show="uploadForm.title.$error.required && submitted">Document title is required</p>
+            </div>
+
+            <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+            <div class="item item-input">
+                <input filepicker type="filepicker-dragdrop" data-fp-services="computer, DROPBOX, gmail, skydrive, GOOGLE_DRIVE" on-success="onSuccess(event.fpfile)" data-fp-multiple="false"/>
+            </div>
+
+            <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+            <div class="item item-input">
+                <input placeholder="Document description" type="text" ng-model="uploadFile.desc" required name="description" ng-class="{'invalid' : uploadForm.description.$invalid && submitted}">
+                <p class="validate-message" ng-show="uploadForm.description.$error.required && submitted">Document description is required</p>
+            </div>
+
+            <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+            <div class="row" style="">
+                <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+            </div>
+        </form>
+    </div>
+</script>
