@@ -17,8 +17,8 @@ angular.module('buiiltApp', [
   'btford.socket-io',
   'angular-filepicker'
   ])
-.constant('API_URL', 'http://localhost:9000/')
-// .constant('API_URL', 'http://www.buiilt.com.au/')
+// .constant('API_URL', 'http://localhost:9000/')
+.constant('API_URL', 'https://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
   $urlRouterProvider.otherwise('/signin');

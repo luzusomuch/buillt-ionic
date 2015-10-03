@@ -25,9 +25,9 @@ angular.module('buiiltApp')
     }
   };
 
-  // $scope.toggleLeft = function() {
-  //   $ionicSideMenuDelegate.toggleLeft();
-  // };
+  $scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
               
   // $scope.toggleMenu = function(){
   //   var transform = $(".menu-content.pane").css('transform');

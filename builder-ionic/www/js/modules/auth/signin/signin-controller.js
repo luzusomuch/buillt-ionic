@@ -15,10 +15,8 @@ angular.module('buiiltApp')
       $scope.submitted = true;
       if (form.$valid) {
         authService.login($scope.user).then(function () {
-          //show alert
           $state.go('dashboard');
           // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
-          // $window.location.href = '/team/manager';
         }, function (res) {
           $scope.error = true;
           $scope.errorMsg = res.message;
