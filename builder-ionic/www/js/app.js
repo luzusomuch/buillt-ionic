@@ -107,7 +107,7 @@ angular.module('buiiltApp', [
       $rootScope.currentState = toState;
 
       $rootScope.currentSelectResource = $rootScope.currentResource;
-
+      $rootScope.selectPackage = $rootScope.currentSelectPackage;
       if ($rootScope.currentProjectId != '') {
         projectService.get({id: $rootScope.currentProjectId}).$promise.then(function(data){
           $rootScope.selectProject = data;

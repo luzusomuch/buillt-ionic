@@ -10,16 +10,8 @@ angular.module('buiiltApp')
       controller:
         function(notificationService,$scope,$rootScope,messageService, authService,$timeout,$location,filterFilter, $stateParams, $location , packageService, userService, projectService, documentService) {
           //Init Params
-          $scope.$on('getPackage', function(event, value){
-            $scope.package = value.package;
-            $scope.type = value.type;
-            updateThread($scope.package._id, $scope.type);
-            getAvailableUser($scope.type);
-            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
-          });
-
-          $scope.$on('getProject', function(event, value){
-            messageService.getAllByProject({id: value}).$promise.then(function(res){
+          var getThreadByProject = function(projectId) {
+            messageService.getAllByProject({id: projectId}).$promise.then(function(res){
               $scope.threads = res;
               _.forEach($scope.threads,function(thread) {
                 if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
@@ -36,6 +28,19 @@ angular.module('buiiltApp')
                 }
               });
             });
+          }
+
+          $scope.$on('getPackage', function(event, value){
+            $scope.package = value.package;
+            $scope.type = value.type;
+            updateThread($scope.package._id, $scope.type);
+            getAvailableUser($scope.type);
+            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
+          });
+
+          $scope.$on('getProject', function(event, value){
+            $rootScope.currentProjectId = value;
+            getThreadByProject(value);
           });
 
           $scope.$on('inComingNewThread', function(event, thread){
@@ -54,23 +59,40 @@ angular.module('buiiltApp')
             $scope.threads.push(thread);
           });
 
-          messageService.getAllByUser().$promise.then(function(res){
-            $scope.threads = res;
-            _.forEach($scope.threads,function(thread) {
-              if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
-                thread.canSee = true;
-              } else if (thread.owner == $scope.currentUser._id) {
-                thread.canSee = true;
-                thread.isOwner = true;
-              } else {
-                thread.canSee = false;
-                thread.isOwner = false
-              }
-              if (thread.isNewNotification == 'undefined') {
-                thread.isNewNotification = false;
-              }
+          if ($rootScope.selectProject._id || $rootScope.currentProjectId) {
+            var projectId = ($rootScope.selectProject._id) ? $rootScope.selectProject._id : $rootScope.currentProjectId;
+            getThreadByProject(projectId);
+          } else if ($rootScope.selectPackage) {
+            if ($rootScope.selectPackage.type == 'BuilderPackage') {
+              $scope.type = 'builder';
+            } else if ($rootScope.selectPackage.type == 'staffPackage') {
+              $scope.type = 'staff';
+            } else {
+              $scope.type = $rootScope.selectPackage.type;
+            }
+            updateThread($rootScope.selectPackage._id, $scope.type);
+            getAvailableUser($scope.type);
+            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
+          } else {
+            messageService.getAllByUser().$promise.then(function(res){
+              $scope.threads = res;
+              _.forEach($scope.threads,function(thread) {
+                if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+                  thread.canSee = true;
+                } else if (thread.owner == $scope.currentUser._id) {
+                  thread.canSee = true;
+                  thread.isOwner = true;
+                } else {
+                  thread.canSee = false;
+                  thread.isOwner = false
+                }
+                if (thread.isNewNotification == 'undefined') {
+                  thread.isNewNotification = false;
+                }
+              });
             });
-          });
+          }
+          
           var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
           $("#createThreadForm").css('height', contentHeight + 'px');
           $scope.showMessageList = true;

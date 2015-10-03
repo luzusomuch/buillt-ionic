@@ -14,20 +14,20 @@ angular.module('buiiltApp')
     }
   };
 
-  $scope.toggleLeft = function() {
-    $ionicSideMenuDelegate.toggleLeft();
-  };
+  // $scope.toggleLeft = function() {
+  //   $ionicSideMenuDelegate.toggleLeft();
+  // };
               
-  $scope.toggleMenu = function(){
-    var transform = $(".menu-content.pane").css('transform');
-    var values = transform.match(/-?[\d\.]+/g);
-    if (values == null || values[4] == "0") {
-      $(".menu-content.pane").css({transform: 'translate3d(275px,0px,0px)'});
-    }
-    else {
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-    }
-  };
+  // $scope.toggleMenu = function(){
+  //   var transform = $(".menu-content.pane").css('transform');
+  //   var values = transform.match(/-?[\d\.]+/g);
+  //   if (values == null || values[4] == "0") {
+  //     $(".menu-content.pane").css({transform: 'translate3d(275px,0px,0px)'});
+  //   }
+  //   else {
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //   }
+  // };
 
   $scope.contractorPackages = [];
   $scope.materialPackages = [];
@@ -64,6 +64,7 @@ angular.module('buiiltApp')
     $scope.selectedProject = $rootScope.selectProject;
     $scope.projectId = $scope.selectedProject._id;
     findPackageByProject($scope.selectedProject._id);
+    $rootScope.$broadcast('getProject', $scope.projectId);
   }
 
   $scope.clickChange = function(value) {
@@ -90,56 +91,56 @@ angular.module('buiiltApp')
     $rootScope.currentSelectResource = [];
   };
 
-  $scope.choosePackage = function(value) {
-    resetCurrentResource();
-    if (value == 1) {
-      $scope.isShowDefault = false;
-      $scope.isShowContractorPackage = false;
-      $scope.isShowMaterialPackage = false;
-      $scope.isShowStaffPackage = false;
-      $scope.isShowDocumentation = false;
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-      $state.go('client',{id: $scope.projectId});
-    }
-    else if (value == 2) {
-      $scope.isShowDefault = false;
-      $scope.isShowContractorPackage = true;
-      $scope.isShowMaterialPackage = false;
-      $scope.isShowStaffPackage = false;
-      $scope.isShowDocumentation = false;
-      $rootScope.hasResourceType = true;
-      $rootScope.currentResource = $scope.contractorPackages;
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-    }
-    else if (value == 3) {
-      $scope.isShowDefault = false;
-      $scope.isShowContractorPackage = false;
-      $scope.isShowMaterialPackage = true;
-      $scope.isShowStaffPackage = false;
-      $scope.isShowDocumentation = false;
-      $rootScope.hasResourceType = true;
-      $rootScope.currentResource = $scope.materialPackages;
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-    }
-    else if (value == 4) {
-      $scope.isShowDefault = false;
-      $scope.isShowContractorPackage = false;
-      $scope.isShowMaterialPackage = false;
-      $scope.isShowStaffPackage = true;
-      $scope.isShowDocumentation = false;
-      $rootScope.hasResourceType = true;
-      $rootScope.currentResource = $scope.staffPackages;
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-    }
-    else if (value == 5) {
-      $scope.isShowDefault = false;
-      $scope.isShowContractorPackage = false;
-      $scope.isShowMaterialPackage = false;
-      $scope.isShowStaffPackage = false;
-      $scope.isShowDocumentation = true;
-      $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-    }
-  };
+  // $scope.choosePackage = function(value) {
+  //   resetCurrentResource();
+  //   if (value == 1) {
+  //     $scope.isShowDefault = false;
+  //     $scope.isShowContractorPackage = false;
+  //     $scope.isShowMaterialPackage = false;
+  //     $scope.isShowStaffPackage = false;
+  //     $scope.isShowDocumentation = false;
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //     $state.go('client',{id: $scope.projectId});
+  //   }
+  //   else if (value == 2) {
+  //     $scope.isShowDefault = false;
+  //     $scope.isShowContractorPackage = true;
+  //     $scope.isShowMaterialPackage = false;
+  //     $scope.isShowStaffPackage = false;
+  //     $scope.isShowDocumentation = false;
+  //     $rootScope.hasResourceType = true;
+  //     $rootScope.currentResource = $scope.contractorPackages;
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //   }
+  //   else if (value == 3) {
+  //     $scope.isShowDefault = false;
+  //     $scope.isShowContractorPackage = false;
+  //     $scope.isShowMaterialPackage = true;
+  //     $scope.isShowStaffPackage = false;
+  //     $scope.isShowDocumentation = false;
+  //     $rootScope.hasResourceType = true;
+  //     $rootScope.currentResource = $scope.materialPackages;
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //   }
+  //   else if (value == 4) {
+  //     $scope.isShowDefault = false;
+  //     $scope.isShowContractorPackage = false;
+  //     $scope.isShowMaterialPackage = false;
+  //     $scope.isShowStaffPackage = true;
+  //     $scope.isShowDocumentation = false;
+  //     $rootScope.hasResourceType = true;
+  //     $rootScope.currentResource = $scope.staffPackages;
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //   }
+  //   else if (value == 5) {
+  //     $scope.isShowDefault = false;
+  //     $scope.isShowContractorPackage = false;
+  //     $scope.isShowMaterialPackage = false;
+  //     $scope.isShowStaffPackage = false;
+  //     $scope.isShowDocumentation = true;
+  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
+  //   }
+  // };
 
   $scope.goToResourceDetail = function(resource) {
     if (resource.type == 'contractor') {
@@ -186,8 +187,21 @@ angular.module('buiiltApp')
     $scope.modalChoosePackage.show();
   };
 
+  if ($rootScope.currentPackage) {
+    $scope.currentPackage = $rootScope.currentPackage;
+    if ($rootScope.currentPackage.type == 'BuilderPackage') {
+      $scope.packageType = 'builder';
+    } else if ($rootScope.currentPackage.type == 'staffPackage') {
+      $scope.packageType = 'staff';
+    } else {
+      $scope.packageType = $rootScope.currentPackage.type;
+    }
+    $rootScope.currentSelectPackage = $scope.currentPackage;
+    $rootScope.$broadcast('getPackage', {package: $scope.currentPackage, type: $scope.packageType});
+  }
+
   $scope.getPackage = function(value) {
-    $scope.currentPackage = value;
+    $rootScope.currentPackage = $scope.currentPackage = value;
     if (value.type == 'BuilderPackage') {
       $scope.packageType = 'builder';
     } else if (value.type == 'staffPackage') {

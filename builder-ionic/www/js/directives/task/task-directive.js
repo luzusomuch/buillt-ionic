@@ -17,16 +17,8 @@ angular.module('buiiltApp')
           $("input#dueDate").trigger('click');
         };
 
-        $scope.$on('getPackage', function(event, value){
-          $scope.package = value.package;
-          $scope.type = value.type;
-          updateTasks($scope.package._id, $scope.type);
-          getAvailableAssignee($scope.type);
-          $rootScope.$broadcast('taskAvaiableAssignees', $scope.available);
-        });
-
-        $scope.$on('getProject', function(event, value){
-          taskService.getAllByProject({id: value}).$promise.then(function(res){
+        var getTaskByProject = function(projectId){
+          taskService.getAllByProject({id: projectId}).$promise.then(function(res){
             var dueToday = new Date();
             var dueTomorrow = new Date();
             dueTomorrow.setDate(dueTomorrow.getDate() +1);
@@ -44,6 +36,19 @@ angular.module('buiiltApp')
               }
             });
           });
+        };
+
+        $scope.$on('getPackage', function(event, value){
+          $scope.package = value.package;
+          $scope.type = value.type;
+          updateTasks($scope.package._id, $scope.type);
+          getAvailableAssignee($scope.type);
+          $rootScope.$broadcast('taskAvaiableAssignees', $scope.available);
+        });
+
+        $scope.$on('getProject', function(event, value){
+          $rootScope.currentProjectId = value;
+          getTaskByProject(value);
         });
 
         $scope.$on('inComingNewTask', function(event, task){
@@ -63,24 +68,40 @@ angular.module('buiiltApp')
           $scope.tasks.push(task);
         });
 
-        taskService.getAllByUser().$promise.then(function(res){
-          var dueToday = new Date();
-          var dueTomorrow = new Date();
-          dueTomorrow.setDate(dueTomorrow.getDate() +1);
-          $scope.tasks = res;
-          _.forEach($scope.tasks,function(task) {
-            var endDate = new Date(task.dateEnd);
-            task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
-            task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
-            task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
-            if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
-              task.dueDateTomorrow = true;
-            }
-            else {
-              task.dueDateTomorrow = false;
-            }
+        if ($rootScope.selectProject._id || $rootScope.currentProjectId) {
+          var projectId = ($rootScope.selectProject._id) ? $rootScope.selectProject._id : $rootScope.currentProjectId;
+          getTaskByProject(projectId);
+        } else if ($rootScope.selectPackage) {
+          if ($rootScope.selectPackage.type == 'BuilderPackage') {
+            $scope.type = 'builder';
+          } else if ($rootScope.selectPackage.type == 'staffPackage') {
+            $scope.type = 'staff';
+          } else {
+            $scope.type = $rootScope.selectPackage.type;
+          }
+          updateTasks($rootScope.selectPackage._id, $scope.type);
+          getAvailableAssignee($scope.type);
+          $rootScope.$broadcast('taskAvaiableAssignees', $scope.available);
+        } else {
+          taskService.getAllByUser().$promise.then(function(res){
+            var dueToday = new Date();
+            var dueTomorrow = new Date();
+            dueTomorrow.setDate(dueTomorrow.getDate() +1);
+            $scope.tasks = res;
+            _.forEach($scope.tasks,function(task) {
+              var endDate = new Date(task.dateEnd);
+              task.isOwner = (_.findIndex(task.assignees,{_id : $scope.currentUser._id}) != -1) || (task.user == $scope.currentUser._id);
+              task.dateEnd = (task.dateEnd) ? new Date(task.dateEnd) : null;
+              task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
+              if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
+                task.dueDateTomorrow = true;
+              }
+              else {
+                task.dueDateTomorrow = false;
+              }
+            });
           });
-        });
+        }
 
         var contentHeight = $(".tasks-list-content").height() - $("div.tab-nav.tabs").height();
         $("#createTaskForm").css('height', contentHeight + 'px');
