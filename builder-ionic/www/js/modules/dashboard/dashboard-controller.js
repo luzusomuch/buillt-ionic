@@ -189,28 +189,15 @@ angular.module('buiiltApp')
 
   if ($rootScope.currentPackage) {
     $scope.currentPackage = $rootScope.currentPackage;
-    if ($rootScope.currentPackage.type == 'BuilderPackage') {
-      $scope.packageType = 'builder';
-    } else if ($rootScope.currentPackage.type == 'staffPackage') {
-      $scope.packageType = 'staff';
-    } else {
-      $scope.packageType = $rootScope.currentPackage.type;
-    }
-    $rootScope.currentSelectPackage = $scope.currentPackage;
-    $rootScope.$broadcast('getPackage', {package: $scope.currentPackage, type: $scope.packageType});
+
+    $rootScope.isCurrentSelectPackage = $scope.currentPackage;
+    $rootScope.$broadcast('getPackage', $rootScope.currentPackage);
   }
 
   $scope.getPackage = function(value) {
     $rootScope.currentPackage = $scope.currentPackage = value;
-    if (value.type == 'BuilderPackage') {
-      $scope.packageType = 'builder';
-    } else if (value.type == 'staffPackage') {
-      $scope.packageType = 'staff';
-    } else {
-      $scope.packageType = value.type;
-    }
     $scope.modalChoosePackage.hide();
-    $rootScope.$broadcast('getPackage', {package: $scope.currentPackage, type: $scope.packageType});
+    $rootScope.$broadcast('getPackage', $rootScope.currentPackage);
   };
 
   //create new task

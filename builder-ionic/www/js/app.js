@@ -89,6 +89,8 @@ angular.module('buiiltApp', [
     $rootScope.hasFooter = true;
     $rootScope.currentResource = [];
     $rootScope.hasResourceType = false;
+    $rootScope.hasSelectCurrentPackage = false;
+    $rootScope.currentPackage = {};
 
     $rootScope.safeApply = function (fn) {
       var phase = $rootScope.$$phase;
@@ -105,9 +107,8 @@ angular.module('buiiltApp', [
       $rootScope.isInMessageTab = false;
       $rootScope.isInTaskTab = false;
       $rootScope.currentState = toState;
-
       $rootScope.currentSelectResource = $rootScope.currentResource;
-      $rootScope.selectPackage = $rootScope.currentSelectPackage;
+      $rootScope.selectPackage = $rootScope.isCurrentSelectPackage;
       if ($rootScope.currentProjectId != '') {
         projectService.get({id: $rootScope.currentProjectId}).$promise.then(function(data){
           $rootScope.selectProject = data;

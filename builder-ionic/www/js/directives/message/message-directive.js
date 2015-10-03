@@ -30,105 +30,13 @@ angular.module('buiiltApp')
             });
           }
 
-          $scope.$on('getPackage', function(event, value){
-            $scope.package = value.package;
-            $scope.type = value.type;
-            updateThread($scope.package._id, $scope.type);
-            getAvailableUser($scope.type);
-            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
-          });
-
-          $scope.$on('getProject', function(event, value){
-            $rootScope.currentProjectId = value;
-            getThreadByProject(value);
-          });
-
-          $scope.$on('inComingNewThread', function(event, thread){
-            if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
-              thread.canSee = true;
-            } else if (thread.owner == $scope.currentUser._id) {
-              thread.canSee = true;
-              thread.isOwner = true;
-            } else {
-              thread.canSee = false;
-              thread.isOwner = false
-            }
-            if (thread.isNewNotification == 'undefined') {
-              thread.isNewNotification = false;
-            }
-            $scope.threads.push(thread);
-          });
-
-          if ($rootScope.selectProject._id || $rootScope.currentProjectId) {
-            var projectId = ($rootScope.selectProject._id) ? $rootScope.selectProject._id : $rootScope.currentProjectId;
-            getThreadByProject(projectId);
-          } else if ($rootScope.selectPackage) {
-            if ($rootScope.selectPackage.type == 'BuilderPackage') {
-              $scope.type = 'builder';
-            } else if ($rootScope.selectPackage.type == 'staffPackage') {
-              $scope.type = 'staff';
-            } else {
-              $scope.type = $rootScope.selectPackage.type;
-            }
-            updateThread($rootScope.selectPackage._id, $scope.type);
-            getAvailableUser($scope.type);
-            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
-          } else {
-            messageService.getAllByUser().$promise.then(function(res){
-              $scope.threads = res;
-              _.forEach($scope.threads,function(thread) {
-                if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
-                  thread.canSee = true;
-                } else if (thread.owner == $scope.currentUser._id) {
-                  thread.canSee = true;
-                  thread.isOwner = true;
-                } else {
-                  thread.canSee = false;
-                  thread.isOwner = false
-                }
-                if (thread.isNewNotification == 'undefined') {
-                  thread.isNewNotification = false;
-                }
-              });
-            });
-          }
-          
-          var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
-          $("#createThreadForm").css('height', contentHeight + 'px');
-          $scope.showMessageList = true;
-
-          $("a#newMessage").on('click', function(){
-            if ($("a#newMessage > i.icon").hasClass('ion-ios-plus-empty')) {
-              $("a#newMessage > i.icon").removeClass('ion-ios-plus-empty');
-              $("a#newMessage > i.icon").addClass('ion-ios-close-empty');
-              $("a#createThread").trigger('click');
-            }
-            else if ($("a#newMessage > i.icon").hasClass('ion-ios-close-empty')) {
-              $("a#newMessage > i.icon").removeClass('ion-ios-close-empty');
-              $("a#newMessage > i.icon").addClass('ion-ios-plus-empty');
-              $("span.close-thread").trigger('click');
-            }
-          });
-
-          $scope.currentProject = $rootScope.currentProject;
-          authService.getCurrentUser().$promise.then(function(res) {
-            $scope.currentUser = res;
-          });
-          authService.getCurrentTeam().$promise.then(function(data){
-            $scope.currentTeam = data;
-            $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
-            // getAvailableUser($scope.type);
-          });
-          $scope.submitted = false;
-          $scope.isNew = true;
-          $scope.addThread = false;
-
           //Get Available assignee to assign to task
           var getAvailableUser = function(type) {
             
             switch(type) {
               case 'builder' :
                 $scope.available = [];
+                var tempAvailable = [];
                 $scope.available = angular.copy($scope.currentTeam.leader);
                 if ($scope.currentTeam._id == $scope.package.owner._id && $scope.isLeader) {
                   if ($scope.package.to.team) {
@@ -137,10 +45,29 @@ angular.module('buiiltApp')
                     })
                   }
                 }
-                if ($scope.package.to.team && $scope.currentTeam._id == $scope.package.to.team._id && $scope.isLeader) {
-                  _.forEach($scope.package.owner.leader, function (leader) {
-                    $scope.available.push(leader);
-                  })
+                if ($scope.package.to.team) {
+                  if ($scope.package.to.team._id != $scope.currentTeam._id && $scope.isLeader) {
+                    _.forEach($scope.package.to.team.leader, function (leader) {
+                      tempAvailable.push(leader);
+                    });
+                    $scope.available = _.union($scope.available, tempAvailable);
+                  }
+                }
+                if ($scope.package.architect.team) {
+                  if ($scope.package.architect.team._id != $scope.currentTeam._id && $scope.isLeader) {
+                    _.each($scope.package.architect.team.leader, function(leader){
+                      tempAvailable.push(leader);
+                    });
+                    $scope.available = _.union($scope.available, tempAvailable);
+                  }
+                }
+                if ($scope.package.winner) {
+                  if ($scope.package.winner._id != $scope.currentTeam._id && $scope.package.winner._id != $scope.package.owner._id) {
+                    _.each($scope.package.winner.leader, function(leader){
+                      tempAvailable.push(leader);
+                    });
+                    $scope.available = _.union($scope.available, tempAvailable);
+                  }
                 }
                 _.forEach($scope.currentTeam.member,function(member) {
                   if (member.status == 'Active') {
@@ -260,14 +187,101 @@ angular.module('buiiltApp')
           };
           // updateThread();
 
+          var getPackageType = function(package) {
+            var type = '';
+            if (package.type == 'BuilderPackage') {
+              type = 'builder';
+            } else if (package.type == 'staffPackage') {
+              type = 'staff';
+            } else {
+              type = package.type;
+            }
+            return type;
+          };
+
+          $scope.$on('getPackage', function(event, package){
+            $scope.package = package;
+            $scope.type = getPackageType(package);
+            updateThread(package._id, $scope.type);
+            getAvailableUser($scope.type);
+            $rootScope.hasSelectCurrentPackage = true;
+            $rootScope.currentSelectPackage = package;
+            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
+          });
+
+          $scope.$on('getProject', function(event, value){
+            $rootScope.hasSelectCurrentPackage = false;
+            $rootScope.currentProjectId = value;
+            getThreadByProject(value);
+          });
+
+          $scope.$on('inComingNewThread', function(event, thread){
+            if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+              thread.canSee = true;
+            } else if (thread.owner == $scope.currentUser._id) {
+              thread.canSee = true;
+              thread.isOwner = true;
+            } else {
+              thread.canSee = false;
+              thread.isOwner = false
+            }
+            if (thread.isNewNotification == 'undefined') {
+              thread.isNewNotification = false;
+            }
+            $scope.threads.push(thread);
+          });
+
+          if (($rootScope.selectProject._id || $rootScope.currentProjectId) && !$rootScope.hasSelectCurrentPackage) {
+            var projectId = ($rootScope.selectProject._id) ? $rootScope.selectProject._id : $rootScope.currentProjectId;
+            getThreadByProject(projectId);
+          } else if (($rootScope.selectPackage || $rootScope.currentSelectPackage) && $rootScope.hasSelectCurrentPackage) {
+            $scope.package = ($rootScope.selectPackage) ? $rootScope.selectPackage : $rootScope.currentSelectPackage;
+            updateThread($scope.package._id, getPackageType($scope.package));
+            getAvailableUser($scope.type);
+            $rootScope.$broadcast('availableAssigneeInThread', $scope.available);
+          } else {
+            messageService.getAllByUser().$promise.then(function(res){
+              $scope.threads = res;
+              _.forEach($scope.threads,function(thread) {
+                if (_.find(thread.users,{'_id' : $scope.currentUser._id})) {
+                  thread.canSee = true;
+                } else if (thread.owner == $scope.currentUser._id) {
+                  thread.canSee = true;
+                  thread.isOwner = true;
+                } else {
+                  thread.canSee = false;
+                  thread.isOwner = false
+                }
+                if (thread.isNewNotification == 'undefined') {
+                  thread.isNewNotification = false;
+                }
+              });
+            });
+          }
+          
+          var contentHeight = $(".messages-list-content").height() - $("div.tab-nav.tabs").height();
+          $("#createThreadForm").css('height', contentHeight + 'px');
+          $scope.showMessageList = true;
+
+          $scope.currentProject = $rootScope.currentProject;
+          authService.getCurrentUser().$promise.then(function(res) {
+            $scope.currentUser = res;
+          });
+          authService.getCurrentTeam().$promise.then(function(data){
+            $scope.currentTeam = data;
+            $scope.isLeader = (_.find($scope.currentTeam.leader,{_id : $scope.currentUser._id})) ? true : false;
+            // getAvailableUser($scope.type);
+          });
+          $scope.submitted = false;
+          $scope.isNew = true;
+          $scope.addThread = false;
+
           var getMessage = function() {
             if ($scope.currentThread)
               updateThread();
             //$timeout(getMessage,3000);
 
           };
-
-          //$timeout(getMessage,3000);
 
           //Function fired when click new task
           $scope.newThread = function() {
