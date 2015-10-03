@@ -1,5 +1,16 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
+  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
+  $scope.projects = [];
+  authService.getCurrentUser().$promise.then(function(user){
+    $rootScope.user = $scope.user = user;
+    $rootScope.isLeader = (user.team.role == 'leader');
+    $scope.total = $rootScope.totalNotification;
+    authService.getCurrentTeam().$promise.then(function(team){
+      $rootScope.currentTeam = $scope.currentTeam = team;
+      $scope.projects = team.project;
+    });
+  });
+
   $scope.headingName = "Project";
 
   $scope.currentTab = 'thread';
@@ -40,6 +51,17 @@ angular.module('buiiltApp')
     builderPackageService.findDefaultByProject({id: value}).$promise.then(function(builderPackage){
       $scope.builderPackage = builderPackage;
     });
+    if ($scope.currentTeam.type == 'architect') {
+      designService.getAll({id: value}).$promise.then(function(designPackages){
+        $scope.designPackages = designPackages;
+      });
+    } else if ($scope.currentTeam.type == 'builder' || $scope.currentTeam.type == 'homeOwner') {
+      designService.getListInArchitect({id: value}).$promise.then(function(designPackages){
+        $scope.designPackages = designPackages;
+      });
+    } else {
+      $scope.designPackages = [];
+    }
     contractorService.get({id : value}).$promise.then(function(contractorPackages){
       $scope.contractorPackages = contractorPackages;
     });
@@ -154,16 +176,7 @@ angular.module('buiiltApp')
     }
   };
 
-  $scope.projects = [];
-  authService.getCurrentUser().$promise.then(function(user){
-    $rootScope.user = $scope.user = user;
-    $rootScope.isLeader = (user.team.role == 'leader');
-    $scope.total = $rootScope.totalNotification;
-    authService.getCurrentTeam().$promise.then(function(team){
-      $rootScope.currentTeam = $scope.currentTeam = team;
-      $scope.projects = team.project;
-    });
-  });
+  
 
   $ionicModal.fromTemplateUrl('modal1.html', {
     scope: $scope,

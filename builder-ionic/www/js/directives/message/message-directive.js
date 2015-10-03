@@ -74,6 +74,7 @@ angular.module('buiiltApp')
                     $scope.available.push(member._id);
                   }
                 });
+                $scope.available = _.uniq($scope.available, '_id');
                 _.remove($scope.available,{_id : $scope.currentUser._id});
                 _.each($scope.available, function(assignee) {
                   assignee.isSelect = false;

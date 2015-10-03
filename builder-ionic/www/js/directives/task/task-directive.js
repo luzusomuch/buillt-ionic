@@ -136,6 +136,7 @@ angular.module('buiiltApp')
                   $scope.available.push(member._id);
                 }
               });
+              $scope.available = _.uniq($scope.available, '_id');
               break;
             case 'staff' :
               $scope.available =  angular.copy($scope.package.staffs);

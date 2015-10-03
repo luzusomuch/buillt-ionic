@@ -154,10 +154,11 @@
         <ion-content padding="true" class="has-header">
             <ion-list>
                 <ion-item ng-if="!selectedProject._id">Please select a project first</ion-item>
-                <ion-item ng-if="builderPackage.name" ng-click="getPackage(builderPackage)">{{builderPackage.name}}</ion-item>
-                <ion-item ng-repeat="package in contractorPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
-                <ion-item ng-repeat="package in materialPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
-                <ion-item ng-repeat="package in staffPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+                <ion-item ng-if="builderPackage.name || currentTeam.type == 'builder' || currentTeam.type == 'homeOwner' || currentTeam.type == 'architect'" ng-click="getPackage(builderPackage)">{{builderPackage.name}}</ion-item>
+                <ion-item ng-if="designPackages.length > 0" ng-repeat="package in designPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+                <ion-item ng-if="currentTeam.type == 'builder' || currentTeam.type == 'contractor'" ng-repeat="package in contractorPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+                <ion-item ng-if="currentTeam.type == 'builder' || currentTeam.type == 'supplier'" ng-repeat="package in materialPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+                <ion-item ng-if="currentTeam.type == 'builder'" ng-repeat="package in staffPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
         </ion-content>
     </div>
