@@ -12,7 +12,7 @@
         <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-clear icon-right ion-ios-plus-empty" ng-click="createTaskThreadDocument()"></button>
+        <button ng-hide="currentTab == 'document'" class="button button-clear icon-right ion-ios-plus-empty" ng-click="createTaskThreadDocument()"></button>
     </ion-nav-buttons>
     <div class="bar bar-subheader row" style="border-bottom: solid 1px #efefef">
         <div class="button-bar">

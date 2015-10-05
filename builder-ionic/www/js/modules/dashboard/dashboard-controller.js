@@ -28,6 +28,8 @@ angular.module('buiiltApp')
       $scope.currentTab = 'task';
     } else if (value == 2) {
       $scope.currentTab = 'document';
+    } else {
+      $scope.currentTab = 'notification';
     }
   };
 
@@ -56,6 +58,7 @@ angular.module('buiiltApp')
   function findPackageByProject(value){
     builderPackageService.findDefaultByProject({id: value}).$promise.then(function(builderPackage){
       $scope.builderPackage = builderPackage;
+      console.log($scope.builderPackage);
     });
     if ($scope.currentTeam.type == 'architect') {
       designService.getAll({id: value}).$promise.then(function(designPackages){
@@ -318,17 +321,21 @@ angular.module('buiiltApp')
   $scope.allowUpload = false;
   $scope.getFileUpload = function() {
     var input = document.getElementById("read-input");
+    alert(input.value);
     if (input.value) {
       filepickerService.store(
         input,
         function(Blob){
           console.log("Store successful:");
+          alert(Blob);
           $scope.uploadFile.file = Blob;
         },
         function(FPError) {
+          alert(FPError.toString());
           console.log(FPError.toString());
         },
         function(progress) {
+          alert('on progress');
           console.log("Loading: "+progress+"%");
           if (progress == 100) {
             $scope.allowUpload = true;
