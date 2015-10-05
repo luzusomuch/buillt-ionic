@@ -14,7 +14,7 @@ angular.module('buiiltApp')
             $scope.$on('getPackage', function(event, value){
                 $rootScope.hasSelectCurrentPackage = true;
                 $rootScope.currentSelectPackage = {_id: value.package._id, type: value.package.type};
-                getDocument(value.package._id);
+                getDocument(value._id);
             });
 
             $scope.$on('getProject', function(event, value){

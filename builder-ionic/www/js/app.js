@@ -102,6 +102,7 @@ angular.module('buiiltApp', [
         this.$apply(fn);
       }
     };
+
     $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
       $rootScope.isShowAddIcon = false;
       $rootScope.isInMessageTab = false;
@@ -116,25 +117,17 @@ angular.module('buiiltApp', [
       } else {
         $rootScope.selectProject = {};
       }
-
-      if (toState.name == 'dashboard') {
-        notificationService.getTotalForIos().$promise
-        .then(function(res) {
-          if (res.length > 0)
-            $rootScope.totalNotification = res.length;
-          });
-      }
-        authService.isLoggedInAsync(function (loggedIn) {
-          if (loggedIn) {
-            
-          }
-          if (toState.authenticate && !loggedIn) {
-            // $location.path('/signin');
-            $state.go('signin');
-          } else if (!toState.authenticate && loggedIn) {
-            $state.go('dashboard')
-          }
-        });
+      authService.isLoggedInAsync(function (loggedIn) {
+        if (loggedIn) {
+          
+        }
+        if (toState.authenticate && !loggedIn) {
+          // $location.path('/signin');
+          $state.go('signin');
+        } else if (!toState.authenticate && loggedIn) {
+          $state.go('dashboard')
+        }
+      });
       if (toState.noHeader) {
         $rootScope.hasHeader = false;
       }

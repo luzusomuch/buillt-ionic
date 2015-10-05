@@ -9,38 +9,32 @@
 <ion-view title="Projects">
     <ion-nav-buttons side="left">
         <!-- <a ng-click="toggleMenu()" class="button button-icon"><i class="icon ion-navicon"></i></a> -->
-        <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="toggleLeft()"></button>
+        <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
         <button class="button button-clear icon-right ion-ios-plus-empty" ng-click="createTaskThreadDocument()"></button>
     </ion-nav-buttons>
-    
-    <ion-side-menus>
-        <ion-side-menu side="left">
-            <div class="spacer" style="width: 255px; height: 50px;"></div>
-            <a ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
-        </ion-side-menu>
-        <ion-side-menu-content>
-            <div class="bar bar-subheader row" style="border-bottom: solid 1px #efefef">
-                <div class="button-bar">
-                    <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'All Projects'}}</a>
-                    <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="choosePackageModal()">{{(currentPackage.name) ? currentPackage.name : 'All Packages'}}</a>
-                </div>
-            </div>
+    <div class="bar bar-subheader row" style="border-bottom: solid 1px #efefef">
+        <div class="button-bar">
+            <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'All Projects'}}</a>
+            <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="choosePackageModal()">{{(currentPackage.name) ? currentPackage.name : 'All Packages'}}</a>
+        </div>
+    </div>
 
-            <ion-tabs class="tabs-icon-top">
-                <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios7-chatboxes-outline">
-                    <div message></div>
-                </ion-tab>
-                <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios7-checkmark-outline">
-                    <div task></div>
-                </ion-tab>
-                <ion-tab ng-click="selectTabWithIndex(2)" title="Documents" icon="ion-ios-copy-outline">
-                    <div document></div>
-                </ion-tab>
-            </ion-tabs>
-        </ion-side-menu-content>
-    </ion-side-menus>
+    <ion-tabs class="tabs-icon-top">
+        <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios7-chatboxes-outline">
+            <div message></div>
+        </ion-tab>
+        <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios7-checkmark-outline">
+            <div task></div>
+        </ion-tab>
+        <ion-tab ng-click="selectTabWithIndex(2)" title="Documents" icon="ion-ios-copy-outline">
+            <div document></div>
+        </ion-tab>
+        <ion-tab ng-click="selectTabWithIndex(3)" title="{{totalNotifications}} Notifications" icon="ion-ios-bell-outline">
+            <div sp-notification></div>
+        </ion-tab>
+    </ion-tabs>
     <!-- <ion-side-menus>
         <ion-side-menu side="left">
             <ion-header-bar class="bar-stable">
@@ -122,12 +116,12 @@
     </ion-side-menus> -->
 </ion-view>
 
-<script id="modal1.html" type="text/ng-template">
+<script id="modalProject.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
             <h class="title">Please choose the project</h>
             <div class="buttons">
-                <button class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('Project')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
@@ -143,7 +137,7 @@
         <ion-header-bar class="bar-light">
             <h class="title">Please choose the package</h>
             <div class="buttons">
-                <button class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('Package')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
@@ -163,6 +157,9 @@
     <div class="modal">
         <ion-header-bar class="bar-light">
             <h class="title">Create new task</h>
+            <div class="buttons">
+                <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+            </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
             <form style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)">
@@ -220,7 +217,10 @@
 <script id="modalCreateThread.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Create new task</h>
+            <h class="title">Create new thread</h>
+            <div class="buttons">
+                <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+            </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
             <form style="padding:10px;" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
@@ -254,33 +254,58 @@
     </div>
 </script>
 
-<script id="createNewDocument.html" type="text/ng-template">
+<script id="modalCreateDocument.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Create new task</h>
+            <h class="title">Create new document</h>
+            <div class="buttons">
+                <button ng-click="closeModal('CreateDocument')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+            </div>
         </ion-header-bar>
-        <form ng-submit="uploadNewDocument()" name="uploadForm">
-            <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
-            <div class="item item-input">
-                <input placeholder="Document title" type="text" ng-model="uploadFile.title" required name="title" ng-class="{'invalid' : uploadForm.name.$invalid && submitted}">
-                <p class="validate-message" ng-show="uploadForm.title.$error.required && submitted">Document title is required</p>
+        <ion-content padding="true" class="has-header">
+            <div class="list" ng-if="!selectedProject._id && !currentPackage._id">
+                <ion-item>
+                    Please select the project or the package to upload.
+                </ion-item>
             </div>
+            <form ng-submit="uploadNewDocument()" name="uploadForm" ng-if="selectedProject._id || currentPackage._id">
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+                <div class="item item-input">
+                    <input placeholder="Document title" type="text" ng-model="file.title" required name="title" ng-class="{'invalid' : uploadForm.name.$invalid && submitted}">
+                    <p class="validate-message" ng-show="uploadForm.title.$error.required && submitted">Document title is required</p>
+                </div>
 
-            <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            <div class="item item-input">
-                <input filepicker type="filepicker-dragdrop" data-fp-services="computer, DROPBOX, gmail, skydrive, GOOGLE_DRIVE" on-success="onSuccess(event.fpfile)" data-fp-multiple="false"/>
-            </div>
+                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+                <div class="item item-input">
+                    <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
+                </div>
 
-            <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            <div class="item item-input">
-                <input placeholder="Document description" type="text" ng-model="uploadFile.desc" required name="description" ng-class="{'invalid' : uploadForm.description.$invalid && submitted}">
-                <p class="validate-message" ng-show="uploadForm.description.$error.required && submitted">Document description is required</p>
-            </div>
+                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+                <div class="item item-input">
+                    <input placeholder="Document description" type="text" ng-model="file.desc" required name="description" ng-class="{'invalid' : uploadForm.description.$invalid && submitted}">
+                    <p class="validate-message" ng-show="uploadForm.description.$error.required && submitted">Document description is required</p>
+                </div>
 
-            <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
-            <div class="row" style="">
-                <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+                <div class="row" style="">
+                    <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
+
+<script id="modalConfig.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h class="title">Configuration</h>
+            <div class="buttons">
+                <button ng-click="closeModal('Config')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
             </div>
-        </form>
+        </ion-header-bar>
+        <ion-content padding="true" class="has-header">
+            <div class="spacer" style="width: 255px; height: 34px;"></div>
+            <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
+        </ion-content>
     </div>
 </script>

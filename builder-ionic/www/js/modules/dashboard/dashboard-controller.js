@@ -1,14 +1,20 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
+  .controller('DashboardCtrl', function(notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){
     $rootScope.user = $scope.user = user;
     $rootScope.isLeader = (user.team.role == 'leader');
-    $scope.total = $rootScope.totalNotification;
     authService.getCurrentTeam().$promise.then(function(team){
       $rootScope.currentTeam = $scope.currentTeam = team;
       $scope.projects = team.project;
     });
+  });
+
+  notificationService.getTotalForIos().$promise
+  .then(function(res) {
+    if (res.length > 0) {
+      $scope.totalNotifications = res.length;
+    }
   });
 
   $scope.headingName = "Project";
@@ -94,7 +100,7 @@ angular.module('buiiltApp')
     $scope.selectedProject = value;
     $rootScope.currentProjectId = $scope.projectId = value._id;
     findPackageByProject(value._id);
-    $scope.modalChooseProject.hide();
+    $scope.modalProject.hide();
     $rootScope.$broadcast('getProject', value._id);
   };
   $scope.isShowDefault = true;
@@ -178,26 +184,26 @@ angular.module('buiiltApp')
 
   
 
-  $ionicModal.fromTemplateUrl('modal1.html', {
+  $ionicModal.fromTemplateUrl('modalProject.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal){
-    $scope.modalChooseProject = modal;
+    $scope.modalProject = modal;
   });
 
   $scope.chooseProject = function(){
-    $scope.modalChooseProject.show();
+    $scope.modalProject.show();
   };
 
   $ionicModal.fromTemplateUrl('modalPackage.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal){
-    $scope.modalChoosePackage = modal;
+    $scope.modalPackage = modal;
   });
 
   $scope.choosePackageModal = function(){
-    $scope.modalChoosePackage.show();
+    $scope.modalPackage.show();
   };
 
   if ($rootScope.currentPackage) {
@@ -209,7 +215,7 @@ angular.module('buiiltApp')
 
   $scope.getPackage = function(value) {
     $rootScope.currentPackage = $scope.currentPackage = value;
-    $scope.modalChoosePackage.hide();
+    $scope.modalPackage.hide();
     $rootScope.$broadcast('getPackage', $rootScope.currentPackage);
   };
 
@@ -292,48 +298,76 @@ angular.module('buiiltApp')
   };
 
   //upload new document
-  $ionicModal.fromTemplateUrl('createNewDocument.html', {
+  $ionicModal.fromTemplateUrl('modalCreateDocument.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal){
     $scope.modalCreateDocument = modal;
   });
 
-  $scope.uploadFile = {};
-  $scope.pickFile = pickFile;
-
-  $scope.onSuccess = onSuccess;
-
-  function pickFile(){
-    filepickerService.pick(
-      {mimetype: 'image/*'},
-      onSuccess
-    );
+  $scope.uploadFile = {
+    title: '',
+    desc: '',
+    _id: ($scope.fileId) ? $scope.fileId : '',
+    belongToType: ($scope.packageType) ? $scope.packageType : 'project',
+    tags: [],
+    isQuote: $scope.isQuote,
+    file: {}
   };
 
-  function onSuccess(file){
-    $scope.uploadFile = {
-      file: file,
-      _id: ($scope.fileId) ? $scope.fileId : '',
-      belongToType: ($scope.packageType) ? $scope.packageType : 'project',
-      tags: [],
-      isQuote: $scope.isQuote
-    };
+  $scope.allowUpload = false;
+  $scope.getFileUpload = function() {
+    var input = document.getElementById("read-input");
+    if (input.value) {
+      filepickerService.store(
+        input,
+        function(Blob){
+          console.log("Store successful:");
+          $scope.uploadFile.file = Blob;
+        },
+        function(FPError) {
+          console.log(FPError.toString());
+        },
+        function(progress) {
+          console.log("Loading: "+progress+"%");
+          if (progress == 100) {
+            $scope.allowUpload = true;
+            console.log($scope.allowUpload);
+          }
+        }
+      );
+    }
   };
+
+  $scope.file = {
+    title: '',
+    desc: ''
+  };
+
+  $scope.$watch('file.title', function(value){
+    $scope.uploadFile.title = value;
+  });
+
+  $scope.$watch('file.desc', function(value){
+    $scope.uploadFile.desc = value;
+  });
 
   $scope.uploadNewDocument = function() {
-    if ($scope.currentPackage) {
-      uploadService.uploadInPackage({id: $scope.currentPackage._id, file: $scope.uploadFile})
-      .$promise.then(function(res){
-        $rootScope.$broadcast('inComingNewDocument', res);
-        $scope.modalCreateDocument.hide();
-      });
-    } else {
-      uploadService.upload({id: $rootScope.currentProjectId, file: $scope.uploadFile})
-      .$promise.then(function(res){
-        $rootScope.$broadcast('inComingNewDocument', res);
-        $scope.modalCreateDocument.hide();
-      });
+    if ($scope.allowUpload) {
+      if ($scope.currentPackage._id) {
+        uploadService.uploadInPackage({id: $scope.currentPackage._id, file: $scope.uploadFile})
+        .$promise.then(function(res){
+          console.log(res);
+          $rootScope.$broadcast('inComingNewDocument', res);
+          $scope.modalCreateDocument.hide();
+        });
+      } else {
+        uploadService.upload({id: $rootScope.currentProjectId, file: $scope.uploadFile})
+        .$promise.then(function(res){
+          $rootScope.$broadcast('inComingNewDocument', res);
+          $scope.modalCreateDocument.hide();
+        });
+      }
     }
   };
 
@@ -345,5 +379,49 @@ angular.module('buiiltApp')
     } else if ($scope.currentTab == 'document') {
       $scope.modalCreateDocument.show();
     }
-  }
+  };
+
+  //show config
+  $ionicModal.fromTemplateUrl('modalConfig.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalConfig = modal;
+  });
+
+  $scope.showConfig = function() {
+    $scope.modalConfig.show();
+  };
+
+  //function hide modal
+  $scope.closeModal = function(value) {
+    switch(value) {
+      case 'Project':
+      $scope.modalProject.hide();
+      break;
+
+      case 'Package':
+      $scope.modalPackage.hide();
+      break;
+
+      case 'CreateTask':
+      $scope.modalCreateTask.hide();
+      break;
+
+      case 'CreateThread':
+      $scope.modalCreateThread.hide();
+      break;
+
+      case 'CreateDocument':
+      $scope.modalCreateDocument.hide();
+      break;
+
+      case 'Config':
+      $scope.modalConfig.hide();
+      break;
+
+      default:
+      break;
+    }
+  };
 });
