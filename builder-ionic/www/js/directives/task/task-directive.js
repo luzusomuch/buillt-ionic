@@ -115,12 +115,14 @@ angular.module('buiiltApp')
                   $scope.available = _.union($scope.available, tempAvailable);
                 }
               }
-              if ($scope.package.architect.team && $scope.package.architect.team) {
-                if ($scope.package.architect.team._id != $scope.currentTeam._id && $scope.isLeader) {
-                  _.each($scope.package.architect.team.leader, function(leader){
-                    tempAvailable.push(leader);
-                  });
-                  $scope.available = _.union($scope.available, tempAvailable);
+              if ($scope.package.architect) {
+                if ($scope.package.architect.team) {
+                  if ($scope.package.architect.team._id != $scope.currentTeam._id && $scope.isLeader) {
+                    _.each($scope.package.architect.team.leader, function(leader){
+                      tempAvailable.push(leader);
+                    });
+                    $scope.available = _.union($scope.available, tempAvailable);
+                  }
                 }
               }
               if ($scope.package.winner) {

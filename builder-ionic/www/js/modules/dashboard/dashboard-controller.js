@@ -257,10 +257,24 @@ angular.module('buiiltApp')
 
   $scope.createNewTask = function(form) {
     if (form.$valid) {
-      taskService.create({id : $scope.currentPackage._id, type : $scope.packageType},$scope.task)
+      var packageType = '';
+      if ($scope.currentPackage.type == 'BuilderPackage') {
+        packageType = 'builder';
+      } else if ($scope.currentPackage.type == 'staffPackage') {
+        packageType = 'staff';
+      } else {
+        packageType = $scope.currentPackage.type;
+      }
+      taskService.create({id : $scope.currentPackage._id, type : packageType},$scope.task)
       .$promise.then(function(res) {
         $rootScope.$broadcast('inComingNewTask', res);
         $scope.modalCreateTask.hide();
+        console.log($scope.task.assignees);
+        _.each($scope.task.assignees, function(assignee){
+          assignee.isSelect = false;
+        }); 
+        $scope.task.name = null;
+        $scope.task.dateEnd = null;
       });
     }
   };
@@ -293,10 +307,19 @@ angular.module('buiiltApp')
   };
 
   $scope.createNewThread = function(form) {
-    messageService.create({id: $scope.currentPackage._id, type: $scope.packageType}, $scope.thread)
+    var packageType = '';
+    if ($scope.currentPackage.type == 'BuilderPackage') {
+      packageType = 'builder';
+    } else if ($scope.currentPackage.type == 'staffPackage') {
+      packageType = 'staff';
+    } else {
+      packageType = $scope.currentPackage.type;
+    }
+    messageService.create({id: $scope.currentPackage._id, type: packageType}, $scope.thread)
     .$promise.then(function (res) {
       $rootScope.$broadcast('inComingNewThread', res);
       $scope.modalCreateThread.hide();
+      $scope.thread.name = null;
     });
   };
 
