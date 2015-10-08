@@ -1,5 +1,10 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, filepickerService, uploadService) {
+  .controller('DashboardCtrl', function(notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService) {
+  $scope.currentPackageType = 0;
+  $scope.getCurrentPackageType = function(value) {
+    $scope.currentPackageType = value;
+  };
+
   $scope.projects = [];
   authService.getCurrentUser().$promise.then(function(user){
     $rootScope.user = $scope.user = user;
@@ -55,10 +60,59 @@ angular.module('buiiltApp')
   $scope.projectId = '';
   $scope.selectedProject = {};
 
+  function showPackageTypeByTeam(hasArchitectManager){
+    if (hasArchitectManager) {
+      $scope.allPackageTypes = {
+        homeOwner: [{'name': 'Architect', 'id' : 1}],
+        builder: [
+          {'name':'Architect', 'id': 1},
+          {'name':'Subcontractors', 'id':3},
+          {'name':'Suppliers', 'id':4},
+          {'name':'Employees', 'id':5}],
+        contractor: [{'name': 'Contracts', 'id' : 3}],
+        supplier: [{'name': 'Material', 'id' : 5}],
+        architect: [
+          {'name':'Design', 'id': 2},
+          {'name':'Client', 'id':1},
+          {'name':'Builder', 'id':1},]
+      };
+    } else {
+      $scope.allPackageTypes = {
+        homeOwner: [{'name': 'Builder', 'id' : 1}],
+        builder: [
+          {'name':'Client', 'id': 1},
+          {'name':'Subcontractors', 'id':3},
+          {'name':'Suppliers', 'id':4},
+          {'name':'Employees', 'id':5}],
+        contractor: [{'name': 'Contracts', 'id' : 3}],
+        supplier: [{'name': 'Material', 'id' : 5}],
+        architect: [
+          {'name':'Design', 'id': 2},
+          {'name':'Client', 'id':1},
+          {'name':'Builder', 'id':1},]
+      };
+    }
+  };
+
   function findPackageByProject(value){
     builderPackageService.findDefaultByProject({id: value}).$promise.then(function(builderPackage){
       $scope.builderPackage = builderPackage;
-      console.log($scope.builderPackage);
+      showPackageTypeByTeam($scope.builderPackage.hasArchitectManager);
+      if ($scope.currentTeam.type === 'homeOwner') {
+        $scope.packageTypeByTeam = $scope.allPackageTypes['homeOwner'];
+      }
+      else if ($scope.currentTeam.type === 'builder') {
+        $scope.packageTypeByTeam = $scope.allPackageTypes['builder'];
+      }
+      else if ($scope.currentTeam.type === 'contractor') {
+        $scope.packageTypeByTeam = $scope.allPackageTypes['contractor'];
+      }
+      else if ($scope.currentTeam.type === 'supplier') {
+        $scope.packageTypeByTeam = $scope.allPackageTypes['supplier'];
+      }
+      else if ($scope.currentTeam.type == 'architect') {
+        $scope.packageTypeByTeam = $scope.allPackageTypes['architect'];
+      }
     });
     if ($scope.currentTeam.type == 'architect') {
       designService.getAll({id: value}).$promise.then(function(designPackages){
@@ -80,15 +134,9 @@ angular.module('buiiltApp')
     staffPackageService.getAll({id: value}).$promise.then(function(staffPackages){
       $scope.staffPackages = staffPackages;
     });
-    fileService.getFileByStateParamIos({'id': value}).$promise.then(function(files){
-      $scope.files = files;
-      _.each($scope.files, function(file){
-        if (file.isNewNotification == 'undefined') {
-          file.isNewNotification = false;
-        }
-      });
-    });
   };
+
+  
 
   if ($rootScope.selectProject._id) {
     $scope.headingName = " ";
@@ -255,7 +303,11 @@ angular.module('buiiltApp')
     }
   };
 
+  $scope.submitted = false;
   $scope.createNewTask = function(form) {
+    console.log('aaaaaaaaaaaaaaaaa');
+    $scope.submitted = true;
+    console.log(form);
     if (form.$valid) {
       var packageType = '';
       if ($scope.currentPackage.type == 'BuilderPackage') {
@@ -275,6 +327,7 @@ angular.module('buiiltApp')
         }); 
         $scope.task.name = null;
         $scope.task.dateEnd = null;
+        $scope.submitted = false;
       });
     }
   };
@@ -307,20 +360,24 @@ angular.module('buiiltApp')
   };
 
   $scope.createNewThread = function(form) {
-    var packageType = '';
-    if ($scope.currentPackage.type == 'BuilderPackage') {
-      packageType = 'builder';
-    } else if ($scope.currentPackage.type == 'staffPackage') {
-      packageType = 'staff';
-    } else {
-      packageType = $scope.currentPackage.type;
+    $scope.submitted = true;
+    if (form.$valid && $scope.submitted) {
+      var packageType = '';
+      if ($scope.currentPackage.type == 'BuilderPackage') {
+        packageType = 'builder';
+      } else if ($scope.currentPackage.type == 'staffPackage') {
+        packageType = 'staff';
+      } else {
+        packageType = $scope.currentPackage.type;
+      }
+      messageService.create({id: $scope.currentPackage._id, type: packageType}, $scope.thread)
+      .$promise.then(function (res) {
+        $rootScope.$broadcast('inComingNewThread', res);
+        $scope.modalCreateThread.hide();
+        $scope.thread.name = null;
+        $scope.submitted = false;
+      });
     }
-    messageService.create({id: $scope.currentPackage._id, type: packageType}, $scope.thread)
-    .$promise.then(function (res) {
-      $rootScope.$broadcast('inComingNewThread', res);
-      $scope.modalCreateThread.hide();
-      $scope.thread.name = null;
-    });
   };
 
   //upload new document
@@ -330,76 +387,6 @@ angular.module('buiiltApp')
   }).then(function(modal){
     $scope.modalCreateDocument = modal;
   });
-
-  $scope.uploadFile = {
-    title: '',
-    desc: '',
-    _id: ($scope.fileId) ? $scope.fileId : '',
-    belongToType: ($scope.packageType) ? $scope.packageType : 'project',
-    tags: [],
-    isQuote: $scope.isQuote,
-    file: {}
-  };
-
-  $scope.allowUpload = false;
-  $scope.getFileUpload = function() {
-    var input = document.getElementById("read-input");
-    alert(input.value);
-    if (input.value) {
-      filepickerService.store(
-        input,
-        function(Blob){
-          console.log("Store successful:");
-          alert(Blob);
-          $scope.uploadFile.file = Blob;
-        },
-        function(FPError) {
-          alert(FPError.toString());
-          console.log(FPError.toString());
-        },
-        function(progress) {
-          alert('on progress');
-          console.log("Loading: "+progress+"%");
-          if (progress == 100) {
-            $scope.allowUpload = true;
-            console.log($scope.allowUpload);
-          }
-        }
-      );
-    }
-  };
-
-  $scope.file = {
-    title: '',
-    desc: ''
-  };
-
-  $scope.$watch('file.title', function(value){
-    $scope.uploadFile.title = value;
-  });
-
-  $scope.$watch('file.desc', function(value){
-    $scope.uploadFile.desc = value;
-  });
-
-  $scope.uploadNewDocument = function() {
-    if ($scope.allowUpload) {
-      if ($scope.currentPackage._id) {
-        uploadService.uploadInPackage({id: $scope.currentPackage._id, file: $scope.uploadFile})
-        .$promise.then(function(res){
-          console.log(res);
-          $rootScope.$broadcast('inComingNewDocument', res);
-          $scope.modalCreateDocument.hide();
-        });
-      } else {
-        uploadService.upload({id: $rootScope.currentProjectId, file: $scope.uploadFile})
-        .$promise.then(function(res){
-          $rootScope.$broadcast('inComingNewDocument', res);
-          $scope.modalCreateDocument.hide();
-        });
-      }
-    }
-  };
 
   $scope.createTaskThreadDocument = function(){
     if ($scope.currentTab == 'thread') {

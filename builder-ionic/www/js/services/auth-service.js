@@ -44,7 +44,8 @@ angular.module('buiiltApp')
       window.localStorage.removeItem('token');
       currentUser = {};
       $rootScope.currentUser = {};
-      $state.go('signin');
+      window.location.href = '/#/signin'
+      // $state.go('signin');
     },
     /**
      * Create a new user

@@ -32,7 +32,6 @@ angular.module('buiiltApp')
 
           //Get Available assignee to assign to task
           var getAvailableUser = function(type) {
-            console.log($scope.package);
             switch(type) {
               case 'builder' :
                 $scope.available = [];

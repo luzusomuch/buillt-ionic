@@ -125,6 +125,7 @@
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
+            <div class="spacer" style="display: inline-block; width: 300px; height: 30px;"></div>
             <ion-list ng-repeat="project in projects | unique:project">
                 <ion-item ng-click="clickChange(project)">{{project.name}}</ion-item>
             </ion-list>
@@ -141,13 +142,42 @@
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
-            <ion-list>
-                <ion-item ng-if="!selectedProject._id">Please select a project first</ion-item>
-                <ion-item ng-if="builderPackage.name || currentTeam.type == 'builder' || currentTeam.type == 'homeOwner' || currentTeam.type == 'architect'" ng-click="getPackage(builderPackage)">{{builderPackage.name}}</ion-item>
-                <ion-item ng-if="designPackages.length > 0" ng-repeat="package in designPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
-                <ion-item ng-if="currentTeam.type == 'builder' || currentTeam.type == 'contractor'" ng-repeat="package in contractorPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
-                <ion-item ng-if="currentTeam.type == 'builder' || currentTeam.type == 'supplier'" ng-repeat="package in materialPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
-                <ion-item ng-if="currentTeam.type == 'builder'" ng-repeat="package in staffPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+            <div class="spacer" style="display: inline-block; width: 300px; height: 30px;"></div>
+
+            <ion-list ng-if="!selectedProject._id">
+                <ion-item>Please select a project first</ion-item>
+            </ion-list>
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 0">
+                <ion-item ng-click="getCurrentPackageType(package.id)" ng-repeat="package in packageTypeByTeam">
+                    {{package.name}}
+                </ion-item>
+            </ion-list>
+
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 1">
+                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-if="builderPackage.name || currentTeam.type == 'builder' || currentTeam.type == 'homeOwner' || currentTeam.type == 'architect' && currentPackageType == 1" ng-click="getPackage(builderPackage)">{{builderPackage.name}}</ion-item>
+            </ion-list>
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 2">
+                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-if="designPackages.length > 0 && currentPackageType == 2" ng-repeat="package in designPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
+            </ion-list>
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 3">
+                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}" ng-click="getPackage(package)">{{package.name}}</ion-item>
+            </ion-list>
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 4">
+                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-repeat="package in materialPackages | filter:{isSelect: true, isCompleted: false}" ng-click="getPackage(package)">{{package.name}}</ion-item>
+            </ion-list>
+
+            <ion-list ng-if="selectedProject._id && currentPackageType == 5">
+                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-repeat="package in staffPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
         </ion-content>
     </div>
@@ -162,13 +192,13 @@
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
-            <form style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)">
+            <form style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)" novalidate>
             
                 <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
             
                 <div class="item item-input">
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
-                       ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow">
+                       ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow" required>
                     <p class="validate-message" ng-show="form.name.$error.required && submitted">Task name is required</p>
                 </div>
             
@@ -264,6 +294,7 @@
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
             <div class="list" ng-if="!selectedProject._id && !currentPackage._id">
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
                 <ion-item>
                     Please select the project or the package to upload.
                 </ion-item>
