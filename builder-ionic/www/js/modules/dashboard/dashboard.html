@@ -136,7 +136,7 @@
 <script id="modalPackage.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Please choose the package</h>
+            <h class="title">Select a Package</h>
             <div class="buttons">
                 <button ng-click="closeModal('Package')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
             </div>
@@ -156,27 +156,27 @@
 
 
             <ion-list ng-if="selectedProject._id && currentPackageType == 1">
-                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-click="getCurrentPackageType(0)"><i class="icon ion-chevron-left"></i> Back</ion-item>
                 <ion-item ng-if="builderPackage.name || currentTeam.type == 'builder' || currentTeam.type == 'homeOwner' || currentTeam.type == 'architect' && currentPackageType == 1" ng-click="getPackage(builderPackage)">{{builderPackage.name}}</ion-item>
             </ion-list>
 
             <ion-list ng-if="selectedProject._id && currentPackageType == 2">
-                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-click="getCurrentPackageType(0)"><i class="icon ion-chevron-left"></i> Back</ion-item>
                 <ion-item ng-if="designPackages.length > 0 && currentPackageType == 2" ng-repeat="package in designPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
 
             <ion-list ng-if="selectedProject._id && currentPackageType == 3">
-                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-click="getCurrentPackageType(0)"><i class="icon ion-chevron-left"></i> Back</ion-item>
                 <ion-item ng-repeat="package in contractorPackages | filter:{isAccept: true, isCompleted: false}" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
 
             <ion-list ng-if="selectedProject._id && currentPackageType == 4">
-                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-click="getCurrentPackageType(0)"><i class="icon ion-chevron-left"></i> Back</ion-item>
                 <ion-item ng-repeat="package in materialPackages | filter:{isSelect: true, isCompleted: false}" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
 
             <ion-list ng-if="selectedProject._id && currentPackageType == 5">
-                <ion-item ng-click="getCurrentPackageType(0)">Change another package</ion-item>
+                <ion-item ng-click="getCurrentPackageType(0)"><i class="icon ion-chevron-left"></i> Back</ion-item>
                 <ion-item ng-repeat="package in staffPackages" ng-click="getPackage(package)">{{package.name}}</ion-item>
             </ion-list>
         </ion-content>

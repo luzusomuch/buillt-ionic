@@ -1,4 +1,5 @@
 <ion-content padding="false" class="has-header messages-list-content">
+    <div class="spacer" style="display: inline-block; width: 300px; height: 30px;"></div>
     <div class="list" ng-if="showDefault">
         <ion-item ng-repeat="document in documents" ui-sref="fileDetail({fileId: document.element.file._id})">
             {{document.element.file.title}}

@@ -3,7 +3,7 @@
   android id com.myles.buiilt 
   current version is 0.1.1
 -->
-<widget id="com.myles.buiilt" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hoanvu.buiilt" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>buiilt</name>
   <description>&#xD;
         Built project.&#xD;

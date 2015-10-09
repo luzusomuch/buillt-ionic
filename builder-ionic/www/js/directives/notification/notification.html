@@ -4,8 +4,9 @@
 
 
 <ion-content padding="false" class="has-header">
-  <ion-list>
-    <ion-item style="" ng-click="markAllAsRead()">{{total}} Notification - Mark all as read</ion-item>
-    <div notification="notification" current-user='currentUser' ng-repeat="notification in notifications"></div>
-  </ion-list>
+    <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+    <div class="list">
+        <ion-item style="" ng-click="markAllAsRead()">{{total}} Notification - Mark all as read</ion-item>
+        <div notification="notification" current-user='currentUser' ng-repeat="notification in notifications"></div>
+    </div>
 </ion-content>
