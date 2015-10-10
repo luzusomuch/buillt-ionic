@@ -7,7 +7,6 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <!-- <link href="css/style.css" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/icon?family=Material%20Icons" rel="stylesheet">
     <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="lib/jquery-ui/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="media/css/style.css">
@@ -57,7 +56,7 @@
             if (event.badge) {
                 pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
             }
-        }
+        };
         // Android and Amazon Fire OS
         function onNotification(e) {
           $("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
@@ -121,16 +120,16 @@
               $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
               break;
           }
-        }
+        };
 
     function errorHandler(error) {
         console.log('error = ' + error);
         alert('error = ' + error);
-    }
+    };
 
     function successHandler(result) {
         console.log('result = ' + result);
-    }
+    };
     
     function tokenHandler(result) {
         // Your iOS push server needs to know the token before it can push to this device
@@ -138,7 +137,7 @@
         console.log('device token = ' + result);
         window.deviceToken = result;
         //alert(result);
-    }
+    };
     
     document.addEventListener("deviceready", function () {
         pushNotification = window.plugins.pushNotification;
@@ -185,7 +184,7 @@
               
                 }
           
-            }
+            };
         }
         //android
         else if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
@@ -212,25 +211,6 @@
         <div>
             <ion-nav-bar align-title="center" class="bar-stable">
                 <ion-nav-back-button ng-hide="currentState.name == 'dashboard'" side="left" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
-                <!-- <ion-nav-buttons side="left"> -->
-                    <!-- <a ng-if="currentState.name == &apos;dashboard&apos;" class="button button-icon" ui-sref="notifications"><i class="icon ion-ios7-bell"></i>{{totalNotification}} Notification</a> -->
-                <!-- </ion-nav-buttons> -->
-                <!-- <ion-nav-buttons side="right">
-                    
-                    <a ng-if="(currentState.name == &apos;client&apos; || 
-                        currentState.name == &apos;materialRequestInProcess&apos; ||
-                        currentState.name == &apos;contractorRequestInProgress&apos; ||
-                        currentState.name == &apos;staffView&apos;) &amp;&amp; isShowAddIcon &amp;&amp; isInMessageTab" class="button button-icon" id="newMessage">
-                        <i class="icon ion-ios-plus-empty"></i>
-                    </a>
-                    <a ng-if="(currentState.name == &apos;client&apos; || 
-                        currentState.name == &apos;materialRequestInProcess&apos; ||
-                        currentState.name == &apos;contractorRequestInProgress&apos; ||
-                        currentState.name == &apos;staffView&apos;) &amp;&amp; isShowAddIcon &amp;&amp; isInTaskTab" class="button button-icon" id="newTask">
-                        <i class="icon ion-ios-plus-empty"></i>
-                    </a>
-                </ion-nav-buttons> -->
-                
             </ion-nav-bar>
             <ion-nav-view></ion-nav-view>
         </div>
@@ -257,7 +237,7 @@
     <script src="js/components/modal/modal.service.js"></script>
 
 <!--    <script src="http://localhost:9000/socket.io-client/socket.io.js"></script>-->
-    <script src="https://buiilt.com.au/socket.io-client/socket.io.js"></script>
+    <script src="http://buiilt.com.au/socket.io-client/socket.io.js"></script>
 
     <script src="js/directives/task/task-directive.js"></script>
     <script src="js/directives/message/message-directive.js"></script>
@@ -325,7 +305,5 @@
     <script src="js/modules/notification/view-notification/view-notification-controller.js"></script>
 
     <script src="assets/js/jquery.slimscroll.js"></script> 
-
-    <script type="text/javascript" src="//api.filepicker.io/v2/filepicker.js"></script>
   </body>
 </html>

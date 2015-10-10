@@ -17,7 +17,7 @@ angular.module('buiiltApp', [
   'btford.socket-io'
   ])
 // .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'https://buiilt.com.au/')
+.constant('API_URL', 'http://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');
@@ -120,10 +120,11 @@ angular.module('buiiltApp', [
           
         }
         if (toState.authenticate && !loggedIn) {
-          // $location.path('/signin');
-          $state.go('signin');
+          $location.path('/#/signin');
+          // $state.go('signin');
         } else if (!toState.authenticate && loggedIn) {
-          $state.go('dashboard')
+          $location.path('/#/dashboard');
+          // $state.go('dashboard');
         }
       });
       if (toState.noHeader) {
@@ -146,7 +147,7 @@ angular.module('buiiltApp', [
                 $rootScope.currentProject = null;
                 $state.go('dashboard');
               }
-            })
+            });
         }
 
       } else {
@@ -164,4 +165,4 @@ angular.module('buiiltApp', [
 
     $rootScope.overlay = false;
 
-  })
+  });
