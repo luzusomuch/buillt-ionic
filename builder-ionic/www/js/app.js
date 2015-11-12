@@ -16,13 +16,13 @@ angular.module('buiiltApp', [
   'restangular',
   'btford.socket-io'
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'http://buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'http://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
-  $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.tabs.position('top');
   $ionicConfigProvider.views.maxCache(0);
   // cfpLoadingBarProvider.includeSpinner = true;
 })

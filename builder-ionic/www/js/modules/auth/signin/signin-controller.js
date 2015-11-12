@@ -16,10 +16,7 @@ angular.module('buiiltApp')
       if (form.$valid) {
         authService.login($scope.user).then(function () {
           $state.go('dashboard');
-          // $location.path('/#/dashboard');
-          // alert('throw location path');
-          deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
-          // alert('throw inser device');
+          // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         }, function (res) {
           // alert('errr' + res.message);
           $scope.error = true;

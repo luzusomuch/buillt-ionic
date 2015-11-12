@@ -1,239 +1,149 @@
 angular.module('buiiltApp')
-  .controller('DashboardCtrl', function(notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService) {
-  $scope.currentPackageType = 0;
-  $scope.getCurrentPackageType = function(value) {
-    $scope.currentPackageType = value;
-  };
+    .controller('DashboardCtrl', function(boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService) {
+    $scope.defaultSelectedPackage = 0;
+    $scope.getPackageType = function(type) {
+        $scope.defaultSelectedPackage = type;
+        switch (type) {
+            case 0:
+                $scope.currentPackage.name = "DASHBOARD";
+            break;
+            case 1:
+                $scope.currentPackage.name = "PEOPLE";
+            break;
+            case 2:
+                $scope.currentPackage.name = "BOARD";
+            break;
+            case 3:
+                $scope.currentPackage.name = "DOCUMENTS";
+            break;
+        };
+        $scope.modalPackage.hide();
+    };
 
-  $scope.projects = [];
-  authService.getCurrentUser().$promise.then(function(user){
-    $rootScope.user = $scope.user = user;
-    $rootScope.isLeader = (user.team.role == 'leader');
-    authService.getCurrentTeam().$promise.then(function(team){
-      $rootScope.currentTeam = $scope.currentTeam = team;
-      $scope.projects = team.project;
+    function filterInPeoplePackage(peoplePackage) {
+        _.each(peoplePackage.builders, function(item) {
+            if (item._id && item.hasSelect) {
+                if (item._id._id == $scope.user._id) {
+                    $scope.peoplePackages.push(peoplePackage);
+                }
+            }
+        });
+        _.each(peoplePackage.clients, function(item) {
+            if (item._id && item.hasSelect) {
+                if (item._id._id == $scope.user._id) {
+                    $scope.peoplePackages.push(peoplePackage);
+                }
+            }
+        });
+        _.each(peoplePackage.architects, function(item) {
+            if (item._id && item.hasSelect) {
+                if (item._id._id == $scope.user._id) {
+                    $scope.peoplePackages.push(peoplePackage);
+                }
+            }
+        });
+        _.each(peoplePackage.subcontractors, function(item) {
+            if (item._id && item.hasSelect) {
+                if (item._id._id == $scope.user._id) {
+                    $scope.peoplePackages.push(peoplePackage);
+                }
+            }
+        });
+        _.each(peoplePackage.consultants, function(item) {
+            if (item._id && item.hasSelect) {
+                if (item._id._id == $scope.user._id) {
+                    $scope.peoplePackages.push(peoplePackage);
+                }
+            }
+        });
+    };
+
+    function filterInBoardPackage(boardPackage) {
+        _.each(boardPackage, function(board) {
+            _.each(board.invitees, function(item) {
+                if (item._id) {
+                    if (item._id._id == $scope.user._id || board.owner._id == $scope.user._id) {
+                        $scope.boardPackages.push(board);
+                    }
+                }
+            });
+        });
+        $scope.boardPackages = _.uniq($scope.boardPackages, '_id');
+    };
+
+    $scope.projects = [];
+    $scope.peoplePackages = [];
+    $scope.boardPackages = [];
+
+    authService.getCurrentUser().$promise.then(function(user){
+        $rootScope.user = $scope.user = user;
+        $scope.projects = user.projects;
+        $scope.projects = _.uniq($scope.projects, '_id');
+        $rootScope.isLeader = (user.team.role == 'leader');
+        authService.getCurrentTeam().$promise.then(function(team){
+            $rootScope.currentTeam = $scope.currentTeam = team;
+        });
+        _.each($scope.projects, function(project) {
+            peopleService.getInvitePeople({id: project._id}).$promise.then(function(res) {
+                res.name = project.name;
+                filterInPeoplePackage(res);
+            });
+            boardService.getBoards({id: project._id}).$promise.then(function(res) {
+                filterInBoardPackage(res);
+            });
+        });
     });
-  });
 
-  notificationService.getTotalForIos().$promise
-  .then(function(res) {
-    if (res.length > 0) {
-      $scope.totalNotifications = res.length;
+    notificationService.getTotalForIos().$promise
+    .then(function(res) {
+        if (res.length > 0) {
+            $scope.totalNotifications = res.length;
+        }
+    });
+
+    function findAllByProject(project) {
+        $scope.peoplePackages = [];
+        $scope.boardPackages = [];
+        $scope.files = [];
+        peopleService.getInvitePeople({id: project._id}).$promise.then(function(res) {
+            res.name = project.name;
+            filterInPeoplePackage(res);
+        });
+        boardService.getBoards({id: project._id}).$promise.then(function(res) {
+            filterInBoardPackage(res);
+        });
+        fileService.getFileInProject({id: project._id}).$promise.then(function(res) {
+            $scope.files = res;
+        });
+    };
+
+    $scope.selectProject = function(project) {
+        $scope.headingName = " ";
+        $scope.selectedProject = project;
+        $rootScope.currentProjectId = $scope.projectId = project._id;
+        findAllByProject(project);
+        $scope.modalProject.hide();
+        $rootScope.$broadcast('getProject', project._id);
+    };
+
+    if ($rootScope.selectProject._id) {
+        $scope.headingName = " ";
+        $scope.selectedProject = $rootScope.selectProject;
+        $scope.projectId = $scope.selectedProject._id;
+        findAllByProject($scope.selectedProject);
+        $rootScope.$broadcast('getProject', $scope.projectId);
     }
-  });
 
-  $scope.headingName = "Project";
+    $scope.currentPackageType = 0;
+    $scope.getCurrentPackageType = function(value) {
+        $scope.currentPackageType = value;
+    };
 
-  $scope.currentTab = 'thread';
-  $scope.selectTabWithIndex = function(value){
-    $ionicTabsDelegate.select(value);
-    if (value == 0) {
-      $scope.currentTab = 'thread';
-    } else if (value == 1) {
-      $scope.currentTab = 'task';
-    } else if (value == 2) {
-      $scope.currentTab = 'document';
-    } else {
-      $scope.currentTab = 'notification';
-    }
-  };
+    $scope.headingName = "Project";
 
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
-              
-  // $scope.toggleMenu = function(){
-  //   var transform = $(".menu-content.pane").css('transform');
-  //   var values = transform.match(/-?[\d\.]+/g);
-  //   if (values == null || values[4] == "0") {
-  //     $(".menu-content.pane").css({transform: 'translate3d(275px,0px,0px)'});
-  //   }
-  //   else {
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //   }
-  // };
-
-  $scope.contractorPackages = [];
-  $scope.materialPackages = [];
-  $scope.staffPackages = [];
-  $scope.files = [];
-  $scope.projectId = '';
-  $scope.selectedProject = {};
-
-  function showPackageTypeByTeam(hasArchitectManager){
-    if (hasArchitectManager) {
-      $scope.allPackageTypes = {
-        homeOwner: [{'name': 'Architect', 'id' : 1}],
-        builder: [
-          {'name':'Architect', 'id': 1},
-          {'name':'Subcontractors', 'id':3},
-          {'name':'Suppliers', 'id':4},
-          {'name':'Employees', 'id':5}],
-        contractor: [{'name': 'Contracts', 'id' : 3}],
-        supplier: [{'name': 'Material', 'id' : 5}],
-        architect: [
-          {'name':'Design', 'id': 2},
-          {'name':'Client', 'id':1},
-          {'name':'Builder', 'id':1},]
-      };
-    } else {
-      $scope.allPackageTypes = {
-        homeOwner: [{'name': 'Builder', 'id' : 1}],
-        builder: [
-          {'name':'Client', 'id': 1},
-          {'name':'Subcontractors', 'id':3},
-          {'name':'Suppliers', 'id':4},
-          {'name':'Employees', 'id':5}],
-        contractor: [{'name': 'Contracts', 'id' : 3}],
-        supplier: [{'name': 'Material', 'id' : 5}],
-        architect: [
-          {'name':'Design', 'id': 2},
-          {'name':'Client', 'id':1},
-          {'name':'Builder', 'id':1},]
-      };
-    }
-  };
-
-  function findPackageByProject(value){
-    builderPackageService.findDefaultByProject({id: value}).$promise.then(function(builderPackage){
-      $scope.builderPackage = builderPackage;
-      showPackageTypeByTeam($scope.builderPackage.hasArchitectManager);
-      if ($scope.currentTeam.type === 'homeOwner') {
-        $scope.packageTypeByTeam = $scope.allPackageTypes['homeOwner'];
-      }
-      else if ($scope.currentTeam.type === 'builder') {
-        $scope.packageTypeByTeam = $scope.allPackageTypes['builder'];
-      }
-      else if ($scope.currentTeam.type === 'contractor') {
-        $scope.packageTypeByTeam = $scope.allPackageTypes['contractor'];
-      }
-      else if ($scope.currentTeam.type === 'supplier') {
-        $scope.packageTypeByTeam = $scope.allPackageTypes['supplier'];
-      }
-      else if ($scope.currentTeam.type == 'architect') {
-        $scope.packageTypeByTeam = $scope.allPackageTypes['architect'];
-      }
-    });
-    if ($scope.currentTeam.type == 'architect') {
-      designService.getAll({id: value}).$promise.then(function(designPackages){
-        $scope.designPackages = designPackages;
-      });
-    } else if ($scope.currentTeam.type == 'builder' || $scope.currentTeam.type == 'homeOwner') {
-      designService.getListInArchitect({id: value}).$promise.then(function(designPackages){
-        $scope.designPackages = designPackages;
-      });
-    } else {
-      $scope.designPackages = [];
-    }
-    contractorService.get({id : value}).$promise.then(function(contractorPackages){
-      $scope.contractorPackages = contractorPackages;
-    });
-    materialPackageService.get({id : value}).$promise.then(function(materialPackages){
-      $scope.materialPackages = materialPackages;
-    });
-    staffPackageService.getAll({id: value}).$promise.then(function(staffPackages){
-      $scope.staffPackages = staffPackages;
-    });
-  };
-
-  
-
-  if ($rootScope.selectProject._id) {
-    $scope.headingName = " ";
-    $scope.selectedProject = $rootScope.selectProject;
-    $scope.projectId = $scope.selectedProject._id;
-    findPackageByProject($scope.selectedProject._id);
-    $rootScope.$broadcast('getProject', $scope.projectId);
-  }
-
-  $scope.clickChange = function(value) {
-    $scope.headingName = " ";
-    $scope.selectedProject = value;
-    $rootScope.currentProjectId = $scope.projectId = value._id;
-    findPackageByProject(value._id);
-    $scope.modalProject.hide();
-    $rootScope.$broadcast('getProject', value._id);
-  };
-  $scope.isShowDefault = true;
-  $scope.isShowContractorPackage = false;
-  $scope.isShowMaterialPackage = false;
-  $scope.isShowStaffPackage = false;
-  $scope.isShowDocumentation = false;
-
-  if ($rootScope.hasResourceType) {
-    $scope.isShowDefault = false;
-  }
-
-  function resetCurrentResource(){
-    $rootScope.hasResourceType = false;
-    $rootScope.currentResource = [];
-    $rootScope.currentSelectResource = [];
-  };
-
-  // $scope.choosePackage = function(value) {
-  //   resetCurrentResource();
-  //   if (value == 1) {
-  //     $scope.isShowDefault = false;
-  //     $scope.isShowContractorPackage = false;
-  //     $scope.isShowMaterialPackage = false;
-  //     $scope.isShowStaffPackage = false;
-  //     $scope.isShowDocumentation = false;
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //     $state.go('client',{id: $scope.projectId});
-  //   }
-  //   else if (value == 2) {
-  //     $scope.isShowDefault = false;
-  //     $scope.isShowContractorPackage = true;
-  //     $scope.isShowMaterialPackage = false;
-  //     $scope.isShowStaffPackage = false;
-  //     $scope.isShowDocumentation = false;
-  //     $rootScope.hasResourceType = true;
-  //     $rootScope.currentResource = $scope.contractorPackages;
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //   }
-  //   else if (value == 3) {
-  //     $scope.isShowDefault = false;
-  //     $scope.isShowContractorPackage = false;
-  //     $scope.isShowMaterialPackage = true;
-  //     $scope.isShowStaffPackage = false;
-  //     $scope.isShowDocumentation = false;
-  //     $rootScope.hasResourceType = true;
-  //     $rootScope.currentResource = $scope.materialPackages;
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //   }
-  //   else if (value == 4) {
-  //     $scope.isShowDefault = false;
-  //     $scope.isShowContractorPackage = false;
-  //     $scope.isShowMaterialPackage = false;
-  //     $scope.isShowStaffPackage = true;
-  //     $scope.isShowDocumentation = false;
-  //     $rootScope.hasResourceType = true;
-  //     $rootScope.currentResource = $scope.staffPackages;
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //   }
-  //   else if (value == 5) {
-  //     $scope.isShowDefault = false;
-  //     $scope.isShowContractorPackage = false;
-  //     $scope.isShowMaterialPackage = false;
-  //     $scope.isShowStaffPackage = false;
-  //     $scope.isShowDocumentation = true;
-  //     $(".menu-content.pane").css({transform: 'translate3d(0px,0px,0px)'});
-  //   }
-  // };
-
-  $scope.goToResourceDetail = function(resource) {
-    if (resource.type == 'contractor') {
-      $state.go('contractorRequestInProgress',{id:resource.project, packageId: resource._id});
-    }
-    else if (resource.type == 'material') {
-      $state.go('materialRequestInProcess',{id:resource.project, packageId: resource._id});
-    }
-    else if (resource.type == 'staffPackage') {
-      $state.go('staffView',{id:resource.project, packageId: resource._id});
-    }
-  };
-
-  
 
   $ionicModal.fromTemplateUrl('modalProject.html', {
     scope: $scope,

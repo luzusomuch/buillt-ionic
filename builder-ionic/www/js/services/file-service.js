@@ -66,6 +66,27 @@ angular.module('buiiltApp').factory('fileService', function($rootScope, $q, $res
                 action: 'get-all-by-user'
               },
               isArray: true
-            }
+            },
+            getFileInPeople: {
+              method: 'get',
+              params: {
+                action: 'get-in-people'
+              },
+              isArray: true
+            },
+            getFileInBoard: {
+              method: 'get',
+              params: {
+                action: 'get-in-board'
+              },
+              isArray: true
+            },
+            getFileInProject: {
+              method: 'get',
+              params: {
+                action: 'get-in-project'
+              },
+              isArray: true
+            },
     });
 });
