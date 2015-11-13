@@ -23,7 +23,7 @@ angular.module('buiiltApp', [
   $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
   $ionicConfigProvider.tabs.position('top');
-  $ionicConfigProvider.views.maxCache(0);
+  // $ionicConfigProvider.views.maxCache(0);
   // cfpLoadingBarProvider.includeSpinner = true;
 })
 .factory('authInterceptor', function ($q, $location) {

@@ -52,6 +52,13 @@ angular.module('buiiltApp')
             action: 'list-by-project'
           },
           isArray: true
+        },
+        getByPackage: {
+          method: 'get',
+          params: {
+            action: 'get-by-package'
+          },
+          isArray: true
         }
         //update: {
         //  method: 'PUT'
