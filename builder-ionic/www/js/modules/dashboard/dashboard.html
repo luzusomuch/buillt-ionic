@@ -16,7 +16,7 @@
         <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
         <div id="dashboard" ng-show="defaultSelectedPackage == 0">
             <ion-list>
-                <ion-item ng-repeat="package in peoplePackages">
+                <ion-item ng-repeat="package in peoplePackages" ui-sref="peopleDetail({id: package.project})">
                     {{package.name}}
                 </ion-item>
                 <ion-item ng-repeat="package in boardPackages track by $index" ui-sref="boardDetail({boardId: package._id})">
