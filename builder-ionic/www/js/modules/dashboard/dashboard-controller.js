@@ -79,6 +79,7 @@ angular.module('buiiltApp')
         $rootScope.user = $scope.user = user;
         $scope.projects = user.projects;
         $scope.projects = _.uniq($scope.projects, '_id');
+        console.log($scope.projects);
         $rootScope.isLeader = (user.team.role == 'leader');
         authService.getCurrentTeam().$promise.then(function(team){
             $rootScope.currentTeam = $scope.currentTeam = team;

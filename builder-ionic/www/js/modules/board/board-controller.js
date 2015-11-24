@@ -54,11 +54,15 @@ angular.module('buiiltApp')
             if (board.invitees.length > 0) {
                 _.each(board.invitees, function(invitee) {
                     if (invitee._id) {
+                        invitee._id.isSelect = false;
                         $scope.available.push(invitee._id);
                     }
                 });
             }
+            board.owner.isSelect = false;
+            console.log(board.owner);
             $scope.available.push(board.owner);
+            console.log($scope.available);
         }
     };
 
@@ -134,6 +138,64 @@ angular.module('buiiltApp')
         }, function(err){
             console.log(err);
         });
+    };
+
+    $ionicModal.fromTemplateUrl('modalCreateTaskInBoard.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalCreateTask = modal;
+    });
+
+    $scope.createNewTaskModal = function(){
+        $scope.modalCreateTask.show();
+    };
+
+    $scope.closeModal = function() {
+        $scope.modalCreateTask.hide();
+    };
+
+    $scope.isShowInputDate = false;
+    $scope.callDateInput = function(){
+        $scope.isShowInputDate = true;
+        $("input#dueDate").trigger('click');
+    };
+
+    $scope.$on('taskAvaiableAssignees', function(event, value){
+        $scope.available = value;
+    });
+
+    $scope.task = {
+        assignees : []
+    };
+
+    $scope.assign = function(staff,index) {
+        if (staff.isSelect == false) {
+            staff.isSelect = true;
+            $scope.task.assignees.push(staff);
+        }
+        else if (staff.isSelect == true) {
+            staff.isSelect = false;
+            _.remove($scope.task.assignees, {_id: staff._id});
+        }
+    };
+
+    $scope.submitted = false;
+    $scope.createNewTask = function(form) {
+        $scope.submitted = true;
+        if (form.$valid) {
+            taskService.create({id : $scope.board._id, type : 'board'},$scope.task)
+                .$promise.then(function(res) {
+                $scope.modalCreateTask.hide();
+                _.each($scope.task.assignees, function(assignee){
+                    assignee.isSelect = false;
+                }); 
+                $scope.task.name = null;
+                $scope.task.dateEnd = null;
+                $scope.submitted = false;
+                getTasksAndFilesByBoard($scope.board);
+            });
+        }
     };
     
 });

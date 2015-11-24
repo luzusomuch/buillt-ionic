@@ -1,4 +1,4 @@
-<ion-view title="{{invitePeople.name}}">
+<ion-view title="People">
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
     
     <ion-content padding="false" class="has-header">
@@ -7,7 +7,7 @@
         <div ng-show="builderPackage.projectManager.type == 'architect'">
             <div class="list">
                 <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers">
+                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person)">
                     {{person.name}}
                 </ion-item>
             </div>
@@ -18,13 +18,107 @@
                     {{builder._id.name}}
                 </ion-item>
             </div>
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'architect') && currentUser.isLeader">
+            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder') && currentUser.isLeader">
                 <ion-item>ARCHITECT</ion-item>
                 <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
                     {{architect._id.name}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'architect' && currentUser.isLeader">
+                <ion-item>CLIENT</ion-item>
+                <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
+                    {{client._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+                <ion-item>SUBCONTRACTORS</ion-item>
+                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-if="subcontractor._id">
+                    {{subcontractor.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+                <ion-item>CONSULTANTS</ion-item>
+                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant._id">
+                    {{consultant.name}}
+                </ion-item>
+            </div>
+
+            <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
+                <ion-item>{{inviterTypeText}}</ion-item>
+                <ion-item>
+                    {{invitePeople.inviter.name}}
+                </ion-item>
+            </div>
+        </div>
+
+        <div ng-show="builderPackage.projectManager.type == 'builder'">
+            <div class="list">
+                <ion-item>TEAM</ion-item>
+                <ion-item ng-repeat="person in currentTeamMembers">
+                    {{person.name}}
+                </ion-item>
+            </div>
+
+            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'architect') && currentUser.isLeader">
+                <ion-item>BUILDER</ion-item>
+                <ion-item ng-repeat="builder in invitePeople.builders" ng-if="builder._id">
+                    {{builder._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+                <ion-item>ARCHITECT</ion-item>
+                <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
+                    {{architect._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+                <ion-item>CLIENT</ion-item>
+                <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
+                    {{client._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+                <ion-item>SUBCONTRACTORS</ion-item>
+                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-if="subcontractor._id">
+                    {{subcontractor.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+                <ion-item>CONSULTANTS</ion-item>
+                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant._id">
+                    {{consultant.name}}
+                </ion-item>
+            </div>
+
+            <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
+                <ion-item>{{inviterTypeText}}</ion-item>
+                <ion-item>
+                    {{invitePeople.inviter.name}}
+                </ion-item>
+            </div> 
+        </div>
+
+        <div ng-show="builderPackage.projectManager.type == 'homeOwner'">
+            <div class="list">
+                <ion-item>TEAM</ion-item>
+                <ion-item ng-repeat="person in currentTeamMembers">
+                    {{person.name}}
+                </ion-item>
+            </div>
+
+            <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
+                <ion-item>BUILDER</ion-item>
+                <ion-item ng-repeat="builder in invitePeople.builders" ng-if="builder._id">
+                    {{builder._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
+                <ion-item>ARCHITECT</ion-item>
+                <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
+                    {{architect._id.name}}
+                </ion-item>
+            </div>
+            <div class="list" ng-show="(currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>CLIENT</ion-item>
                 <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
                     {{client._id.name}}

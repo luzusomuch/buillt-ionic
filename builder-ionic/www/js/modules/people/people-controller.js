@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('PeopleCtrl', function(team, currentUser, builderPackage, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket) {
+.controller('PeopleCtrl', function(team, currentUser, builderPackage, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService) {
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.builderPackage = builderPackage;
@@ -676,6 +676,16 @@ angular.module('buiiltApp')
 
     getAvailableUser();
 
-
+    $scope.selectPeople = function(user) {
+        peopleChatService.selectPeople(
+            {id: $scope.invitePeople._id},
+            {project: $stateParams.id, user: user._id}
+        ).$promise.then(function(res){
+            $scope.selectedChatPeople = res;
+            console.log(res);
+        }, function(err){
+            console.log(err);
+        });
+    };
 
 });
