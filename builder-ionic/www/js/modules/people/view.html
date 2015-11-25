@@ -7,45 +7,45 @@
         <div ng-show="builderPackage.projectManager.type == 'architect'">
             <div class="list">
                 <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person)">
+                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
                     {{person.name}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="currentUser.type == 'architect' && currentUser.isLeader">
                 <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-if="builder._id">
-                    {{builder._id.name}}
+                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+                    {{(builder._id) ? builder._id.name : builder.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder') && currentUser.isLeader">
                 <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
-                    {{architect._id.name}}
+                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+                    {{(architect._id) ? architect._id.name : architect.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'architect' && currentUser.isLeader">
                 <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
-                    {{client._id.name}}
+                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+                    {{(client._id) ? client._id.name : client.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
                 <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-if="subcontractor._id">
-                    {{subcontractor.name}}
+                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant._id">
-                    {{consultant.name}}
+                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+                    {{(consultant._id) ? consultant._id.name : consultant.email}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
                 <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item>
+                <ion-item ng-click="selectPeople(invitePeople.inviter)">
                     {{invitePeople.inviter.name}}
                 </ion-item>
             </div>
@@ -54,45 +54,45 @@
         <div ng-show="builderPackage.projectManager.type == 'builder'">
             <div class="list">
                 <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers">
+                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
                     {{person.name}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-if="builder._id">
-                    {{builder._id.name}}
+                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+                    {{(builder._id) ? builder._id.name : builder.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
                 <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
-                    {{architect._id.name}}
+                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+                    {{(architect._id) ? architect._id.name : architect.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
                 <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
-                    {{client._id.name}}
+                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+                    {{(client._id) ? client._id.name : client.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
                 <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-if="subcontractor._id">
-                    {{subcontractor.name}}
+                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant._id">
-                    {{consultant.name}}
+                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+                    {{(consultant._id) ? consultant._id.name : consultant.email}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
                 <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item>
+                <ion-item ng-click="selectPeople(invitePeople.inviter)">
                     {{invitePeople.inviter.name}}
                 </ion-item>
             </div> 
@@ -101,45 +101,45 @@
         <div ng-show="builderPackage.projectManager.type == 'homeOwner'">
             <div class="list">
                 <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers">
+                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
                     {{person.name}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
                 <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-if="builder._id">
-                    {{builder._id.name}}
+                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+                    {{(builder._id) ? builder._id.name : builder.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
                 <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-if="architect._id">
-                    {{architect._id.name}}
+                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+                    {{(architect._id) ? architect._id.name : architect.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="(currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-if="client._id">
-                    {{client._id.name}}
+                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+                    {{(client._id) ? client._id.name : client.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
                 <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-if="subcontractor._id">
-                    {{subcontractor.name}}
+                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
                 </ion-item>
             </div>
             <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
                 <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant._id">
-                    {{consultant.name}}
+                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+                    {{(consultant._id) ? consultant._id.name : consultant.email}}
                 </ion-item>
             </div>
 
             <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
                 <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item>
+                <ion-item ng-click="selectPeople(invitePeople.inviter)">
                     {{invitePeople.inviter.name}}
                 </ion-item>
             </div>

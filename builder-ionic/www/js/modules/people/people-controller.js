@@ -27,6 +27,9 @@ angular.module('buiiltApp')
                     _.each(builder.teamMember, function(member) {
                         $scope.available.push(member);
                     });
+                    if (builder._id._id == $scope.currentUser._id && builder.hasSelect) {
+                        $scope.currentUser.hasSelect = true;
+                    }
                 }
             });
             _.each($scope.invitePeople.architects, function(architect){
@@ -35,6 +38,9 @@ angular.module('buiiltApp')
                     _.each(architect.teamMember, function(member) {
                         $scope.available.push(member);
                     });
+                    if (architect._id._id == $scope.currentUser._id && architect.hasSelect) {
+                        $scope.currentUser.hasSelect = true;
+                    }
                 }
             });
             _.each($scope.invitePeople.clients, function(client){
@@ -43,6 +49,9 @@ angular.module('buiiltApp')
                     _.each(client.teamMember, function(member) {
                         $scope.available.push(member);
                     });
+                    if (client._id._id == $scope.currentUser._id && client.hasSelect) {
+                        $scope.currentUser.hasSelect = true;
+                    }
                 }
             });
             _.each($scope.invitePeople.subcontractors, function(subcontractor){
@@ -313,7 +322,6 @@ angular.module('buiiltApp')
                                 }
                             })
                         });
-
                         $scope.invitePeople.builders = builders;
                         $scope.currentTeamMembers = builders;
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
@@ -345,49 +353,31 @@ angular.module('buiiltApp')
                             }
                         });
 
-                        var subcontractors = [];
                         _.each($scope.invitePeople.subcontractors, function(subcontractor) {
-                            if (subcontractor._id) {
-                                subcontractor._id.inviter = subcontractor.inviter._id;
-                                subcontractor._id.hasSelect = subcontractor.hasSelect;
-                                subcontractors.push(subcontractor._id);
-                            }
-                        });
-                        _.each(subcontractors, function(subcontractor) {
                             subcontractor.unreadMessagesNumber = 0;
                             _.each(res, function(item) {
-                                if (subcontractor._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
-                                    subcontractor.unreadMessagesNumber++;
-                                } else if (item.fromUser._id.toString() == subcontractor._id.toString() && item.referenceTo == 'people-chat-without-mention') {
-                                    subcontractor.unreadMessagesNumber++;
+                                if (subcontractor._id) {
+                                    if (subcontractor._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
+                                        subcontractor.unreadMessagesNumber++;
+                                    } else if (item.fromUser._id.toString() == subcontractor._id.toString() && item.referenceTo == 'people-chat-without-mention') {
+                                        subcontractor.unreadMessagesNumber++;
+                                    }
                                 }
                             });
                         });
 
-                        $scope.invitePeople.subcontractors = subcontractors;
-
-                        var consultants = [];
                         _.each($scope.invitePeople.consultants, function(consultant) {
-                            if (consultant._id) {
-                                consultant._id.inviter = consultant.inviter._id;
-                                consultant._id.hasSelect = consultant.hasSelect;
-                                if (consultant._id && consultant._id.inviter == $scope.currentUser._id) {
-                                    consultants.push(consultant._id);
-                                }
-                            }
-                        });
-                        _.each(consultants, function(consultant) {
                             consultant.unreadMessagesNumber = 0;
                             _.each(res, function(item) {
-                                if (consultant._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
-                                    consultant.unreadMessagesNumber++;
-                                } else if (item.fromUser._id.toString() == consultant._id.toString() && item.referenceTo == 'people-chat-without-mention') {
-                                    consultant.unreadMessagesNumber++;
+                                if (consultant._id) {
+                                    if (consultant._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
+                                        consultant.unreadMessagesNumber++;
+                                    } else if (item.fromUser._id.toString() == consultant._id.toString() && item.referenceTo == 'people-chat-without-mention') {
+                                        consultant.unreadMessagesNumber++;
+                                    }
                                 }
                             });
                         });
-
-                        $scope.invitePeople.consultants = consultants;
                     });
                     break;
 
@@ -411,6 +401,7 @@ angular.module('buiiltApp')
                             }
                         });
                         _.each(architects, function(architect) {
+                            console.log(architect);
                             architect.unreadMessagesNumber = 0;
                             _.each(res, function(item) {
                                 if (item.fromUser._id.toString() == architect._id.toString() && item.referenceTo == 'people-chat') {
@@ -452,28 +443,18 @@ angular.module('buiiltApp')
                             }
                         });
 
-                        var consultants = [];
                         _.each($scope.invitePeople.consultants, function(consultant) {
-                            if (consultant._id) {
-                                consultant._id.inviter = consultant.inviter._id;
-                                consultant._id.hasSelect = consultant.hasSelect;
-                                if (consultant._id && consultant._id.inviter == $scope.currentUser._id) {
-                                    consultants.push(consultant._id);
-                                }
-                            }
-                        });
-                        _.each(consultants, function(consultant) {
                             consultant.unreadMessagesNumber = 0;
                             _.each(res, function(item) {
-                                if (consultant._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
-                                    consultant.unreadMessagesNumber++;
-                                } else if (item.fromUser._id.toString() == consultant._id.toString() && item.referenceTo == 'people-chat-without-mention') {
-                                    consultant.unreadMessagesNumber++;
+                                if (consultant._id) {
+                                    if (consultant._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
+                                        consultant.unreadMessagesNumber++;
+                                    } else if (item.fromUser._id.toString() == consultant._id.toString() && item.referenceTo == 'people-chat-without-mention') {
+                                        consultant.unreadMessagesNumber++;
+                                    }
                                 }
                             });
                         });
-
-                        $scope.invitePeople.consultants = consultants;
                     });
                     break;
 
@@ -537,17 +518,7 @@ angular.module('buiiltApp')
                             }
                         });
 
-                        var consultants = [];
                         _.each($scope.invitePeople.consultants, function(consultant) {
-                            if (consultant._id) {
-                                consultant._id.inviter = consultant.inviter._id;
-                                consultant._id.hasSelect = consultant.hasSelect;
-                                if (consultant._id && consultant._id.inviter == $scope.currentUser._id) {
-                                    consultants.push(consultant._id);
-                                }
-                            }
-                        });
-                        _.each(consultants, function(consultant) {
                             consultant.unreadMessagesNumber = 0;
                             _.each(res, function(item) {
                                 if (consultant._id.toString() == item.fromUser._id.toString() && item.referenceTo == 'people-chat') {
@@ -557,8 +528,6 @@ angular.module('buiiltApp')
                                 }
                             });
                         });
-
-                        $scope.invitePeople.consultants = consultants;
                     });
                     break;
 
@@ -575,12 +544,14 @@ angular.module('buiiltApp')
                                     });
                                 }
 
+                                $scope.invitePeople.inviter = subcontractor.inviter;
+
                                 if (subcontractor._id._id == $scope.currentUser._id) {
                                     $scope.currentUser.isLeader = true;
+                                    return false;
                                 } else {
                                     $scope.currentUser.isLeader = false;
                                 }
-                                $scope.invitePeople.inviter = subcontractor.inviter;
                             }
                         });
                         _.each(subcontractors, function(subcontractor) {
@@ -668,21 +639,18 @@ angular.module('buiiltApp')
                 default:
                     break;
             }
-            console.log($scope.invitePeople);
         });
-        console.log($scope.currentUser);
-        console.log($rootScope.selectProject)
     };
 
     getAvailableUser();
 
-    $scope.selectPeople = function(user) {
+    $scope.selectPeople = function(user, type) {
+        user.type = type;        
         peopleChatService.selectPeople(
             {id: $scope.invitePeople._id},
-            {project: $stateParams.id, user: user._id}
+            {project: $stateParams.id, user: user}
         ).$promise.then(function(res){
-            $scope.selectedChatPeople = res;
-            console.log(res);
+            $state.go('peopleChat', {id: res.project, peopleChatId: res._id});
         }, function(err){
             console.log(err);
         });

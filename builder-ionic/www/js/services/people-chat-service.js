@@ -13,6 +13,12 @@ angular.module('buiiltApp')
                 params: {
                     action: 'send-message'
                 }
+            },
+            get: {
+                method: 'get',
+                params: {
+                    action: 'get'
+                }
             }
         });
 });
