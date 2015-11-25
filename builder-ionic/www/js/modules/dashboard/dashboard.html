@@ -3,7 +3,7 @@
         <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button ng-hide="currentTab == 'document'" class="button button-clear icon-right ion-ios-plus-empty" ng-click="createTaskThreadDocument()"></button>
+        <button ng-show="selectedProject._id && currentPackage.name == 'BOARD'" class="button button-clear icon-right ion-ios-plus-empty" ng-click="createTaskThreadDocument()"></button>
     </ion-nav-buttons>
     <div class="bar bar-subheader row" style="border-bottom: solid 1px #efefef">
         <div class="button-bar">
@@ -247,6 +247,46 @@
         <ion-content padding="true" class="has-header">
             <div class="spacer" style="width: 255px; height: 34px;"></div>
             <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
+        </ion-content>
+    </div>
+</script>
+
+<script id="modalCreateBoard.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h class="title">Create New Board</h>
+            <div class="buttons">
+                <button ng-click="closeModal('board')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+            </div>
+        </ion-header-bar>
+        <ion-content padding="true" class="has-header">
+            <form style="padding:10px;" id="createBoardForm" name="form" novalidate ng-submit="createNewBoard(form)">
+
+                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+
+                <div class="item item-input">
+                    <input placeholder="Board Name" id="board-name" type="text" ng-model="board.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+                    <p class="validate-message" ng-show="form.name.$error.required && submitted">Board name is required</p>
+                </div>
+
+                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+
+                <div class="available-assign" >
+                    <p style="">Recipients:</p>
+                    <ul class="list">
+                        <li class="item item-checkbox" ng-repeat="user in newBoardPeople track by $index">
+                            <div class="checkbox">
+                                <input type="checkbox" ng-click="assignToNewBoard(user, $index)">
+                            </div>
+                            {{user.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="spacer" style="width: 300px; height: 50px;"></div>
+                <div class="row" style="">
+                    <button class="button button-positive button-outline button-block" type="submit">Add message</button>
+                </div>
+            </form>
         </ion-content>
     </div>
 </script>
