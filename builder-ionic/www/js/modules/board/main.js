@@ -8,7 +8,10 @@ angular.module('buiiltApp').config(function($stateProvider) {
         resolve: {
             currentUser: function(authService){
                 return authService.getCurrentUser().$promise;
-            }
+            },
+            team: function(authService){
+                return authService.getCurrentTeam().$promise;
+            },
         }
     });
 });
