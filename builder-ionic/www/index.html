@@ -165,23 +165,20 @@
                 var projectid = window.localStorage.getItem('projectid');
                 if (push == 1){
                     if (related == 'task'){
-              
-                        window.location.href = "#/"+projectid+"/task/"+id;
-                push = 0;
-                window.localStorage.removeItem('relatedto');
-                window.localStorage.removeItem('push');
-                window.localStorage.removeItem('id');
-                window.localStorage.removeItem('projectid');
+                        window.location.href = "#/task/"+id;
+                    } else if (related == "board") {
+                        window.location.href="#/board/"+id;
+                    } else if (related == "people") {
+                        window.location.href="#/"+projectid+"/people-chat/"+id;
                     }
                     else if (related == 'thread') {
                         window.location.href = "#/"+projectid+"/thread/"+id;
-                push = 0;
-                window.localStorage.removeItem('relatedto');
-                window.localStorage.removeItem('push');
-                window.localStorage.removeItem('id');
-                window.localStorage.removeItem('projectid');
                     }
-              
+                    push = 0;
+                    window.localStorage.removeItem('relatedto');
+                    window.localStorage.removeItem('push');
+                    window.localStorage.removeItem('id');
+                    window.localStorage.removeItem('projectid');
                 }
           
             };
