@@ -26,8 +26,8 @@
                 </div>
                 <ion-content padding="false" class="has-header has-subheader messages-list-content">
                     <div class="spacer" style="display: inline-block; width: 300px; height: 90px;"></div>
-                    <div class="list" scroll-to-bottom="board.orderedMessages">
-                        <ion-item ng-repeat="message in board.orderedMessages">
+                    <div class="list" scroll-to-bottom="peopleChat.orderedMessages">
+                        <ion-item ng-repeat="message in peopleChat.orderedMessages">
                             <p style="font-size: 10px; color: #757575; margin-bottom: 0px">
                                 <strong>{{message.user.name}}</strong><span style="font-size: 10px"> - {{message.sendAt | date : 'MMM d, y h:mm:ss a'}}.</span>
                             </p>
