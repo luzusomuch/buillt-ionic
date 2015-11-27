@@ -327,6 +327,13 @@ angular.module('buiiltApp')
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
                         _.remove($scope.currentTeamMembers, {_id: $scope.currentUser._id});
 
+                        $scope.teamMembersCanInvite = [];
+                        _.each($scope.availableTeamMember, function(member, index) {
+                            if (_.findIndex($scope.currentTeamMembers, {_id: member._id}) == -1) {
+                                $scope.teamMembersCanInvite.push(member);
+                            }
+                        });
+
                         _.each($scope.invitePeople.clients, function(client) {
                             if (client._id) {
                                 client.unreadMessagesNumber = 0;
@@ -417,6 +424,13 @@ angular.module('buiiltApp')
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
                         _.remove($scope.currentTeamMembers, {_id: $scope.currentUser._id});
 
+                        $scope.teamMembersCanInvite = [];
+                        _.each($scope.availableTeamMember, function(member, index) {
+                            if (_.findIndex($scope.currentTeamMembers, {_id: member._id}) == -1) {
+                                $scope.teamMembersCanInvite.push(member);
+                            }
+                        });
+
                         _.each($scope.invitePeople.builders, function(builder) {
                             if (builder._id) {
                                 builder.unreadMessagesNumber = 0;
@@ -491,6 +505,13 @@ angular.module('buiiltApp')
                         $scope.currentTeamMembers = clients;
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
                         _.remove($scope.currentTeamMembers, {_id: $scope.currentUser._id});
+
+                        $scope.teamMembersCanInvite = [];
+                        _.each($scope.availableTeamMember, function(member, index) {
+                            if (_.findIndex($scope.currentTeamMembers, {_id: member._id}) == -1) {
+                                $scope.teamMembersCanInvite.push(member);
+                            }
+                        });
 
                         _.each($scope.invitePeople.architects, function(architect) {
                             if (architect._id) {
@@ -577,6 +598,13 @@ angular.module('buiiltApp')
                         $scope.currentTeamMembers = subcontractors;
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
                         _.remove($scope.currentTeamMembers, {_id: $scope.currentUser._id});
+
+                        $scope.teamMembersCanInvite = [];
+                        _.each($scope.availableTeamMember, function(member, index) {
+                            if (_.findIndex($scope.currentTeamMembers, {_id: member._id}) == -1) {
+                                $scope.teamMembersCanInvite.push(member);
+                            }
+                        });
                     });
                     break;
                 case 'consultant':
@@ -634,6 +662,13 @@ angular.module('buiiltApp')
                         $scope.currentTeamMembers = consultants;
                         $scope.currentTeamMembers = _.uniq($scope.currentTeamMembers, '_id');
                         _.remove($scope.currentTeamMembers, {_id: $scope.currentUser._id});
+
+                        $scope.teamMembersCanInvite = [];
+                        _.each($scope.availableTeamMember, function(member, index) {
+                            if (_.findIndex($scope.currentTeamMembers, {_id: member._id}) == -1) {
+                                $scope.teamMembersCanInvite.push(member);
+                            }
+                        });
                     });
                     break;
                 default:
@@ -654,6 +689,107 @@ angular.module('buiiltApp')
         }, function(err){
             console.log(err);
         });
+    };
+
+    $ionicModal.fromTemplateUrl('modalInviteMorePeople.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalInviteMorePeople = modal;
+    });
+
+    $scope.setInviteMorePeople = function() {
+        $scope.modalInviteMorePeople.show();
+        $scope.invite = {
+            isTender : true,
+            isInviteTeamMember: false,
+            teamMember: [],
+            invitees: []
+        };
+    };
+
+    $scope.closeModal = function() {
+        $scope.modalInviteMorePeople.hide();
+    };
+
+    $scope.invitePeopleStep = 1;
+    $scope.getChangeTypeValue = function(type) {
+        $scope.invitePeopleStep = 2;
+        if (type == 'addTeamMember' || type == 'addClient') {
+            $scope.invite.isTender = false;
+            if (type == 'addTeamMember') {
+                $scope.invite.isInviteTeamMember = true;
+            } else {
+                $scope.invite.isInviteTeamMember = false;
+            }
+        } else {
+            $scope.invite.isTender = true;
+            $scope.invite.isInviteTeamMember = false;
+        }
+    };
+
+    $scope.addInvitee = function(invitee) {
+        if (invitee && invitee != '') {
+            $scope.invite.invitees.push({email: invitee});
+            $scope.invite.email = null;
+        }
+    };
+    $scope.removeInvitee = function(index) {
+        $scope.invite.invitees.splice(index, 1);
+    };
+
+    $scope.inviteTeamMember = function(member, index) {
+        $scope.invite.teamMember.push(member);
+        $scope.teamMembersCanInvite.splice(index,1);
+        member.canRevoke = true;
+    };
+    $scope.revokeTeamMember = function(member, index) {
+        $scope.teamMembersCanInvite.push(member);
+        $scope.invite.teamMember.splice(index, 1);
+        member.canRevoke = false;
+    };
+
+    $scope.inviteMorePeople = function(form) {
+        $scope.submitted = true;
+        if (form.$valid) {
+            $scope.invite.inviterType = $scope.currentUser.type;
+            if ($scope.invite.type == 'addTeamMember') {
+                switch ($scope.currentUser.type) {
+                    case 'builder':
+                        $scope.invite.type = 'addBuilder';
+                        break;
+                    case 'client':
+                        $scope.invite.type = 'addClient';
+                        break;
+                    case 'architect':
+                        $scope.invite.type = 'addArchitect';
+                        break;
+                    case 'subcontractor':
+                        $scope.invite.type = 'addSubcontractor';
+                        break;
+                    case 'consultant':
+                        $scope.invite.type = 'addConsultant';
+                        break;
+                    default:
+                        break;
+                }
+                peopleService.update({id: $stateParams.id},$scope.invite).$promise.then(function(res){
+                    getAvailableUser();
+                    $scope.submitted = false;
+                    $scope.closeModal();
+                }, function(res){
+                    console.log(res);
+                });
+            } else {
+                peopleService.update({id: $stateParams.id},$scope.invite).$promise.then(function(res){
+                    getAvailableUser();
+                    $scope.submitted = false;
+                    $scope.closeModal();
+                }, function(res){
+                    console.log(res);
+                });
+            }
+        }
     };
 
 });
