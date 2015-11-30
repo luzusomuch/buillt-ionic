@@ -3,6 +3,7 @@ angular.module('buiiltApp')
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.peopleChat = peopleChat;
+    socket.emit('join', peopleChat._id);
     getTasksAndFiles(peopleChat);
     filterMessages($scope.peopleChat);
 
@@ -68,11 +69,13 @@ angular.module('buiiltApp')
             peopleChat.orderedMessages.push(peopleChat.messages[i]);
         };
         _.each(peopleChat.orderedMessages, function(message){
-            if (message.user._id == $scope.currentUser._id) {
-                message.owner = true;
-            }
-            else {
-                message.owner = false;
+            if (message.user) {
+                if (message.user._id == $scope.currentUser._id) {
+                    message.owner = true;
+                }
+                else {
+                    message.owner = false;
+                }
             }
         });
     };

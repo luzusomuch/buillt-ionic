@@ -29,7 +29,7 @@
                     <div class="list" scroll-to-bottom="peopleChat.orderedMessages">
                         <ion-item ng-repeat="message in peopleChat.orderedMessages">
                             <p style="font-size: 10px; color: #757575; margin-bottom: 0px">
-                                <strong>{{message.user.name}}</strong><span style="font-size: 10px"> - {{message.sendAt | date : 'MMM d, y h:mm:ss a'}}.</span>
+                                <strong>{{(message.user) ? message.user.name : message.email}}</strong><span style="font-size: 10px"> - {{message.sendAt | date : 'MMM d, y h:mm:ss a'}}.</span>
                             </p>
                             <p style="font-size: 13px; margin-top: 8px">
                                 <span ng-bind-html="message.text | mention: message.mentions"></span>
