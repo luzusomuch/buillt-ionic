@@ -1,0 +1,853 @@
+fix send email for contractor when create contractor package.
+
+fix list contractor package & material package
+when invite see project for contractor & supplier
+
+doi lai db cho team. them email vao leader va member
+err select in tender for contractor
+tabs -> lay theo stateparams. 
+header.html 
+<li class="tab col" ng-repeat="tab in tabs" ng-if="projectParamId">
+          <a ui-sref="{{tab.sref}}({id :  projectParamId})" ui-sref-active="active">{{tab.label}}</a>
+        </li>
+        <li class="tab col" ng-repeat="tab in tabs" ng-if="!projectParamId">
+          <a ui-sref="{{tab.sref}}" ui-sref-active="active">{{tab.label}}</a>
+        </li>
+
+
+--fix project for user who not registry. -- to night work.
+
+fixed contractor package + show list contractor package by project
+add new member to team
+
+team
+project -> xoa quote
+xem lai contractor package
+
+supplier vinh10-11-12
+contractor vinh20-21-22(chua dk)
+
+chua dang nhap -> login -> redirect dashboad
+chua dang ky -> dang ky -> redirect dasboad
+
+sua lai form submib quote khi chua dang nhap
+sua lai email template
+
+layout for modal upload
+
+usr/share/nginx/html
+<li><a href="<?php echo url($menuItem['url'][0]) ?>"><?php echo $menuItem['label'] ?></a></li>
+builder : deploy to panlinked server
+
+var builderPackage = new BuilderPackage();
+      builderPackage.user = project.user._id;
+      builderPackage.description = project.description;
+      builderPackage.project = project._id;
+      builderPackage.save(function (err, savedBuilderPackage) {
+        if (err) { return errorsHelper.validationErrors(res, err)}
+        return res.json(savedBuilderPackage);
+      });
+
+[UserGroupSchema]
+
+elseif (substr($part->size, -6) == "Square") {
+          $sizeSplit = explode(' ', $part->size);
+          $size1Split = explode("'", $sizeSplit[0]);
+          $part->shape = "Square";
+          $part->width = 12 * $size1Split[0] + ((trim($size1Split[1],'"'))? trim($size1Split[1],'"') : 0 );
+          $part->length = $part->width;
+        }
+
+else {
+          $dataFeeds = $dirScratch.DIRECTORY_SEPARATOR.'_dataFeeds';
+          if (!file_exists($dataFeeds) {
+            # code...
+            mkdir($dataFeeds, 0777);
+            if (!file_exists($dataFeeds.DIRECTORY_SEPARATOR.date("Y-m-d"))) {
+              # code...
+              mkdir($dataFeeds.DIRECTORY_SEPARATOR.date("Y-m-d"),0777);
+            }
+          }
+          else {
+            if (!file_exists($dataFeeds.DIRECTORY_SEPARATOR.date("Y-m-d"))) {
+              # code...
+              mkdir($dataFeeds.DIRECTORY_SEPARATOR.date("Y-m-d"),0777);
+            }
+          }
+        }
+
+{
+    "_id" : ObjectId("543f3247e16a9c6824000000"),
+    "type" : "email",
+    "key" : "smtp_host",
+    "value" : "email-smtp.us-west-2.amazonaws.com",
+    "note" : null
+}
+
+{
+    "_id" : ObjectId("543f3247e16a9c6824000001"),
+    "type" : "email",
+    "key" : "smtp_port",
+    "value" : "465",
+    "note" : null
+}
+
+{
+    "_id" : ObjectId("543f3247e16a9c6824000002"),
+    "type" : "email",
+    "key" : "smtp_account",
+    "value" : "AKIAIDMARH5ZOSXADCAQ",
+    "note" : null
+}
+
+{
+    "_id" : ObjectId("543f3247e16a9c6824000003"),
+    "type" : "email",
+    "key" : "smtp_password",
+    "value" : "AibSzSrqYh7b0RCvO8h+c53SsKDvuILK8N0jXjSsi3k0",
+    "note" : null
+}
+{
+    "_id" : ObjectId("543f3247e16a9c6824000004"),
+    "type" : "email",
+    "key" : "yt0",
+    "value" : "",
+    "note" : null
+}
+
+
+user:ubuntu
+
+<img src="<?php echo user()->getModel()->getAvatarUrl('small') ?>" alt="<?php echo h(user()->name) ?>"/>
+
+<?php
+          $this->widget('bootstrap.widgets.TbGridView', array(
+            'id' => 'vendor-grid',
+            'dataProvider' => $model->search(),
+            'filter' => $model,
+            'columns' => array(
+//              array(
+//                'name' => 'id',
+//                'header' => '#',
+//                'htmlOptions' => array(
+//                  'width' => 50
+//                )
+//              ),
+              'upc',
+              'vendor',
+              'category',
+              'collection',
+              'product_name',
+              'description',
+//              array(
+//              'name' => 'searchImages',
+//              'header' => 'Images',
+//              'value' => '$data->getImagesPath()',
+//              ),
+              //'features',
+              //'product_name',
+              //'description',
+ 
+              array(
+                'class' => 'bootstrap.widgets.TbButtonColumn',
+                'template' => '{update} {delete}',
+//          'buttons' => array
+//            (
+//            'view' => array
+//              (
+//              //'label'=>'[View]',
+//              //'imageUrl'=>Yii::app()->request->baseUrl.'/img/icon.gif',
+//              'url' => 'Yii::app()->createUrl("part/view", array("id"=>$data->sku))',
+//            ),
+//            'update' => array
+//              (
+//              //'label'=>'[Update]',
+//              //'imageUrl'=>Yii::app()->request->baseUrl.'/img/coin-stacks-gold.png',
+//              'url' => 'Yii::app()->createUrl("part/update", array("id"=>$data->sku))',
+//            ),
+//            'delete' => array
+//              (
+//              //'label'=>'[Delete]',
+//              //'imageUrl'=>Yii::app()->request->baseUrl.'/img/coin-stacks-gold.png',
+//              'url' => 'Yii::app()->createUrl("part/delete", array("id"=>$data->sku))',
+//            )
+//          )
+              ),
+            ),
+          ));
+          ?>
+
+
+<div class="group-control">
+  <div class="col-md-12">
+    <h3>RothRugs.com Attributes</h3>
+    <div class="roth-rug-attributes">
+      <div>
+        r_line <br>
+        <?php echo $form->textField($model, '', array('class' => 'span5','style'=>'display:inline-block', 'placeHolder' => 'r_line')); ?>
+      </div>
+
+      <div>
+        r_color <br>
+        <?php echo $form->textField($model, 'r_color', array('class' => 'span5','style'=>'display:inline-block', 'placeHolder' => 'r_color')); ?>
+      </div>
+
+      <div>
+        r_area <br>
+        <?php echo $form->textField($model, 'r_area', array('class' => 'span5','style'=>'display:inline-block', 'placeHolder' => 'r_area')); ?>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+
+<li class="<?php echo $this->activeMenu == 'site' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/index', array('type' => 'site')) ?>"><span>Site</span></a></li>
+                        <li class="<?php echo $this->activeMenu == 'email' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/index', array('type' => 'email')) ?>"><span>Email</span></a></li>
+                        <li class="<?php echo $this->activeMenu == 'seo' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/index', array('type' => 'seo')) ?>"><span>SEO</span></a></li>
+                        <li class="<?php echo $this->activeMenu == 'sem' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/index', array('type' => 'sem')) ?>"><span>SEM</span></a></li>
+                        <li class="<?php echo $this->activeMenu == 'payment' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/index', array('type' => 'payment')) ?>"><span>Payment</span></a></li>
+                        <li class="<?php echo $this->activeMenu == 'delete' ? 'active' : ''; ?>"><a href="<?php echo url('/setting/delete') ?>"><span>Clear Cache</span></a></li>
+
+1 hang 2sp
+1 sp 
+	hinh ben trai
+	gia -> red color
+	desc -> color:#ddd
+
+
+ div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[0]}') #{subject[0]}
+            div.blog-body
+                article #{body[0]}
+
+        div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[1]}') #{subject[1]}
+            div.blog-body
+                article #{body[1]}
+
+        div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[2]}') #{subject[2]}
+            div.blog-body
+                article #{body[2]}
+
+
+
+div.container
+        form(method="post", action="/blog/:id")
+
+        div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[0]}') #{subject[0]}
+            div.blog-body
+                article #{body[0]}
+
+        div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[1]}') #{subject[1]}
+            div.blog-body
+                article #{body[1]}
+
+        div.blog-item.col-md-12
+            div.blog-title
+                a(href='/blog/#{id[2]}') #{subject[2]}
+            div.blog-body
+                article #{body[2]}
+
+
+
+trung tam tin nhan +849 000 000 18 or 19 or 22 or 23 (viet lien k dau)
+
+2k8 + 1k3 = 4k1 -> 200k du 100v. 
+
+tenn nguoi yeu : minhthi
+. No´n + Gia`y + Nhâ~n trên hê? Mô?c
+. Vu~ khi´ hê? Thu?y
+. Bao tay + Ngo?c Bô?i hê? Ho?a
+. Tha´t lung + Nhâ~n duo´i hê? Thô?
+. A´o + Dây chuyê`n hê? Kim.
+10000
+
+9TTT 2ht5 8PDD
+
+@media (min-width: 800px){
+	#logo {
+		margin-left: 43px;
+	}
+	.calendars {
+		padding: 0px 30px;
+	}
+	.icons {
+		margin-left: 30px;
+	}
+	.icons ul li {
+		padding: 0 10px;
+	}
+	.change-background {
+		margin-left: 25px;
+	}
+}
+
+$sql = "select * from ".$prefix."entities e, ".$prefix."metadata m, ".$prefix."metastrings ms where e.guid=m.entity_guid and m.name_id=ms.id and m.value_id=ms.id and subtype=11 and ms.string='Thành Ph?'";
+
+
+{handler: 'iframe', size: {x: 450, y: 300}}\
+
+
+<img border=\"0\" style=\"width:15px\" alt=\"Link to facebook $row->name\" src=\"".JURI::root()."modules/mod_jms_support/images/fb-icon.png\" title=\"Link to facebook $row->name\"/>
+
+<img border=\"0\" alt=\"Link to facebook $row->name\" src=\"".JURI::root()."modules/mod_jms_support/images/fb-icon.png\" title=\"Link to facebook $row->name\"/> $row->name</a>
+
+margin-bottom: 20px;
+
+192 = parentId
+ 11 = '0' 
+193 = name 
+216 = provinceType 
+199 = diaphanId
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.9491222097519!2d106.6535959576453!3d10.797065407006855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x697c7e3d21b1f9d3!2zQ8O0bmcgVHkgVG5oaCBUbWR2IFhkIFBoxrDGoW5nIFRo4bqjbyBOZ3V5w6pu!5e0!3m2!1svi!2s!4v1414140875750" width="100%" height="230" frameborder="0" style="border:0"></iframe>
+
+
+li.menu-footer a{
+    display: inline;
+    padding-right: 10px;
+}
+
+#brand {
+    margin: auto;
+    width: 250px;
+}
+
+#brand a.logo {
+    float: left;
+    font-size: 60px;
+    text-decoration: none;
+    color: #5c5c5c;
+    width: 100%;
+}
+
+
+#brand .copy {
+    float: left;
+    margin: 120px 0px 0px -35px;
+    position: relative;
+    background: url('../images/copy.png') no-repeat scroll 0px 0px transparent;
+    width: 22px;
+    height: 23px;
+    z-index: 110;
+}
+
+#brand .slogan {
+    clear: both;
+    text-align: center;
+}
+
+#brand .copy .copy-info {
+    position: relative;
+    float: left;
+    background: url('../images/copy-bg.png') no-repeat scroll 0px 0px transparent;
+    height: 32px;
+    padding: 0px 0px 0px 11px;
+    color: #9A9A9A;
+    font-size: 11px !important;
+    white-space: nowrap;
+}
+
+#brand .copy .copy-info span {
+    background: url('../images/copy-bg-r.png') no-repeat scroll right 0px transparent;
+    padding: 5px 10px 7px 5px;
+    height: 32px;
+    float: left;
+}
+
+.copy-cont {
+    position: absolute;
+    left: 25px;
+    top: -5px;
+    visibility: hidden;
+}
+
+.copy:hover .copy-cont {
+    visibility: visible;
+}
+
+#content{
+    position: absolute;
+    top: 70px;
+    bottom: 70px;
+    left: 50px;
+    right: 50px;
+    overflow: hidden;
+}
+
+#contact-info h1 {
+    color: #3d3d3d;
+}
+
+#contact-info > div{
+}
+
+#info-contact ul {
+    /*padding-left: 260px;*/
+}
+
+#info-contact ul li{
+    list-style-type: none;
+}
+
+#info-contact ul li i {
+    color: #3d3d3d;
+}
+
+#info {
+    float: left;
+    width: 48%;
+}
+#feedback{
+    width: 48%;
+    float: right;
+    margin-right: 10px;
+}
+
+#inputForm:focus {
+    box-shadow: 0 0 2px blue;
+}
+
+#btnSend {
+    width: 100px;
+    border-radius: 4px;
+}
+
+
+
+.line-top {
+    background: url('../images/top-line.png') repeat-x scroll 0px 0px transparent;
+    position: absolute;
+    left: 0px;
+    top: -9px;
+    height: 9px;
+    width: 100%;
+}
+
+#holder {
+    position: absolute;
+    left: 0px;
+    bottom: -1px;
+    width: 100%;
+    height: 0px;
+    background: url('../images/holder-bg.png') repeat scroll 0px 0px transparent;
+    overflow: visible !important;
+    z-index: 190;
+}
+
+.holder-t {
+    background: url('../images/big-up.png') repeat-x scroll 1px 0px transparent;
+    height: 15px;
+    width: 100%;
+    left: 0px;
+    top: -1px;
+    position: absolute;
+    z-index: 99;
+}
+
+
+#container {
+    /*width: 770px;*/
+    /*float: left;*/
+    padding: 27px 0px 10px;
+}
+
+.toggle-close {
+    top: -300px;
+}
+
+.toggle-open {
+    top: 0;
+    
+}
+
+#toggle {
+    cursor: pointer;
+    position: absolute;
+    transition-property: top;
+    transition-duration: 0.6s;
+    left: 320px;
+    right: 55px;
+}
+
+ul#toggle-services li {
+    display: inline-block;
+}
+
+.soc-ico a{
+    text-decoration: none;
+    color: #fff;
+}
+
+#main-menu{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50px;
+    width: 250px;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+#trans {
+    background: url('../images/bg-trans.png') repeat;
+    height: 20px;
+}
+
+#menu-wrapper {
+    position: absolute;
+    top: 20px;
+    bottom: 119px;
+    background-color: #fff;
+}
+
+#main-menu strong{
+    font-weight: 400;
+}
+
+#main-menu ul.menu li a.active {
+    color: #1994E6;
+}
+#main-menu span{
+    color: #9a9a9a;
+}
+
+li.last{
+    border-bottom: 0px;
+}
+
+
+#nav {
+    background: #fff;
+}
+#nav ul.menu li.menu-item {
+    list-style-type: none;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #dadada;
+    margin-right: 40px;
+}
+#nav ul.menu li.last {
+    list-style-type: none;
+    padding: 10px 0 10px 0;
+}
+#nav ul.menu li a{
+    text-decoration: none;
+    color: #111;
+}
+
+#nav ul.menu li a:hover{
+    color: #FF1493;
+}
+
+#main-menu ul.menu-footer li {
+    display: inline-block;
+    padding-left: 20px;
+}
+#main-menu ul.menu-footer li a{
+    text-decoration: none;
+    color: rgba(146, 127, 127, 1);
+}
+#main-menu ul.menu-footer li i{
+    color: rgba(146, 127, 127, 1);
+}
+#main-menu ul.menu-footer li i:hover{
+    color: #FF1493;
+}
+#main-menu ul.menu li a.active{
+    color: #1994E6;
+}
+
+.reserved {
+    text-align: center;
+}
+.reserved a{
+    text-decoration: none;
+    color: rgba(146, 127, 127, 1);
+}
+.reserved a:hover{
+    color: #ff1493;
+}
+
+#index-info {
+    position: absolute;
+    bottom: 40px;
+    right: 50px;
+    width: 450px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+#main-content {
+    position: absolute;
+    top: 20px;
+    left: 300px;
+    margin-left: 20px;
+    background: url('../images/bg1x1.png') repeat;
+    right: 200px;
+    padding: 10px;
+    bottom: 0;}
+
+.main {
+    background: url(../images/bg1x1.png) repeat;
+    padding: 20px;
+}
+
+#mask {
+    background: url('../images/light-diagonal-wide-left-to-right.png') repeat scroll 0px 0px transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+#main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#services {
+    position: absolute;
+    padding: 20px;
+    overflow-y: hidden;
+    top: 0;
+    left: 20px;
+    bottom: 0;
+    right: 0;
+}
+#main button[name=next]{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 100;
+
+}
+#main button[name=prev]{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 100;
+}
+#services div{
+    clear: both;
+}
+
+#services a{
+    text-decoration: none;
+    color: #fff;
+}
+
+#services div a img{
+    float: left;
+    padding-right: 5px;
+}
+
+#services div p a{
+    float: right;
+}
+
+.main-menu-description{
+    font-size: 12px;
+    color: #2d2d2d;
+}
+
+
+
+#toggle-services li {
+    position: relative;
+    overflow: hidden;
+}
+#toggle-services p {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+#service-img {
+    opacity: 1;
+    border: 5px solid transparent;
+    width: 100%;
+    height: auto;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: border-box;
+}
+#service-img:hover {
+    opacity: 0.6;
+}
+
+.effects .overlay{
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 0px;
+    width: 100%;
+}
+
+.overlay {
+    z-index: 20;
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.47);
+    overflow: hidden;
+    transition: all 0.5s ease 0s;
+    position: absolute;
+    display: block;
+    color: #fff;
+}
+
+.overlay p {
+    text-align: center;
+    margin-top: 30%;
+}
+ul#toggle-services li:hover .overlay { 
+    height: 100%;
+    -webkit-transition-property: all;
+    -o-transition-property: all;
+    transition-property: all;
+
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+#gallery{
+    
+}
+
+.news-img{
+    float: left;
+    padding-right: 10px;
+}
+
+.news-item > a{
+    color: #0764A3;
+}
+
+.news-item a.readMore{
+    float: right;
+}
+.sidebar-footer {
+    position: absolute; 
+    bottom: 0; 
+    width: 250px;
+    background: #fff;
+}
+
+.clearfix {
+    clear: both;
+}
+
+a{
+    text-decoration: none;
+    color: #1994E6;
+}
+
+a:hover {
+    color: #FF1493;
+}
+
+.language-switcher {
+    position: absolute;
+    top: 20px;
+    right: 74px;
+    background: url(../images/bg1x1.png) repeat;
+    padding: 10px;
+}
+.language-switcher-index {
+    position: absolute;
+    bottom: 237px;
+    right: 520px;
+    background: url(../images/bg1x1.png) repeat;
+    padding: 10px;
+}
+.language-inner {
+    background: url(../images/bg1x1.png) repeat;
+    padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+insertion
+int key,j;
+for(int i =1;i<a.length;i++){
+	key = i;
+	for(j=i-1;(j>=0)&&(a[j] < key); j--)
+		a[j+1] = a[j];
+	a[j+1] = key;
+bubble
+boolean flag = true;
+int temp;
+while(flag){
+	flag = false;
+	for(int i=0;i<a.length-1;i++){
+		if(a[i] < a[i+1]){
+			temp = a[i];
+			a[i] = a[i+1];
+			a[i+1] = temp;
+			flag = true;
+		}
+	}
+}
+selection
+int first, temp;
+for(int i =0;i<a.length-1;i++){
+	first = i;
+	for(int j=i+1;j<a.length;j++){
+		if(a[j] < a[first])
+			first = j;
+	}
+	temp = a[first];
+	a[first] = a[i];
+	a[i] = temp;
+
+int linenear(int[] a, int b) {
+	for(int i =0; i<a.length-1;i++)
+		if(a[i] == key)
+			return key;
+	return -1;
+
+int binary(int[] a, int b){
+	int start = 0;
+	int end = a.length-1;
+	if((end-start) >= 0){
+		int middle = (end + start)/2;
+		if(a[middle) == key)
+			return key;
+		if(a[middle] > key)
+			start = middle -1;
+		else
+			end = middle + 1;
+	return -1;
+
+public class Person {
+
+}
+
+public class Student extends Person {
+}
+

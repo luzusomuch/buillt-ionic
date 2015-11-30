@@ -1,0 +1,48 @@
+<form ng-submit="uploadAll()">
+  <div class="modal-content">
+  <div class="row" style="margin-top: 50px">
+    <div class="col s12">
+      <div class="file-field input-field">
+        <div class="btn tooltipped" data-position="top" data-delay="1" data-tooltip="Attach a File">
+          <i class="mdi-editor-attach-file"></i>
+          <input type="file" nv-file-select="" uploader="uploader"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12" style="margin-top:55px;">
+          <textarea class="materialize-textarea" ng-model="formData.title" id="textarea1"></textarea>
+          <label for="">Title</label>
+        </div>
+      </div>
+      <div ng-show="uploader.queue.length" class="form-group">
+        <div ng-repeat="item in uploader.queue" ng-if="$last">
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" ng-model="item.file.name" disabled>
+              <label for="">File name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s8 offset-s2">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea class="materialize-textarea" ng-model="formData.desc" id="textarea1"></textarea>
+          <label for="">Description</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="modal-footer" style="height:auto">
+    <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat" ng-disabled="uploader.isReady || uploader.isUploading || uploader.isSuccess">Attach Document!</button>
+    <!-- <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="uploadAll()" ng-disabled="uploader.isReady || uploader.isUploading || uploader.isSuccess">Attach Document!</a> -->
+    <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+  </div>
+</form>
+
+
+
