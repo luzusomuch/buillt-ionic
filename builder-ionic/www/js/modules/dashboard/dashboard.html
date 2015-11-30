@@ -15,12 +15,16 @@
     <ion-content padding="true">
         <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
         <div id="dashboard" ng-show="defaultSelectedPackage == 0">
-            <ion-list>
-                <ion-item ng-repeat="package in peoplePackages" ui-sref="peopleDetail({id: package.project})">
-                    {{package.name}}
+            <ion-list ng-if="tasks.length > 0">
+                <ion-item>Tasks</ion-item>
+                <ion-item ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
+                    {{task.name}}
                 </ion-item>
-                <ion-item ng-repeat="package in boardPackages track by $index" ui-sref="boardDetail({boardId: package._id})">
-                    {{package.name}}
+            </ion-list>
+            <ion-list ng-if="threads.length > 0">
+                <ion-item>Messages</ion-item>
+                <ion-item ng-repeat="thread in threads" ng-click="goToThreadDetail(thread)">
+                    {{thread.user}} has mention you in {{thread.type}} with message {{thread.message}}.
                 </ion-item>
             </ion-list>
         </div>

@@ -318,15 +318,15 @@ angular.module('buiiltApp')
         authService.getCurrentTeam().$promise.then(function(team){
             $rootScope.currentTeam = $scope.currentTeam = team;
         });
-        _.each($scope.projects, function(project) {
-            peopleService.getInvitePeople({id: project._id}).$promise.then(function(res) {
-                res.name = project.name;
-                filterInPeoplePackage(res);
-            });
-            boardService.getBoards({id: project._id}).$promise.then(function(res) {
-                filterInBoardPackage(res);
-            });
-        });
+        // _.each($scope.projects, function(project) {
+        //     peopleService.getInvitePeople({id: project._id}).$promise.then(function(res) {
+        //         res.name = project.name;
+        //         filterInPeoplePackage(res);
+        //     });
+        //     boardService.getBoards({id: project._id}).$promise.then(function(res) {
+        //         filterInBoardPackage(res);
+        //     });
+        // });
     });
 
     notificationService.getTotalForIos().$promise
@@ -350,6 +350,31 @@ angular.module('buiiltApp')
         fileService.getFileInProject({id: project._id}).$promise.then(function(res) {
             $scope.files = res;
         });
+        taskService.myTask({id : project._id}).$promise.then(function(tasks) {
+            $scope.tasks = tasks;
+        });
+        messageService.myThread({id : project._id}).$promise.then(function(threads) {
+            $scope.threads = [];
+            _.each(threads, function(thread) {
+                _.each(thread.messages, function(message, key) {
+                    if (_.indexOf(message.mentions, $scope.currentUser._id) != -1) {
+                        if (thread.people) {
+                            $scope.threads.push({_id: thread._id,project: thread.project, user: message.user.name, type: 'people', message: message.text, messageId: message._id, owner: thread.from});                
+                        } else if (thread.type == 'board') {
+                            $scope.threads.push({_id: thread._id,project: thread.project, user: message.user.name, type: 'board', message: message.text, messageId: message._id});                
+                        }
+                    }
+                });
+            });
+        });
+    };
+
+    $scope.goToThreadDetail = function(thread) {
+        if (thread.type == "people") {
+            $state.go('peopleChat', {id:thread.project, peopleChatId: thread._id});
+        } else if (thread.type == "board") {
+            $state.go("boardDetail", {boardId: thread._id});
+        }
     };
 
     $scope.selectProject = function(project) {
