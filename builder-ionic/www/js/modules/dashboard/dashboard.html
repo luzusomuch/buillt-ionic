@@ -24,6 +24,13 @@
                 </ion-item>
             </ion-list>
         </div>
+        <div id="boards" ng-show="defaultSelectedPackage == 1">
+            <ion-list>
+                <ion-item ui-sref="peopleDetail({id: selectedProject._id})">
+                    {{selectedProject.name}}
+                </ion-item>
+            </ion-list>
+        </div>
         <div id="boards" ng-show="defaultSelectedPackage == 2">
             <ion-list>
                 <ion-item ng-repeat="package in boardPackages track by $index" ui-sref="boardDetail({boardId: package._id})">
