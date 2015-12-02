@@ -3,6 +3,17 @@ angular.module('buiiltApp')
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.peopleChat = peopleChat;
+
+    if ($scope.peopleChat.fromEmail) {
+        $scope.title = $scope.peopleChat.fromEmail;
+    } else if ($scope.peopleChat.ownerEmail) {
+        $scope.title = $scope.peopleChat.ownerEmail;
+    } else {
+        var members = angular.copy(peopleChat.members);
+        _.remove(members, {_id: $scope.currentUser._id});
+        $scope.title = members[0].name;
+    }
+
     socket.emit('join', peopleChat._id);
     getTasksAndFiles(peopleChat);
     filterMessages($scope.peopleChat);

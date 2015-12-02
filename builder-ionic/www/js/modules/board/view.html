@@ -12,7 +12,7 @@
                 <ion-content padding="false" class="has-header messages-list-content">
                     
                     <div class="list" scroll-to-bottom="board.orderedMessages">
-                        <ion-item ng-repeat="message in board.orderedMessages">
+                        <ion-item class="item-text-wrap" ng-repeat="message in board.orderedMessages">
                             <p style="font-size: 10px; color: #757575; margin-bottom: 0px">
                                 <strong>{{message.user.name}}</strong><span style="font-size: 10px"> - {{message.sendAt | date : 'MMM d, y h:mm:ss a'}}.</span>
                             </p>

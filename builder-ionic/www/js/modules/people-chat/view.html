@@ -1,4 +1,4 @@
-<ion-view title="{{peopleChat.project.name}}">
+<ion-view title="{{title}}">
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
 	
         <ion-tabs class="tabs-icon-only tabs-light">
@@ -6,7 +6,7 @@
             <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatboxes-outline">
                 <ion-content class="has-header has-footer">
                     <div class="list" scroll-to-bottom="peopleChat.orderedMessages">
-                        <ion-item ng-repeat="message in peopleChat.orderedMessages">
+                        <ion-item class="item-text-wrap" ng-repeat="message in peopleChat.orderedMessages">
                             <p style="font-size: 10px; color: #757575; margin-bottom: 0px">
                                 <strong>{{(message.user) ? message.user.name : message.email}}</strong><span style="font-size: 10px"> - {{message.sendAt | date : 'MMM d, y h:mm:ss a'}}.</span>
                             </p>
