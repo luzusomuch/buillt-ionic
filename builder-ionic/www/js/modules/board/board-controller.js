@@ -67,48 +67,54 @@ angular.module('buiiltApp')
                         _.each(board.architects, function(architect) {
                             if (architect._id && architect.hasSelect) {
                                 $scope.availableInvite.push(architect._id);
-                                
                             }
                         });
                         _.each(board.consultants, function(consultant) {
                             if (consultant._id && consultant.hasSelect && consultant.inviter._id == $scope.currentUser._id) {
                                 $scope.availableInvite.push(consultant._id);
-                                
                             }
                         });
                         if ($scope.currentUser.type == 'builder') {
                             _.each(board.subcontractors, function(subcontractor) {
                                 if (subcontractor._id && subcontractor.hasSelect) {
                                     $scope.availableInvite.push(subcontractor._id);
-                                    
                                 }
+                            });
+                            _.each(board.builders[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
+                            });
+                        } else {
+                            _.each(board.clients[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
                             });
                         }
                     } else if ($scope.currentUser.type == 'architect') {
                         _.each(board.builders, function(builder) {
                             if (builder._id && builder.hasSelect) {
                                 $scope.availableInvite.push(builder._id);
-                                
                             }
                         });
                         _.each(board.clients, function(client) {
                             if (client._id && client.hasSelect) {
                                 $scope.availableInvite.push(client._id);
-                                
                             }
                         });
                         _.each(board.consultants, function(consultant) {
                             if (consultant._id && consultant.hasSelect && consultant.inviter._id == $scope.currentUser._id) {
                                 $scope.availableInvite.push(consultant._id);
-                                
                             }
+                        });
+                        _.each(board.architects[0].teamMember, function(member) {
+                            $scope.availableInvite.push(member);
                         });
                     } else if ($scope.currentUser.type == 'subcontractor') {
                         _.each(board.subcontractors, function(item) {
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
-                                    
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
@@ -117,56 +123,66 @@ angular.module('buiiltApp')
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
-                                    
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
                     }
                 } else if ($scope.builderPackage.projectManager.type == 'builder') {
                     if ($scope.currentUser.type == 'builder') {
+                        _.each(board.builders[0].teamMember, function(member) {
+                            $scope.availableInvite.push(member);
+                        });
                         _.each(board.architects, function(architect) {
                             if (architect._id && architect.hasSelect) {
                                 $scope.availableInvite.push(architect._id);
-                                
                             }
                         });
                         _.each(board.consultants, function(consultant) {
                             if (consultant._id && consultant.hasSelect && consultant.inviter._id == $scope.currentUser._id) {
                                 $scope.availableInvite.push(consultant._id);
-                                
                             }
                         });
                         _.each(board.subcontractors, function(subcontractor) {
                             if (subcontractor._id && subcontractor.hasSelect) {
                                 $scope.availableInvite.push(subcontractor._id);
-                                
                             }
                         });
                         _.each(board.clients, function(client) {
                             if (client._id && client.hasSelect) {
                                 $scope.availableInvite.push(client._id);
-                                
                             }
                         });
                     } else if ($scope.currentUser.type == 'client' || $scope.currentUser.type == 'architect') {
                         _.each(board.builders, function(builder) {
                             if (builder._id && builder.hasSelect) {
                                 $scope.availableInvite.push(builder._id);
-                                
                             }
                         });
                         _.each(board.consultants, function(consultant) {
                             if (consultant._id && consultant.hasSelect && consultant.inviter._id == $scope.currentUser._id) {
                                 $scope.availableInvite.push(consultant._id);
-                                
                             }
                         });
+                        if ($scope.currentUser.type == "client") {
+                            _.each(board.clients[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
+                            });
+                        } else {
+                            _.each(board.architects[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
+                            });
+                        }
                     } else if ($scope.currentUser.type == 'subcontractor') {
                         _.each(board.subcontractors, function(item) {
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
-                                    
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
@@ -175,13 +191,18 @@ angular.module('buiiltApp')
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
-                                    
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
                     }
                 } else {
                     if ($scope.currentUser.type == 'client') {
+                        _.each(board.clients[0].teamMember, function(member) {
+                            $scope.availableInvite.push(member);
+                        });
                         _.each(board.builders, function(builder) {
                             if (builder._id && builder.hasSelect) {
                                 $scope.availableInvite.push(builder._id);
@@ -209,12 +230,22 @@ angular.module('buiiltApp')
                                     $scope.availableInvite.push(subcontractor._id);
                                 }
                             });
+                            _.each(board.builders[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
+                            });
+                        } else {
+                            _.each(board.architects[0].teamMember, function(member) {
+                                $scope.availableInvite.push(member);
+                            });
                         }
                     } else if ($scope.currentUser.type == 'subcontractor') {
                         _.each(board.subcontractors, function(item) {
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
@@ -223,20 +254,13 @@ angular.module('buiiltApp')
                             if (item._id && item.hasSelect) {
                                 if (item._id._id == $scope.currentUser._id) {
                                     $scope.availableInvite.push(item.inviter);
+                                    _.each(item.teamMember, function(member) {
+                                        $scope.availableInvite.push(member);
+                                    });
                                 }
                             }
                         });
                     }
-                }
-                if ($scope.team._id) {
-                    _.each(team.leader, function(leader) {
-                        $scope.availableInvite.push(leader);
-                    });
-                    _.each(team.member, function(member){
-                        if (member._id && member.status == 'Active') {
-                            $scope.availableInvite.push(member._id);
-                        }
-                    });
                 }
                 if ($scope.board._id) {
                     _.each($scope.board.invitees, function(invitee) {
