@@ -1,22 +1,20 @@
-<ion-view title="Projects">
+<ion-view title="buiilt">
     <ion-nav-buttons side="left">
         <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-        <button ng-show="selectedProject._id && (currentPackage.name == 'BOARD' || currentPackage.name == 'PEOPLE')" class="button button-clear icon-right ion-ios-plus-empty" ng-click="invitePeopleOrCreateNewBoard()"></button>
-    </ion-nav-buttons>
-    <div class="bar bar-subheader row" style="border-bottom: solid 1px #efefef">
+    <div class="bar bar-subheader" style="">
         <div class="button-bar">
-            <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'PROJECT'}}</a>
-            <a class="button button-outline button-positive icon-right ion-ios-arrow-down" style="font-size: 10px" ng-click="choosePackageModal()">{{(currentPackage.name) ? currentPackage.name : 'DASHBOARD'}}</a>
+            <a class="button button-clear button-calm" style="font-size: 12px; font-weight: 500" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'PROJECT'}}</a>
+            <a class="button button-clear button-calm" style="font-size: 12px; font-weight: 500" ng-click="choosePackageModal()">{{(currentPackage.name) ? currentPackage.name : 'DASHBOARD'}}</a>
         </div>
     </div>
 
-    <ion-content padding="true">
-        <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+    <ion-content class="has-subheader">
+	
         <div id="dashboard" ng-show="defaultSelectedPackage == 0">
-            <ion-list ng-if="tasks.length > 0">
-                <ion-item>Tasks</ion-item>
+			<ion-list>
+            <div ng-if="tasks.length > 0">
+                <ion-item class="item item-divider">Tasks</ion-item>
                 <ion-item ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
                     <h2 ng-if="task.dueDateTomorrow || task.dueDateToday"><strong>{{task.name}}</strong></h2>
                     <h2 ng-if="!task.dueDateTomorrow && !task.dueDateToday">{{task.name}}</h2>
@@ -26,198 +24,200 @@
                         <span ng-if="!task.dueDateTomorrow && !task.dueDateToday">Due {{task.dateEnd | date: longDate}}</span>
                     </p>
                 </ion-item>
-            </ion-list>
-            <ion-list ng-if="threads.length > 0">
-                <ion-item>Messages</ion-item>
+            </div>
+            <div ng-if="threads.length > 0">
+                <ion-item class="item item-divider">Messages</ion-item>
                 <ion-item ng-repeat="thread in threads" ng-click="goToThreadDetail(thread)">
                     {{thread.user}} has mention you in {{thread.type}} with message {{thread.message}}.
                 </ion-item>
-            </ion-list>
+            </div>
+		</ion-list>
         </div>
-        <div id="boards" ng-show="defaultSelectedPackage == 1">
+		
+        <div id="people" ng-show="defaultSelectedPackage == 1">
+			
             <div ng-show="builderPackage.projectManager.type == 'architect'">
-            <div class="list">
-                <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
-                    {{person.name}}
-                </ion-item>
-            </div>
+				<div class="list">
+		            <div>
+		                <ion-item class="item item-divider">TEAM</ion-item>
+		                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
+		                    {{person.name}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'architect' && currentUser.isLeader">
+		                <ion-item class="item item-divider">BUILDER</ion-item>
+		                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+		                    {{(builder._id) ? builder._id.name : builder.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'client' || currentUser.type == 'builder') && currentUser.isLeader">
+		                <ion-item class="item item-divider">ARCHITECT</ion-item>
+		                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+		                    {{(architect._id) ? architect._id.name : architect.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'architect' && currentUser.isLeader">
+		                <ion-item class="item item-divider">CLIENT</ion-item>
+		                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+		                    {{(client._id) ? client._id.name : client.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+		                <ion-item class="item item-divider">SUBCONTRACTORS</ion-item>
+		                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+		                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+		                <ion-item class="item item-divider">CONSULTANTS</ion-item>
+		                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+		                    {{(consultant._id) ? consultant._id.name : consultant.email}}
+		                </ion-item>
+		            </div>
 
-            <div class="list" ng-show="currentUser.type == 'architect' && currentUser.isLeader">
-                <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
-                    {{(builder._id) ? builder._id.name : builder.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder') && currentUser.isLeader">
-                <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
-                    {{(architect._id) ? architect._id.name : architect.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'architect' && currentUser.isLeader">
-                <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
-                    {{(client._id) ? client._id.name : client.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
-                <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
-                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
-                <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
-                    {{(consultant._id) ? consultant._id.name : consultant.email}}
-                </ion-item>
-            </div>
+		            <div ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
+		                <ion-item class="item item-divider">{{inviterTypeText}}</ion-item>
+		                <ion-item ng-click="selectPeople(invitePeople.inviter)">
+		                    {{invitePeople.inviter.name}}
+		                </ion-item>
+		            </div>
+				</div>
+        	</div>
 
-            <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
-                <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item ng-click="selectPeople(invitePeople.inviter)">
-                    {{invitePeople.inviter.name}}
-                </ion-item>
-            </div>
-        </div>
+	        <div ng-show="builderPackage.projectManager.type == 'builder'">
+				<div class="list">
+		            <div>
+		                <ion-item class="item item-divider">TEAM</ion-item>
+		                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
+		                    {{person.name}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'client' || currentUser.type == 'architect') && currentUser.isLeader">
+		                <ion-item class="item item-divider">BUILDER</ion-item>
+		                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+		                    {{(builder._id) ? builder._id.name : builder.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+		                <ion-item class="item item-divider">ARCHITECT</ion-item>
+		                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+		                    {{(architect._id) ? architect._id.name : architect.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+		                <ion-item class="item item-divider">CLIENT</ion-item>
+		                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+		                    {{(client._id) ? client._id.name : client.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+		                <ion-item class="item item-divider">SUBCONTRACTORS</ion-item>
+		                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+		                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+		                <ion-item class="item item-divider">CONSULTANTS</ion-item>
+		                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+		                    {{(consultant._id) ? consultant._id.name : consultant.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
+		                <ion-item class="item item-divider">{{inviterTypeText}}</ion-item>
+		                <ion-item ng-click="selectPeople(invitePeople.inviter)">
+		                    {{invitePeople.inviter.name}}
+		                </ion-item>
+		            </div> 
+				</div>
+	        </div>
 
-        <div ng-show="builderPackage.projectManager.type == 'builder'">
-            <div class="list">
-                <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
-                    {{person.name}}
-                </ion-item>
-            </div>
+	        <div ng-show="builderPackage.projectManager.type == 'homeOwner'">
+				<div class="list">
+		            <div>
+		                <ion-item class="item item-divider">TEAM</ion-item>
+		                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
+		                    {{person.name}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'client' && currentUser.isLeader">
+		                <ion-item class="item item-divider">BUILDER</ion-item>
+		                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
+		                    {{(builder._id) ? builder._id.name : builder.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'client' && currentUser.isLeader">
+		                <ion-item class="item item-divider">ARCHITECT</ion-item>
+		                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
+		                    {{(architect._id) ? architect._id.name : architect.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+		                <ion-item class="item item-divider">CLIENT</ion-item>
+		                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
+		                    {{(client._id) ? client._id.name : client.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="currentUser.type == 'builder' && currentUser.isLeader">
+		                <ion-item class="item item-divider">SUBCONTRACTORS</ion-item>
+		                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
+		                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
+		                <ion-item class="item item-divider">CONSULTANTS</ion-item>
+		                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
+		                    {{(consultant._id) ? consultant._id.name : consultant.email}}
+		                </ion-item>
+		            </div>
+		            <div ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
+		                <ion-item class="item item-divider">{{inviterTypeText}}</ion-item>
+		                <ion-item ng-click="selectPeople(invitePeople.inviter)">
+		                    {{invitePeople.inviter.name}}
+		                </ion-item>
+		            </div>
+				</div>
+	        </div>
+			
+	    </div>
+		
+	    <div id="boards" ng-show="defaultSelectedPackage == 2">
+	        <ion-list>
+	            <ion-item ng-repeat="package in boardPackages track by $index" ui-sref="boardDetail({boardId: package._id})">
+	                {{package.name}}
+	            </ion-item>
+	        </ion-list>
+	    </div>
+		
+		<div id="documents" ng-show="defaultSelectedPackage == 3">
+	        <ion-list>
+	            <ion-item ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})">
+	                {{file.title}}
+	            </ion-item>
+	        </ion-list>
+	    </div>
+	
+	</ion-content>
+	
+	<div ng-show="selectedProject._id && (currentPackage.name == 'BOARDS')" class="bar bar-calm bar-footer">
+		<!-- <div ng-show="selectedProject._id && (currentPackage.name == 'PEOPLE')" class="button-bar">
+			<button class="button button-clear" ng-click="invitePeopleOrCreateNewBoard()" style="font-size: 13px; font-weight: 400">INVITE MORE PEOPLE</button>
+		</div> -->
+		<div ng-show="selectedProject._id && (currentPackage.name == 'BOARDS')" class="button-bar">
+			<button class="button button-clear" ng-click="invitePeopleOrCreateNewBoard()" style="font-size: 13px; font-weight: 400">ADD A NEW BOARD</button>
+		</div>
+	</div>
 
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'architect') && currentUser.isLeader">
-                <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
-                    {{(builder._id) ? builder._id.name : builder.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
-                <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
-                    {{(architect._id) ? architect._id.name : architect.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
-                <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
-                    {{(client._id) ? client._id.name : client.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
-                <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
-                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
-                <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
-                    {{(consultant._id) ? consultant._id.name : consultant.email}}
-                </ion-item>
-            </div>
-
-            <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
-                <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item ng-click="selectPeople(invitePeople.inviter)">
-                    {{invitePeople.inviter.name}}
-                </ion-item>
-            </div> 
-        </div>
-
-        <div ng-show="builderPackage.projectManager.type == 'homeOwner'">
-            <div class="list">
-                <ion-item>TEAM</ion-item>
-                <ion-item ng-repeat="person in currentTeamMembers" ng-click="selectPeople(person, 'team')">
-                    {{person.name}}
-                </ion-item>
-            </div>
-
-            <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
-                <ion-item>BUILDER</ion-item>
-                <ion-item ng-repeat="builder in invitePeople.builders" ng-click="selectPeople(builder, 'builder')">
-                    {{(builder._id) ? builder._id.name : builder.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'client' && currentUser.isLeader">
-                <ion-item>ARCHITECT</ion-item>
-                <ion-item ng-repeat="architect in invitePeople.architects" ng-click="selectPeople(architect, 'architect')">
-                    {{(architect._id) ? architect._id.name : architect.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="(currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
-                <ion-item>CLIENT</ion-item>
-                <ion-item ng-repeat="client in invitePeople.clients" ng-click="selectPeople(client, 'client')">
-                    {{(client._id) ? client._id.name : client.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="currentUser.type == 'builder' && currentUser.isLeader">
-                <ion-item>SUBCONTRACTORS</ion-item>
-                <ion-item ng-repeat="subcontractor in invitePeople.subcontractors" ng-click="selectPeople(subcontractor, 'subcontractor')">
-                    {{(subcontractor._id) ? subcontractor._id.name : subcontractor.email}}
-                </ion-item>
-            </div>
-            <div class="list" ng-show="(currentUser.type == 'client' || currentUser.type == 'builder' || currentUser.type == 'architect') && currentUser.isLeader">
-                <ion-item>CONSULTANTS</ion-item>
-                <ion-item ng-repeat="consultant in invitePeople.consultants" ng-if="consultant.inviter._id == currentUser._id" ng-click="selectPeople(consultant, 'consultant')">
-                    {{(consultant._id) ? consultant._id.name : consultant.email}}
-                </ion-item>
-            </div>
-
-            <div class="list" ng-show="(currentUser.type == 'subcontractor' || currentUser.type == 'consultant') && currentUser.isLeader">
-                <ion-item>{{inviterTypeText}}</ion-item>
-                <ion-item ng-click="selectPeople(invitePeople.inviter)">
-                    {{invitePeople.inviter.name}}
-                </ion-item>
-            </div>
-        </div>
-    </div>
-        <div id="boards" ng-show="defaultSelectedPackage == 2">
-            <ion-list>
-                <ion-item ng-repeat="package in boardPackages track by $index" ui-sref="boardDetail({boardId: package._id})">
-                    {{package.name}}
-                </ion-item>
-            </ion-list>
-        </div>
-        <div id="documents" ng-show="defaultSelectedPackage == 3">
-            <ion-list>
-                <ion-item ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})">
-                    {{file.title}}
-                </ion-item>
-            </ion-list>
-        </div>
-    </ion-content>
-
-    <!-- <ion-tabs class="tabs-icon-top">
-        <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios7-chatboxes-outline">
-            <div message></div>
-        </ion-tab>
-        <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios7-checkmark-outline">
-            <div task></div>
-        </ion-tab>
-        <ion-tab ng-click="selectTabWithIndex(2)" title="Documents" icon="ion-ios-copy-outline">
-            <div document></div>
-        </ion-tab>
-        <ion-tab ng-click="selectTabWithIndex(3)" title="{{totalNotifications}} Notifications" icon="ion-ios-bell-outline">
-            <div sp-notification></div>
-        </ion-tab>
-    </ion-tabs> -->
 </ion-view>
 
 <script id="modalProject.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h class="title">Please choose the project</h>
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Select a Project...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('Project')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('Project')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <div class="spacer" style="display: inline-block; width: 300px; height: 30px;"></div>
+        <ion-content class="has-header">
             <ion-list ng-repeat="project in projects | unique:project">
                 <ion-item ng-click="selectProject(project)">{{project.name}}</ion-item>
             </ion-list>
@@ -227,45 +227,44 @@
 
 <script id="modalPackage.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h class="title">Select on list below</h>
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Select from the menu below...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('Package')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('Package')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <div class="spacer" style="display: inline-block; width: 300px; height: 30px;"></div>
+        <ion-content class="has-header">
             <ion-list>
                 <ion-item ng-click="getPackageType(0)">DASHBOARD</ion-item>
                 <ion-item ng-click="getPackageType(1)">PEOPLE</ion-item>
-                <ion-item ng-click="getPackageType(2)">BOARD</ion-item>
-                <ion-item ng-click="getPackageType(3)">DOCUMENTS</ion-item>
+                <ion-item ng-click="getPackageType(2)">BOARDS</ion-item>
+                <ion-item ng-click="getPackageType(3)">DOCUMENTATION</ion-item>
             </ion-list>
         </ion-content>
     </div>
 </script>
 
-<script id="modalCreateTask.html" type="text/ng-template">
+<!-- <script id="modalCreateTask.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Create new task</h>
+            <h1 class="title">Create a New Task...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
             <form style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)" novalidate>
-            
+
                 <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            
+
                 <div class="item item-input">
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
                        ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow" required>
                     <p class="validate-message" ng-show="form.name.$error.required && submitted">Task name is required</p>
                 </div>
-            
+
                 <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            
+
                 <div class="item item-input">
                     <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
                     <input ng-if="isShowInputDate" type="date" placeholder="Due Date"
@@ -276,9 +275,9 @@
                        ng-disabled="isShow"
                     />
                 </div>
-            
+
                 <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            
+
                 <div class="available-assign"  ng-if="!isShow" style="padding: 15px 0px;">
                     <p style="font-size: 16px">Assignees:</p>
                     <ul class="list">
@@ -290,9 +289,9 @@
                         </li>
                     </ul>
                 </div>
-            
+
                 <div class="spacer" style="width: 300px; height: 44px;"></div>
-            
+
                 <div class="row" style="">
                     <button class="button button-positive button-outline button-block" type="submit" ng-if="!isShow" name="action">Add Task
                     </button>
@@ -304,14 +303,14 @@
             </form>
         </ion-content>
     </div>
-</script>
+</script> -->
 
-<script id="modalCreateThread.html" type="text/ng-template">
+<!-- <script id="modalCreateThread.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Create new thread</h>
+            <h1 class="title">Create a New Thread...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
@@ -344,14 +343,14 @@
             </form>
         </ion-content>
     </div>
-</script>
+</script> -->
 
-<script id="modalCreateDocument.html" type="text/ng-template">
+<!-- <script id="modalCreateDocument.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Create new document</h>
+            <h1 class="title">Add a New Attachment...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('CreateDocument')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('CreateDocument')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         <ion-content padding="true" class="has-header">
@@ -386,79 +385,81 @@
             </form>
         </ion-content>
     </div>
-</script>
+</script> -->
 
 <script id="modalConfig.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
-            <h class="title">Configuration</h>
+            <h1 class="title">Configuration...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('Config')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('Config')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <div class="spacer" style="width: 255px; height: 34px;"></div>
-            <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-positive button-clear button-block ">Sign Out</a>
+        <ion-content class="has-header">
+            <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-calm button-clear button-block ">Sign Out</a>
         </ion-content>
     </div>
 </script>
 
 <script id="modalCreateBoard.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h class="title">Create New Board</h>
+		
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Create New Board...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('board')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('board')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <form style="padding:10px;" id="createBoardForm" name="form" novalidate ng-submit="createNewBoard(form)">
-
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+		
+        <ion-content class="has-header padding">
+            <form id="createBoardForm" name="form" novalidate ng-submit="createNewBoard(form)">
 
                 <div class="item item-input">
                     <input placeholder="Board Name" id="board-name" type="text" ng-model="board.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
                     <p class="validate-message" ng-show="form.name.$error.required && submitted">Board name is required</p>
                 </div>
+				
+				<div class="padding-horizontal padding-top">
+					<p>Select people to add to this board:</p>
+				</div>
 
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="available-assign" >
-                    <p style="">Recipients:</p>
+                <div class="available-assign">
                     <ul class="list">
                         <li class="item item-checkbox" ng-repeat="user in newBoardPeople track by $index">
-                            <div class="checkbox">
+                            <label class="checkbox checkbox-calm">
                                 <input type="checkbox" ng-click="assignToNewBoard(user, $index)">
-                            </div>
+                            </label>
                             {{user.name}}
                         </li>
                     </ul>
                 </div>
-                <div class="spacer" style="width: 300px; height: 50px;"></div>
-                <div class="row" style="">
-                    <button class="button button-positive button-outline button-block" type="submit">Add message</button>
-                </div>
+				
+				<button class="button button-calm button-block" type="submit">Add Board</button>
+					
             </form>
         </ion-content>
+		
     </div>
 </script>
-<script id="modalInviteMorePeople.html" type="text/ng-template">
+
+<!-- <script id="modalInviteMorePeople.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h class="title">Create new task</h>
+
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Invite More People...</h1>
             <div class="buttons">
-                <button ng-click="closeModal('invite-more-people')" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal('invite-more-people')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <form style="padding:10px;" id="inviteMorePeopleForm" name="formInvite" class="col s12" ng-submit="inviteMorePeople(formInvite)" novalidate>
-            
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+
+        <ion-content class="has-header padding">
+
+            <form id="inviteMorePeopleForm" name="formInvite" ng-submit="inviteMorePeople(formInvite)" novalidate>
+
                 <div class="item item-input">
                     <ion-radio ng-repeat="type in availableUserType" ng-model="invite.type" ng-value="type.value" ng-change="getChangeTypeValue(invite.type)">{{type.text}}</ion-radio>
                 </div>
 
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
                 <div ng-show="invitePeopleStep == 2">
                     <div class="item item-input" ng-hide="invite.type == 'addTeamMember' || invite.type == 'addClient'">
                         <p>Do they need to provide a tender?</p>
@@ -480,7 +481,7 @@
                                     {{member.name}}<i class="ion-close-round" style="margin-left: 5px"></i>
                                 </div>
                             </a>
-                            
+
                     </div>
                     <div class="item item-input" ng-if="invite.isInviteTeamMember">
                             <p>Available Assignee:</p>
@@ -509,9 +510,9 @@
                         </ul>
                     </div>
                 </div>
-            
+
                 <div class="spacer" style="width: 300px; height: 44px;"></div>
-            
+
                 <div class="row" style="">
                     <button class="button button-positive button-outline button-block" type="submit" name="action">Add
                     </button>
@@ -519,4 +520,4 @@
             </form>
         </ion-content>
     </div>
-</script>
+</script> -->

@@ -13,10 +13,10 @@ angular.module('buiiltApp')
                 $scope.currentPackage.name = "PEOPLE";
             break;
             case 2:
-                $scope.currentPackage.name = "BOARD";
+                $scope.currentPackage.name = "BOARDS";
             break;
             case 3:
-                $scope.currentPackage.name = "DOCUMENTS";
+                $scope.currentPackage.name = "DOCUMENTATION";
             break;
         };
         $scope.modalPackage.hide();
@@ -1374,7 +1374,7 @@ angular.module('buiiltApp')
   });
 
   $scope.invitePeopleOrCreateNewBoard = function(){
-    if ($scope.selectedProject._id && $scope.currentPackage.name == "BOARD") {
+    if ($scope.selectedProject._id && $scope.currentPackage.name == "BOARDS") {
         $scope.modalCreateBoard.show();
         $scope.setNewBoard();
     } else if ($scope.selectedProject._id && $scope.currentPackage.name == "PEOPLE") {

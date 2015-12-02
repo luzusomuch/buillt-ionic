@@ -6,4 +6,51 @@
 .fromMe {
     background-color:#f5f5f5;
 }
+
+.item-divider {
+	font-weight: 600;
+	font-size: 12px;
+	color: #616161;
+	text-transform: uppercase;
+}
+
+.rememberMeCheck {
+	 display:inline-block;
+	 color: #757575;
+}
+
+.bar-footer {
+  overflow: visible !important;
+}
+
+.bar-footer label {
+	background-color: white
+}
+.bar-footer textarea {
+  resize: none;
+  height: 25px;
+  width: 100%; 
+}
+
+/* fixes an ios bug bear */
+button.ion-android-send {
+  padding-top: 2px;
+}
+
+/* add this to keep your footer buttons down 
+at the bottom as the textarea resizes */
+.footer-btn-wrap {
+  position: relative; 
+  height: 100%; 
+  width: 50px; 
+  top: 7px;
+}
+
+.footer-btn {
+  position: absolute !important; 
+  bottom: 0;
+}
+
+
+
     

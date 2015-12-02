@@ -1,31 +1,16 @@
 <ion-view title="{{board.name}}">
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
-    <ion-nav-buttons side="right">
+    
+	<ion-nav-buttons side="right">
         <button ng-show="currentTab == 'task' || currentTab == 'thread'" class="button button-clear icon-right ion-ios-plus-empty" ng-click="inviteMorePeopleToBoardOrCreateNewTaskModal()"></button>
     </ion-nav-buttons>
 
-    <!-- <ion-content padding="false" class="has-header"> -->
-        <ion-tabs class="tabs-icon-top">
-            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios7-chatboxes-outline">
-                <div class="bar bar-subheader">
-                    <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
-                    <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage()" style="margin-top: 10px;">
-                        <div class="item item-input">
-                            <textarea style="width:80%" name="text" id="textarea1-board-chat" placeholder="Send a message ..." ng-model="message.text">
-                            </textarea>
-                            <button class="button button-stable button-block" type="submit" style="width:20%; margin-right:10px;" name="action">Send
-                                <i class="mdi-content-send right"></i>
-                            </button>
-                        </div>
-                        <div id="mentionPeople" class="col s12" ng-if="showPopup" style="position: fixed; height: 100px; width:200px; background-color:#64B5F6; overflow-y: auto">
-                            <ul>
-                                <li ng-click="getMentionValue(mention)" ng-repeat="mention in available | filter: mentionString">{{mention.name}}</li>
-                            </ul>
-                        </div>
-                    </form>
-                </div>
-                <ion-content padding="false" class="has-header has-subheader messages-list-content">
-                    <div class="spacer" style="display: inline-block; width: 300px; height: 90px;"></div>
+        <ion-tabs class="tabs-icon-only tabs-light">
+		
+            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatboxes-outline">
+			
+                <ion-content padding="false" class="has-header messages-list-content">
+                    
                     <div class="list" scroll-to-bottom="board.orderedMessages">
                         <ion-item ng-repeat="message in board.orderedMessages">
                             <p style="font-size: 10px; color: #757575; margin-bottom: 0px">
@@ -37,51 +22,81 @@
                         </ion-item>
                     </div>
                 </ion-content>
+				
+				<form class="ng-pristine ng-valid" name="messageForm" ng-submit="sendMessage()" novalidate>
+					<ion-footer-bar class="bar-calm item-input-inset message-footer" keyboard-attach>
+					
+		                <label class="item-input-wrapper">
+		                    <textarea ng-model="message.text" value="" placeholder="Send a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
+		                </label>
+						
+		                <div class="footer-btn-wrap">
+			                <button class="button button-icon icon ion-ios-paperplane-outline footer-btn" type="submit" ng-disabled="!message.text || message.text === ''"></button>
+		                </div>
+						
+	                </ion-footer-bar>
+	            </form>
+				
             </ion-tab>
-            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios7-checkmark-outline">
+			
+            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark-outline">
+			
                 <ion-content padding="false" class="has-header task-list-content">
-                    <div class="spacer" style="display: inline-block; width: 300px; height: 90px;"></div>
                     <div class="list">
                         <ion-item ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-if="task.isOwner">
                             {{task.name}}
                         </ion-item>
                     </div>
                 </ion-content>
+				
+				<div class="bar bar-footer bar-calm">
+					<div class="button-bar">
+						<button class="button button-clear" ng-click="inviteMorePeopleToBoardOrCreateNewTaskModal()" style="font-size: 13px; font-weight: 400">ADD A NEW TASK</button>
+					</div>
+				</div>
+				
             </ion-tab>
-            <ion-tab ng-click="selectTabWithIndex(2)" title="Documents" icon="ion-ios-copy-outline">
+			
+            <ion-tab ng-click="selectTabWithIndex(2)" title="Documents" icon="ion-ios-book-outline">
+			
                 <ion-content padding="false" class="has-header task-list-content">
-                    <div class="spacer" style="display: inline-block; width: 300px; height: 90px;"></div>
                     <div class="list">
                         <ion-item ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})">
                             {{file.title}}(Version: {{file.version + 1}})
                         </ion-item>
                     </div>
                 </ion-content>
+				
+				<div class="bar bar-footer bar-calm">
+					<div class="button-bar">
+						<button class="button button-clear" ng-click="" style="font-size: 13px; font-weight: 400">ADD A NEW ATTACHMENT</button>
+					</div>
+				</div>
+				
             </ion-tab>
+			
         </ion-tabs>
         
     <!-- </ion-content> -->
 </ion-view>
 <script id="modalCreateTaskInBoard.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h class="title">Create new task</h>
+		
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Create a New Task...</h1>
             <div class="buttons">
-                <button ng-click="closeModal()" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+                <button ng-click="closeModal()" class="button button-stable button-icon button-large icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <form style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)" novalidate>
-            
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+		
+        <ion-content class="has-header padding">
+            <form id="createTaskForm" name="form" ng-submit="createNewTask(form)" novalidate>
             
                 <div class="item item-input">
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.name" name="name" maxlength="80"
                        ng-class="{'invalid' : form.name.$invalid && submitted}" ng-disabled="isShow" required>
                     <p class="validate-message" ng-show="form.name.$error.required && submitted">Task name is required</p>
                 </div>
-            
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
             
                 <div class="item item-input">
                     <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
@@ -94,13 +109,11 @@
                     />
                 </div>
             
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-            
                 <div class="available-assign"  ng-if="!isShow" style="padding: 15px 0px;">
                     <p style="font-size: 16px">Assignees:</p>
                     <ul class="list">
                         <li class="item item-checkbox" ng-repeat="staff in available track by $index">
-                            <div class="checkbox">
+                            <div class="checkbox checkbox-calm">
                                 <input type="checkbox" ng-click="assign(staff, $index)">
                             </div>
                             {{staff.name}}
@@ -108,16 +121,10 @@
                     </ul>
                 </div>
             
-                <div class="spacer" style="width: 300px; height: 44px;"></div>
-            
                 <div class="row" style="">
-                    <button class="button button-positive button-outline button-block" type="submit" ng-if="!isShow" name="action">Add Task
-                    </button>
+                    <button class="button button-calm button-outline button-block" type="submit" ng-if="!isShow" name="action">Add Task</button>
                 </div>
-                <div class="spacer" style="width: 300px; height: 50px;"></div>
-                <div class="row" style="display:none">
-                    <button class="button button-stable button-block cancel-task" type="button" ng-click="cancelTask()">Cancel</button>
-                </div>
+				
             </form>
         </ion-content>
     </div>
