@@ -4,11 +4,11 @@ angular.module('buiiltApp')
   return $resource(API_URL + 'api/uploads/:id/:action',{
     id : '@_id'},
     {
-        upload: {
+        uploadMobile: {
             method: 'POST',
             params: {
                 id: '@id',
-                action: 'file'
+                action: 'upload-mobile'
             }
         },
         uploadInPackage: {

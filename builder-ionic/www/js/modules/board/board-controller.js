@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('BoardCtrl', function(team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket) {
+.controller('BoardCtrl', function(team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, FileUploader, API_URL, filepickerService, uploadService) {
     boardService.getBoardIOS({id: $stateParams.boardId}).$promise.then(function(res) {
         $scope.board = res;
         getTasksAndFilesByBoard(res);
@@ -400,6 +400,13 @@ angular.module('buiiltApp')
         $scope.modalInvitePeopleToBoard = modal;
     });
 
+    $ionicModal.fromTemplateUrl('modalAttachment.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalAttachment = modal;
+    });
+
     $scope.inviteMorePeopleToBoardOrCreateNewTaskModal = function() {
         if ($scope.currentTab == 'thread') {
             $scope.invite = {
@@ -419,6 +426,8 @@ angular.module('buiiltApp')
             $scope.modalInvitePeopleToBoard.hide();
         } else if ($scope.currentTab == 'task') {
             $scope.modalCreateTask.hide();
+        } else if ($scope.currentTab == 'document') {
+            $scope.modalAttachment.hide();
         }
     };
 
@@ -484,6 +493,46 @@ angular.module('buiiltApp')
                 getInvitees(res.project);
                 getAvailable(res);
             }, function(err){
+                console.log(err);
+            });
+        }
+    };
+
+    $scope.addFile = function() {
+        $scope.modalAttachment.show();
+    };
+
+    $scope.allowUpload = false;
+    $scope.getFileUpload = function() {
+        var input = document.getElementById("store-input");
+        if (input.value) {
+            filepicker.store(
+                input,
+                function(Blob) {
+                    console.log(Blob);
+                    Blob.belongToType = 'board';
+                    Blob.tags = [];
+                    $scope.uploadFile = Blob;
+                    alert(Blob.url);
+                },
+                function(err) {
+                    console.log(err.toString());
+                },
+                function(progress) {
+                    if (progress == 100) {
+                        $scope.allowUpload = true;
+                    }
+                }
+            );
+        }
+    };
+
+    $scope.uploadAttachment = function() {
+        if ($scope.allowUpload) {
+            alert("uploading");
+            uploadService.uploadMobile({id: $stateParams.boardId},$scope.uploadFile).$promise.then(function(res) {
+                console.log(res);
+            }, function(err) {
                 console.log(err);
             });
         }
