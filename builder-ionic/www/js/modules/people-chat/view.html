@@ -61,7 +61,7 @@
 				
 				<div class="bar bar-footer bar-calm">
 					<div class="button-bar">
-						<button class="button button-clear" ng-click="" style="font-size: 13px; font-weight: 400">ADD A NEW ATTACHMENT</button>
+						<button ng-click="addFile()" class="button button-clear" ng-click="" style="font-size: 13px; font-weight: 400">ADD A NEW ATTACHMENT</button>
 					</div>
 				</div>
 				
@@ -75,7 +75,7 @@
         <ion-header-bar class="bar-stable">
             <h1 class="title">Create a New Task...</h1>
             <div class="buttons">
-                <button ng-click="" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+                <button ng-click="closeModal()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
 		
@@ -101,6 +101,41 @@
             
                 <div style="">
                     <button class="button button-calm button-outline button-block" type="submit" ng-if="!isShow" name="action">Add Task</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
+
+<script id="modalAttachment.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h class="title">Add new file to {{board.name}}</h>
+            <div class="buttons">
+                <button ng-click="closeModal()" class="button button-stable button-icon button-large icon ion-ios7-checkmark-empty"></button>
+            </div>
+        </ion-header-bar>
+        <ion-content padding="true" class="has-header">
+            <form style="padding:10px;" id="invitePeopleToBoard" name="form" class="col s12" ng-submit="uploadAttachment()" novalidate>
+            
+                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
+
+                <div class="item item-input">
+                    <div class="row">
+                        <input onchange="angular.element(this).scope().getFileUpload()" id="store-input" type="file"></input>
+                        <ion-spinner id="spinning" icon="spiral" style="display:none;"></ion-spinner>
+                        <i id="completed" class="icon ion-checkmark" style="display:none"></i>
+                    </div>
+                </div>
+                <div>
+                    <p>{{error}}</p>
+                </div>
+                            
+                <div class="spacer" style="width: 300px; height: 44px;"></div>
+            
+                <div class="row" style="">
+                    <button class="button button-positive button-outline button-block" type="submit" name="action">Save
+                    </button>
                 </div>
             </form>
         </ion-content>

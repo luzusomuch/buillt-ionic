@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('PeopleChatCtrl', function(team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService) {
+.controller('PeopleChatCtrl', function(team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService,uploadService) {
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.peopleChat = peopleChat;
@@ -23,6 +23,13 @@ angular.module('buiiltApp')
         animation: 'slide-in-up'
     }).then(function(modal){
         $scope.modalCreateTaskInPeople = modal;
+    });
+
+    $ionicModal.fromTemplateUrl('modalAttachment.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalAttachment = modal;
     });
 
     $scope.createNewTaskModal = function(){
@@ -166,6 +173,71 @@ angular.module('buiiltApp')
             console.log(err);
         });
     };
+
+    $scope.addFile = function() {
+        $scope.modalAttachment.show();
+    };
+
+    $scope.allowUpload = false;
+    $scope.getFileUpload = function() {
+        $scope.loading = false;
+        var input = document.getElementById("store-input");
+        if (input.value) {
+            filepicker.store(
+                input,
+                function(Blob) {
+                    Blob.belongToType = 'people';
+                    Blob.tags = [];
+                    Blob.peopleChat = $scope.peopleChat._id;
+                    $scope.uploadFile = Blob;
+                },
+                function(err) {
+                    console.log(err.toString());
+                },
+                function(progress) {
+                    $("#spinning").show();
+                    for (var i = 0; i < 100; i++) {
+                        if (progress == 100) {
+                            $("#spinning").hide();
+                            $("#completed").show();
+                            $scope.allowUpload = true;
+                            return false;
+                        }
+                    };
+                }
+            );
+        } else {
+            $scope.error = "Please choose another file";
+        }
+    };
+
+    $scope.uploadAttachment = function() {
+        var input = document.getElementById("store-input");
+        if ($scope.allowUpload) {
+            uploadService.uploadMobile({id: $scope.peopleChat.people},$scope.uploadFile).$promise.then(function(res) {
+                $scope.modalAttachment.hide();
+                res.isOwner = false;
+                if (res.peopleChat == $scope.peopleChat._id) {
+                    res.isOwner = true;
+                }
+                $scope.files.push(res);
+            }, function(err) {
+                console.log(err);
+            });
+        } else if (!input.value) {
+            $scope.error = "Please choose file.";
+        } else {
+            $scope.error = "Please waiting for upload progress.";
+        }
+    };
+
+    $scope.closeModal = function(){
+        if ($scope.currentTab == "task") {
+            $scope.modalCreateTaskInPeople.hide();
+        } else if ($scope.currentTab == "document") {
+            $scope.modalAttachment.hide();
+        }
+    }
 });
 
 

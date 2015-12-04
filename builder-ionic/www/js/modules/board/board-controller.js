@@ -504,37 +504,49 @@ angular.module('buiiltApp')
 
     $scope.allowUpload = false;
     $scope.getFileUpload = function() {
+        $scope.loading = false;
         var input = document.getElementById("store-input");
         if (input.value) {
             filepicker.store(
                 input,
                 function(Blob) {
-                    console.log(Blob);
                     Blob.belongToType = 'board';
                     Blob.tags = [];
                     $scope.uploadFile = Blob;
-                    alert(Blob.url);
                 },
                 function(err) {
                     console.log(err.toString());
                 },
                 function(progress) {
-                    if (progress == 100) {
-                        $scope.allowUpload = true;
-                    }
+                    $("#spinning").show();
+                    for (var i = 0; i < 100; i++) {
+                        if (progress == 100) {
+                            $("#spinning").hide();
+                            $("#completed").show();
+                            $scope.allowUpload = true;
+                            return false;
+                        }
+                    };
                 }
             );
+        } else {
+            $scope.error = "Please choose another file";
         }
     };
 
     $scope.uploadAttachment = function() {
+        var input = document.getElementById("store-input");
         if ($scope.allowUpload) {
-            alert("uploading");
             uploadService.uploadMobile({id: $stateParams.boardId},$scope.uploadFile).$promise.then(function(res) {
-                console.log(res);
+                $scope.modalAttachment.hide();
+                $scope.files.push(res);
             }, function(err) {
                 console.log(err);
             });
+        } else if (!input.value) {
+            $scope.error = "Please choose file.";
+        } else {
+            $scope.error = "Please waiting for upload progress.";
         }
     };
     

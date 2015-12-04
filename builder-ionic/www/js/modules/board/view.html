@@ -180,9 +180,16 @@
                 <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
 
                 <div class="item item-input">
-                <input onchange="angular.element(this).scope().getFileUpload()" id="store-input" type="file"></input>
+                    <div class="row">
+                        <input onchange="angular.element(this).scope().getFileUpload()" id="store-input" type="file"></input>
+                        <ion-spinner id="spinning" icon="spiral" style="display:none;"></ion-spinner>
+                        <i id="completed" class="icon ion-checkmark" style="display:none"></i>
+                    </div>
                 </div>
-            
+                <div>
+                    <p>{{error}}</p>
+                </div>
+                            
                 <div class="spacer" style="width: 300px; height: 44px;"></div>
             
                 <div class="row" style="">
