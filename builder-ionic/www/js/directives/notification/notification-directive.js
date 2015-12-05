@@ -8,18 +8,19 @@ angular.module('buiiltApp')
         currentUser: '='
       },
       link : function(scope,element) {
+        console.log(scope);
         var params = {
           fromUser : function() {
-            if (scope.notification.fromUser.email == scope.currentUser.email) {
+            if (scope.notification.fromUser._id == scope.currentUser._id) {
               return '<span class="highlight">You</span> '
             }
-            return '<span class="highlight">{{notification.fromUser.email}}</span> '
+            return '<span class="highlight">{{notification.fromUser.name}}</span> '
           },
           toUser : function () {
-            if (scope.notification.toUser.email == scope.currentUser.email) {
+            if (scope.notification.toUser._id == scope.currentUser._id) {
               return '<span class="highlight">You</span> '
             }
-            return '<span class="highlight">{{notification.toUser.email}}</span>';
+            return '<span class="highlight">{{notification.toUser.name}}</span>';
           },
           team : function() {
             if (scope.notification.element._id == scope.currentUser.team._id) {
@@ -27,7 +28,19 @@ angular.module('buiiltApp')
             }
             return 'team <span class="highlight">{{notification.element.name}}</span>';
           },
+          messageText: function() {
+            if (scope.notification.element.messages) {
+              var message = '';
+              if (scope.notification.element.messages[scope.notification.element.__v -1].text.length > 20) {
+                message = scope.notification.element.messages[scope.notification.element.__v -1].text.substr(0,20) + "...";
+              } else {
+                message = scope.notification.element.messages[scope.notification.element.__v -1].text;
+              }
+              return '<span class="highlight">'+message+'</span>';
+            }
+          },
           element : '<span class="highlight">{{notification.element.name}}</span> ',
+          projectName : '<span class="highlight">{{notification.element.project.name}}</span> ',
           taskDescription : '<span class="highlight">{{notification.element.description}}</span> ',
           quote: '<span class="highlight">{{notification.element.quote}}</span> ',
           fileName: '<span class="highlight">{{notification.element.file.title}}</span> ',
@@ -42,77 +55,43 @@ angular.module('buiiltApp')
         
         var getSref = function(notification) {
           if (serviceTaskArray.indexOf(notification.type) != -1)  {
-            return 'taskDetail({id : notification.element.project, taskId : notification.element._id})';
+            return 'taskDetail({id : notification.element.project._id, taskId : notification.element._id})';
           }
           if (serviceThreadArray.indexOf(notification.type) != -1)  {
-            return 'threadDetail({id : notification.element.project, threadId : notification.element._id})';
+            return 'threadDetail({id : notification.element.project._id, threadId : notification.element._id})';
           }
           if (notification.referenceTo == "people-chat") {
-            return 'peopleChat({id: notification.element.project, peopleChatId: notification.element._id})';
+            return 'peopleChat({id: notification.element.project._id, peopleChatId: notification.element._id})';
           }
-          if (notification.referenceTo == "board-chat") {
+          if (notification.referenceTo == "board-chat" || notification.type == "NewBoard") {
             return 'boardDetail({boardId: notification.element._id})';
           }
-          // if (serviceDocumentArray.indexOf(notification.type) != -1) {
-          //   switch(notification.referenceTo){
-          //     case 'DocumentInProject': 
-          //       return 'projects.view({id: notification.element.projectId})';
-          //     case 'DocumentContractorPackage': 
-          //       return 'contractorRequest.contractorPackageInProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
-          //     case 'DocumentMaterialPackage': 
-          //       return 'materialRequest.materialPackageInProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
-          //     case 'DocumentStaffPackage': 
-          //       return 'staff.view({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
-          //     // case 'DocumentVariation': 
-          //       // return 'variationRequest.inProcess({id: notification.element.projectId, packageId: notification.element.uploadIn._id})';
-          //     case 'DocumentBuilderPackage': 
-          //       return 'client({id: notification.element.projectId})';
-          //   }
-          // }
+          if (notification.type == "invite-people") {
+            return 'dashboard';
+          }
         };
 
         var text;
-        // if (scope.notification.type === 'task-assign') {
-        //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
-        // }
         if (scope.notification.type === 'task-assign') {
           text = 'New task: ' + params.taskDescription;
         }
-        // if (scope.notification.type === 'task-reopened') {
-        //   text =  params.fromUser() + ' has reopened task ' + params.element;
-        // }
-        // if (scope.notification.type === 'task-completed') {
-        //   text = params.fromUser() + ' has completed task ' + params.element;
-        // }
         if (scope.notification.type === 'task-reopened') {
           text = 'Reopened task: ' + params.taskDescription;
         }
         if (scope.notification.type === 'task-completed') {
           text = 'Completed task: ' + params.taskDescription;
         }
-        // if (scope.notification.type === 'uploadDocument') {
-        //   text = params.fromUser()  + 'has added a new document ' + params.fileName + ' to ' + params.place;
-        // }
-        // if (scope.notification.type === 'uploadNewDocumentVersion') {
-        //   text = params.fromUser()  + 'has updated the document ' + params.fileName + ' in project ' + params.place;
-        // }
-        // if (scope.notification.type === 'thread-assign') {
-        //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to thread ' + params.element;
-        // }
-        // if (scope.notification.type === 'thread-message') {
-        //   text = params.fromUser() + ' has send new message in thread ' + params.element;
-        // }
-        if (scope.notification.type === 'thread-assign') {
-          text = 'New thread: ' + params.element;
-        }
-        if (scope.notification.type === 'thread-message') {
-          text = 'New message: '+ params.element;
-        }
         if (scope.notification.referenceTo === 'people-chat') {
-          text = 'New message in people package';
+          text = params.fromUser() + " mentioned you " + params.messageText();
         }
         if (scope.notification.referenceTo === 'board-chat') {
-          text = 'New message in ' + params.element;
+          text = params.fromUser() + " mentioned you " + params.messageText();
+        }
+        if (scope.notification.type === 'invite-people') {
+          text = params.fromUser() + ' has added you to project ' + params.projectName;
+        }
+        if (scope.notification.type === 'NewBoard') {
+          text = params.fromUser() + ' has added you to board ' + params.element;
         }
 
         scope.notification.sref = getSref(scope.notification);
@@ -155,6 +134,7 @@ angular.module('buiiltApp')
             .then(function(res) {
               $scope.total = res.length;
               $scope.notifications = res;
+              console.log(res);
             });
 
           $scope.loadMore = function() {

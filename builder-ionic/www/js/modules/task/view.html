@@ -1,4 +1,4 @@
-<ion-view title='{{task.name}}'>
+<ion-view title='{{task.description}}'>
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
     <ion-content class="has-header task-content">
         <ion-item class="task-content-detail">
@@ -6,7 +6,7 @@
             <div>
                 <ul class="list">
                     <li class="item item-divider">Task Description:</li>
-					<li class="item">{{task.name}}</li>
+					<li class="item">{{task.description}}</li>
                     <li class="item item-divider">Task due date:</li>
 					<li class="item">{{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
                     <li class="item item-divider">Task Assignees:</li>

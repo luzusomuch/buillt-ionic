@@ -18,8 +18,8 @@ angular.module('buiiltApp', [
   'angular-filepicker',
   'angularFileUpload'
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'http://buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'http://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
   $urlRouterProvider.otherwise('/signin');
