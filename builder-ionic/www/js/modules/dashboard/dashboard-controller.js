@@ -1,8 +1,9 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function(team, currentUser, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, peopleChatService) {
+    .controller('DashboardCtrl', function(team, currentUser, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, peopleChatService, totalNotifications) {
     $scope.defaultSelectedPackage = 0;
     $scope.team = team;
     $scope.currentUser = currentUser;
+    $scope.totalNotifications = totalNotifications;
     $scope.getPackageType = function(type) {
         $scope.defaultSelectedPackage = type;
         switch (type) {
@@ -1447,6 +1448,10 @@ angular.module('buiiltApp')
 
   $scope.showConfig = function() {
     $scope.modalConfig.show();
+  };
+
+  $scope.goToNotificationPage = function() {
+    $state.go('notifications');
   };
 
   //function hide modal

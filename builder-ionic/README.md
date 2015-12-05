@@ -35,3 +35,4 @@ run these following cmd:
     -cordova plugin add cordova-plugin-device
     -cordova plugin add cordova-plugin-file-transfer
     -cordova plugin add https://github.com/devgeeks/Canvas2ImagePlugin.git
+    -cordova plugin add org.apache.cordova.statusbar

@@ -140,27 +140,9 @@ angular.module('buiiltApp')
 
           notificationService.getTotalForIos().$promise
             .then(function(res) {
-              $rootScope.totalNotification = $scope.total = res.length;
+              $scope.total = res.length;
               $scope.notifications = res;
             });
-
-            // notificationService.getTotal().$promise
-            // .then(function(res) {
-            //   $rootScope.totalNotification = $scope.total = res.count;
-            // });
-
-
-          // var getNotifications = function(limit) {
-          //   if ($scope.readMore) {
-          //     notificationService.get({limit : limit}).$promise
-          //       .then(function(res) {
-          //         $scope.notifications = res;
-          //         if (limit > res.length) {
-          //           $scope.readMore = false;
-          //         }
-          //       })
-          //   }
-          // };
 
           $scope.loadMore = function() {
             limit += 10;

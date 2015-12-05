@@ -2,6 +2,9 @@
     <ion-nav-buttons side="left">
         <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear icon-right ion-ios-bell-outline" ng-click="goToNotificationPage()"></button>{{totalNotifications.length}}
+    </ion-nav-buttons>
     <div class="bar bar-subheader" style="">
         <div class="button-bar">
             <a class="button button-clear button-calm" style="font-size: 12px; font-weight: 500" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'PROJECT'}}</a>
@@ -16,8 +19,8 @@
             <div ng-if="tasks.length > 0">
                 <ion-item class="item item-divider">Tasks</ion-item>
                 <ion-item ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
-                    <h2 ng-if="task.dueDateTomorrow || task.dueDateToday"><strong>{{task.name}}</strong></h2>
-                    <h2 ng-if="!task.dueDateTomorrow && !task.dueDateToday">{{task.name}}</h2>
+                    <h2 ng-if="task.dueDateTomorrow || task.dueDateToday"><strong>{{task.description}}</strong></h2>
+                    <h2 ng-if="!task.dueDateTomorrow && !task.dueDateToday">{{task.description}}</h2>
                     <p>
                         <span ng-if="task.dueDateToday">Due Today</span>
                         <span ng-if="task.dueDateTomorrow">Due Tomorrow</span>

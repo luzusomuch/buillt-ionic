@@ -28,6 +28,7 @@ angular.module('buiiltApp', [
   filepickerProvider.setKey('AM6Wn3DzwRimryydBnsj7z');
   // $ionicConfigProvider.views.maxCache(0);
   // cfpLoadingBarProvider.includeSpinner = true;
+  
 })
 .factory('authInterceptor', function ($q, $location) {
   return {
@@ -71,7 +72,7 @@ angular.module('buiiltApp', [
       if (window.StatusBar) {
         // Set the statusbar to use the default style, tweak this to
         // remove the status bar on iOS or change it to use white instead of dark colors.
-        StatusBar.styleDefault();
+        // StatusBar.styleDefault();
       }
     });
      
