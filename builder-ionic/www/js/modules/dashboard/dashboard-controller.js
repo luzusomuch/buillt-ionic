@@ -4,6 +4,10 @@ angular.module('buiiltApp')
     $scope.team = team;
     $scope.currentUser = currentUser;
     $scope.totalNotifications = totalNotifications;
+    $rootScope.$on('notification:read',function(event,notification) {
+        _.remove($scope.totalNotifications,{_id : notification._id});
+        $scope.totalNotifications--;
+    });
     $scope.getPackageType = function(type) {
         $scope.defaultSelectedPackage = type;
         switch (type) {

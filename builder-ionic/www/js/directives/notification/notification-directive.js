@@ -28,6 +28,7 @@ angular.module('buiiltApp')
             return 'team <span class="highlight">{{notification.element.name}}</span>';
           },
           element : '<span class="highlight">{{notification.element.name}}</span> ',
+          taskDescription : '<span class="highlight">{{notification.element.description}}</span> ',
           quote: '<span class="highlight">{{notification.element.quote}}</span> ',
           fileName: '<span class="highlight">{{notification.element.file.title}}</span> ',
           packageName: '<span class="highlight">{{notification.element.package.name}}</span> ',
@@ -45,6 +46,12 @@ angular.module('buiiltApp')
           }
           if (serviceThreadArray.indexOf(notification.type) != -1)  {
             return 'threadDetail({id : notification.element.project, threadId : notification.element._id})';
+          }
+          if (notification.referenceTo == "people-chat") {
+            return 'peopleChat({id: notification.element.project, peopleChatId: notification.element._id})';
+          }
+          if (notification.referenceTo == "board-chat") {
+            return 'boardDetail({boardId: notification.element._id})';
           }
           // if (serviceDocumentArray.indexOf(notification.type) != -1) {
           //   switch(notification.referenceTo){
@@ -69,7 +76,7 @@ angular.module('buiiltApp')
         //   text = params.fromUser() + ' has assigned ' + params.toUser() + ' to task ' + params.element;
         // }
         if (scope.notification.type === 'task-assign') {
-          text = 'New task: ' + params.element;
+          text = 'New task: ' + params.taskDescription;
         }
         // if (scope.notification.type === 'task-reopened') {
         //   text =  params.fromUser() + ' has reopened task ' + params.element;
@@ -78,10 +85,10 @@ angular.module('buiiltApp')
         //   text = params.fromUser() + ' has completed task ' + params.element;
         // }
         if (scope.notification.type === 'task-reopened') {
-          text = 'Reopened task: ' + params.element;
+          text = 'Reopened task: ' + params.taskDescription;
         }
         if (scope.notification.type === 'task-completed') {
-          text = 'Completed task: ' + params.element;
+          text = 'Completed task: ' + params.taskDescription;
         }
         // if (scope.notification.type === 'uploadDocument') {
         //   text = params.fromUser()  + 'has added a new document ' + params.fileName + ' to ' + params.place;
@@ -100,6 +107,12 @@ angular.module('buiiltApp')
         }
         if (scope.notification.type === 'thread-message') {
           text = 'New message: '+ params.element;
+        }
+        if (scope.notification.referenceTo === 'people-chat') {
+          text = 'New message in people package';
+        }
+        if (scope.notification.referenceTo === 'board-chat') {
+          text = 'New message in ' + params.element;
         }
 
         scope.notification.sref = getSref(scope.notification);

@@ -18,6 +18,10 @@
     {
       "locator": "https://github.com/apache/cordova-plugin-whitelist.git",
       "id": "cordova-plugin-whitelist"
+    },
+    {
+      "locator": "https://github.com/apache/cordova-plugin-statusbar.git",
+      "id": "cordova-plugin-statusbar"
     }
   ],
   "cordovaPlatforms": [
