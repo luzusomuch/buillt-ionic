@@ -48,6 +48,8 @@
                 window.localStorage.setItem('relatedto','people');
             } else if (relatedto == 'board') {
                 window.localStorage.setItem('relatedto','board');
+            } else if (relatedto == "invite-people") {
+                window.localStorage.setItem('relatedto','invite-people');
             }
             if (event.alert) {
                 navigator.notification.alert(event.alert);
@@ -175,6 +177,8 @@
                         window.location.href="#/board/"+id;
                     } else if (related == "people") {
                         window.location.href="#/"+projectid+"/people-chat/"+id;
+                    } else if (related == "invite-people") {
+                        window.location.href = "#/dashboard";
                     }
                     else if (related == 'thread') {
                         window.location.href = "#/"+projectid+"/thread/"+id;
