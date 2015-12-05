@@ -44,6 +44,11 @@
             }
             else if(relatedto == 'message')
                 window.localStorage.setItem('relatedto','thread');
+            else if (relatedto == 'people') {
+                window.localStorage.setItem('relatedto','people');
+            } else if (relatedto == 'board') {
+                window.localStorage.setItem('relatedto','board');
+            }
             if (event.alert) {
                 navigator.notification.alert(event.alert);
             }
