@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('PeopleChatCtrl', function(team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService,uploadService) {
+.controller('PeopleChatCtrl', function(team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService,uploadService, $ionicLoading) {
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.peopleChat = peopleChat;
@@ -210,6 +210,30 @@ angular.module('buiiltApp')
             $scope.error = "Please choose another file";
         }
     };
+
+    $scope.onUpload = onUpload;
+    $scope.localUpload = localUpload;
+
+    function localUpload(value){
+        if (!value){
+            return;
+        }
+        // TODO - create directive
+        $ionicLoading.show();
+        filepicker.store(
+            value,
+            onUpload
+        );
+    }
+    function onUpload(data){
+        // FilesService.add(data);
+        data.belongToType = 'people';
+        data.tags = [];
+        data.peopleChat = $scope.peopleChat._id;
+        $scope.uploadFile = data;
+        $ionicLoading.hide();
+        $scope.allowUpload = true;
+    }
 
     $scope.uploadAttachment = function() {
         var input = document.getElementById("store-input");

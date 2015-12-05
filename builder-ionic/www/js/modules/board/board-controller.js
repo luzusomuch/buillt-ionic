@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('BoardCtrl', function(team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, FileUploader, API_URL, filepickerService, uploadService) {
+.controller('BoardCtrl', function(team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, FileUploader, API_URL, filepickerService, uploadService, $ionicLoading) {
     boardService.getBoardIOS({id: $stateParams.boardId}).$promise.then(function(res) {
         $scope.board = res;
         getTasksAndFilesByBoard(res);
@@ -501,13 +501,13 @@ angular.module('buiiltApp')
     $scope.addFile = function() {
         $scope.modalAttachment.show();
     };
-
     $scope.allowUpload = false;
     $scope.getFileUpload = function() {
-        $scope.loading = false;
         var input = document.getElementById("store-input");
+        alert(input.value);
         if (input.value) {
-            filepicker.store(
+            alert(filepickerService.store);
+            filepickerService.store(
                 input,
                 function(Blob) {
                     Blob.belongToType = 'board';
@@ -516,8 +516,11 @@ angular.module('buiiltApp')
                 },
                 function(err) {
                     console.log(err.toString());
+                    alert(err);
                 },
                 function(progress) {
+                    alert("progress");
+                    alert(progress);
                     $("#spinning").show();
                     for (var i = 0; i < 100; i++) {
                         if (progress == 100) {
@@ -533,6 +536,29 @@ angular.module('buiiltApp')
             $scope.error = "Please choose another file";
         }
     };
+
+    $scope.onUpload = onUpload;
+    $scope.localUpload = localUpload;
+
+    function localUpload(value){
+        if (!value){
+            return;
+        }
+        // TODO - create directive
+        $ionicLoading.show();
+        filepicker.store(
+            value,
+            onUpload
+        );
+    }
+    function onUpload(data){
+        // FilesService.add(data);
+        data.belongToType = 'board';
+        data.tags = [];
+        $scope.uploadFile = data;
+        $ionicLoading.hide();
+        $scope.allowUpload = true;
+    }
 
     $scope.uploadAttachment = function() {
         var input = document.getElementById("store-input");

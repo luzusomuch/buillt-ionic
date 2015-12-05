@@ -181,9 +181,14 @@
 
                 <div class="item item-input">
                     <div class="row">
-                        <input onchange="angular.element(this).scope().getFileUpload()" id="store-input" type="file"></input>
+                        <input onchange="angular.element(this).scope().localUpload(this)" id="store-input" type="file" ng-model="localFile"></input>
                         <ion-spinner id="spinning" icon="spiral" style="display:none;"></ion-spinner>
                         <i id="completed" class="icon ion-checkmark" style="display:none"></i>
+                    </div>
+                    <div class="row">
+                        <input filepicker type="filepicker" data-fp-container="modal"
+                            data-fp-mimetype="image/*"
+                            on-success="onUpload(event.fpfile)" />
                     </div>
                 </div>
                 <div>
