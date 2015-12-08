@@ -1,4 +1,5 @@
 {
   "name": "test ionic",
-  "app_id": "9e6ae265"
+  "app_id": "9e6ae265",
+  "gulpStartupTasks": ["sass", "watch"]
 }
