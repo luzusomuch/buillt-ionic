@@ -1,3 +1,5 @@
-.bar-calm {
-    background-color: #2196F3;
-}
+[nav-bar-transition="ios"] [nav-bar="active"] .bar, [nav-bar-transition="ios"] [nav-bar="entering"] .bar {
+    background: #2196f3 !important; }
+
+[nav-bar-transition="android"] [nav-bar="active"] .bar, [nav-bar-transition="android"] [nav-bar="entering"] .bar {
+    background: #2196f3 !important; }

@@ -69,11 +69,17 @@ angular.module('buiiltApp', [
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);
       }
-      if (window.StatusBar) {
+      // setTimeout(function() {
+        // alert(window.StatusBar);
+        if (window.StatusBar) {
+          StatusBar.hide();
+        }
+      // }, 500); 
+      // if (window.StatusBar) {
         // Set the statusbar to use the default style, tweak this to
         // remove the status bar on iOS or change it to use white instead of dark colors.
-        return StatusBar.hide();
-      }
+        // return StatusBar.hide();
+      // }
     });
      
     if (window.localStorage.getItem('token')) {

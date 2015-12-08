@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-  .controller('SigninCtrl', function ($scope, deviceService, authService, $window,$stateParams, $state, $location) {
+  .controller('SigninCtrl', function ($ionicLoading,$scope, deviceService, authService, $window,$stateParams, $state, $location) {
     $scope.user = {};
     $scope.errors = {};
     $scope.submitted = false;
@@ -13,14 +13,17 @@ angular.module('buiiltApp')
 
     $scope.signin = function (form) {
       $scope.submitted = true;
-      if (form.$valid) {
+      if (form.$valid) {  
+        $ionicLoading.show();
         authService.login($scope.user).then(function () {
+          $ionicLoading.hide();
           $state.go('dashboard');
           deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         }, function (res) {
           // alert('errr' + res.message);
           $scope.error = true;
           $scope.errorMsg = res.message;
+          $ionicLoading.hide();
         });
       }
     };

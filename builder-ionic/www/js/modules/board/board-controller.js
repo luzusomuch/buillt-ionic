@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('BoardCtrl', function(team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, FileUploader, API_URL, filepickerService, uploadService, $ionicLoading) {
+.controller('BoardCtrl', function($ionicLoading, team, currentUser, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, FileUploader, API_URL, filepickerService, uploadService, $ionicLoading) {
     boardService.getBoardIOS({id: $stateParams.boardId}).$promise.then(function(res) {
         $scope.board = res;
         getTasksAndFilesByBoard(res);
@@ -376,13 +376,16 @@ angular.module('buiiltApp')
     });
 
     $scope.sendMessage = function() {
+        $ionicLoading.show();
         boardService.sendMessage({id: $scope.board._id}, $scope.message).$promise.then(function(res) {
             $scope.board = res;
             $scope.message.text = null;
             $scope.message.mentions = [];
             filterMessages($scope.board);
+            $ionicLoading.hide();
         }, function(err){
             console.log(err);
+            $ionicLoading.hide();
         });
     };
 
@@ -456,6 +459,7 @@ angular.module('buiiltApp')
     $scope.createNewTask = function(form) {
         $scope.submitted = true;
         if (form.$valid) {
+            $ionicLoading.show();
             taskService.create({id : $scope.board._id, type : 'board'},$scope.task)
                 .$promise.then(function(res) {
                 $scope.modalCreateTask.hide();
@@ -466,6 +470,9 @@ angular.module('buiiltApp')
                 $scope.task.dateEnd = null;
                 $scope.submitted = false;
                 getTasksAndFilesByBoard($scope.board);
+                $ionicLoading.hide();
+            }, function(err) {
+                $ionicLoading.hide();
             });
         }
     };
@@ -484,6 +491,7 @@ angular.module('buiiltApp')
     $scope.invitePeople = function(form) {
         $scope.submitted = true;
         if (form.$valid) {
+            $ionicLoading.show();
             boardService.invitePeople({id: $scope.board._id}, $scope.invite).$promise.then(function(res){
                 $scope.board = res;
                 $scope.submitted = false;
@@ -492,8 +500,10 @@ angular.module('buiiltApp')
                 $scope.invite.invitees = [];
                 getInvitees(res.project);
                 getAvailable(res);
+                $ionicLoading.hide();
             }, function(err){
                 console.log(err);
+                $ionicLoading.hide();
             });
         }
     };

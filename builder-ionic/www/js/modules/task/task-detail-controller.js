@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($scope,task,authService,taskService) {
+.controller('TaskDetailCtrl', function($ionicLoading, $scope,task,authService,taskService) {
     $scope.task = task;
 
     authService.getCurrentUser().$promise.then(function(res) {
@@ -10,6 +10,7 @@ angular.module('buiiltApp')
     $(".task-content-detail").css('height', contentHeight + 'px');
 
     $scope.complete = function(task) {
+        $ionicLoading.show();
         task.completed = !task.completed;
         if (task.completed) {
             task.completedBy = $scope.currentUser._id;
@@ -20,8 +21,9 @@ angular.module('buiiltApp')
         }
         taskService.update({id : task._id, type : task.type},task).$promise
         .then(function(res) {
-          //$('.card-title').trigger('click');
-            // updateTasks();
+            $ionicLoading.hide();
+        }, function(err) {
+            $ionicLoading.hide();
         })
     };
 });

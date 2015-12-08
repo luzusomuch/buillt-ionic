@@ -1,7 +1,7 @@
 angular.module('buiiltApp').config(function($stateProvider) {
     $stateProvider
     .state('fileDetail', {
-        url: '/:fileId',
+        url: '/file/:fileId',
         templateUrl: 'js/modules/file/view.html',
         controller: 'FileDetailCtrl',
         authenticate : true,

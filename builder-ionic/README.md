@@ -38,3 +38,7 @@ run these following cmd:
     -cordova plugin add org.apache.cordova.statusbar
     -npm install -g gulp
     -npm install
+
+
+
+    Remove line 7635 in css/ionic.app.css

@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function(team, currentUser, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, peopleChatService, totalNotifications) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, peopleChatService, totalNotifications) {
     $scope.defaultSelectedPackage = 0;
     $scope.team = team;
     $scope.currentUser = currentUser;
@@ -1162,6 +1162,7 @@ angular.module('buiiltApp')
         $scope.peoplePackages = [];
         $scope.boardPackages = [];
         $scope.files = [];
+        $ionicLoading.show();
         peopleService.getInvitePeople({id: project._id}).$promise.then(function(res) {
             res.name = project.name;
             filterInPeoplePackage(res);
@@ -1203,6 +1204,7 @@ angular.module('buiiltApp')
             });
         });
         getAvailableUser(project);
+        $ionicLoading.hide();
     };
 
     $scope.goToThreadDetail = function(thread) {
@@ -1265,6 +1267,7 @@ angular.module('buiiltApp')
     $scope.createNewBoard = function(form) {
         $scope.submitted = true;
         if (form.$valid) {
+            $ionicLoading.show();
             boardService.createBoard({id: $scope.selectedProject._id}, $scope.board).$promise.then(function(res){
                 boardService.getBoards({id: $scope.selectedProject._id}).$promise.then(function(res) {
                     filterInBoardPackage(res);
@@ -1273,8 +1276,10 @@ angular.module('buiiltApp')
                 $scope.submitted = false;
                 $scope.board.name = null;
                 $scope.board.invitees = [];
+                $ionicLoading.hide();
             }, function(err){
                 console.log(err);
+                $ionicLoading.hide();
             });
         }
     };

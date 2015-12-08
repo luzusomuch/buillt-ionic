@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('PeopleChatCtrl', function(team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService,uploadService, $ionicLoading) {
+.controller('PeopleChatCtrl', function($ionicLoading, team, currentUser, builderPackage, peopleChat, $stateParams, boardService, peopleService, notificationService, projectService,fileService, builderPackageService,contractorService,materialPackageService,staffPackageService, designService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, socket, peopleChatService,uploadService, $ionicLoading) {
     $scope.currentUser = currentUser;
     $scope.team = team;
     $scope.peopleChat = peopleChat;
@@ -101,13 +101,16 @@ angular.module('buiiltApp')
     $scope.createNewTask = function(form) {
         $scope.submitted = true;
         if (form.$valid) {
+            $ionicLoading.show();
             $timeout(function(){
                 taskService.create({id: $scope.peopleChat.people, type: 'people'},$scope.task).$promise.then(function(res){
                     $scope.modalCreateTaskInPeople.hide();
                     $scope.submitted = false;
                     getTasksAndFiles($scope.peopleChat);
+                    $ionicLoading.hide();
                 }, function(res){
                     console.log(res);
+                    $ionicLoading.hide();
                 });
             },500);
         }
@@ -164,13 +167,15 @@ angular.module('buiiltApp')
     });
 
     $scope.sendMessage = function() {
+        $ionicLoading.show();
         peopleChatService.sendMessage({id: $scope.peopleChat._id}, $scope.message).$promise.then(function(res) {
             $scope.peopleChat = res;
             filterMessages($scope.peopleChat);
             $scope.message.text = null;
-            // getAllChatMessageNotificationByUserInPeople($scope.selectedChatPeople);
+            $ionicLoading.hide();
         }, function(err){
             console.log(err);
+            $ionicLoading.hide();
         });
     };
 
