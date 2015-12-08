@@ -3,7 +3,7 @@
         <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button class="button button-clear icon-right ion-ios-bell-outline" ng-click="goToNotificationPage()"></button>
+        <button class="button button-clear icon-right ion-ios-bell-outline" ng-click="openNotificationModal()"></button>
         <span>{{totalNotifications.length}}</span>
     </ion-nav-buttons>
     <div class="bar bar-subheader" style="">
@@ -443,6 +443,18 @@
             </form>
         </ion-content>
 		
+    </div>
+</script>
+
+<script id="modalNotification.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Notifications</h1>
+            <div class="buttons">
+                <button ng-click="closeModal('notification')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        <sp-notification></sp-notification>
     </div>
 </script>
 

@@ -3,6 +3,7 @@ angular.module('buiiltApp')
     $scope.defaultSelectedPackage = 0;
     $scope.team = team;
     $scope.currentUser = currentUser;
+
 //    $scope.totalNotifications = totalNotifications;
     $rootScope.$on('notification:read',function(event,notification) {
         _.remove($scope.totalNotifications,{_id : notification._id});
@@ -1455,13 +1456,16 @@ angular.module('buiiltApp')
     $scope.modalConfig = modal;
   });
 
-  $scope.showConfig = function() {
-    $scope.modalConfig.show();
+  $scope.openNotificationModal = function() {
+    $scope.modalNotification.show();
   };
 
-  $scope.goToNotificationPage = function() {
-    $state.go('notifications');
-  };
+    $ionicModal.fromTemplateUrl('modalNotification.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $rootScope.modalNotification = $scope.modalNotification = modal;
+    });
 
   //function hide modal
   $scope.closeModal = function(value) {
@@ -1497,6 +1501,9 @@ angular.module('buiiltApp')
         case 'board':
         $scope.modalCreateBoard.hide();
         break;
+
+        case 'notification':
+        $scope.modalNotification.hide();
 
       default:
       break;

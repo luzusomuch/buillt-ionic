@@ -9,6 +9,7 @@ angular.module('buiiltApp')
       },
       link : function(scope,element) {
         console.log(scope);
+        console.log(scope.currentUser);
         var params = {
           fromUser : function() {
             if (scope.notification.fromUser._id == scope.currentUser._id) {
@@ -105,6 +106,7 @@ angular.module('buiiltApp')
             .then(function(res) {
               $rootScope.$emit('notification:read',notification);
               $('#sidenav-overlay').trigger( "click" );
+              $rootScope.modalNotification.hide();
             })
         };
         authService.getCurrentUser().$promise.then(function(currentUser){
