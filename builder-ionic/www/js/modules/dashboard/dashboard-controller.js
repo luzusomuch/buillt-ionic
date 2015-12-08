@@ -3,7 +3,7 @@ angular.module('buiiltApp')
     $scope.defaultSelectedPackage = 0;
     $scope.team = team;
     $scope.currentUser = currentUser;
-    $scope.totalNotifications = totalNotifications;
+//    $scope.totalNotifications = totalNotifications;
     $rootScope.$on('notification:read',function(event,notification) {
         _.remove($scope.totalNotifications,{_id : notification._id});
         $scope.totalNotifications--;
@@ -1154,7 +1154,7 @@ angular.module('buiiltApp')
     notificationService.getTotalForIos().$promise
     .then(function(res) {
         if (res.length > 0) {
-            $scope.totalNotifications = res.length;
+            $scope.totalNotifications = res;
         }
     });
 
