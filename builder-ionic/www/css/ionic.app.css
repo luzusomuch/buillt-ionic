@@ -4118,7 +4118,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
 /* Allow parent element to have tabs-top */
 /* If you change this, change platform.scss as well */
 .tabs-top > .tabs, .tabs.tabs-top {
-  top: 0px;
+  top: 44px;
   padding-top: 0;
   background-position: bottom;
   border-top-width: 0;

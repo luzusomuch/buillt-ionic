@@ -8,8 +8,6 @@ angular.module('buiiltApp')
         currentUser: '='
       },
       link : function(scope,element) {
-        console.log(scope);
-        console.log(scope.currentUser);
         var params = {
           fromUser : function() {
             if (scope.notification.fromUser._id == scope.currentUser._id) {
@@ -41,63 +39,54 @@ angular.module('buiiltApp')
             }
           },
           element : '<span class="highlight">{{notification.element.name}}</span> ',
-          projectName : '<span class="highlight">{{notification.element.project.name}}</span> ',
-          taskDescription : '<span class="highlight">{{notification.element.description}}</span> ',
-          quote: '<span class="highlight">{{notification.element.quote}}</span> ',
-          fileName: '<span class="highlight">{{notification.element.file.title}}</span> ',
-          packageName: '<span class="highlight">{{notification.element.package.name}}</span> ',
-          place: '<span class="highlight">{{notification.element.uploadIn.name}}</span> ',
-          builderOrHomeOwner: '<span class="highlight">{{(notification.element.to.type == "homeOwner") ? "home owner" : "builder"}}</span> ',
           time : '<span class="highlight">{{notification.createdAt | date : "yyyy/MM/dd hh:mm a"}}</span>'
         };
         var serviceTaskArray = ['task-assign','task-reopened','task-completed'];
         var serviceThreadArray = ['thread-assign','thread-message'];
-        // var serviceDocumentArray = ['uploadNewDocumentVersion','uploadDocument'];
+        var fileArray = ["file-assign",'file-upload-reversion', 'document-upload-reversion'];
+        var teamArray = ['team-invite','team-accept','team-remove','team-leave','team-assign-leader', 'team-reject', 'join-team-request', "accept-team-request"];
         
         var getSref = function(notification) {
-          if (serviceTaskArray.indexOf(notification.type) != -1)  {
-            return 'taskDetail({id : notification.element.project._id, taskId : notification.element._id})';
+          if (notification.type === "invite-to-project") {
+            return 'dashboard';
           }
-          if (serviceThreadArray.indexOf(notification.type) != -1)  {
-            return 'threadDetail({id : notification.element.project._id, threadId : notification.element._id})';
-          }
-          if (notification.referenceTo == "people-chat") {
-            return 'peopleChat({id: notification.element.project._id, peopleChatId: notification.element._id})';
-          }
-          if (notification.referenceTo == "board-chat" || notification.type == "NewBoard") {
-            return 'boardDetail({boardId: notification.element._id})';
-          }
-          if (notification.type == "invite-people") {
+
+          if (teamArray.indexOf(notification.type) !== -1)  {
             return 'dashboard';
           }
         };
 
         var text;
-        if (scope.notification.type === 'task-assign') {
-          text = 'New task: ' + params.taskDescription;
+        if (scope.notification.type === "invite-to-project") {
+          text = params.fromUser() + " has invited you to join their project, " + params.time;
         }
-        if (scope.notification.type === 'task-reopened') {
-          text = 'Reopened task: ' + params.taskDescription;
+        if (scope.notification.type === 'team-invite') {
+          text = params.fromUser() + ' has invited you to join ' + params.team() + ' at ' + params.time;
         }
-        if (scope.notification.type === 'task-completed') {
-          text = 'Completed task: ' + params.taskDescription;
+        if (scope.notification.type === 'team-accept') {
+          text = params.fromUser() + ' has accepted to join ' + params.team() + ' at ' + params.time;
         }
-        if (scope.notification.referenceTo === 'people-chat') {
-          text = params.fromUser() + " mentioned you " + params.messageText();
+        if (scope.notification.type === 'team-remove') {
+          text = params.fromUser() + ' has removed ' + params.toUser() + ' from ' + params.team() + ' at ' + params.time;
         }
-        if (scope.notification.referenceTo === 'board-chat') {
-          text = params.fromUser() + " mentioned you " + params.messageText();
+        if (scope.notification.type === 'team-leave') {
+          text = params.fromUser() + ' has left the team ' + params.team() + ' at ' + params.time;
         }
-        if (scope.notification.type === 'invite-people') {
-          text = params.fromUser() + ' has added you to project ' + params.projectName;
+        if (scope.notification.type === 'team-assign-leader') {
+          text = params.fromUser() + ' has assigned ' + params.toUser() + ' as an administrator in '+ params.team() + ' at ' + params.time;
         }
-        if (scope.notification.type === 'NewBoard') {
-          text = params.fromUser() + ' has added you to board ' + params.element;
+        if (scope.notification.type === 'team-reject') {
+          text = params.fromUser() + ' has rejected ' + params.toUser() + ' your invitation at ' + params.time;
+        }
+        if (scope.notification.type === 'join-team-request') {
+            text = params.fromUser() + " has asked you to accept his join team request at " + params.time;
+        }
+        if (scope.notification.type === 'accept-team-request') {
+          text = params.fromUser() + " has accepted your request to join "+params.team()+" at " + params.time;
         }
 
         scope.notification.sref = getSref(scope.notification);
         element.html('<ion-item ui-sref="{{notification.sref}}" ui-sref-opts="{reload: true}" ng-click="click(notification)" style="padding: 0px"><div class="_notification"><p>' + text + '</p></div></ion-item>').show();
-        // element.html('<option value='+scope.notification._id+'>'+ text + '</option>').show();
         $compile(element.contents())(scope);
       },
       controller: function ($scope, $rootScope, taskService, authService, $state, notificationService) {
@@ -123,36 +112,23 @@ angular.module('buiiltApp')
       controller: [
         '$scope', '$rootScope','notificationService','socket','authService','$state',
         function ($scope, $rootScope, notificationService,socket,authService,$state) {
-          $scope.slimScrollOptions = {height: '390px'};
-          $scope.readMore = true;
-          $scope.currentUser = $rootScope.user;
-          $scope.currentState = $rootScope.currentState;
+          $scope.currentUser = $rootScope.currentUser;
           $scope.notifications = [];
           var limit = 60;
-                   
-                   
 
-          notificationService.getTotalForIos().$promise
-            .then(function(res) {
-              $scope.total = res.length;
-              $scope.notifications = res;
-              console.log(res);
-            });
-
-          $scope.loadMore = function() {
-            limit += 10;
-            getNotifications(limit);
-          };
+          notificationService.get().$promise.then(function(res) {
+            $scope.total = res.length;
+            $scope.notifications = res;
+          });
 
           $scope.markAllAsRead = function() {
-            notificationService.markAllAsRead().$promise
-              .then(function(res) {
-                $scope.notifications = [];
-                $scope.total = 0;
-                $rootScope.$emit('notification:allRead');
-                $('#slimScrollDiv').hide();
-                $('#sidenav-overlay').trigger( "click" );
-              })
+            notificationService.markAllAsRead().$promise.then(function(res) {
+              $scope.notifications = [];
+              $scope.total = 0;
+              $rootScope.$emit('notification:allRead');
+              $('#slimScrollDiv').hide();
+              $('#sidenav-overlay').trigger( "click" );
+            });
           };
 
           $scope.$watch('total',function(value) {

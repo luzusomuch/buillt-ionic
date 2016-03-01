@@ -15,17 +15,34 @@ angular.module('buiiltApp')
         $scope.totalNotifications--;
     });
 
-    notificationService.getTotalForIos().$promise
+    notificationService.get().$promise
     .then(function(res) {
         if (res.length > 0) {
             $scope.totalNotifications = res;
         }
     });
 
+    //start recieve socket from server
+    socket.emit("join", $scope.currentUser._id);
+
     socket.on("thread:new", function(data) {
         $scope.threads.push(data);
         $scope.threads = _.uniq($scope.threads, "_id");
     });
+
+    socket.on("file:new", function(data) {
+        $scope.files.push(data);
+    });
+
+    socket.on("document:new", function(data) {
+        $scope.documents.push(data);
+    });
+
+    socket.on("task:new", function(data) {
+        $scope.tasks.push(data);
+        $scope.tasks = _.uniq($scope.tasks, "_id");
+    });
+    //end recieve socket from server
 
     $scope.currentTab = 'thread';
     $scope.selectTabWithIndex = function(value){

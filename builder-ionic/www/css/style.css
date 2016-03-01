@@ -3,3 +3,7 @@
 
 [nav-bar-transition="android"] [nav-bar="active"] .bar, [nav-bar-transition="android"] [nav-bar="entering"] .bar {
     background: #2196f3 !important; }
+
+.tabs-top > .tabs, .tabs.tabs-top {
+    top: 0px !important;
+}
