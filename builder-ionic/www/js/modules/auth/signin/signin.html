@@ -3,10 +3,12 @@
 		<form method="post" name="form" ng-submit="signin(form)" novalidate>
 			<div class="list list-inset">
 				<label class="item item-input">
-					<input type="email" placeholder="Email Address" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}">
+					<span class="input-label">Email Address</span>
+					<input type="email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}">
 				</label>
 				<label class="item item-input">
-					<input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Password">
+					<span class="input-label">Password</span>
+					<input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}">
 				</label>
 				<div class="padding-top">
 					<p class="validate-message" ng-show="form.email.$error.required && submitted">Your Email Address is Required...</p>

@@ -18,8 +18,8 @@ angular.module('buiiltApp', [
   'angular-filepicker',
   'angularFileUpload'
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'http://buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'http://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
   $urlRouterProvider.otherwise('/signin');
@@ -56,123 +56,86 @@ angular.module('buiiltApp', [
   };
 })
 .run(function ($rootScope,notificationService,userService, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
-    // cfpLoadingBar.start();
-
-    $ionicPlatform.ready(function() {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs).
-      // The reason we default this to hidden is that native apps don't usually show an accessory bar, at
-      // least on iOS. It's a dead giveaway that an app is using a Web View. However, it's sometimes
-      // useful especially with forms, though we would prefer giving the user a little more room
-      // to interact with the app.
-      if (window.cordova && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        cordova.plugins.Keyboard.disableScroll(true);
-      }
-      // setTimeout(function() {
-        // alert(window.StatusBar);
-        if (window.StatusBar) {
-          StatusBar.hide();
-        }
-      // }, 500); 
-      // if (window.StatusBar) {
-        // Set the statusbar to use the default style, tweak this to
-        // remove the status bar on iOS or change it to use white instead of dark colors.
-        // return StatusBar.hide();
-      // }
-    });
-     
-    if (window.localStorage.getItem('token')) {
-      userService.get().$promise.then(function(currentUser){
-        $rootScope.currentUser = currentUser;  
-      });
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs).
+    // The reason we default this to hidden is that native apps don't usually show an accessory bar, at
+    // least on iOS. It's a dead giveaway that an app is using a Web View. However, it's sometimes
+    // useful especially with forms, though we would prefer giving the user a little more room
+    // to interact with the app.
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
     }
-
-    $rootScope.deviceWidth = $(window).width();
-    // $rootScope.currentProject = {};
-    $rootScope.currentProjectId = '';
-    $rootScope.authService = authService;
-    $rootScope.currentTeam = {};
-    $rootScope.hasHeader = true;
-    $rootScope.hasFooter = true;
-    $rootScope.currentResource = [];
-    $rootScope.hasResourceType = false;
-    $rootScope.hasSelectCurrentPackage = false;
-    $rootScope.currentPackage = {};
-
-    $rootScope.safeApply = function (fn) {
-      var phase = $rootScope.$$phase;
-      if (phase === '$apply' || phase === '$digest') {
-        if (fn && (typeof (fn) === 'function')) {
-          fn();
-        }
-      } else {
-        this.$apply(fn);
-      }
-    };
-
-    $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-      $rootScope.isShowAddIcon = false;
-      $rootScope.isInMessageTab = false;
-      $rootScope.isInTaskTab = false;
-      $rootScope.currentState = toState;
-      $rootScope.currentSelectResource = $rootScope.currentResource;
-      $rootScope.selectPackage = $rootScope.isCurrentSelectPackage;
-      if ($rootScope.currentProjectId != '') {
-        projectService.get({id: $rootScope.currentProjectId}).$promise.then(function(data){
-          $rootScope.selectProject = data;
-        });
-      } else {
-        $rootScope.selectProject = {};
-      }
-      authService.isLoggedInAsync(function (loggedIn) {
-        if (loggedIn) {
-          
-        }
-        if (toState.authenticate && !loggedIn) {
-          $location.path('/#/signin');
-          // $state.go('signin');
-        } else if (!toState.authenticate && loggedIn) {
-          $location.path('/#/dashboard');
-          // $state.go('dashboard');
-        }
-      });
-      if (toState.noHeader) {
-        $rootScope.hasHeader = false;
-      }
-
-      if (toState.noFooter) {
-        $rootScope.hasFooter = false;
-      }
-
-      if (toState.hasCurrentProject) {
-        
-        if (!$rootScope.currentProject || toParams.id !== $rootScope.currentProject._id) {
-          projectService.get({id: toParams.id}).$promise
-            .then(function (data) {
-              if (data._id) {
-                $rootScope.currentProject = data;
-
-              } else {
-                $rootScope.currentProject = null;
-                $state.go('dashboard');
-              }
-            });
-        }
-
-      } else {
-        $rootScope.currentProject = { };
-
-      }
-      $rootScope.hasCurrentProject=toState.hasCurrentProject;
-    });
-
-    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
-                   
-      $rootScope.previousState = from;
-      $rootScope.previousParams = fromParams;
-    });
-
-    $rootScope.overlay = false;
-
+    if (window.StatusBar) {
+      StatusBar.hide();
+    }
   });
+   
+  if (window.localStorage.getItem('token')) {
+    userService.get().$promise.then(function(currentUser){
+      $rootScope.currentUser = currentUser;  
+    });
+  }
+
+  $rootScope.currentProjectId = '';
+  $rootScope.authService = authService;
+
+  $rootScope.safeApply = function (fn) {
+    var phase = $rootScope.$$phase;
+    if (phase === '$apply' || phase === '$digest') {
+      if (fn && (typeof (fn) === 'function')) {
+        fn();
+      }
+    } else {
+      this.$apply(fn);
+    }
+  };
+
+  $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
+    $rootScope.isShowAddIcon = false;
+    $rootScope.isInMessageTab = false;
+    $rootScope.isInTaskTab = false;
+    $rootScope.currentState = toState;
+    authService.isLoggedInAsync(function (loggedIn) {
+      if (loggedIn) {
+        
+      }
+      if (toState.authenticate && !loggedIn) {
+        $location.path('/#/signin');
+      } else if (!toState.authenticate && loggedIn) {
+        $location.path('/#/dashboard');
+      }
+    });
+
+    if (toState.hasCurrentProject) {
+      
+      if (!$rootScope.currentProject || toParams.id !== $rootScope.currentProject._id) {
+        projectService.get({id: toParams.id}).$promise
+          .then(function (data) {
+            if (data._id) {
+              $rootScope.currentProject = data;
+
+            } else {
+              $rootScope.currentProject = null;
+              $state.go('dashboard');
+            }
+          });
+      }
+
+    } else {
+      $rootScope.currentProject = { };
+
+    }
+    $rootScope.hasCurrentProject=toState.hasCurrentProject;
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
+                 
+    $rootScope.previousState = from;
+    $rootScope.previousParams = fromParams;
+  });
+
+  $rootScope.overlay = false;
+
+});
