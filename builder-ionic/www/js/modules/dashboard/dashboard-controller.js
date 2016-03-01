@@ -1,5 +1,6 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,fileService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, totalNotifications) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,fileService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, totalNotifications, socket) {
+    $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
     $scope.projects = [];
@@ -21,6 +22,11 @@ angular.module('buiiltApp')
         }
     });
 
+    socket.on("thread:new", function(data) {
+        $scope.threads.push(data);
+        $scope.threads = _.uniq($scope.threads, "_id");
+    });
+
     $scope.currentTab = 'thread';
     $scope.selectTabWithIndex = function(value){
         $ionicTabsDelegate.select(value);
@@ -36,10 +42,12 @@ angular.module('buiiltApp')
     };
 
     function findAllByProject(project) {
-        $scope.files = [];
         $ionicLoading.show();
-        fileService.getFileInProject({id: project._id}).$promise.then(function(res) {
+        fileService.getProjectFiles({id: project._id, type: "file"}).$promise.then(function(res) {
             $scope.files = res;
+        });
+        fileService.getProjectFiles({id: project._id, type: "document"}).$promise.then(function(res) {
+            $scope.documents = res;
         });
         taskService.getProjectTask({id : project._id}).$promise.then(function(tasks) {
             $scope.tasks = tasks;
@@ -95,6 +103,64 @@ angular.module('buiiltApp')
         $scope.modalProject.show();
     };
 
+    $scope.openCreateThreadOrTaskModal = function() {
+        if ($rootScope.selectedProject) {
+            peopleService.getInvitePeople({id: $rootScope.selectedProject._id}).$promise.then(function(people) {
+                $scope.projectMembers = [];
+                _.each($rootScope.roles, function(role) {
+                    _.each(people[role], function(tender){
+                        if (tender.hasSelect) {
+                            var isLeader = (_.findIndex(tender.tenderers, function(tenderer) {
+                                if (tenderer._id) {
+                                    return tenderer._id._id.toString() === $rootScope.currentUser._id.toString();
+                                }
+                            }) !== -1) ? true : false;
+                            if (!isLeader) {
+                                _.each(tender.tenderers, function(tenderer) {
+                                    var memberIndex = _.findIndex(tenderer.teamMember, function(member) {
+                                        return member._id.toString() === $rootScope.currentUser._id.toString();
+                                    });
+                                    if (memberIndex !== -1) {
+                                        _.each(tenderer.teamMember, function(member) {
+                                            member.select = false;
+                                            $scope.projectMembers.push(member);
+                                        });
+                                    }
+                                });
+                                if (tender.tenderers[0]._id) {
+                                    tender.tenderers[0]._id.select = false;
+                                    $scope.projectMembers.push(tender.tenderers[0]._id);
+                                } else {
+                                    $scope.projectMembers.push({email: tender.tenderers[0].email, select: false});
+                                }
+                            } else {
+                                $scope.projectMembers.push(tender.tenderers[0]._id);
+                                _.each(tender.tenderers, function(tenderer) {
+                                    if (tenderer._id._id.toString() === $rootScope.currentUser._id.toString()) {
+                                        _.each(tenderer.teamMember, function(member) {
+                                            member.select = false;
+                                            $scope.projectMembers.push(member);
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+                if ($scope.currentTab==="thread") {
+                    $scope.modalCreateThread.show();
+                } else if ($scope.currentTab==="task") {
+                    $scope.modalCreateTask.show();
+                }
+            });
+        }
+        if ($scope.currentTab==="thread") {
+            $scope.modalCreateThread.show();
+        } else if ($scope.currentTab==="task") {
+            $scope.modalCreateTask.show();
+        }
+    };
+
     //create new task
     $ionicModal.fromTemplateUrl('modalCreateTask.html', {
         scope: $scope,
@@ -114,17 +180,22 @@ angular.module('buiiltApp')
     });
 
     $scope.task = {
-        assignees : []
+        members : []
     };
 
-    $scope.assign = function(staff,index) {
-        if (staff.isSelect == false) {
-            staff.isSelect = true;
-            $scope.task.assignees.push(staff);
-        }
-        else if (staff.isSelect == true) {
-            staff.isSelect = false;
-            _.remove($scope.task.assignees, {_id: staff._id});
+    $scope.assign = function(member, index, type) {
+        member.isSelect = !member.isSelect;
+        var memberIndex = _.findIndex($scope[type].members, function(item) {
+            if (member._id && item._id) {
+                return item._id.toString()===member._id.toString();
+            } else {
+                return item.email===member.email;
+            }
+        });
+        if (memberIndex===-1) {
+            $scope[type].members.push(member);
+        } else {
+            $scope[type].members.splice(memberIndex, 1);
         }
     };
 
@@ -132,25 +203,26 @@ angular.module('buiiltApp')
     $scope.createNewTask = function(form) {
         $scope.submitted = true;
         if (form.$valid) {
-            var packageType = '';
-            if ($scope.currentPackage.type == 'BuilderPackage') {
-                packageType = 'builder';
-            } else if ($scope.currentPackage.type == 'staffPackage') {
-                packageType = 'staff';
-            } else {
-                packageType = $scope.currentPackage.type;
+            if ($scope.task.members.length===0) {
+                $scope.error.task="Please Select At Least 1 Member";
+                return;
+            } else if (!$scope.task.dateEnd) {
+                $scope.error.task="Please Select Due Date";
+                return;
             }
-            taskService.create({id : $scope.currentPackage._id, type : packageType},$scope.task)
+            $scope.task.type = "task-project";
+            taskService.create({id : $rootScope.selectedProject._id},$scope.task)
             .$promise.then(function(res) {
-                $rootScope.$broadcast('inComingNewTask', res);
                 $scope.modalCreateTask.hide();
-                _.each($scope.task.assignees, function(assignee){
-                    assignee.isSelect = false;
-                }); 
-                $scope.task.name = null;
-                $scope.task.dateEnd = null;
+                $scope.task = {members:[]};
+                $scope.error = {};
                 $scope.submitted = false;
+                $scope.tasks.push(res);
+            }, function(err) {
+                $scope.error.task = "Somethings went wrong";
             });
+        } else {
+            $scope.error.task = "Please Check Your Input";
         }
     };
 
@@ -163,38 +235,30 @@ angular.module('buiiltApp')
     });
 
     $scope.thread = {
-        users : []
-    };
-
-    $scope.assignInThread = function(user,index) {
-        if (user.isSelect == false) {
-            user.isSelect = true;
-            $scope.thread.users.push(user);
-        }
-        else if (user.isSelect == true) {
-            user.isSelect = false;
-            _.remove($scope.thread.users, {_id: user._id});
-        }
+        members : []
     };
 
     $scope.createNewThread = function(form) {
         $scope.submitted = true;
         if (form.$valid && $scope.submitted) {
-            var packageType = '';
-            if ($scope.currentPackage.type == 'BuilderPackage') {
-                packageType = 'builder';
-            } else if ($scope.currentPackage.type == 'staffPackage') {
-                packageType = 'staff';
+            if ($scope.thread.members.length === 0) {
+                $scope.error.thread = "Please Select At Least 1 Members";
+                return;
             } else {
-                packageType = $scope.currentPackage.type;
+                $scope.thread.type = "project-message";
+                messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
+                .$promise.then(function (res) {
+                    $scope.modalCreateThread.hide();
+                    $scope.submitted = false;
+                    $scope.thread = {members: []};
+                    $scope.error = {};
+                    $scope.threads.push(res);
+                }, function(err) {
+                    $scope.error.thread = "Error When Create";
+                });
             }
-            messageService.create({id: $scope.currentPackage._id, type: packageType}, $scope.thread)
-            .$promise.then(function (res) {
-                $rootScope.$broadcast('inComingNewThread', res);
-                $scope.modalCreateThread.hide();
-                $scope.thread.name = null;
-                $scope.submitted = false;
-            });
+        } else {
+            $scope.error.thread = "Please Check Your Input Again";
         }
     };
 

@@ -78,8 +78,7 @@ angular.module('buiiltApp', [
     });
   }
 
-  $rootScope.currentProjectId = '';
-  $rootScope.authService = authService;
+  $rootScope.roles = ["builders", "clients", "architects", "subcontractors", "consultants"];
 
   $rootScope.safeApply = function (fn) {
     var phase = $rootScope.$$phase;
@@ -93,13 +92,9 @@ angular.module('buiiltApp', [
   };
 
   $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-    $rootScope.isShowAddIcon = false;
-    $rootScope.isInMessageTab = false;
-    $rootScope.isInTaskTab = false;
     $rootScope.currentState = toState;
     authService.isLoggedInAsync(function (loggedIn) {
       if (loggedIn) {
-        
       }
       if (toState.authenticate && !loggedIn) {
         $location.path('/#/signin');
@@ -107,27 +102,6 @@ angular.module('buiiltApp', [
         $location.path('/#/dashboard');
       }
     });
-
-    if (toState.hasCurrentProject) {
-      
-      if (!$rootScope.currentProject || toParams.id !== $rootScope.currentProject._id) {
-        projectService.get({id: toParams.id}).$promise
-          .then(function (data) {
-            if (data._id) {
-              $rootScope.currentProject = data;
-
-            } else {
-              $rootScope.currentProject = null;
-              $state.go('dashboard');
-            }
-          });
-      }
-
-    } else {
-      $rootScope.currentProject = { };
-
-    }
-    $rootScope.hasCurrentProject=toState.hasCurrentProject;
   });
 
   $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){

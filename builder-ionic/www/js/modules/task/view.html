@@ -12,8 +12,8 @@
                     <li class="item item-divider">Task Assignees:</li>
 					<li class="item">
                         <ul style="margin-left: 20px;">
-                            <li ng-repeat="assignee in task.assignees" ng-if="assignee.firstName" style="margin-top: 10px;">{{assignee.firstName}} {{assignee.lastName}}</li>
-                            <li ng-repeat="assignee in task.assignees" ng-if="!assignee.firstName" style="margin-top: 10px;">{{assignee.email}} </li>
+                            <li ng-repeat="member in task.members" style="margin-top: 10px;">{{member.name}}</li>
+                            <li ng-repeat="email in task.notMembers" style="margin-top: 10px;">{{email}} </li>
                         </ul>
                     </li>
                 </ul>

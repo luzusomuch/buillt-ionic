@@ -5,10 +5,9 @@ angular.module('buiiltApp').config(function($stateProvider) {
         templateUrl: 'js/modules/thread/view.html',
         controller: 'ThreadDetailCtrl',
         authenticate : true,
-        hasCurrentProject : true,
         resolve: {
             thread: function(messageService, $stateParams) {
-                return messageService.getById({id:$stateParams.threadId}).$promise;
+                return messageService.get({id:$stateParams.threadId}).$promise;
             }
         }
     })   
