@@ -14,48 +14,53 @@
     </div>
 
     <ion-content class="has-subheader">
-        <ion-tabs class="tabs-icon-only tabs-light">
+        <ion-nav-view ng-show="currentTab=='thread'" name="Messages">
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
+                    {{thread.name}}
+                </ion-item>
+            </div>
+        </ion-nav-view>
+
+        <ion-nav-view ng-show="currentTab=='task'" name="Tasks">
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
+                    {{task.description}}
+                </ion-item>
+            </div>
+        </ion-nav-view>
+
+        <ion-nav-view ng-show="currentTab=='file'" name="Files">
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='file'">
+                    {{file.name}}
+                </ion-item>
+            </div>
+        </ion-nav-view>
+
+        <ion-nav-view ng-show="currentTab=='document'" name="Files">
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="file in documents" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='document'">
+                    {{file.name}}
+                </ion-item>
+            </div>
+        </ion-nav-view>
+	</ion-content>
+    <ion-footer-bar>
+        <ion-tabs class="tabs-icon-only tabs-stable">
             <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatboxes-outline">
-                <ion-nav-view name="Messages" style="margin-top: 40px;">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
-                            {{thread.name}}
-                        </ion-item>
-                    </div>
-                </ion-nav-view>
             </ion-tab>
-            
+
             <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark-outline">
-                <ion-nav-view name="Tasks" style="margin-top: 40px;">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
-                            {{task.description}}
-                        </ion-item>
-                    </div>
-                </ion-nav-view>
             </ion-tab>
-            
+
             <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-ios-folder-outline">
-                <ion-nav-view name="Files" style="margin-top: 40px;">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='file'">
-                            {{file.name}}
-                        </ion-item>
-                    </div>
-                </ion-nav-view>
             </ion-tab>
+
             <ion-tab ng-click="selectTabWithIndex(3)" title="Documents" icon="ion-ios-book-outline">
-                <ion-nav-view name="Files" style="margin-top: 40px;">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="file in documents" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='document'">
-                            {{file.name}}
-                        </ion-item>
-                    </div>
-                </ion-nav-view>
             </ion-tab>
         </ion-tabs>
-	
-	</ion-content>
+    </ion-footer-bar>
 </ion-view>
 
 <script id="modalProject.html" type="text/ng-template">

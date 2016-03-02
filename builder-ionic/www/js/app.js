@@ -24,7 +24,7 @@ angular.module('buiiltApp', [
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
   $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
-  $ionicConfigProvider.tabs.position('top');
+  // $ionicConfigProvider.tabs.position('bottom');
   filepickerProvider.setKey('AM6Wn3DzwRimryydBnsj7z');
   // $ionicConfigProvider.views.maxCache(0);
   // cfpLoadingBarProvider.includeSpinner = true;
