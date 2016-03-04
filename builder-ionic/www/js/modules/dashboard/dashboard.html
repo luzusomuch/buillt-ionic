@@ -92,14 +92,14 @@
             <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
 
                 <div class="item item-input item-floating-label">
-					<span class="input-label">Message Name</span>
-                    <input placeholder="Message Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message name is required...</p>
+					<span class="input-label">Subject Name</span>
+                    <input placeholder="Subject Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message subject is required...</p>
                 </div>
 
                 <div class="available-assign">
 					
-					<h5 style="margin-left: 15px; margin-top: 25px">Send this message to:</h5>
+					<h5 style="margin-left: 15px; margin-top: 25px">Include the following people:</h5>
 					
 					<ion-list>
 						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="user in projectMembers track by $index" ng-click="assign(user, $index, 'thread')">{{(user._id) ? user.name : user.email}}</ion-checkbox>
@@ -126,7 +126,7 @@
         </ion-content>
 		
 		<div class="bar bar-footer bar-calm">
-		  <div class="title">Create Message</div>
+		  <div class="title">Create Subject</div>
 		</div>
 		
     </div>

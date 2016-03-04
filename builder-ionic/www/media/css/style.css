@@ -14,22 +14,13 @@
 	text-transform: uppercase;
 }
 
-.rememberMeCheck {
-	 display:inline-block;
-	 color: #757575;
-}
-
 .bar-footer {
   overflow: visible !important;
 }
 
-.bar-footer label {
-	background-color: white
-}
 .bar-footer textarea {
   resize: none;
   height: 25px;
-  width: 100%; 
 }
 
 /* fixes an ios bug bear */

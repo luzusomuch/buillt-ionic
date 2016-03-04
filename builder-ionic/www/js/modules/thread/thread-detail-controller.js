@@ -60,6 +60,16 @@ angular.module('buiiltApp')
             });
         }
     };
+	
+    //send a message
+    $ionicModal.fromTemplateUrl('sendMessageDialog.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.sendMessageDialog = modal;
+    });
+	
+	
 
     // $scope.enterMessage = function ($event) {
     //     if ($event.keyCode === 13) {
