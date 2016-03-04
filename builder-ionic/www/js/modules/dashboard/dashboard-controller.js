@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,fileService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, taskService, messageService, totalNotifications, socket) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,fileService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -91,11 +91,13 @@ angular.module('buiiltApp')
     $scope.headingName = "Project";
 
     $scope.selectProject = function(project) {
+		$scope.projectPopover.hide();
         $scope.headingName = " ";
         $rootScope.selectedProject = project;
         findAllByProject(project);
         $scope.modalProject.hide();
         $rootScope.$broadcast('getProject', project._id);
+		$scope.projectPopover.remove();
     };
 
     if ($rootScope.selectedProject) {
@@ -108,16 +110,15 @@ angular.module('buiiltApp')
     $scope.toggleLeft = function() {
         $ionicSideMenuDelegate.toggleLeft();
     };
+	
+	$ionicPopover.fromTemplateUrl('projectPopover.html', {
+	    scope: $scope
+	  }).then(function(popover) {
+	    $scope.projectPopover = popover;
+	});
 
-    $ionicModal.fromTemplateUrl('modalProject.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal){
-        $scope.modalProject = modal;
-    });
-
-    $scope.chooseProject = function(){
-        $scope.modalProject.show();
+    $scope.chooseProject = function($event){
+		$scope.projectPopover.show($event);
     };
 
     $scope.openCreateThreadOrTaskModal = function() {
@@ -239,7 +240,7 @@ angular.module('buiiltApp')
                 $scope.error.task = "Somethings went wrong";
             });
         } else {
-            $scope.error.task = "Please Check Your Input";
+            $scope.error.task = "Please provide a description, due date and at least one assignee..";
         }
     };
 
@@ -275,7 +276,7 @@ angular.module('buiiltApp')
                 });
             }
         } else {
-            $scope.error.thread = "Please Check Your Input Again";
+            $scope.error.thread = "Please provide a name and at least one recipient..";
         }
     };
 

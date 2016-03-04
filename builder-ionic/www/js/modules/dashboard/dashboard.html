@@ -1,190 +1,204 @@
 <ion-view title="buiilt">
+	
+	<!-- Show config dialog. -->
     <ion-nav-buttons side="left">
-        <button class="button button-clear icon-right ion-ios-gear-outline" ng-click="showConfig()"></button>
+        <button class="button button-clear icon-right ion-ios-person-outline" ng-click="showConfig()" style="margin-left: 10px;"></button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-        <button ng-show="currentTab=='thread' || currentTab=='task'" ng-click="openCreateThreadOrTaskModal()" class="button button-clear icon-right ion-plus-round" style="margin-right: 10px;"></button>
-        <button class="button button-clear icon-right ion-ios-bell-outline" ng-click="openNotificationModal()"></button>
-        <span>{{totalNotifications.length}}</span>
+	
+	<!-- Add message thread or task. -->
+    <ion-nav-buttons side="right" >
+        <button ng-show="currentTab=='thread' || currentTab=='task'" ng-hide="selectedProject.name == null" ng-click="openCreateThreadOrTaskModal()" class="button button-clear icon-right ion-ios-plus-empty" style="margin-right: 10px;"></button> 
     </ion-nav-buttons>
+	
+	<!-- Subheader bar with project name - show select project dialog -->
     <div class="bar bar-subheader" style="">
         <div class="button-bar">
-            <a class="button button-clear button-calm" style="font-size: 12px; font-weight: 500" ng-click="chooseProject()">{{(selectedProject.name) ? selectedProject.name : 'PROJECT'}}</a>
+            <a class="button button-clear button-calm" style="font-size: 12px; font-weight: 500" ng-click="chooseProject($event)">{{(selectedProject.name) ? selectedProject.name : 'PROJECT'}}</a>
         </div>
     </div>
 
+	<!-- Main content view. -->
     <ion-content class="has-subheader">
-        <ion-nav-view ng-show="currentTab=='thread'" name="Messages">
-            <div class="list">
-                <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
-                    {{thread.name}}
-                </ion-item>
-            </div>
-        </ion-nav-view>
-
-        <ion-nav-view ng-show="currentTab=='task'" name="Tasks">
-            <div class="list">
-                <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
-                    {{task.description}}
-                </ion-item>
-            </div>
-        </ion-nav-view>
-
-        <ion-nav-view ng-show="currentTab=='file'" name="Files">
-            <div class="list">
-                <ion-item class="item-text-wrap" ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='file'">
-                    {{file.name}}
-                </ion-item>
-            </div>
-        </ion-nav-view>
-
-        <ion-nav-view ng-show="currentTab=='document'" name="Files">
-            <div class="list">
-                <ion-item class="item-text-wrap" ng-repeat="file in documents" ui-sref="fileDetail({fileId: file._id})" ng-show="file.element.type==='document'">
-                    {{file.name}}
-                </ion-item>
-            </div>
-        </ion-nav-view>
+	
+		<div class="row" ng-show="selectedProject.name == null">
+			<h5 style="margin-top: 30vh" class="col text-center">Select a project by clicking "Project" above...</h5>
+		</div>
+		
+		<!-- When messages tab is selected. -->
+	    <ion-nav-view ng-show="currentTab=='thread'" name="Messages">
+	        <div class="list">
+	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
+	                {{thread.name}}
+	            </ion-item>
+	        </div>
+	    </ion-nav-view>
+	
+		<!-- When tasks tab is selected. -->
+	    <ion-nav-view ng-show="currentTab=='task'" name="Tasks">
+		
+	        <div class="list">
+	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
+	                {{task.description}}
+	            </ion-item>
+	        </div>
+	    </ion-nav-view>
+	
+		
+		
 	</ion-content>
+	
+	<!-- Tabs bar at bottom of list view screen. -->
     <ion-footer-bar>
-        <ion-tabs class="tabs-icon-only tabs-stable">
-            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatboxes-outline">
-            </ion-tab>
-
-            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark-outline">
-            </ion-tab>
-
-            <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-ios-folder-outline">
-            </ion-tab>
-
-            <ion-tab ng-click="selectTabWithIndex(3)" title="Documents" icon="ion-ios-book-outline">
-            </ion-tab>
+        <ion-tabs class="tabs-icon-top tabs-calm" style="margin-left:-5px">
+		
+			<!-- Tab for messages. -->
+            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatbubble"></ion-tab>
+			<!-- Tab for tasks. -->
+            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark"></ion-tab>
+			
         </ion-tabs>
     </ion-footer-bar>
+		
 </ion-view>
 
-<script id="modalProject.html" type="text/ng-template">
-    <div class="modal">
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">Select a Project...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('Project')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-        <ion-content class="has-header">
+<script id="projectPopover.html" type="text/ng-template">
+	<ion-popover-view>
+		<ion-header-bar>
+			<h1 class="title">Select a Project...</h1>
+		</ion-header-bar>
+		<ion-content>
             <ion-list ng-repeat="project in projects | unique:project">
                 <ion-item ng-click="selectProject(project)">{{project.name}}</ion-item>
             </ion-list>
-        </ion-content>
-    </div>
+		</ion-content>
+	</ion-popover-view>
 </script>
 
-<script id="modalCreateTask.html" type="text/ng-template">
-    <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Create a New Task...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-        <ion-content padding="true" class="has-header">
-            <div ng-show="!selectedProject._id">Please select a project first!!</div>
-            <form ng-show="selectedProject._id" style="padding:10px;" id="createTaskForm" name="form" class="col s12" ng-submit="createNewTask(form)" novalidate>
-
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="item item-input">
-                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="80"
-                       ng-class="{'invalid' : form.description.$invalid && submitted}" ng-disabled="isShow" required>
-                    <p class="validate-message" ng-show="form.description.$error.required && submitted">Task description is required</p>
-                </div>
-
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="item item-input">
-                    <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
-                    <input ng-if="isShowInputDate" type="date" placeholder="Due Date"
-                       name="created"
-                       id="dueDate"
-                       ng-model="task.dateEnd"
-                       format="mm/dd/yyyy"
-                       ng-disabled="isShow"
-                    />
-                </div>
-
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="available-assign"  ng-if="!isShow" style="padding: 15px 0px;">
-                    <p style="font-size: 16px">Assignees:</p>
-                    <ul class="list">
-                        <li class="item item-checkbox" ng-repeat="staff in projectMembers track by $index">
-                            <div class="checkbox">
-                                <input type="checkbox" ng-click="assign(staff, $index, 'task')">
-                            </div>
-                            {{(staff._id) ? staff.name : staff.email}}
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="spacer" style="width: 300px; height: 44px;"></div>
-
-                <div class="row">
-                    <p ng-show="error.task">{{error.task}}</p>
-                </div>
-
-                <div class="row" style="">
-                    <button class="button button-positive button-outline button-block" type="submit" name="action">Add Task
-                    </button>
-                </div>
-            </form>
-        </ion-content>
-    </div>
-</script>
-
+<!-- Create message thread dialog. -->
 <script id="modalCreateThread.html" type="text/ng-template">
     <div class="modal">
+		
+		<!-- Header -->
         <ion-header-bar class="bar-light">
-            <h1 class="title">Create a New Thread...</h1>
+            <h1 class="title">Create a New Message...</h1>
             <div class="buttons">
                 <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
+		
+		<!-- Thread Name and Assignees -->
         <ion-content padding="true" class="has-header">
-            <div ng-show="!selectedProject._id">Please select a project first!!</div>
-            <form ng-show="selectedProject._id" style="padding:10px;" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
+			
+            <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
 
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="item item-input">
+                <div class="item item-input item-floating-label">
+					<span class="input-label">Message Name</span>
                     <input placeholder="Message Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" ng-show="form.name.$error.required && submitted">Thread name is required</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message name is required...</p>
                 </div>
 
-                <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-
-                <div class="available-assign" >
-                    <p style="">Recipients:</p>
-                    <ul class="list">
+                <div class="available-assign">
+					
+					<h5 style="margin-left: 15px; margin-top: 25px">Send this message to:</h5>
+					
+					<ion-list>
+						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="user in projectMembers track by $index" ng-click="assign(user, $index, 'thread')">{{(user._id) ? user.name : user.email}}</ion-checkbox>
+					</ion-list>
+					
+                    <!-- <ul class="list">
                         <li class="item item-checkbox" ng-repeat="user in projectMembers track by $index">
                             <div class="checkbox">
                                 <input type="checkbox" ng-click="assign(user, $index, 'thread')">
                             </div>
                             {{(user._id) ? user.name : user.email}}
                         </li>
-                    </ul>
+                    </ul> -->
+					
                 </div>
-                <div class="spacer" style="width: 300px; height: 50px;"></div>
-                <div class="row">
-                    <p ng-show="error.thread">{{error.thread}}</p>
-                </div>
+				
+	            <h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-show="error.thread">{{error.thread}}</h5>
+                
                 <div class="row" style="">
-                    <button class="button button-positive button-outline button-block" type="submit">Add message</button>
+                    <button class="button button-calm button-block" type="submit">Create Message</button>
                 </div>
+				
             </form>
         </ion-content>
+		
+		<div class="bar bar-footer bar-calm">
+		  <div class="title">Create Message</div>
+		</div>
+		
     </div>
 </script>
 
+
+<!-- Create task dialog. -->
+<script id="modalCreateTask.html" type="text/ng-template">
+    <div class="modal">
+		
+		<!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Create a New Task...</h1>
+            <div class="buttons">
+                <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+		
+		<!-- Description and Assignee -->
+        <ion-content class="has-header">
+		
+            <form ng-show="selectedProject._id" id="createTaskForm" name="form" ng-submit="createNewTask(form)" novalidate>
+				
+				<!-- Task Description -->
+                <div class="item item-input item-floating-label">
+					<span class="input-label">Task Description</span>
+                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" ng-disabled="isShow" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
+                </div>
+
+				<!-- Task Due Date -->
+                <div class="item item-input">
+                    <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
+                    <input ng-if="isShowInputDate" type="date" placeholder="Due Date" name="created" id="dueDate" ng-model="task.dateEnd" format="mm/dd/yyyy" ng-disabled="isShow" />
+                </div>
+				
+				<!-- Task Assignees -->
+                <div class="available-assign"  ng-if="!isShow">
+					<h5 style="margin-left: 15px; margin-top: 25px">Assign this task to:</h5>
+					
+					<ion-list>
+						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="staff in projectMembers track by $index" ng-click="assign(staff, $index, 'task')">{{(staff._id) ? staff.name : staff.email}}</ion-checkbox>
+					</ion-list>
+					
+                    <!-- <ul class="list">
+                        <li class="item item-checkbox" ng-repeat="staff in projectMembers track by $index">
+                            <div class="checkbox">
+                                <input type="checkbox" ng-click="assign(staff, $index, 'task')">
+                            </div>
+                            {{(staff._id) ? staff.name : staff.email}}
+                        </li>
+                    </ul> -->
+						
+                </div>
+
+				<h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-show="error.thread">{{error.task}}</h5>
+
+                <div class="row">
+                    <button class="button button-calm button-block" type="submit" name="action">Add Task</button>
+                </div>
+				
+            </form>
+        </ion-content>
+		
+		<div class="bar bar-footer bar-calm">
+		  <div class="title">Create Task</div>
+		</div>
+		
+    </div>
+</script>
+
+<!-- Account Dialog -->
 <script id="modalConfig.html" type="text/ng-template">
     <div class="modal">
         <ion-header-bar class="bar-light">
@@ -196,59 +210,6 @@
         <ion-content class="has-header">
             <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-calm button-clear button-block ">Sign Out</a>
         </ion-content>
-    </div>
-</script>
-
-<script id="modalCreateBoard.html" type="text/ng-template">
-    <div class="modal">
-		
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">Create New Board...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('board')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-		
-        <ion-content class="has-header padding">
-            <form id="createBoardForm" name="form" novalidate ng-submit="createNewBoard(form)">
-
-                <div class="item item-input">
-                    <input placeholder="Board Name" id="board-name" type="text" ng-model="board.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" ng-show="form.name.$error.required && submitted">Board name is required</p>
-                </div>
-				
-				<div class="padding-horizontal padding-top">
-					<p>Select people to add to this board:</p>
-				</div>
-
-                <div class="available-assign">
-                    <ul class="list">
-                        <li class="item item-checkbox" ng-repeat="user in newBoardPeople track by $index">
-                            <label class="checkbox checkbox-calm">
-                                <input type="checkbox" ng-click="assignToNewBoard(user, $index)">
-                            </label>
-                            {{user.name}}
-                        </li>
-                    </ul>
-                </div>
-				
-				<button class="button button-calm button-block" type="submit">Add Board</button>
-					
-            </form>
-        </ion-content>
-		
-    </div>
-</script>
-
-<script id="modalNotification.html" type="text/ng-template">
-    <div class="modal">
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">Notifications</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('notification')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-        <sp-notification></sp-notification>
     </div>
 </script>
 

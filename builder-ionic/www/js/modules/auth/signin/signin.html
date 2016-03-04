@@ -1,34 +1,34 @@
-<ion-view title="Login">
+<ion-view title="Sign In">
 	<ion-content class="has-header">
 		<form method="post" name="form" ng-submit="signin(form)" novalidate>
-			<div class="list list-inset">
-				<label class="item item-input">
-					<span class="input-label">Email Address</span>
-					<input type="email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}">
-				</label>
-				<label class="item item-input">
-					<span class="input-label">Password</span>
-					<input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}">
-				</label>
-				<div class="padding-top">
-					<p class="validate-message" ng-show="form.email.$error.required && submitted">Your Email Address is Required...</p>
-					<p class="validate-message" ng-show="form.password.$error.required && submitted">Your Password is Required...</p>
-				</div>
-			</div>
 			
-			<div class="checkbox checkbox-calm padding-horizontal">
-				<input type="checkbox" ng-model="rememberMe" style="display:inline-block;vertical-align: middle">
-				<p class="rememberMeCheck">Keep Me Signed In</p>
-			</div>
+            <div class="item item-input item-floating-label">
+				<span class="input-label">Email Address</span>
+                <input type="email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}" placeholder="Email Address">
+                <p class="validate-message" style="color:#F44336" ng-show="form.email.$error.required && submitted">Your email address is required...</p>
+            </div>
 			
-			<label class="item item-input" ng-if="error">
-				<p>{{errorMsg}}</p>
-			</label>
+            <div class="item item-input item-floating-label">
+				<span class="input-label">Password</span>
+                <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Password">
+                <p class="validate-message" style="color:#F44336" ng-show="form.password.$error.required && submitted">Your password is required...</p>
+            </div>
+			
+			<ion-list>
+				<ion-checkbox class="checkbox-calm" ng-model="rememberMe">Remember Me</ion-checkbox>
+			</ion-list>
+				
+			<h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-if="error">{{errorMsg}}</h5>
 			
 			<div class="padding">
-				<button class="button button-calm button-outline button-block">Log In</button>
+				<button class="button button-calm button-block">Sign In</button>
 			</div>
 			
 		</form>
 	</ion-content>
+	
+	<div class="bar bar-footer bar-calm">
+	  <div class="title">Sign In</div>
+	</div>
+	
 </ion-view>
