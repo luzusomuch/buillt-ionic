@@ -3,22 +3,22 @@
 		<form method="post" name="form" ng-submit="signin(form)" novalidate>
 			
             <div class="item item-input item-floating-label">
-				<span class="input-label">Email Address</span>
+				<span class="input-label" style="">Email Address</span>
                 <input type="email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}" placeholder="Email Address">
-                <p class="validate-message" style="color:#F44336" ng-show="form.email.$error.required && submitted">Your email address is required...</p>
+                <p class="validate-message" style="color: #EF5350" ng-show="form.email.$error.required && submitted">Your email address is required...</p>
             </div>
 			
             <div class="item item-input item-floating-label">
 				<span class="input-label">Password</span>
                 <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Password">
-                <p class="validate-message" style="color:#F44336" ng-show="form.password.$error.required && submitted">Your password is required...</p>
+                <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your password is required...</p>
             </div>
 			
 			<ion-list>
 				<ion-checkbox class="checkbox-calm" ng-model="rememberMe">Remember Me</ion-checkbox>
 			</ion-list>
 				
-			<h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-if="error">{{errorMsg}}</h5>
+			<p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
 			
 			<div class="padding">
 				<button class="button button-calm button-block">Sign In</button>

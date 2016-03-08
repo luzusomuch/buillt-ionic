@@ -42,6 +42,9 @@ at the bottom as the textarea resizes */
   bottom: 0;
 }
 
+.input-label {
+	text-color: red;
+}
 
 
     

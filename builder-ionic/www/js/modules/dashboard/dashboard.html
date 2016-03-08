@@ -90,20 +90,21 @@
         <ion-content padding="true" class="has-header">
 			
             <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
-
+				
                 <div class="item item-input item-floating-label">
-					<span class="input-label">Subject Name</span>
-                    <input placeholder="Subject Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message subject is required...</p>
+					<span class="input-label">Message Thread Name</span>
+                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
                 </div>
 
-                <div class="available-assign">
-					
-					<h5 style="margin-left: 15px; margin-top: 25px">Include the following people:</h5>
-					
+                <div>
+					<label class="item item-input item-stacked-label">
+					    <span class="input-label">Assignees:</span>
+					</label>
 					<ion-list>
 						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="user in projectMembers track by $index" ng-click="assign(user, $index, 'thread')">{{(user._id) ? user.name : user.email}}</ion-checkbox>
 					</ion-list>
+				</div>
 					
                     <!-- <ul class="list">
                         <li class="item item-checkbox" ng-repeat="user in projectMembers track by $index">
@@ -114,9 +115,9 @@
                         </li>
                     </ul> -->
 					
-                </div>
+                
 				
-	            <h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-show="error.thread">{{error.thread}}</h5>
+	            <p class="validate-message" ng-show="error.thread">{{error.thread}}</p>
                 
                 <div class="row" style="">
                     <button class="button button-calm button-block" type="submit">Create Message</button>
@@ -126,7 +127,7 @@
         </ion-content>
 		
 		<div class="bar bar-footer bar-calm">
-		  <div class="title">Create Subject</div>
+		  <div class="title">Create Message</div>
 		</div>
 		
     </div>

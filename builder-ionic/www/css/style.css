@@ -7,3 +7,20 @@
 .tabs-top > .tabs, .tabs.tabs-top {
     top: 0px !important;
 }
+
+.item-floating-label > .input-label {
+	color: #BDBDBD; 
+	font-weight: 500; 
+	font-size: 14px
+}
+
+.validate-message {
+	font-weight: 500;
+	text-color: red;
+}
+
+.item-stacked-label > .input-label {
+	color: #616161;
+	font-weight: 500;
+	font-size: 14px;
+}
