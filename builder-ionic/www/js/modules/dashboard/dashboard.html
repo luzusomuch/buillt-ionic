@@ -117,7 +117,7 @@
 					
                 
 				
-	            <p class="validate-message" ng-show="error.thread">{{error.thread}}</p>
+	            <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-show="error.thread">{{error.thread}}</p>
                 
                 <div class="row" style="">
                     <button class="button button-calm button-block" type="submit">Create Message</button>
@@ -152,6 +152,7 @@
             <form ng-show="selectedProject._id" id="createTaskForm" name="form" ng-submit="createNewTask(form)" novalidate>
 				
 				<!-- Task Description -->
+				
                 <div class="item item-input item-floating-label">
 					<span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" ng-disabled="isShow" required>
@@ -166,7 +167,9 @@
 				
 				<!-- Task Assignees -->
                 <div class="available-assign"  ng-if="!isShow">
-					<h5 style="margin-left: 15px; margin-top: 25px">Assign this task to:</h5>
+					<label class="item item-input item-stacked-label">
+					    <span class="input-label">Assignees:</span>
+					</label>
 					
 					<ion-list>
 						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="staff in projectMembers track by $index" ng-click="assign(staff, $index, 'task')">{{(staff._id) ? staff.name : staff.email}}</ion-checkbox>
