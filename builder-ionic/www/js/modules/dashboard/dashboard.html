@@ -25,20 +25,19 @@
 		</div>
 		
 		<!-- When messages tab is selected. -->
-	    <ion-nav-view ng-show="currentTab=='thread'" name="Messages">
-	        <div class="list">
+	    <ion-nav-view ng-show="currentTab == 'thread'" name="Messages">
+	        <div class="list" ng-show="currentTab == 'thread'">
 	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
-	                {{thread.name}}
+	                {{thread.name}} <span ng-show="thread.__v > 0"> ({{thread.__v}}) </span>
 	            </ion-item>
 	        </div>
 	    </ion-nav-view>
 	
 		<!-- When tasks tab is selected. -->
-	    <ion-nav-view ng-show="currentTab=='task'" name="Tasks">
-		
-	        <div class="list">
+	    <ion-nav-view ng-show="currentTab == 'task'" name="Tasks">
+	        <div class="list" ng-show="currentTab == 'task'">
 	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
-	                {{task.description}}
+	                {{task.description}} <span ng-show="task.__v > 0"> ({{task.__v}}) </span>
 	            </ion-item>
 	        </div>
 	    </ion-nav-view>
@@ -68,7 +67,7 @@
 		</ion-header-bar>
 		<ion-content>
             <ion-list ng-repeat="project in projects | unique:project">
-                <ion-item ng-click="selectProject(project)">{{project.name}}</ion-item>
+                <ion-item ng-click="selectProject(project)">{{project.name}}<span ng-show="project.__v > 0"> ({{project.__v}}) </span></ion-item>
             </ion-list>
 		</ion-content>
 	</ion-popover-view>

@@ -2601,7 +2601,6 @@ body.grade-b, body.grade-c {
   overflow: hidden;
   margin-top: -1px; }
 
-
 /**
  * Scroll is the scroll view component available for complex and custom
  * scroll view functionality.
@@ -2884,10 +2883,6 @@ a.subdued {
     text-decoration: none; }
   a.subdued:last-child {
     padding-right: 0; }
-
-.custom-label {
-	color: red;
-}
 
 /**
  * Action Sheets

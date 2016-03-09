@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,fileService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -10,32 +10,12 @@ angular.module('buiiltApp')
         }
     });
 
-    $rootScope.$on('notification:read',function(event,notification) {
-        _.remove($scope.totalNotifications,{_id : notification._id});
-        $scope.totalNotifications--;
-    });
-
-    notificationService.get().$promise
-    .then(function(res) {
-        if (res.length > 0) {
-            $scope.totalNotifications = res;
-        }
-    });
-
     //start recieve socket from server
     socket.emit("join", $scope.currentUser._id);
 
     socket.on("thread:new", function(data) {
         $scope.threads.push(data);
         $scope.threads = _.uniq($scope.threads, "_id");
-    });
-
-    socket.on("file:new", function(data) {
-        $scope.files.push(data);
-    });
-
-    socket.on("document:new", function(data) {
-        $scope.documents.push(data);
     });
 
     socket.on("task:new", function(data) {
@@ -51,21 +31,11 @@ angular.module('buiiltApp')
             $scope.currentTab = 'thread';
         } else if (value == 1) {
             $scope.currentTab = 'task';
-        } else if (value == 2) {
-            $scope.currentTab = 'file';
-        } else {
-            $scope.currentTab = 'document';
         }
     };
 
     function findAllByProject(project) {
         $ionicLoading.show();
-        fileService.getProjectFiles({id: project._id, type: "file"}).$promise.then(function(res) {
-            $scope.files = res;
-        });
-        fileService.getProjectFiles({id: project._id, type: "document"}).$promise.then(function(res) {
-            $scope.documents = res;
-        });
         taskService.getProjectTask({id : project._id}).$promise.then(function(tasks) {
             $scope.tasks = tasks;
             var dueToday = new Date();
@@ -95,9 +65,8 @@ angular.module('buiiltApp')
         $scope.headingName = " ";
         $rootScope.selectedProject = project;
         findAllByProject(project);
-        $scope.modalProject.hide();
         $rootScope.$broadcast('getProject', project._id);
-		$scope.projectPopover.remove();
+		// $scope.projectPopover.remove();
     };
 
     if ($rootScope.selectedProject) {
@@ -288,22 +257,16 @@ angular.module('buiiltApp')
         $scope.modalConfig = modal;
     });
 
-    $scope.openNotificationModal = function() {
-        $scope.modalNotification.show();
+    $scope.showConfig = function() {
+        $scope.modalConfig.show();
     };
 
-    $ionicModal.fromTemplateUrl('modalNotification.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal){
-        $rootScope.modalNotification = $scope.modalNotification = modal;
-    });
 
     //function hide modal
     $scope.closeModal = function(value) {
         switch(value) {
             case 'Project':
-            $scope.modalProject.hide();
+            $scope.projectPopover.hide();
             break;
 
             case 'CreateTask':
@@ -317,9 +280,6 @@ angular.module('buiiltApp')
             case 'Config':
             $scope.modalConfig.hide();
             break;
-
-            case 'notification':
-            $scope.modalNotification.hide();
 
             default:
             break;

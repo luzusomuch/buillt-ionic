@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function(authService,socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location) {
+.controller('ThreadDetailCtrl', function(authService,socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location, $ionicModal) {
     $scope.thread = thread;
 
     authService.getCurrentUser().$promise.then(function(user){

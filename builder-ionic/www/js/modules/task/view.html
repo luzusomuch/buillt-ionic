@@ -1,30 +1,51 @@
 <ion-view title='{{task.description}}'>
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
     <ion-content class="has-header task-content">
-        <ion-item class="task-content-detail">
-		
-            <div>
-                <ul class="list">
-                    <li class="item item-divider">Task Description:</li>
-					<li class="item">{{task.description}}</li>
-                    <li class="item item-divider">Task due date:</li>
-					<li class="item">{{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
-                    <li class="item item-divider">Task Assignees:</li>
-					<li class="item">
-                        <ul style="margin-left: 20px;">
-                            <li ng-repeat="member in task.members" style="margin-top: 10px;">{{member.name}}</li>
-                            <li ng-repeat="email in task.notMembers" style="margin-top: 10px;">{{email}} </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-			
-            <div>
-                <button class="button button-calm button-outline button-block" ng-click="complete(task)">
-                    {{(task.completed) ? "Re-open this Task" : "Mark this Task as Complete"}}
-                </button>
-            </div>
-			
-        </ion-item>
+        <div id="task-detail-content">
+            <ul class="list">
+                <li class="item item-divider">Task Description:</li>
+                <li class="item">{{task.description}}</li>
+
+                <li class="item item-divider">Task due date:</li>
+                <li class="item">{{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
+
+                <li class="item item-divider">Task Assignees:</li>
+                <li class="item">
+                    <ul style="margin-left: 20px;">
+                        <li ng-repeat="member in task.members" style="margin-top: 10px;">{{member.name}}</li>
+                        <li ng-repeat="email in task.notMembers" style="margin-top: 10px;">{{email}} </li>
+                    </ul>
+                </li>
+
+                <li class="item item-divider">Task Activities</li>
+                <li class="item">
+                    <div class="list">
+                        <ion-item class="item-text-wrap" ng-repeat="activity in task.activities">
+                            <p ng-switch="activity.type">
+                                <span>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}} </span>
+
+                                <span ng-switch-when="create-task">created this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="complete-task"> marked this task complete at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="uncomplete-task"> marked this task uncomplete at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="edit-task"> edited <strong>{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</strong> of this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="assign"> assigned the following people :<span ng-repeat="member in activity.element.members"><strong>{{member}}</strong>, </span> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="insert-note"> added a note with content: <strong>{{activity.element.content}}</strong> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong></span>
+                            </p>
+                        </ion-item>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <button class="button button-calm button-outline button-block" ng-click="complete(task)">
+                {{(task.completed) ? "Re-open this Task" : "Mark this Task as Complete"}}
+            </button>
+        </div>
     </ion-content>
 </ion-view>

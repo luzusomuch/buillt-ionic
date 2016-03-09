@@ -1,11 +1,14 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($ionicLoading, $scope,task,currentUser,taskService) {
+.controller('TaskDetailCtrl', function($ionicLoading, $scope,task,currentUser,taskService, socket, notificationService) {
     $scope.task = task;
     console.log(task);
     $scope.currentUser = currentUser;
 
-    var contentHeight = $(".task-content").height() - $("div.tab-nav.tabs").height();
-    $(".task-content-detail").css('height', contentHeight + 'px');
+    socket.emit("join", task._id);
+    socket.on("task:update", function(data) {
+        $scope.task = data;
+        notificationService.markItemsAsRead({id: task._id}).$promise.then();
+    });
 
     $scope.complete = function(task) {
         $ionicLoading.show();
