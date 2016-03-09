@@ -1,61 +1,30 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function(authService,socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location, $ionicModal) {
+.controller('ThreadDetailCtrl', function(socket,$state,$timeout,$scope,thread,messageService, $anchorScroll, $location, $ionicModal, currentUser, notificationService) {
     $scope.thread = thread;
-
-    authService.getCurrentUser().$promise.then(function(user){
-        $scope.user = user;
-        $scope.thread.orderedMessages = [];
-        for (var i = $scope.thread.messages.length -1; i >= 0; i--) {
-            $scope.thread.orderedMessages.push($scope.thread.messages[i]);
-        };
-        _.each($scope.thread.orderedMessages, function(message){
-            if (message.user._id == user._id) {
-                message.owner = true;
-            }
-            else {
-                message.owner = false;
-            }
-        });
-    });
+    $scope.currentUser = currentUser;
 
     $scope.message = {};
 
-    socket.emit('join',$scope.thread._id);
+    socket.emit("join", thread._id);
 
-    socket.on('message:new', function (thread) {
-        $scope.thread = thread;
-        $scope.thread.orderedMessages = [];
-        for (var i = $scope.thread.messages.length-1; i >= 0; i--) {
-            $scope.thread.orderedMessages.push($scope.thread.messages[i]);
-        };
-        _.each($scope.thread.messages, function(message){
-            if (message.user._id == $scope.user._id) {
-                message.owner = true;
-            }
-            else {
-                message.owner = false;
-            }
-        });
+    socket.on("thread:update", function(data) {
+        console.log(data);
+        if (_.findIndex(data.members, function(member) {
+            return member._id.toString()===$scope.currentUser._id.toString();
+        })===-1) {
+            data.members.push($scope.currentUser);
+        }
+        $scope.thread = data;
+        console.log($scope.thread);
+        notificationService.markItemsAsRead({id: thread._id}).$promise.then();
     });
 
     $scope.sendMessage = function() {
-        if ($scope.message.text != '') {
+        if ($scope.message.text && $scope.message.text.trim() != '') {
             messageService.sendMessage({id: $scope.thread._id, type: $scope.thread.type}, $scope.message).$promise
             .then(function (res) {
                 $scope.message.text = '';
                 $scope.thread = res;
-                $scope.thread.orderedMessages = [];
-                for (var i = $scope.thread.messages.length-1; i >= 0; i--) {
-                    $scope.thread.orderedMessages.push($scope.thread.messages[i]);
-                };
-                _.each($scope.thread.orderedMessages, function(message){
-                    if (message.user._id == $scope.user._id) {
-                        message.owner = true;
-                    }
-                    else {
-                        message.owner = false;
-                    }
-                });
                 $("textarea#textarea1").css('height', 0+'px');
             });
         }
@@ -68,15 +37,6 @@ angular.module('buiiltApp')
     }).then(function(modal){
         $scope.sendMessageDialog = modal;
     });
-	
-	
-
-    // $scope.enterMessage = function ($event) {
-    //     if ($event.keyCode === 13) {
-    //         $event.preventDefault();
-    //         $scope.sendMessage();
-    //     }
-    // };
 })
 .directive('textarea', function() {
   return {

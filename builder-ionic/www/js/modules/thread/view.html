@@ -16,19 +16,46 @@
     </div>
 	
     <ion-content padding="false" class="has-header has-subheader">
-        <div class="spacer" style="display: inline-block; width: 300px; height: 20px;"></div>
-        <div id="chatBox" class="list list-messages">
-            <div ng-repeat="message in thread.orderedMessages">
-                <div class="card">
-                    <div style="" class="item item-text-wrap" ng-class="{fromOther: !message.owner, fromMe: message.owner}">
-                        <p>{{message.text}}</p>
-                        <p>{{message.user.name}}</p>
+        <div class="space" style="height:50px"></div>
+        <div id="thread-detail-content">
+            <ul class="list">
+                <li class="item item-divider">Thread Name:</li>
+                <li class="item">{{thread.name}}</li>
+
+                <li class="item item-divider">Thread Assignees:</li>
+                <li class="item">
+                    <ul style="margin-left: 20px;">
+                        <li ng-repeat="member in thread.members" style="margin-top: 10px;">{{member.name}}</li>
+                        <li ng-repeat="email in thread.notMembers" style="margin-top: 10px;">{{email}} </li>
+                    </ul>
+                </li>
+
+                <li class="item item-divider">Thread Activities</li>
+                <li class="item">
+                    <div class="list">
+                        <ion-item class="item-text-warp">
+                            <p>
+                                <span>{{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread on <strong>{{thread.createdAt | date: longDate}}</strong>.</span>
+                            </p>
+                        </ion-item>
+                        <ion-item class="item-text-wrap" ng-repeat="activity in thread.activities">
+                            <p ng-switch="activity.type">
+                                <span>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}} </span>
+
+                                <span ng-switch-when="chat">sent reply "<span ng-bind-html="activity.element.message | htmlize"></span>" at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="assign"> assigned the following people :<span ng-repeat="member in activity.element.invitees"><strong>{{member}}</strong>, </span> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="insert-note"> added a note with content: <strong>{{activity.element.content}}</strong> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong></span>
+
+                                <span ng-switch-when="archive"> archived this thread at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+
+                                <span ng-switch-when="unarchive"> unarchived this thread at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                            </p>
+                        </ion-item>
                     </div>
-                </div>
-            </div>
-            <div>
-                <a href="#" id="bottom"></a>
-            </div>
+                </li>
+            </ul>
         </div>
     </ion-content>
 	

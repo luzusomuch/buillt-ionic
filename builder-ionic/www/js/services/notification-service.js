@@ -8,6 +8,12 @@ angular.module('buiiltApp')
     return $resource(API_URL + 'api/notifications/:id/:action',{
         id : '@_id'},
       {
+        markItemsAsRead: {
+          method: "GET",
+          params: {
+            action: "mark-items-as-read"
+          }
+        },
         getAll: {
           method: 'GET',
           params: {

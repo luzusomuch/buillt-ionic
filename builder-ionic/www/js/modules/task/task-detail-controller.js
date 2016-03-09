@@ -1,7 +1,6 @@
 angular.module('buiiltApp')
 .controller('TaskDetailCtrl', function($ionicLoading, $scope,task,currentUser,taskService, socket, notificationService) {
     $scope.task = task;
-    console.log(task);
     $scope.currentUser = currentUser;
 
     socket.emit("join", task._id);

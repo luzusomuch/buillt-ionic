@@ -165,4 +165,15 @@ angular.module('buiiltApp')
     }
     return $sce.trustAsHtml("<p>"+text+"</p>");
   };
+})
+.value('HTMLIZE_CONVERSIONS', [
+  { expr: /\n+?/g, value: '<br>' }
+])
+
+.filter('htmlize', function(HTMLIZE_CONVERSIONS) {
+  return function(string) {
+    return HTMLIZE_CONVERSIONS.reduce(function(result, conversion) {
+      return result.replace(conversion.expr, conversion.value);
+    }, string || '');
+  };
 });
