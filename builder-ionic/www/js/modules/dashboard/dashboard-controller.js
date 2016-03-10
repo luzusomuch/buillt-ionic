@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -14,15 +14,88 @@ angular.module('buiiltApp')
     socket.emit("join", $scope.currentUser._id);
 
     socket.on("thread:new", function(data) {
-        $scope.threads.push(data);
+        if (data.owner._id!==$rootScope.currentUser._id) {
+            $scope.threads.push(data);
+            var index = getItemIndex($scope.projects, data.project._id);
+            if (index !== -1) {
+                $scope.projects[index].__v += 1;
+            }
+        }
         $scope.threads = _.uniq($scope.threads, "_id");
     });
 
     socket.on("task:new", function(data) {
-        $scope.tasks.push(data);
+        if (data.owner._id!==$scope.currentUser._id) {
+            $scope.tasks.push(data);
+            var index = getItemIndex($scope.projects, data.project._id);
+            if (index !== -1) {
+                $scope.projects[index].__v += 1;
+            }
+        }
         $scope.tasks = _.uniq($scope.tasks, "_id");
     });
+
+    socket.on("dashboard:new", function(data) {
+        console.log(data);
+        if (data.type==="task") {
+            var index = getItemIndex($scope.tasks, data.task._id);
+            if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
+                var originalTask = angular.copy($scope.tasks[index]);
+                var projectIndex = getItemIndex($scope.projects, data.task.project._id);
+                if (projectIndex !== -1 && originalTask.__v === 0) {
+                    $scope.projects[projectIndex].__v += 1;
+                }
+                $scope.tasks[index].uniqId = data.uniqId;
+                $scope.tasks[index].__v += 1;
+            } 
+        } else if (data.type==="thread") {
+            var index = getItemIndex($scope.threads, data.thread._id);
+            if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.threads[index].uniqId != data.uniqId) {
+                var originalThread = angular.copy($scope.threads[index]);
+                var projectIndex = getItemIndex($scope.projects, data.thread.project._id);
+                if (projectIndex !== -1 && originalThread.__v === 0) {
+                    $scope.projects[projectIndex].__v += 1;
+                }
+                $scope.threads[index].uniqId = data.uniqId;
+                $scope.threads[index].__v += 1;
+            } 
+        }
+    });
     //end recieve socket from server
+
+    // subtract count number
+    $scope.$on("$destroy", function() {
+        functionClearThreadCount();
+    });
+
+    var functionClearThreadCount = $rootScope.$on("UpdateDashboardThreadCount", function(event, data) {
+        var index = getItemIndex($scope.threads, data._id);
+        if (index !== -1) {
+            $scope.threads[index].__v = 0;
+            var projectIndex = getItemIndex($scope.projects, data.project);
+            if (projectIndex !== -1 && data.__v > 0) {
+                $scope.projects[index].__v -=1;
+            }
+        }
+    });
+
+    var functionClearTaskCount = $rootScope.$on("UpdateDashboardTaskCount", function(event, data) {
+        var index = getItemIndex($scope.tasks, data._id);
+        if (index !== -1) {
+            $scope.tasks[index].__v = 0;
+            var projectIndex = getItemIndex($scope.projects, data.project);
+            if (projectIndex !== -1 && data.__v > 0) {
+                $scope.projects[projectIndex].__v -=1;
+            }
+        }
+    });
+
+    function getItemIndex(array, item) {
+        var index = _.findIndex(array, function(i) {
+            return i._id.toString()===item.toString();
+        });
+        return index;
+    };
 
     $scope.currentTab = 'thread';
     $scope.selectTabWithIndex = function(value){
@@ -65,21 +138,14 @@ angular.module('buiiltApp')
         $scope.headingName = " ";
         $rootScope.selectedProject = project;
         findAllByProject(project);
-        $rootScope.$broadcast('getProject', project._id);
-		// $scope.projectPopover.remove();
     };
 
     if ($rootScope.selectedProject) {
         $scope.headingName = " ";
         $scope.selectedProject = $rootScope.selectedProject;
         findAllByProject($rootScope.selectedProject);
-        $rootScope.$broadcast('getProject', $rootScope.selectedProject._id);
     }
 
-    $scope.toggleLeft = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-    };
-	
 	$ionicPopover.fromTemplateUrl('projectPopover.html', {
 	    scope: $scope
 	  }).then(function(popover) {
@@ -162,10 +228,6 @@ angular.module('buiiltApp')
         $("input#dueDate").trigger('click');
     };
 
-    $scope.$on('taskAvaiableAssignees', function(event, value){
-        $scope.available = value;
-    });
-
     $scope.task = {
         members : []
     };
@@ -186,31 +248,27 @@ angular.module('buiiltApp')
         }
     };
 
-    $scope.submitted = false;
-    $scope.createNewTask = function(form) {
-        $scope.submitted = true;
-        if (form.$valid) {
-            if ($scope.task.members.length===0) {
-                $scope.error.task="Please Select At Least 1 Member";
-                return;
-            } else if (!$scope.task.dateEnd) {
-                $scope.error.task="Please Select Due Date";
-                return;
-            }
-            $scope.task.type = "task-project";
-            taskService.create({id : $rootScope.selectedProject._id},$scope.task)
-            .$promise.then(function(res) {
-                $scope.modalCreateTask.hide();
-                $scope.task = {members:[]};
-                $scope.error = {};
-                $scope.submitted = false;
-                $scope.tasks.push(res);
-            }, function(err) {
-                $scope.error.task = "Somethings went wrong";
-            });
-        } else {
-            $scope.error.task = "Please provide a description, due date and at least one assignee..";
+    $scope.createNewTask = function() {
+        if ($scope.task.members.length===0) {
+            $scope.error.task="Please Select At Least 1 Member";
+            return;
+        } else if (!$scope.task.dateEnd) {
+            $scope.error.task="Please Select Due Date";
+            return;
+        } else if ($scope.task.description.length === 0 || ($scope.task.description && $scope.task.description.trim()==="")) {
+            $scope.error.task="Please check your task description";
+            return;
         }
+        $scope.task.type = "task-project";
+        taskService.create({id : $rootScope.selectedProject._id},$scope.task)
+        .$promise.then(function(res) {
+            $scope.modalCreateTask.hide();
+            $scope.task = {members:[]};
+            $scope.error = {};
+            $scope.tasks.push(res);
+        }, function(err) {
+            $scope.error.task = "Somethings went wrong";
+        });
     };
 
     //create new thread
@@ -226,39 +284,34 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewThread = function(form) {
-        $scope.submitted = true;
-        if (form.$valid && $scope.submitted) {
-            if ($scope.thread.members.length === 0) {
-                $scope.error.thread = "Please Select At Least 1 Members";
-                return;
-            } else {
-                $scope.thread.type = "project-message";
-                messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
-                .$promise.then(function (res) {
-                    $scope.modalCreateThread.hide();
-                    $scope.submitted = false;
-                    $scope.thread = {members: []};
-                    $scope.error = {};
-                    $scope.threads.push(res);
-                }, function(err) {
-                    $scope.error.thread = "Error When Create";
-                });
-            }
+        if ($scope.thread.members.length === 0) {
+            $scope.error.thread = "Please Select At Least 1 Members";
+            return;
         } else {
-            $scope.error.thread = "Please provide a name and at least one recipient..";
+            $scope.thread.type = "project-message";
+            messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
+            .$promise.then(function (res) {
+                $scope.modalCreateThread.hide();
+                $scope.thread = {members: []};
+                $scope.error = {};
+                $scope.threads.push(res);
+            }, function(err) {
+                $scope.error.thread = "Error When Create";
+            });
         }
     };
 
-    //show config
-    $ionicModal.fromTemplateUrl('modalConfig.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal){
-        $scope.modalConfig = modal;
-    });
-
-    $scope.showConfig = function() {
-        $scope.modalConfig.show();
+    //show confirm modal
+    $scope.showConfirm = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: "Sign Out",
+            content: "Do you want to sign out?"
+        });
+        confirmPopup.then(function(res) {
+            if (res) {
+                $state.go("signout");
+            }
+        });
     };
 
 
@@ -275,10 +328,6 @@ angular.module('buiiltApp')
 
             case 'CreateThread':
             $scope.modalCreateThread.hide();
-            break;
-
-            case 'Config':
-            $scope.modalConfig.hide();
             break;
 
             default:

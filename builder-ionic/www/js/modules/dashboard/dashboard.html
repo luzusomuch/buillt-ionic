@@ -2,7 +2,7 @@
 	
 	<!-- Show config dialog. -->
     <ion-nav-buttons side="left">
-        <button class="button button-clear icon-right ion-ios-person-outline" ng-click="showConfig()" style="margin-left: 10px;"></button>
+        <button class="button button-clear icon-right ion-ios-person-outline" ng-click="showConfirm()" style="margin-left: 10px;"></button>
     </ion-nav-buttons>
 	
 	<!-- Add message thread or task. -->
@@ -88,12 +88,12 @@
 		<!-- Thread Name and Assignees -->
         <ion-content padding="true" class="has-header">
 			
-            <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
+            <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate>
 				
                 <div class="item item-input item-floating-label">
 					<span class="input-label">Message Thread Name</span>
-                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
+                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid}">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required">A message thread name is required...</p>
                 </div>
 
                 <div>
@@ -113,20 +113,19 @@
                             {{(user._id) ? user.name : user.email}}
                         </li>
                     </ul> -->
-					
-                
-				
-	            <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-show="error.thread">{{error.thread}}</p>
-                
-                <div class="row" style="">
-                    <button class="button button-calm button-block" type="submit">Create Message</button>
+
+                <div class="error" ng-show="error.thread" style="margin-top: 15px; margin-left: 15px; color: #ff0000">
+                    <p>{{error.thread}}</p>
                 </div>
-				
+                    
+                <div class="space" style="height: 50px">
+                </div>
+
             </form>
         </ion-content>
 		
 		<div class="bar bar-footer bar-calm">
-		  <div class="title">Create Message</div>
+		  <div class="title" ng-click="createNewThread()" style="cursor:pointer">Create New Thread</div>
 		</div>
 		
     </div>
@@ -148,24 +147,24 @@
 		<!-- Description and Assignee -->
         <ion-content class="has-header">
 		
-            <form ng-show="selectedProject._id" id="createTaskForm" name="form" ng-submit="createNewTask(form)" novalidate>
+            <form ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
 				
 				<!-- Task Description -->
 				
                 <div class="item item-input item-floating-label">
 					<span class="input-label">Task Description</span>
-                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" ng-disabled="isShow" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
+                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required">A description is required...</p>
                 </div>
 
 				<!-- Task Due Date -->
                 <div class="item item-input">
                     <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
-                    <input ng-if="isShowInputDate" type="date" placeholder="Due Date" name="created" id="dueDate" ng-model="task.dateEnd" format="mm/dd/yyyy" ng-disabled="isShow" />
+                    <input ng-if="isShowInputDate" type="date" placeholder="Due Date" name="created" id="dueDate" ng-model="task.dateEnd" format="mm/dd/yyyy"/>
                 </div>
 				
 				<!-- Task Assignees -->
-                <div class="available-assign"  ng-if="!isShow">
+                <div class="available-assign">
 					<label class="item item-input item-stacked-label">
 					    <span class="input-label">Assignees:</span>
 					</label>
@@ -173,46 +172,20 @@
 					<ion-list>
 						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="staff in projectMembers track by $index" ng-click="assign(staff, $index, 'task')">{{(staff._id) ? staff.name : staff.email}}</ion-checkbox>
 					</ion-list>
-					
-                    <!-- <ul class="list">
-                        <li class="item item-checkbox" ng-repeat="staff in projectMembers track by $index">
-                            <div class="checkbox">
-                                <input type="checkbox" ng-click="assign(staff, $index, 'task')">
-                            </div>
-                            {{(staff._id) ? staff.name : staff.email}}
-                        </li>
-                    </ul> -->
-						
                 </div>
 
-				<h5 style="margin-left: 15px; margin-top: 25px" style="color: #F44336" ng-show="error.thread">{{error.task}}</h5>
-
-                <div class="row">
-                    <button class="button button-calm button-block" type="submit" name="action">Add Task</button>
+                <div class="error" ng-show="error.task" style="margin-top: 15px; margin-left: 15px; color: #ff0000">
+                    <p>{{error.task}}</p>
                 </div>
 				
+                <div class="space" style="height: 50px"></div>
+
             </form>
         </ion-content>
 		
 		<div class="bar bar-footer bar-calm">
-		  <div class="title">Create Task</div>
+		  <div class="title" style="cursor:pointer" ng-click="createNewTask()">Create Task</div>
 		</div>
 		
     </div>
 </script>
-
-<!-- Account Dialog -->
-<script id="modalConfig.html" type="text/ng-template">
-    <div class="modal">
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Configuration...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('Config')" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-        <ion-content class="has-header">
-            <a ng-click="closeModal('Config')" ui-sref="signout" class="button button-calm button-clear button-block ">Sign Out</a>
-        </ion-content>
-    </div>
-</script>
-

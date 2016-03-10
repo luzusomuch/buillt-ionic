@@ -25,7 +25,7 @@
                 <li class="item item-divider">Thread Assignees:</li>
                 <li class="item">
                     <ul style="margin-left: 20px;">
-                        <li ng-repeat="member in thread.members" style="margin-top: 10px;">{{member.name}}</li>
+                        <li ng-repeat="member in thread.members | unique: '_id'" style="margin-top: 10px;">{{member.name}}</li>
                         <li ng-repeat="email in thread.notMembers" style="margin-top: 10px;">{{email}} </li>
                     </ul>
                 </li>
@@ -57,8 +57,10 @@
                 </li>
             </ul>
         </div>
+
+        <div class="space" style="height:50px"></div>
     </ion-content>
-	
+
 	<div class="bar bar-footer bar-calm">
 	  <div class="title">Send a Message</div>
 	</div>

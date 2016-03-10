@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($ionicLoading, $scope,task,currentUser,taskService, socket, notificationService) {
+.controller('TaskDetailCtrl', function($rootScope, $ionicLoading, $timeout, $scope,task,currentUser,taskService, socket, notificationService) {
     $scope.task = task;
     $scope.currentUser = currentUser;
 
@@ -8,6 +8,14 @@ angular.module('buiiltApp')
         $scope.task = data;
         notificationService.markItemsAsRead({id: task._id}).$promise.then();
     });
+
+    $timeout(function() {
+        // remove task count number for current task
+        $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
+        
+        // mark all notifications related to this task is read
+        notificationService.markItemsAsRead({id: task._id}).$promise;
+    }, 500);
 
     $scope.complete = function(task) {
         $ionicLoading.show();

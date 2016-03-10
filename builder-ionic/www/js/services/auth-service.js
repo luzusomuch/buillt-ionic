@@ -2,7 +2,7 @@ angular.module('buiiltApp')
 .factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $q,$state) {
   var currentUser = {};
   if (window.localStorage.getItem('token')) {
-    currentUser = userService.get();
+    currentUser = userService.get({isMobile: true});
   }
   return {
     /**
