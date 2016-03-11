@@ -169,12 +169,6 @@
                 if (push == 1){
                     if (related == 'task'){
                         window.location.href = "#/task/"+id;
-                    } else if (related == "file") {
-                        window.location.href="#/file/"+id;
-                    } else if (related == "document") {
-                        window.location.href="#/file"+id;
-                    } else if (related == "invite-people") {
-                        window.location.href = "#/dashboard";
                     } else if (related == 'thread') {
                         window.location.href = "#/thread/"+id;
                     }
@@ -227,19 +221,13 @@
     <script src="lib/velocity/velocity.js"></script>
     <script src="lib/moment/min/moment-with-langs.js"></script>
     <script src="lib/restangular/src/restangular.js"></script>
-    <script src="lib/filepicker-js/filepicker.js"></script>
-    <script src="lib/angular-filepicker/dist/angular_filepicker.js"></script>
-    <script src="lib/angular-file-upload/angular-file-upload.js"></script>
 
     <script src="js/components/filters.js"></script>
     <script src="js/components/directive.js"></script>
     <script src="js/components/socket/socket.service.js"></script>
 
-    <script src="http://localhost:9000/socket.io-client/socket.io.js"></script>
-    <!-- // <script src="http://buiilt.com.au/socket.io-client/socket.io.js"></script> -->
-
-    <script src="js/directives/notification/notification-directive.js"></script>
-    <script src="js/directives/file-picker-previewer/file-picker-previewer-directive.js"></script>
+    <!-- // <script src="http://localhost:9000/socket.io-client/socket.io.js"></script> -->
+    <script src="https://buiilt.com.au/socket.io-client/socket.io.js"></script>
 
     <script src="js/services/auth-service.js"></script>
     <script src="js/services/user-service.js"></script>
@@ -265,7 +253,5 @@
     <script src="js/modules/task/main.js"></script>
     <script src="js/modules/task/task-detail-controller.js"></script>
 
-    <script src="js/modules/file/main.js"></script>
-    <script src="js/modules/file/file-detail-controller.js"></script>
   </body>
 </html>

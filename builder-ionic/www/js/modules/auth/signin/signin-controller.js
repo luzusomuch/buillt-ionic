@@ -11,7 +11,7 @@ angular.module('buiiltApp')
       authService.login($scope.user).then(function () {
         $ionicLoading.hide();
         $state.go('dashboard');
-        // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
+        deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
       }, function (res) {
         // alert('errr' + res.message);
         $scope.error = true;
