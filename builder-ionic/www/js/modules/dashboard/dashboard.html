@@ -238,9 +238,23 @@
 
                 <!-- Team Name -->
                 <div class="item item-input item-floating-label">
-                    <span class="input-label">Team Name</span>
-                    <input placeholder="Team Name" id="name" type="text" ng-model="team.name" name="name" ng-class="{'invalid' : form.name.$invalid && submitted}" required>
+                    <span class="input-label">Team Name:</span>
+                    <input placeholder="Team Name" id="name" type="text" ng-model="newTeam.name" name="name" ng-class="{'invalid' : form.name.$invalid && submitted}" required ng-disabled="newTeam.type=='homeOwner'">
                     <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">Team Name is required...</p>
+                </div>
+
+                <div class="available-assign">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Team Type:</span>
+                    </label>
+                    
+                    <ion-list>
+                        <ion-radio ng-click="selectTeamType('homeOwner')">Home Owner</ion-radio>
+                        <ion-radio ng-click="selectTeamType('builder')">Builder</ion-radio>
+                        <ion-radio ng-click="selectTeamType('architect')">Architect</ion-radio>
+                        <ion-radio ng-click="selectTeamType('contractor')">Subcontractor</ion-radio>
+                        <ion-radio ng-click="selectTeamType('consultant')">Consultant</ion-radio>
+                    </ion-list>
                 </div>
 
                 <div style="color: red; margin-left: 20px;" ng-show="error.team">{{error.team}}</div>
@@ -255,7 +269,7 @@
         <div class="space" style="height: 50px"></div>
 
         <div class="bar bar-footer bar-calm">
-          <div class="title" style="cursor:pointer" ng-click="signup()">Create Account</div>
+          <div class="title" style="cursor:pointer" ng-click="createTeam()">Creat Team</div>
         </div>
         
     </div>

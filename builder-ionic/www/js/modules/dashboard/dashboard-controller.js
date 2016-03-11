@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup) {
+    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -393,11 +393,37 @@ angular.module('buiiltApp')
         animation: 'slide-in-up'
     }).then(function(modal){
         $scope.modalCreateTeam = modal;
-        
+
         if ($scope.currentTeam && !$scope.currentTeam._id) {
             $scope.modalCreateTeam.show();
         }
     });
+
+    $scope.newTeam = {};
+
+    $scope.selectTeamType = function(value) {
+        $scope.newTeam.type = value;
+        if (value==="homeOwner") {
+            $scope.newTeam.name = $scope.currentUser.name;
+        } else {
+            $scope.newTeam.name = null;
+        }
+    };
+
+    $scope.createTeam = function() {
+        if ($scope.newTeam.name && $scope.newTeam.type) {
+            $scope.newTeam.isMobile = true;
+            $scope.newTeam.emails = [];
+            teamService.create($scope.newTeam, function (team) {
+                $rootScope.currentTeam = $scope.currentTeam = team;
+                $scope.modalCreateTeam.hide();
+            }, function (err) {
+                $scope.error.team = "Error When Create New Team";
+            });
+        } else {
+            $scope.error.team = "Please check your input";
+        }
+    };
 
     //function hide modal
     $scope.closeModal = function(value) {
