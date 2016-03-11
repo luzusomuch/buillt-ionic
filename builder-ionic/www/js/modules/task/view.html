@@ -1,60 +1,42 @@
 <ion-view title='{{task.description}}'>
     <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
     <ion-content class="has-header task-content">
+        <div class="space" style="margin-top: 20px;"></div>
         <div id="task-detail-content">
-            <ul class="list">
-                <li class="item item-divider">Task Description:</li>
-                <li class="item">{{task.description}}</li>
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="activity in task.activities">
+                    <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
+                    <small ng-switch="activity.type">
+                        <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                <li class="item item-divider">Task due date:</li>
-                <li class="item">{{task.dateEnd | date: 'MM/dd/yyyy'}}</li>
+                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                <li class="item item-divider">Task Assignees:</li>
-                <li class="item">
-                    <ul style="margin-left: 20px;">
-                        <li ng-repeat="member in task.members" style="margin-top: 10px;">{{member.name}}</li>
-                        <li ng-repeat="email in task.notMembers" style="margin-top: 10px;">{{email}} </li>
-                    </ul>
-                </li>
+                        <span ng-switch-when="uncomplete-task"> marked this task uncomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                <li class="item item-divider">Task Activities</li>
-                <li class="item">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="activity in task.activities">
-                            <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
-                            <small ng-switch="activity.type">
-                                <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
+                        <span ng-switch-when="edit-task"> edited this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}: </span>
 
-                                <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
+                        <span ng-switch-when="assign"> assigned the following people to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
 
-                                <span ng-switch-when="uncomplete-task"> marked this task uncomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
+                        <span ng-switch-when="insert-note"> added a note to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                    </small>
 
-                                <span ng-switch-when="edit-task"> edited this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}: </span>
+                    <div class="activity-body" ng-switch="activity.type">
+                        <span ng-switch-when="edit-task">{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</span>
 
-                                <span ng-switch-when="assign"> assigned the following people to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        <span ng-switch-when="assign">
+                            <span ng-repeat="member in activity.element.members"><strong>{{member}}, </strong>
+                        </span>
 
-                                <span ng-switch-when="insert-note"> added a note to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                            </small>
-
-                            <div class="activity-body" ng-switch="activity.type">
-                                <span ng-switch-when="edit-task">{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</span>
-
-                                <span ng-switch-when="assign">
-                                    <span ng-repeat="member in activity.element.members"><strong>{{member}}, </strong>
-                                </span>
-
-                                <span ng-switch-when="insert-note">{{activity.element.content}}</span>
-                            </div>
-                        </ion-item>
+                        <span ng-switch-when="insert-note">{{activity.element.content}}</span>
                     </div>
-                </li>
-            </ul>
-        </div>
-        
-        <div>
-            <button class="button button-calm button-outline button-block" ng-click="complete(task)">
-                {{(task.completed) ? "Re-open this Task" : "Mark this Task as Complete"}}
-            </button>
+                </ion-item>
+            </div>
         </div>
     </ion-content>
+
+    <div class="bar bar-footer bar-calm">
+        <div class="title" style="cursor:pointer" ng-click="complete(task)">
+            {{(task.completed) ? "Re-open this Task" : "Mark this Task as Complete"}}
+        </div>
+    </div>
 </ion-view>

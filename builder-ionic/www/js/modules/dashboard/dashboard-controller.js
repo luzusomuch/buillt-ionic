@@ -4,6 +4,7 @@ angular.module('buiiltApp')
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
     $scope.projects = [];
+    $scope.submitted = false;
     _.each($scope.currentUser.projects, function(project) {
         if (project.status!=="archive") {
             $scope.projects.push(project);
@@ -318,6 +319,7 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewTask = function() {
+        $scope.submitted = true;
         if ($scope.task.members.length===0) {
             $scope.error.task="Please Select At Least 1 Member";
             return;
@@ -335,6 +337,7 @@ angular.module('buiiltApp')
             $scope.task = {members:[]};
             $scope.error = {};
             $scope.tasks.push(res);
+            $scope.submitted = false;
         }, function(err) {
             $scope.error.task = "Somethings went wrong";
         });
@@ -353,6 +356,7 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewThread = function(form) {
+        $scope.submitted = true;
         if ($scope.thread.members.length === 0) {
             $scope.error.thread = "Please Select At Least 1 Members";
             return;
@@ -364,6 +368,7 @@ angular.module('buiiltApp')
                 $scope.thread = {members: []};
                 $scope.error = {};
                 $scope.threads.push(res);
+                $scope.submitted = false;
             }, function(err) {
                 $scope.error.thread = "Error When Create";
             });
@@ -383,6 +388,16 @@ angular.module('buiiltApp')
         });
     };
 
+    $ionicModal.fromTemplateUrl('modalCreateTeam.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalCreateTeam = modal;
+        
+        if ($scope.currentTeam && !$scope.currentTeam._id) {
+            $scope.modalCreateTeam.show();
+        }
+    });
 
     //function hide modal
     $scope.closeModal = function(value) {

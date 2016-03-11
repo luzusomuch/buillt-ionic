@@ -122,8 +122,8 @@
 				
                 <div class="item item-input item-floating-label">
 					<span class="input-label">Message Thread Name</span>
-                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required">A message thread name is required...</p>
+                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
                 </div>
 
                 <div>
@@ -183,8 +183,8 @@
 				
                 <div class="item item-input item-floating-label">
 					<span class="input-label">Task Description</span>
-                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid}" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required">A description is required...</p>
+                    <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
                 </div>
 
 				<!-- Task Due Date -->
@@ -217,5 +217,46 @@
 		  <div class="title" style="cursor:pointer" ng-click="createNewTask()">Create Task</div>
 		</div>
 		
+    </div>
+</script>
+
+<!-- show create new team -->
+<script id="modalCreateTeam.html" type="text/ng-template">
+    <div class="modal">
+        
+        <!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Create New Team...</h1>
+            <div class="buttons">
+                <button ng-click="modalCreateTeam.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content class="has-header">
+        
+            <form id="form" name="form" novalidate>
+
+                <!-- Team Name -->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Team Name</span>
+                    <input placeholder="Team Name" id="name" type="text" ng-model="team.name" name="name" ng-class="{'invalid' : form.name.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">Team Name is required...</p>
+                </div>
+
+                <div style="color: red; margin-left: 20px;" ng-show="error.team">{{error.team}}</div>
+                
+                <div class="space" style="height: 50px"></div>   
+            </form>
+
+
+        </ion-content>
+
+        
+        <div class="space" style="height: 50px"></div>
+
+        <div class="bar bar-footer bar-calm">
+          <div class="title" style="cursor:pointer" ng-click="signup()">Create Account</div>
+        </div>
+        
     </div>
 </script>

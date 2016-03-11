@@ -18,52 +18,38 @@
     <ion-content padding="false" class="has-header has-subheader">
         <div class="space" style="height:50px"></div>
         <div id="thread-detail-content">
-            <ul class="list">
-                <li class="item item-divider">Thread Name:</li>
-                <li class="item">{{thread.name}}</li>
-
-                <li class="item item-divider">Thread Detail:</li>
-                <li class="item">{{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread on <strong>{{thread.createdAt | date: longDate}}</strong>.</li>
-
-                <li class="item item-divider">Thread Assignees:</li>
-                <li class="item">
-                    <ul style="margin-left: 20px;">
-                        <li ng-repeat="member in thread.members | unique: '_id'" style="margin-top: 10px;">{{member.name}}</li>
-                        <li ng-repeat="email in thread.notMembers" style="margin-top: 10px;">{{email}} </li>
-                    </ul>
-                </li>
-
-                <li class="item item-divider">Thread Activities</li>
-                <li class="item">
-                    <div class="list">
-                        <ion-item class="item-text-wrap" ng-repeat="activity in thread.activities | orderBy: '-createdAt'">
-                            <div class="activity-header">
-                                <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
-                                <small ng-switch="activity.type">
-                                    <span ng-switch-when="chat">sent reply to this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                                
-                                    <span ng-switch-when="assign"> assigned the following people to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                                
-                                    <span ng-switch-when="insert-note"> added a note to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                                
-                                    <span ng-switch-when="archive"> archived this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                                
-                                    <span ng-switch-when="unarchive"> unarchived this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                                </small>
-                            </div>
-                            <div class="activity-body" ng-switch="activity.type">
-                                <span ng-switch-when="chat" ng-bind-html="activity.element.message | htmlize"></span>
-                                <span ng-switch-when="assign" >
-                                    <span ng-repeat="member in activity.element.invitees">{{member}}, </span>
-                                </span>
-                                <span ng-switch-when="insert-note" >
-                                    {{activity.element.content}}
-                                </span>
-                            </div>
-                        </ion-item>
+            <div class="list">
+                <ion-item class="item-text-wrap" ng-repeat="activity in thread.activities | orderBy: '-createdAt'">
+                    <div class="activity-header">
+                        <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
+                        <small ng-switch="activity.type">
+                            <span ng-switch-when="chat">sent reply to this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        
+                            <span ng-switch-when="assign"> assigned the following people to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        
+                            <span ng-switch-when="insert-note"> added a note to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        
+                            <span ng-switch-when="archive"> archived this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        
+                            <span ng-switch-when="unarchive"> unarchived this thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                        </small>
                     </div>
-                </li>
-            </ul>
+                    <div class="activity-body" ng-switch="activity.type">
+                        <span ng-switch-when="chat" ng-bind-html="activity.element.message | htmlize"></span>
+                        <span ng-switch-when="assign" >
+                            <span ng-repeat="member in activity.element.invitees">{{member}}, </span>
+                        </span>
+                        <span ng-switch-when="insert-note" >
+                            {{activity.element.content}}
+                        </span>
+                    </div>
+                </ion-item>
+                <ion-item>
+                    <div class="activity-header">
+                        {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} has created this thread at {{thread.createdAt | date: 'dd/MM/yyyy'}}
+                    </div>
+                </ion-item>
+            </div>
         </div>
 
         <div class="space" style="height:50px"></div>

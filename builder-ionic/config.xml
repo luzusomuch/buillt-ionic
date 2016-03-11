@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.hoanvu.buiilt" version="0.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>buiilt</name>
-  <description>&#xD;
-    Built project.&#xD;
+  <description>&#xD;&#xD;
+    Built project.&#xD;&#xD;
   </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">&#xD;
-    HVS&#xD;
+  <author email="hi@ionicframework" href="http://ionicframework.com/">&#xD;&#xD;
+    HVS&#xD;&#xD;
   </author>
   <content src="index.html"/>
   <access origin="*"/>

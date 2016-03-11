@@ -62,7 +62,7 @@ angular.module('buiiltApp')
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
           currentUser = userService.get();
-          $state.go('user')
+          $state.go('dashboard')
         }
         return cb(user);
       },

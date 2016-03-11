@@ -25,6 +25,9 @@
 			</div>
 			
 		</form>
+        <div style="text-align: center;">
+            <button class="button button-calm button-clear" ng-click="modalSignup.show()">Sign Up New?</button>
+        </div>
 	</ion-content>
 	
 	<div class="bar bar-footer bar-calm">
@@ -32,3 +35,75 @@
 	</div>
 	
 </ion-view>
+
+<!-- sign up dialog. -->
+<script id="modalSignup.html" type="text/ng-template">
+    <div class="modal">
+        
+        <!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Create New Account On Buiilt...</h1>
+            <div class="buttons">
+                <button ng-click="modalSignup.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content class="has-header">
+        
+            <form id="form" name="form" novalidate>
+
+                <!-- Email-->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Email</span>
+                    <input placeholder="Email" id="email" type="email" ng-model="user.email" name="email" ng-class="{'invalid' : form.email.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.email.$error.required && submitted">Email is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.email.$error.email && submitted">Please enter an email type</p>
+                </div>
+
+                <!-- First Name-->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">First Name</span>
+                    <input placeholder="First Name" id="firstName" type="text" ng-model="user.firstName" name="firstName" ng-class="{'invalid' : form.firstName.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.firstName.$error.required && submitted">First Name is required...</p>
+                </div>
+
+                <!-- Last Name-->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Last Name</span>
+                    <input placeholder="Last Name" id="lastName" type="text" ng-model="user.lastName" name="lastName" ng-class="{'invalid' : form.lastName.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.lastName.$error.required && submitted">Last Name is required...</p>
+                </div>
+
+                <!-- Password-->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Password</span>
+                    <input placeholder="Password" id="password" type="password" ng-model="user.password" name="password" ng-class="{'invalid' : form.password.$invalid && submitted}" required ng-minlength="6">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.password.$error.required && submitted">Password is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.password.$error.minlength && submitted">Password should be a minimum of 6 characters...</p>
+                </div>
+
+                <!-- Re-type Password-->
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Retype Password</span>
+                    <input placeholder="Retype Password" id="repassword" type="password" ng-model="user.repassword" compare-to="user.password" name="repassword" ng-class="{'invalid' : form.repassword.$invalid && submitted}" required>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.repassword.$error.required && submitted">Retype Password is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.repassword.$error.compareTo && submitted">The passwords you have entered do not match...</p>
+                </div>
+
+                <div style="color: red; margin-left: 20px;" ng-show="errors.signup">{{errors.signup}}</div>
+                
+                <div class="space" style="height: 50px"></div>   
+            </form>
+
+
+        </ion-content>
+
+        
+        <div class="space" style="height: 50px"></div>
+
+        <div class="bar bar-footer bar-calm">
+          <div class="title" style="cursor:pointer" ng-click="signup()">Create Account</div>
+        </div>
+        
+    </div>
+</script>
