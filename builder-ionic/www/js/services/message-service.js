@@ -30,6 +30,12 @@ angular.module('buiiltApp').factory('messageService', function($rootScope, $q, $
       params : {
         action : 'one'
       }
-    }
+    },
+    lastAccess: {
+      method: "GET",
+      params: {
+        action: "last-access"
+      }
+    },
   });
 });

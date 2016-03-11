@@ -27,18 +27,48 @@
 		<!-- When messages tab is selected. -->
 	    <ion-nav-view ng-show="currentTab == 'thread'" name="Messages">
 	        <div class="list" ng-show="currentTab == 'thread'">
-	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})">
-	                {{thread.name}} <span ng-show="thread.__v > 0"> ({{thread.__v}}) </span>
+	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v > 0">
+	                <h2>{{thread.name}}</h2>
+                    <p>Assignees: 
+                        <span ng-repeat="member in thread.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
+                        <span ng-repeat="email in thread.notMembers">{{email}}, </span>
+                    </p>
+                    <p ng-show="thread.__v > 0">Updates: {{thread.__v}}</p>
 	            </ion-item>
+
+                <ion-item class="item-text-wrap" ng-repeat="thread in threads | orderBy: '-updatedAt'" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v==0">
+                    <h2>{{thread.name}}</h2>
+                    <p>Assignees: 
+                        <span ng-repeat="member in thread.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
+                        <span ng-repeat="email in thread.notMembers">{{email}}, </span>
+                    </p>
+                    <p>No New Updates</p>
+                </ion-item>
 	        </div>
 	    </ion-nav-view>
 	
 		<!-- When tasks tab is selected. -->
 	    <ion-nav-view ng-show="currentTab == 'task'" name="Tasks">
 	        <div class="list" ng-show="currentTab == 'task'">
-	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})">
-	                {{task.description}} <span ng-show="task.__v > 0"> ({{task.__v}}) </span>
+	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v > 0">
+	                <h2>{{task.description}}</h2>
+                    <p>
+                        Due: {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}} | Assignees: 
+                        <span ng-repeat="member in task.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
+                        <span ng-repeat="email in task.notMembers">{{email}}, </span>
+                    </p>
+                    <p ng-show="task.__v > 0">Updates: {{task.__v}}</p>
 	            </ion-item>
+
+                <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v == 0 && !task.completed">
+                    <h2>{{task.description}}</h2>
+                    <p>
+                        Due: {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}} | Assignees: 
+                        <span ng-repeat="member in task.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
+                        <span ng-repeat="email in task.notMembers">{{email}}, </span>
+                    </p>
+                    <p>No New Updates</p>
+                </ion-item>
 	        </div>
 	    </ion-nav-view>
 	

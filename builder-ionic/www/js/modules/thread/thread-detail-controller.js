@@ -20,6 +20,12 @@ angular.module('buiiltApp')
     $timeout(function() {
         // remove thread count number for current thread
         $rootScope.$emit("UpdateDashboardThreadCount", $scope.thread);
+
+        // update the last access to current thread
+        messageService.lastAccess({id: thread._id}).$promise.then(function(res) {
+            $scope.thread.updatedAt = new Date();
+            $rootScope.$emit("UpdateDashboardThreadLastAccess", $scope.thread);
+        });
         
         // mark all notifications related to this thread is read
         notificationService.markItemsAsRead({id: thread._id}).$promise;

@@ -10,6 +10,54 @@ angular.module('buiiltApp')
         }
     });
 
+    // convert last access of current user to thread to show it first
+    function getLastAccess(threads) {
+        _.each(threads, function(thread) {
+            if (thread.lastAccess&&thread.lastAccess.length>0) {
+                var accessIndex = _.findIndex(thread.lastAccess, function(access) {
+                    return access.user.toString()===$scope.currentUser._id.toString();
+                });
+                if (accessIndex !==-1) {
+                    thread.updatedAt = new Date(thread.lastAccess[accessIndex].time);
+                }
+            }
+        });
+        threads.sort(function(a,b) {
+            if (a.updatedAt < b.updatedAt) {
+                return 1;
+            } 
+            if (a.updatedAt > b.updatedAt) {
+                return -1;
+            }
+            return 0;
+        });
+    };
+
+    // convert task date end to tomorrow, today, yesterday text
+    function filterAndSortTaskDueDate(tasks) {
+        angular.forEach(tasks, function(task) {
+            var taskDueDate = moment(task.dateEnd).format("YYYY-MM-DD");
+            if (task.dateEnd) {
+                if (moment(taskDueDate).isSame(moment().format("YYYY-MM-DD"))) {
+                    task.dueDate = "Today";
+                } else if (moment(taskDueDate).isSame(moment().add(1, "days").format("YYYY-MM-DD"))) {
+                    task.dueDate = "Tomorrow";
+                } else if (moment(taskDueDate).isSame(moment().subtract(1, "days").format("YYYY-MM-DD"))) {
+                    task.dueDate = "Yesterday";
+                }
+            }
+        });
+        tasks.sort(function(a,b) {
+            if (a.dateEnd < b.dateEnd) {
+                return -1;
+            } 
+            if (a.dateEnd > b.dateEnd) {
+                return 1;
+            }
+            return 0;
+        });
+    };
+
     //start recieve socket from server
     socket.emit("join", $scope.currentUser._id);
 
@@ -33,10 +81,10 @@ angular.module('buiiltApp')
             }
         }
         $scope.tasks = _.uniq($scope.tasks, "_id");
+        filterAndSortTaskDueDate($scope.tasks);
     });
 
     socket.on("dashboard:new", function(data) {
-        console.log(data);
         if (data.type==="task") {
             var index = getItemIndex($scope.tasks, data.task._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
@@ -61,11 +109,37 @@ angular.module('buiiltApp')
             } 
         }
     });
+
+    socket.on("thread:archive", function(data) {
+        var index = getItemIndex($scope.threads, data._id);
+        if (index !== -1) {
+            $scope.threads.splice(index, 1);
+            var projectIndex = getItemIndex($scope.projects, data.project);
+            if (projectIndex !== -1) {
+                var notificationThreads = _.filter($scope.threads, function(thread) {
+                    return thread.__v > 0;
+                });
+                var notificationTasks = _.filter($scope.tasks, function(task) {
+                    return task.__v > 0;
+                });                
+                $scope.projects[projectIndex].__v = notificationTasks.length + notificationThreads.length;
+            }
+        }
+    });
     //end recieve socket from server
 
     // subtract count number
     $scope.$on("$destroy", function() {
         functionClearThreadCount();
+        functionClearTaskCount();
+        functionUpdateThreadLastAccess();
+    });
+
+    var functionUpdateThreadLastAccess = $rootScope.$on("UpdateDashboardThreadLastAccess", function(event, data) {
+        var index = getItemIndex($scope.threads, data._id);
+        if (index !== -1) {
+            $scope.threads[index].updatedAt = data.updatedAt;
+        }
     });
 
     var functionClearThreadCount = $rootScope.$on("UpdateDashboardThreadCount", function(event, data) {
@@ -111,22 +185,11 @@ angular.module('buiiltApp')
         $ionicLoading.show();
         taskService.getProjectTask({id : project._id}).$promise.then(function(tasks) {
             $scope.tasks = tasks;
-            var dueToday = new Date();
-            var dueTomorrow = new Date();
-            dueTomorrow.setDate(dueTomorrow.getDate() +1); 
-            _.each($scope.tasks, function(task) {
-                var endDate = new Date(task.dateEnd);
-                task.dueDateToday = (endDate.setHours(0,0,0,0) == dueToday.setHours(0,0,0,0)) ? true : false;
-                if (dueTomorrow.setHours(0,0,0,0) == endDate.setHours(0,0,0,0)) {
-                    task.dueDateTomorrow = true;
-                }
-                else {
-                    task.dueDateTomorrow = false;
-                }
-            });
+            filterAndSortTaskDueDate($scope.tasks);
         });
         messageService.getProjectThread({id : project._id}).$promise.then(function(threads) {
             $scope.threads = threads;
+            getLastAccess($scope.threads);
         });
         $ionicLoading.hide();
     };
