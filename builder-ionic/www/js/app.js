@@ -16,8 +16,8 @@ angular.module('buiiltApp', [
   'restangular',
   'btford.socket-io'
   ])
-.constant('API_URL', 'http://localhost:9000/')
-// .constant('API_URL', 'https://buiilt.com.au/')
+// .constant('API_URL', 'http://localhost:9000/')
+.constant('API_URL', 'https://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');

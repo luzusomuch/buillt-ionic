@@ -11,7 +11,7 @@ angular.module('buiiltApp')
       authService.login($scope.user).then(function () {
         $ionicLoading.hide();
         $state.go('dashboard');
-        // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
+        deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
       }, function (res) {
         $scope.error = true;
         $scope.errorMsg = res.message;
@@ -41,6 +41,7 @@ angular.module('buiiltApp')
     } else {
       $scope.user.isMobile = true;
       authService.createUser($scope.user).then(function (data) {
+        deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $scope.modalSignup.hide();
         $scope.user = {
           allowNewsletter: true
