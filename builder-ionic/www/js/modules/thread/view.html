@@ -4,10 +4,10 @@
     <div class="bar bar-subheader">
 		
         <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage()" style="margin-top: 10px;">
-            <div class="item item-input">
+            <div class="item item-input remove-border">
                 <textarea style="width:80%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text">
                 </textarea>
-                <button class="button button-stable button-block" type="submit" style="width:20%; margin-right:10px;" name="action">Send
+                <button class="button button-calm button-clear button-stable button-block" type="submit" style="width:20%; margin-right:10px;" name="action">Send
                     <i class="mdi-content-send right"></i>
                 </button>
             </div>
@@ -68,41 +68,5 @@
 
         <div class="space" style="height:50px"></div>
     </ion-content>
-
-	<div class="bar bar-footer bar-calm">
-	  <div class="title">Send a Message</div>
-	</div>
 	
 </ion-view>
-
-<script id="sendMessageDialog.html" type="text/ng-template">
-    <div class="modal">
-		
-		<!-- Header -->
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Send a Message...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-		
-		<!-- Thread Name and Assignees -->
-        <ion-content padding="true" class="has-header">
-			
-            <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate ng-submit="createNewThread(form)">
-
-                <div class="item item-input item-floating-label">
-					<span class="input-label">Message Body</span>
-                    <input placeholder="Subject Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">Your message body is required...</p>
-                </div>
-				
-            </form>
-        </ion-content>
-		
-		<div class="bar bar-footer bar-calm">
-		  <div class="title">Send Message</div>
-		</div>
-		
-    </div>
-</script>

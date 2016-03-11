@@ -21,21 +21,30 @@
                 <li class="item">
                     <div class="list">
                         <ion-item class="item-text-wrap" ng-repeat="activity in task.activities">
-                            <p ng-switch="activity.type">
-                                <span>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}} </span>
+                            <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
+                            <small ng-switch="activity.type">
+                                <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                                <span ng-switch-when="create-task">created this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                                <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                                <span ng-switch-when="complete-task"> marked this task complete at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                                <span ng-switch-when="uncomplete-task"> marked this task uncomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
-                                <span ng-switch-when="uncomplete-task"> marked this task uncomplete at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                                <span ng-switch-when="edit-task"> edited this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}: </span>
 
-                                <span ng-switch-when="edit-task"> edited <strong>{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</strong> of this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                                <span ng-switch-when="assign"> assigned the following people to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
 
-                                <span ng-switch-when="assign"> assigned the following people :<span ng-repeat="member in activity.element.members"><strong>{{member}}</strong>, </span> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong>.</span>
+                                <span ng-switch-when="insert-note"> added a note to this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                            </small>
 
-                                <span ng-switch-when="insert-note"> added a note with content: <strong>{{activity.element.content}}</strong> to this task at <strong>{{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}</strong></span>
-                            </p>
+                            <div class="activity-body" ng-switch="activity.type">
+                                <span ng-switch-when="edit-task">{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</span>
+
+                                <span ng-switch-when="assign">
+                                    <span ng-repeat="member in activity.element.members"><strong>{{member}}, </strong>
+                                </span>
+
+                                <span ng-switch-when="insert-note">{{activity.element.content}}</span>
+                            </div>
                         </ion-item>
                     </div>
                 </li>
