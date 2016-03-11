@@ -24,3 +24,11 @@
 	font-weight: 500;
 	font-size: 14px;
 }
+
+.item-notifications {
+    color: #2196f3 !important;
+}
+
+.activity-header {
+    border-bottom: 1px dotted #dedede;
+}

@@ -33,7 +33,7 @@
                         <span ng-repeat="member in thread.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in thread.notMembers">{{email}}, </span>
                     </p>
-                    <p ng-show="thread.__v > 0">Updates: {{thread.__v}}</p>
+                    <p ng-show="thread.__v > 0" class="item-notifications">Updates: {{thread.__v}}</p>
 	            </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="thread in threads | orderBy: '-updatedAt'" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v==0">
@@ -57,7 +57,7 @@
                         <span ng-repeat="member in task.members | unique: '_id'">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in task.notMembers">{{email}}, </span>
                     </p>
-                    <p ng-show="task.__v > 0">Updates: {{task.__v}}</p>
+                    <p ng-show="task.__v > 0" class="item-notifications">Updates: {{task.__v}}</p>
 	            </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v == 0 && !task.completed">

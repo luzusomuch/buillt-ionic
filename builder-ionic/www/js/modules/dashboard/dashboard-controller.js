@@ -58,6 +58,17 @@ angular.module('buiiltApp')
         });
     };
 
+    // get thread with notifications and task with notifications
+    function getThreadAndTaskWithNotification() {
+        var notificationThreads = _.filter($scope.threads, function(thread) {
+            return thread.__v > 0;
+        });
+        var notificationTasks = _.filter($scope.tasks, function(task) {
+            return task.__v > 0;
+        }); 
+        return notificationTasks.length + notificationThreads.length;
+    };
+
     //start recieve socket from server
     socket.emit("join", $scope.currentUser._id);
 
@@ -66,7 +77,7 @@ angular.module('buiiltApp')
             $scope.threads.push(data);
             var index = getItemIndex($scope.projects, data.project._id);
             if (index !== -1) {
-                $scope.projects[index].__v += 1;
+                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
             }
         }
         $scope.threads = _.uniq($scope.threads, "_id");
@@ -77,7 +88,7 @@ angular.module('buiiltApp')
             $scope.tasks.push(data);
             var index = getItemIndex($scope.projects, data.project._id);
             if (index !== -1) {
-                $scope.projects[index].__v += 1;
+                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
             }
         }
         $scope.tasks = _.uniq($scope.tasks, "_id");
@@ -90,22 +101,22 @@ angular.module('buiiltApp')
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
                 var originalTask = angular.copy($scope.tasks[index]);
                 var projectIndex = getItemIndex($scope.projects, data.task.project._id);
-                if (projectIndex !== -1 && originalTask.__v === 0) {
-                    $scope.projects[projectIndex].__v += 1;
-                }
                 $scope.tasks[index].uniqId = data.uniqId;
                 $scope.tasks[index].__v += 1;
+                if (projectIndex !== -1 && originalTask.__v === 0) {
+                    $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+                }
             } 
         } else if (data.type==="thread") {
             var index = getItemIndex($scope.threads, data.thread._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.threads[index].uniqId != data.uniqId) {
                 var originalThread = angular.copy($scope.threads[index]);
                 var projectIndex = getItemIndex($scope.projects, data.thread.project._id);
-                if (projectIndex !== -1 && originalThread.__v === 0) {
-                    $scope.projects[projectIndex].__v += 1;
-                }
                 $scope.threads[index].uniqId = data.uniqId;
                 $scope.threads[index].__v += 1;
+                if (projectIndex !== -1 && originalThread.__v === 0) {
+                    $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+                }
             } 
         }
     });
@@ -116,13 +127,7 @@ angular.module('buiiltApp')
             $scope.threads.splice(index, 1);
             var projectIndex = getItemIndex($scope.projects, data.project);
             if (projectIndex !== -1) {
-                var notificationThreads = _.filter($scope.threads, function(thread) {
-                    return thread.__v > 0;
-                });
-                var notificationTasks = _.filter($scope.tasks, function(task) {
-                    return task.__v > 0;
-                });                
-                $scope.projects[projectIndex].__v = notificationTasks.length + notificationThreads.length;
+                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
             }
         }
     });
@@ -148,7 +153,7 @@ angular.module('buiiltApp')
             $scope.threads[index].__v = 0;
             var projectIndex = getItemIndex($scope.projects, data.project);
             if (projectIndex !== -1 && data.__v > 0) {
-                $scope.projects[index].__v -=1;
+                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
             }
         }
     });
@@ -159,14 +164,15 @@ angular.module('buiiltApp')
             $scope.tasks[index].__v = 0;
             var projectIndex = getItemIndex($scope.projects, data.project);
             if (projectIndex !== -1 && data.__v > 0) {
-                $scope.projects[projectIndex].__v -=1;
+                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
             }
         }
     });
 
     function getItemIndex(array, item) {
         var index = _.findIndex(array, function(i) {
-            return i._id.toString()===item.toString();
+            if (item && i._id)
+                return i._id.toString()===item.toString();
         });
         return index;
     };
