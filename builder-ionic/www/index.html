@@ -44,8 +44,8 @@
                 window.localStorage.setItem('relatedto','file');
             else if (relatedto == 'document') 
                 window.localStorage.setItem('relatedto','document');
-            else if (relatedto == "invite-people") 
-                window.localStorage.setItem('relatedto','invite-people');
+            else if (relatedto == "project") 
+                window.localStorage.setItem('relatedto','project');
             
             if (event.alert) {
                 navigator.notification.alert(event.alert);
@@ -169,6 +169,8 @@
                         window.location.href = "#/task/"+id;
                     } else if (related == 'thread') {
                         window.location.href = "#/thread/"+id;
+                    } else if (related == "project") {
+                        window.location.href = "#/dashboard/";
                     }
                     push = 0;
                     window.localStorage.removeItem('relatedto');
