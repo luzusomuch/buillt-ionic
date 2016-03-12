@@ -139,14 +139,12 @@
         // here is where you might want to send it the token for later use.
         console.log('device token = ' + result);
         window.deviceToken = result;
-        alert(result);
     };
     
     document.addEventListener("deviceready", function () {
         pushNotification = window.plugins.pushNotification;
       
         window.deviceplatform = device.platform.toLowerCase();
-        alert(window.deviceplatform);
         if (window.deviceplatform === 'ios' ) {
         //ios
             console.log('<li>registering ' + device.platform + '</li>');
