@@ -164,9 +164,9 @@
                 var related = window.localStorage.getItem('relatedto');
                 var id = window.localStorage.getItem('id');
                 var projectid = window.localStorage.getItem('projectid');
-                alert(window.localStorage.getItem("push"));
                 alert(push);
-                if (push == 1){
+                alert(related);
+                if (related){
                     if (related == 'task'){
                         window.location.href = "#/task/"+id;
                     } else if (related == 'thread') {
