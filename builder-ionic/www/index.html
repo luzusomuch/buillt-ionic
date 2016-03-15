@@ -31,8 +31,8 @@
         var pushNotification, relatedto;
         //IOS
         function onNotificationAPN(event) {
-            alert(event.payload.relatedto);
-            alert(event.relatedto);
+            // alert(event.payload.relatedto);
+            window.localStorage.setItem("pushParams", event);
             relatedto = event.relatedto;
             window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('id',event.id);
@@ -156,6 +156,7 @@
             });
           	document.addEventListener("resume", onResume, false);
             function onResume(){
+                alert(window.localStorage.getItem("pushParams"));
                 alert(relatedto);
                 var push = 0;
                 push = window.localStorage.getItem('push');
