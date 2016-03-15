@@ -28,11 +28,11 @@
         window.deviceToken = '';
         window.deviceplatform = '';
         
-        var pushNotification;
+        var pushNotification, relatedto;
         //IOS
         function onNotificationAPN(event) {
             //alert(event.payload.relatedto);
-            var relatedto = event.relatedto;
+            relatedto = event.relatedto;
             window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('id',event.id);
             window.localStorage.setItem('projectid',event.projectid);

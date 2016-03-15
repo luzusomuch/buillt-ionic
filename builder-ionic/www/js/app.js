@@ -92,10 +92,9 @@ angular.module('buiiltApp', [
     $rootScope.currentState = toState;
     authService.isLoggedInAsync(function (loggedIn) {
       if (loggedIn) {
+        alert("LOgged In");
       }
-      if (toState.authenticate && !loggedIn) {
-        $location.path('/#/signin');
-      } else if (!toState.authenticate && loggedIn) {
+      if (!toState.authenticate && loggedIn) {
         $location.path('/#/dashboard');
       }
     });
