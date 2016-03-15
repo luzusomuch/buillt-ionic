@@ -156,28 +156,30 @@
             });
           	document.addEventListener("resume", onResume, false);
             function onResume(){
-                alert(window.localStorage.getItem("pushParams"));
-                alert(relatedto);
-                var push = 0;
-                push = window.localStorage.getItem('push');
-                var related = window.localStorage.getItem('relatedto');
-                var id = window.localStorage.getItem('id');
-                var projectid = window.localStorage.getItem('projectid');
-                if (related){
-                    if (related == 'task'){
-                        window.location.href = "#/task/"+id;
-                    } else if (related == 'thread') {
-                        window.location.href = "#/thread/"+id;
-                    } else if (related == "project") {
-                        window.location.href = "#/dashboard/";
+                setTimeout(function() {
+                    alert("PUsh NOTIFICATION " + window.localStorage.getItem("pushParams"));
+                    alert("PUsh param "+window.localStorage.getItem("pushParams").push);
+                    alert("Relatedto param "+ relatedto);
+                    var push = 0;
+                    push = window.localStorage.getItem('push');
+                    var related = window.localStorage.getItem('relatedto');
+                    var id = window.localStorage.getItem('id');
+                    var projectid = window.localStorage.getItem('projectid');
+                    if (related){
+                        if (related == 'task'){
+                            window.location.href = "#/task/"+id;
+                        } else if (related == 'thread') {
+                            window.location.href = "#/thread/"+id;
+                        } else if (related == "project") {
+                            window.location.href = "#/dashboard/";
+                        }
+                        push = 0;
+                        window.localStorage.removeItem('relatedto');
+                        window.localStorage.removeItem('push');
+                        window.localStorage.removeItem('id');
+                        // window.localStorage.removeItem('projectid');
                     }
-                    push = 0;
-                    window.localStorage.removeItem('relatedto');
-                    window.localStorage.removeItem('push');
-                    window.localStorage.removeItem('id');
-                    // window.localStorage.removeItem('projectid');
-                }
-          
+                }, 1000);
             };
         }
         //android
