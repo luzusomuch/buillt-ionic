@@ -210,10 +210,16 @@ angular.module('buiiltApp')
         findAllByProject(project);
     };
 
-    if ($rootScope.selectedProject) {
+    var pushNotificationProject = window.localStorage.getItem("projectid")
+    if ($rootScope.selectedProject || pushNotificationProject) {
         $scope.headingName = " ";
-        $scope.selectedProject = $rootScope.selectedProject;
-        findAllByProject($rootScope.selectedProject);
+        if ($rootScope.selectedProject) {
+            $scope.selectedProject = $rootScope.selectedProject;
+        } else if (pushNotificationProject) {
+            $scope.selectedProject = pushNotificationProject;
+        }
+        findAllByProject($scope.selectedProject);
+        window.localStorage.removeItem('projectid');
     }
 
 	$ionicPopover.fromTemplateUrl('projectPopover.html', {
