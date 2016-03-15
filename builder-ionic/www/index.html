@@ -40,10 +40,6 @@
                 window.localStorage.setItem('relatedto','task');
             else if(relatedto == 'message')
                 window.localStorage.setItem('relatedto','thread');
-            else if (relatedto == 'file') 
-                window.localStorage.setItem('relatedto','file');
-            else if (relatedto == 'document') 
-                window.localStorage.setItem('relatedto','document');
             else if (relatedto == "project") 
                 window.localStorage.setItem('relatedto','project');
             
@@ -159,6 +155,7 @@
             });
           	document.addEventListener("resume", onResume, false);
             function onResume(){
+                console.log(relatedto);
                 var push = 0;
                 push = window.localStorage.getItem('push');
                 var related = window.localStorage.getItem('relatedto');
@@ -166,6 +163,8 @@
                 var projectid = window.localStorage.getItem('projectid');
                 alert(push);
                 alert(related);
+                alert(id);
+                alert(projectid);
                 if (related){
                     if (related == 'task'){
                         window.location.href = "#/task/"+id;
