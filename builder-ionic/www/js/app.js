@@ -20,7 +20,7 @@ angular.module('buiiltApp', [
 .constant('API_URL', 'https://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
-  $urlRouterProvider.otherwise('/dashboard');
+  $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
   // $ionicConfigProvider.tabs.position('bottom');
   // $ionicConfigProvider.views.maxCache(0);

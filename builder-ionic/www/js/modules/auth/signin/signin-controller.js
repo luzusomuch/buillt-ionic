@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('SigninCtrl', function ($ionicLoading,$scope, deviceService, authService, $window,$stateParams, $state, $location, $ionicModal, userService) {
+.controller('SigninCtrl', function ($ionicLoading, $rootScope, $scope, deviceService, authService, $window,$stateParams, $state, $location, $ionicModal, userService) {
   $scope.user = {};
   $scope.errors = {};
   $scope.submitted = false;
