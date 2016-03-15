@@ -34,7 +34,6 @@
             // alert(event.payload.relatedto);
             window.localStorage.setItem("pushParams", event);
             relatedto = event.relatedto;
-            window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('id',event.id);
             window.localStorage.setItem('projectid',event.projectid);
             if (relatedto == 'task')
@@ -158,10 +157,10 @@
             function onResume(){
                 setTimeout(function() {
                     alert("PUsh NOTIFICATION " + window.localStorage.getItem("pushParams"));
-                    alert("PUsh param "+window.localStorage.getItem("pushParams").push);
                     alert("Relatedto param "+ relatedto);
-                    var push = 0;
-                    push = window.localStorage.getItem('push');
+                    if (window.localStorage.getItem("pushParams")) {
+                        alert("PUSH PARAMS RELATED TO" + window.localStorage.getItem("pushParams").relatedto);
+                    }
                     var related = window.localStorage.getItem('relatedto');
                     var id = window.localStorage.getItem('id');
                     var projectid = window.localStorage.getItem('projectid');
@@ -173,11 +172,9 @@
                         } else if (related == "project") {
                             window.location.href = "#/dashboard/";
                         }
-                        push = 0;
                         window.localStorage.removeItem('relatedto');
                         window.localStorage.removeItem('push');
                         window.localStorage.removeItem('id');
-                        // window.localStorage.removeItem('projectid');
                     }
                 }, 1000);
             };
