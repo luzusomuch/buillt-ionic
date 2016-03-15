@@ -155,16 +155,12 @@
             });
           	document.addEventListener("resume", onResume, false);
             function onResume(){
-                console.log(relatedto);
+                alert(relatedto);
                 var push = 0;
                 push = window.localStorage.getItem('push');
                 var related = window.localStorage.getItem('relatedto');
                 var id = window.localStorage.getItem('id');
                 var projectid = window.localStorage.getItem('projectid');
-                alert(push);
-                alert(related);
-                alert(id);
-                alert(projectid);
                 if (related){
                     if (related == 'task'){
                         window.location.href = "#/task/"+id;

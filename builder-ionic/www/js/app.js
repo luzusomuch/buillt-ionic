@@ -72,6 +72,7 @@ angular.module('buiiltApp', [
   if (window.localStorage.getItem('token')) {
     userService.get().$promise.then(function(currentUser){
       $rootScope.currentUser = currentUser;  
+      $location.path('/#/dashboard');
     });
   }
 
@@ -88,18 +89,18 @@ angular.module('buiiltApp', [
     }
   };
 
-  $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-    $rootScope.currentState = toState;
-    authService.isLoggedInAsync(function (loggedIn) {
-      if (loggedIn) {
-        alert("LOgged In");
-        $location.path('/#/dashboard');
-      }
-      if (!toState.authenticate && loggedIn) {
-        $location.path('/#/dashboard');
-      }
-    });
-  });
+  // $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
+  //   $rootScope.currentState = toState;
+  //   authService.isLoggedInAsync(function (loggedIn) {
+  //     if (loggedIn) {
+  //       alert("LOgged In");
+  //       $location.path('/#/dashboard');
+  //     }
+  //     if (!toState.authenticate && loggedIn) {
+  //       $location.path('/#/dashboard');
+  //     }
+  //   });
+  // });
 
   $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
                  
