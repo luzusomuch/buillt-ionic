@@ -4,6 +4,13 @@ angular.module('buiiltApp')
   $scope.errors = {};
   $scope.submitted = false;
 
+  if (window.localStorage.getItem('token')) {
+    userService.get({isMobile: true}).$promise.then(function(currentUser){
+      $rootScope.currentUser = currentUser;  
+      $state.go('dashboard');
+    });
+  }
+
   $scope.signin = function (form) {
     $scope.submitted = true;
     if (form.$valid) {  

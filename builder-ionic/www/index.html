@@ -31,7 +31,8 @@
         var pushNotification, relatedto;
         //IOS
         function onNotificationAPN(event) {
-            //alert(event.payload.relatedto);
+            alert(event.payload.relatedto);
+            alert(event.relatedto);
             relatedto = event.relatedto;
             window.localStorage.setItem('push',event.push);
             window.localStorage.setItem('id',event.id);

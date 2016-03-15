@@ -70,9 +70,8 @@ angular.module('buiiltApp', [
   });
    
   if (window.localStorage.getItem('token')) {
-    userService.get().$promise.then(function(currentUser){
+    userService.get({isMobile: true}).$promise.then(function(currentUser){
       $rootScope.currentUser = currentUser;  
-      $location.path('/#/dashboard');
     });
   }
 
