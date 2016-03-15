@@ -33,15 +33,15 @@
         function onNotificationAPN(event) {
             relatedto = event.relatedto;
             itemId = event.id;
-            projectid = event.projectid;
-            window.localStorage.setItem('id',event.id);
-            window.localStorage.setItem('projectid',event.projectid);
-            if (relatedto == 'task')
-                window.localStorage.setItem('relatedto','task');
-            else if(relatedto == 'message')
-                window.localStorage.setItem('relatedto','thread');
-            else if (relatedto == "project") 
-                window.localStorage.setItem('relatedto','project');
+            projectId = event.projectid;
+            // window.localStorage.setItem('id',event.id);
+            // window.localStorage.setItem('projectid',event.projectid);
+            // if (relatedto == 'task')
+            //     window.localStorage.setItem('relatedto','task');
+            // else if(relatedto == 'message')
+            //     window.localStorage.setItem('relatedto','thread');
+            // else if (relatedto == "project") 
+            //     window.localStorage.setItem('relatedto','project');
             
             if (event.alert) {
                 navigator.notification.alert(event.alert);
@@ -167,7 +167,7 @@
                         window.location.href = "#/dashboard";
                         window.localStorage.setItem("pushProject", projectId);
                     }
-                    relatedto = null;
+                    // relatedto = null;
 
                     // var related = window.localStorage.getItem('relatedto');
                     // var id = window.localStorage.getItem('id');
