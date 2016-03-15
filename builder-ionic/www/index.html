@@ -34,15 +34,6 @@
             relatedto = event.relatedto;
             itemId = event.id;
             projectId = event.projectid;
-            // window.localStorage.setItem('id',event.id);
-            // window.localStorage.setItem('projectid',event.projectid);
-            // if (relatedto == 'task')
-            //     window.localStorage.setItem('relatedto','task');
-            // else if(relatedto == 'message')
-            //     window.localStorage.setItem('relatedto','thread');
-            // else if (relatedto == "project") 
-            //     window.localStorage.setItem('relatedto','project');
-            
             if (event.alert) {
                 navigator.notification.alert(event.alert);
             }
@@ -156,9 +147,6 @@
           	document.addEventListener("resume", onResume, false);
             function onResume(){
                 setTimeout(function() {
-                    alert("Relatedto param "+ relatedto);
-                    alert("Item Id param "+ itemId);
-                    alert("Project Id param "+ projectId);
                     if (relatedto === "thread") {
                         window.location.href = "#/thread/"+itemId;
                     } else if (relatedto === "task") {
@@ -167,23 +155,7 @@
                         window.location.href = "#/dashboard";
                         window.localStorage.setItem("pushProject", projectId);
                     }
-                    // relatedto = null;
-
-                    // var related = window.localStorage.getItem('relatedto');
-                    // var id = window.localStorage.getItem('id');
-                    // var projectid = window.localStorage.getItem('projectid');
-                    // if (related){
-                    //     if (related == 'task'){
-                    //         window.location.href = "#/task/"+id;
-                    //     } else if (related == 'thread') {
-                    //         window.location.href = "#/thread/"+id;
-                    //     } else if (related == "project") {
-                    //         window.location.href = "#/dashboard/";
-                    //     }
-                    //     window.localStorage.removeItem('relatedto');
-                    //     window.localStorage.removeItem('push');
-                    //     window.localStorage.removeItem('id');
-                    // }
+                    relatedto = null;
                 }, 1000);
             };
         }

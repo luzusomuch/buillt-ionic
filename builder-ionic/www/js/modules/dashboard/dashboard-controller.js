@@ -215,11 +215,14 @@ angular.module('buiiltApp')
         $scope.headingName = " ";
         if ($rootScope.selectedProject) {
             $scope.selectedProject = $rootScope.selectedProject;
+            findAllByProject($scope.selectedProject);
         } else if (pushNotificationProject) {
-            $scope.selectedProject = pushNotificationProject;
+            projectService.get({id: pushNotificationProject}).$promise.then(function(res) {
+                $scope.selectedProject = res;
+                findAllByProject($scope.selectedProject);
+                window.localStorage.removeItem('pushProject');
+            });
         }
-        findAllByProject($scope.selectedProject);
-        window.localStorage.removeItem('pushProject');
     }
 
 	$ionicPopover.fromTemplateUrl('projectPopover.html', {
