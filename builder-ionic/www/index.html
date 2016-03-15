@@ -28,12 +28,12 @@
         window.deviceToken = '';
         window.deviceplatform = '';
         
-        var pushNotification, relatedto;
+        var pushNotification, relatedto, itemId, projectId;
         //IOS
         function onNotificationAPN(event) {
-            // alert(event.payload.relatedto);
-            window.localStorage.setItem("pushParams", event);
             relatedto = event.relatedto;
+            itemId = event.id;
+            projectid = event.projectid;
             window.localStorage.setItem('id',event.id);
             window.localStorage.setItem('projectid',event.projectid);
             if (relatedto == 'task')
@@ -156,26 +156,34 @@
           	document.addEventListener("resume", onResume, false);
             function onResume(){
                 setTimeout(function() {
-                    alert("PUsh NOTIFICATION " + window.localStorage.getItem("pushParams"));
                     alert("Relatedto param "+ relatedto);
-                    if (window.localStorage.getItem("pushParams")) {
-                        alert("PUSH PARAMS RELATED TO" + window.localStorage.getItem("pushParams").relatedto);
+                    alert("Item Id param "+ itemId);
+                    alert("Project Id param "+ projectId);
+                    if (relatedto === "thread") {
+                        window.location.href = "#/thread/"+itemId;
+                    } else if (relatedto === "task") {
+                        window.location.href = "#/task/"+itemId;
+                    } else if (relatedto === "project") {
+                        window.location.href = "#/dashboard";
+                        window.localStorage.setItem("pushProject", projectId);
                     }
-                    var related = window.localStorage.getItem('relatedto');
-                    var id = window.localStorage.getItem('id');
-                    var projectid = window.localStorage.getItem('projectid');
-                    if (related){
-                        if (related == 'task'){
-                            window.location.href = "#/task/"+id;
-                        } else if (related == 'thread') {
-                            window.location.href = "#/thread/"+id;
-                        } else if (related == "project") {
-                            window.location.href = "#/dashboard/";
-                        }
-                        window.localStorage.removeItem('relatedto');
-                        window.localStorage.removeItem('push');
-                        window.localStorage.removeItem('id');
-                    }
+                    relatedto = null;
+
+                    // var related = window.localStorage.getItem('relatedto');
+                    // var id = window.localStorage.getItem('id');
+                    // var projectid = window.localStorage.getItem('projectid');
+                    // if (related){
+                    //     if (related == 'task'){
+                    //         window.location.href = "#/task/"+id;
+                    //     } else if (related == 'thread') {
+                    //         window.location.href = "#/thread/"+id;
+                    //     } else if (related == "project") {
+                    //         window.location.href = "#/dashboard/";
+                    //     }
+                    //     window.localStorage.removeItem('relatedto');
+                    //     window.localStorage.removeItem('push');
+                    //     window.localStorage.removeItem('id');
+                    // }
                 }, 1000);
             };
         }
