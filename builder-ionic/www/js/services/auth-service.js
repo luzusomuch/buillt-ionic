@@ -24,6 +24,9 @@ angular.module('buiiltApp')
         window.localStorage.setItem('token', data.token);
         currentUser = userService.get();
         $rootScope.currentUser = currentUser; 
+        //Track Reply Sent
+        mixpanel.identify($rootScope.currentUser._id);
+        mixpanel.track("Sign In From Mobile");
         deferred.resolve(data);
         return cb();
       })
@@ -62,6 +65,9 @@ angular.module('buiiltApp')
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
           currentUser = userService.get();
+          //Track Reply Sent
+          mixpanel.identify($rootScope.currentUser._id);
+          mixpanel.track("Sign Up From Mobile");
           $state.go('dashboard')
         }
         return cb(user);

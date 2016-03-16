@@ -39,6 +39,9 @@ angular.module('buiiltApp')
                 $scope.message.text = '';
                 $scope.thread = res;
                 $("textarea#textarea1").css('height', 0+'px');
+                //Track Reply Sent
+                mixpanel.identify($scope.currentUser._id);
+                mixpanel.track("Reply Sent From Mobile");
             });
         }
     };

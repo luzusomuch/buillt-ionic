@@ -16,8 +16,8 @@ angular.module('buiiltApp', [
   'restangular',
   'btford.socket-io'
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'https://buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'https://buiilt.com.au/')
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
   $urlRouterProvider.otherwise('/signin');
@@ -88,18 +88,18 @@ angular.module('buiiltApp', [
     }
   };
 
-  // $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
-  //   $rootScope.currentState = toState;
-  //   authService.isLoggedInAsync(function (loggedIn) {
-  //     if (loggedIn) {
-  //       alert("LOgged In");
-  //       $location.path('/#/dashboard');
-  //     }
-  //     if (!toState.authenticate && loggedIn) {
-  //       $location.path('/#/dashboard');
-  //     }
-  //   });
-  // });
+  $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
+    $rootScope.currentState = toState;
+    // authService.isLoggedInAsync(function (loggedIn) {
+    //   if (loggedIn) {
+    //     alert("LOgged In");
+    //     $location.path('/#/dashboard');
+    //   }
+    //   if (!toState.authenticate && loggedIn) {
+    //     $location.path('/#/dashboard');
+    //   }
+    // });
+  });
 
   $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
                  

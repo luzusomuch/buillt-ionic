@@ -411,11 +411,12 @@ angular.module('buiiltApp')
     $scope.newTeam = {};
 
     $scope.selectTeamType = function(value) {
+        var originalTeamName = angular.copy($scope.newTeam.name);
         $scope.newTeam.type = value;
         if (value==="homeOwner") {
             $scope.newTeam.name = $scope.currentUser.name;
         } else {
-            $scope.newTeam.name = null;
+            $scope.newTeam.name = originalTeamName;
         }
     };
 
