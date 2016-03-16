@@ -22,13 +22,14 @@ angular.module('buiiltApp')
       })
       .success(function(data) {
         window.localStorage.setItem('token', data.token);
-        currentUser = userService.get();
-        $rootScope.currentUser = currentUser; 
-        //Track Reply Sent
-        mixpanel.identify($rootScope.currentUser._id);
-        mixpanel.track("Sign In From Mobile");
-        deferred.resolve(data);
-        return cb();
+        currentUser = userService.get().promise.then(function(res) {
+          $rootScope.currentUser = currentUser; 
+          //Track Reply Sent
+          mixpanel.identify($rootScope.currentUser._id);
+          mixpanel.track("Sign In From Mobile");
+          deferred.resolve(data);
+          return cb();
+        });
       })
       .error(function(err) {
         this.logout();
