@@ -64,11 +64,24 @@ angular.module('buiiltApp')
       function(data) {
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
-          currentUser = userService.get();
-          //Track Reply Sent
-          mixpanel.identify($rootScope.currentUser._id);
-          mixpanel.track("Sign Up From Mobile");
-          $state.go('dashboard')
+          userService.get().$promise.then(function(res) {
+            currentUser = res;
+            mixpanel.identify(res._id);
+            mixpanel.people.set({
+              "$first_name": res.firstName,
+              "$last_name": res.lastName,
+              "$created": new Date(),
+              "$email": res.email
+            });
+            mixpanel.track("Sign Up From Mobile", {
+              "first_name": res.firstName,
+              "last_name": res.lastName,
+              "created": new Date(),
+              "email": res.email,
+            }, function() {
+              $state.go('dashboard')
+            });
+          });
         }
         return cb(user);
       },
