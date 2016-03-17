@@ -4,6 +4,12 @@ angular.module('buiiltApp')
     id: '@uuid'
   },
   {
+    loginAndroid: {
+      method: "POST",
+      params: {
+        action: "/auth/local"
+      }
+    },
     get: {
       method: 'GET',
       params: {

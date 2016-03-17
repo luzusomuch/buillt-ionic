@@ -22,7 +22,7 @@ angular.module('buiiltApp')
       })
       .success(function(data) {
         window.localStorage.setItem('token', data.token);
-        currentUser = userService.get().promise.then(function(res) {
+        currentUser = userService.get().$promise.then(function(res) {
           $rootScope.currentUser = currentUser; 
           //Track Reply Sent
           mixpanel.identify($rootScope.currentUser._id);
