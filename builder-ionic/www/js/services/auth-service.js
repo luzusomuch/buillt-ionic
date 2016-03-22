@@ -24,7 +24,6 @@ angular.module('buiiltApp')
         window.localStorage.setItem('token', data.token);
         currentUser = userService.get().$promise.then(function(res) {
           $rootScope.currentUser = currentUser; 
-          //Track Reply Sent
           mixpanel.identify($rootScope.currentUser._id);
           mixpanel.track("Sign In From Mobile");
           deferred.resolve(data);
