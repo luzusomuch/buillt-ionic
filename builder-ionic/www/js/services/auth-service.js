@@ -43,12 +43,13 @@ angular.module('buiiltApp')
      *
      * @param  {Function}
      */
-    logout: function() {
+    logout: function(cb) {
       window.localStorage.removeItem('token');
       currentUser = {};
       $rootScope.currentUser = {};
-      // window.location.href = '/#/signin';
-      $state.go('signin');
+      //window.location.href = '/#/signin';
+      //$state.go('signin');
+      return cb();
     },
     /**
      * Create a new user
