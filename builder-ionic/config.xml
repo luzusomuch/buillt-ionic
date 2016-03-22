@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- ios id com.hoanvu.buiilt version 2.0.1-->
+<!-- ios id com.hoanvu.buiilt version 2.0.2-->
 <!-- android id com.buiilt.hoanvu 2.0.2-->
-<widget id="com.buiilt.hoanvu" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hoanvu.buiilt" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>buiilt</name>
   <description>&#xD;&#xD;
     Built project.&#xD;&#xD;
