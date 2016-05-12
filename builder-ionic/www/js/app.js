@@ -14,18 +14,17 @@ angular.module('buiiltApp', [
   'angular-loading-bar',
   'cgNotify',
   'restangular',
-  'btford.socket-io'
+  'btford.socket-io',
+  'angular-filepicker',
   ])
 .constant('API_URL', 'http://localhost:9000/')
 // .constant('API_URL', 'https://buiilt.com.au/')
 
 
-.config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider){
+.config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
   $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
-  // $ionicConfigProvider.tabs.position('bottom');
-  // $ionicConfigProvider.views.maxCache(0);
-  // cfpLoadingBarProvider.includeSpinner = true;
+  filepickerProvider.setKey('AM6Wn3DzwRimryydBnsj7z');
 
 })
 .factory('authInterceptor', function ($q, $location) {

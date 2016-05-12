@@ -1,0 +1,80 @@
+<ion-view title='{{file.name}}'>
+    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
+
+    <!-- show upload reversion modal -->
+    <ion-nav-buttons side="right" >
+        <button ng-click="openUploadReversion()" class="button button-clear icon-right ion-ios-plus-empty" style="margin-right: 10px;"></button> 
+    </ion-nav-buttons>
+
+    <ion-content class="has-header file-content">
+        <div class="space" style="margin-top: 20px;"></div>
+        <div id="file-detail-content">
+            <div class="item-text-wrap">
+                <div class="activity-item">
+                    <div class="activity-header">
+                        <span class="activity-creator"><strong>{{(file.owner._id==currentUser._id) ? "You" : file.owner.name}}</strong></span>
+                        <small> has created this file at {{file.createdAt | date : 'hh:mm a dd-MM-yyyy'}}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-text-wrap" ng-repeat="activity in file.activities" ng-show="activity.type=='upload-reversion' || activity.type=='related-thread' || activity.type=='related-task'">
+                
+                <div class="activity-item">
+            
+                    <div class="activity-header">
+                        <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
+                
+                        <small ng-switch="activity.type">
+                            <span ng-switch-when="upload-reversion"> has uploaded reversion of this file at {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
+
+                            <span ng-switch-when="related-thread"> has created related thread at {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
+
+                            <span ng-switch-when="related-task"> has created related thread at {{activity.createdAt | date:'hh:mm a dd-MM-yyyy'}}.</span>
+                        </small>
+                    </div>
+
+                    <div class="activity-body" ng-switch="activity.type">
+                        <span ng-switch-when="upload-reversion">
+                            <img ng-show="activity.type=='upload-reversion'" file-picker-thumbnail url="{{activity.element.link}}" src="" alt="" style="width: 100%; height: auto">
+                        </span>
+
+                        <span ng-switch-when="related-thread">
+                            "<a ui-sref="threadDetail({threadId: activity.element.item})">{{activity.element.name}}</a>"
+                        </span>
+
+                        <span ng-switch-when="related-task">
+                            "<a ui-sref="taskDetail({taskDetail: activity.element.item})">{{activity.element.name}}</a>"
+                        </span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+
+<script id="modalCreateDocument.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Upload File Reversion...</h1>
+            <div class="buttons">
+                <button ng-click="closeModal()" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        <ion-content padding="true" class="has-header">
+            <form ng-submit="uploadReversion()" name="uploadForm">
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+
+                <div class="item item-input">
+                    <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
+                </div>
+
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+                <div class="row" style="">
+                    <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>

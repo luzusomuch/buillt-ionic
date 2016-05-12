@@ -12,7 +12,7 @@ angular.module('buiiltApp')
     });
 
     // convert last access of current user to thread to show it first
-    function getLastAccess(threads) {
+    function getThreadsLastAccess(threads) {
         _.each(threads, function(thread) {
             if (thread.lastAccess&&thread.lastAccess.length>0) {
                 var accessIndex = _.findIndex(thread.lastAccess, function(access) {
@@ -28,6 +28,28 @@ angular.module('buiiltApp')
                 return 1;
             } 
             if (a.updatedAt > b.updatedAt) {
+                return -1;
+            }
+            return 0;
+        });
+    };
+    /*Get last access of current user in files list to show recently first*/
+    function getFilesLastAccess(files) {
+        _.each(files, function(file) {
+            if (file.lastAccess&&file.lastAccess.length>0) {
+                var accessIndex = _.findIndex(file.lastAccess, function(access) {
+                    return access.user.toString()===$rootScope.currentUser._id.toString();
+                });
+                if (accessIndex !==-1) {
+                    file.createdAt = file.lastAccess[accessIndex].time;
+                }
+            }
+        });
+        files.sort(function(a,b) {
+            if (a.createdAt < b.createdAt) {
+                return 1;
+            }
+            if (a.createdAt > b.createdAt) {
                 return -1;
             }
             return 0;
@@ -230,7 +252,8 @@ angular.module('buiiltApp')
             $scope.documents = res[4];
             filterAndSortTaskDueDate($scope.tasks);
             documentSetInitial();
-            getLastAccess($scope.threads);
+            getThreadsLastAccess($scope.threads);
+            getFilesLastAccess($scope.files);
             $ionicLoading.hide();
         });
     };

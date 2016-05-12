@@ -43,4 +43,18 @@ angular.module('buiiltApp')
         });
       }
     };
+  })
+  .directive("filePickerThumbnail", function() {
+    return {
+      restrict: "A",
+      scope: {
+        url: "@"
+      },
+      link: function(scope, element, attrs) {
+        var splitedUrl = scope.url.split("/");
+        var result = "https://process.filestackapi.com/AM6Wn3DzwRimryydBnsj7z/output=format:jpg/"
+        result += splitedUrl[splitedUrl.length-1];
+        attrs.$set("src", result);
+      }
+    }
   });
