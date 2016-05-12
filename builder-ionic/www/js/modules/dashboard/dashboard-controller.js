@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -58,6 +58,27 @@ angular.module('buiiltApp')
             return 0;
         });
     };
+
+    function documentSetInitial() {
+        /*Check to allow added document set 1*/
+        var allowAddedSet1 = true;
+        _.each($scope.documentSets, function(documentSet) {
+            if (documentSet.name==="Set 1" && documentSet.notAllowEditOrCopy) {
+                allowAddedSet1 = false;
+                return false;
+            }
+        });
+        if (allowAddedSet1) 
+            $scope.documentSets.push({name: "Set 1", documents: [], notAllowEditOrCopy: true});
+
+        /*Add documents to document set 1 which haven't belong to any document set */
+        _.each($scope.documents, function(document) {
+            if (!document.documentSet) {
+                document.project = (document.project._id) ? document.project._id : document.project;
+                $scope.documentSets[$scope.documentSets.length -1].documents.push(document);
+            }
+        });
+    }
 
     // get thread with notifications and task with notifications
     function getThreadAndTaskWithNotification() {
@@ -185,20 +206,33 @@ angular.module('buiiltApp')
             $scope.currentTab = 'thread';
         } else if (value == 1) {
             $scope.currentTab = 'task';
+        } else if (value===2) {
+            $scope.currentTab = "file"
+        } else if (value===3) {
+            $scope.currentTab = "document";
         }
     };
 
     function findAllByProject(project) {
         $ionicLoading.show();
-        taskService.getProjectTask({id : project._id}).$promise.then(function(tasks) {
-            $scope.tasks = tasks;
+        var prom = [
+            taskService.getProjectTask({id: project._id}).$promise, 
+            messageService.getProjectThread({id : project._id}).$promise,
+            fileService.getProjectFiles({id: project._id, type: "file"}).$promise,
+            documentService.me({id: project._id}).$promise,
+            fileService.getProjectFiles({id: project._id, type: "document"}).$promise
+        ];
+        $q.all(prom).then(function(res) {
+            $scope.tasks = res[0];
+            $scope.threads = res[1];
+            $scope.files = res[2];
+            $scope.documentSets = res[3];
+            $scope.documents = res[4];
             filterAndSortTaskDueDate($scope.tasks);
-        });
-        messageService.getProjectThread({id : project._id}).$promise.then(function(threads) {
-            $scope.threads = threads;
+            documentSetInitial();
             getLastAccess($scope.threads);
+            $ionicLoading.hide();
         });
-        $ionicLoading.hide();
     };
 
     $scope.headingName = "Project";
@@ -210,6 +244,10 @@ angular.module('buiiltApp')
         findAllByProject(project);
     };
 
+    /*
+    If receive a push notification related to project invite
+    then the app will show that project as selected
+    */
     var pushNotificationProject = window.localStorage.getItem("pushProject")
     if ($rootScope.selectedProject || pushNotificationProject) {
         $scope.headingName = " ";

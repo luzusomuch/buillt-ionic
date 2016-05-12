@@ -25,12 +25,6 @@ angular.module('buiiltApp').factory('messageService', function($rootScope, $q, $
     get : {
       method : 'GET',
     },
-    getOne : {
-      method : 'GET',
-      params : {
-        action : 'one'
-      }
-    },
     lastAccess: {
       method: "GET",
       params: {

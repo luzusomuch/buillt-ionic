@@ -5,13 +5,6 @@ angular.module('buiiltApp')
         insertDevice: {
             method: 'post'
         },
-        getDevice: {
-            method: 'get',
-            params: {
-                id: 'id',
-                action: 'device'
-            }
-        },
         removeDevice: {
             method: 'get',
             params: {

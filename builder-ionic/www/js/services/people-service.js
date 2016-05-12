@@ -8,12 +8,6 @@ angular.module('buiiltApp')
                     action: 'invite'
                 }
             },
-            selectWinnerTender: {
-                method: 'put',
-                params: {
-                    action: 'select-winner-tender'
-                }
-            },
             getInvitePeople: {
                 method: 'get',
                 params: {

@@ -6,13 +6,6 @@ angular.module('buiiltApp').factory('taskService', function($rootScope, $q, $res
     get : {
       method : 'GET',
     },
-    getAll: {
-      method: 'GET',
-      params: {
-        action : 'list'
-      },
-      isArray: true
-    },
     getProjectTask: {
       method: "GET",
       params: {action: "project-tasks"},
@@ -23,13 +16,6 @@ angular.module('buiiltApp').factory('taskService', function($rootScope, $q, $res
     },
     update : {
       method : 'PUT'
-    },
-    getAllByUser: {
-      method: 'get',
-      params: {
-        action: 'list-by-user'
-      },
-      isArray: true
     }
   });
 });
