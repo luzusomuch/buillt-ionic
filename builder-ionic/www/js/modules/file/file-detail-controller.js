@@ -73,6 +73,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($scope, $rootS
         $ionicLoading.show();
         uploadService.uploadReversion({id: file._id}, $scope.reversion).$promise.then(function(res) {
             $ionicLoading.hide();
+            $ionicLoading.show({ template: 'Uploaded File Reversion Successfully!', noBackdrop: true, duration: 2000 })
             $scope.closeModal();
         }, function(err) {
             console.log(err);

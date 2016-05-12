@@ -10,7 +10,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
                 return authService.getCurrentTeam().$promise;
             },
             currentUser: function(userService){
-                return userService.get().$promise;
+                return userService.get({isMobile: true}).$promise;
             },
             totalNotifications: function(notificationService) {
                 return notificationService.getTotalForIos().$promise;

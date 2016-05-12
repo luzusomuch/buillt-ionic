@@ -10,7 +10,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
                 return fileService.get({id:$stateParams.fileId}).$promise;
             },
             currentUser: function(authService) {
-                return authService.getCurrentUser().$promise;
+                return authService.getCurrentUser({isMobile: true}).$promise;
             }
         }
     })   

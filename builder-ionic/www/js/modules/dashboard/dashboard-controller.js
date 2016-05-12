@@ -38,7 +38,7 @@ angular.module('buiiltApp')
         _.each(files, function(file) {
             if (file.lastAccess&&file.lastAccess.length>0) {
                 var accessIndex = _.findIndex(file.lastAccess, function(access) {
-                    return access.user.toString()===$rootScope.currentUser._id.toString();
+                    return access.user.toString()===$scope.currentUser._id.toString();
                 });
                 if (accessIndex !==-1) {
                     file.createdAt = file.lastAccess[accessIndex].time;
@@ -137,6 +137,10 @@ angular.module('buiiltApp')
         }
         $scope.tasks = _.uniq($scope.tasks, "_id");
         filterAndSortTaskDueDate($scope.tasks);
+    });
+
+    socket.on("file:new", function(data) {
+
     });
 
     socket.on("dashboard:new", function(data) {
@@ -305,13 +309,13 @@ angular.module('buiiltApp')
                         if (tender.hasSelect) {
                             var isLeader = (_.findIndex(tender.tenderers, function(tenderer) {
                                 if (tenderer._id) {
-                                    return tenderer._id._id.toString() === $rootScope.currentUser._id.toString();
+                                    return tenderer._id._id.toString() === $scope.currentUser._id.toString();
                                 }
                             }) !== -1) ? true : false;
                             if (!isLeader) {
                                 _.each(tender.tenderers, function(tenderer) {
                                     var memberIndex = _.findIndex(tenderer.teamMember, function(member) {
-                                        return member._id.toString() === $rootScope.currentUser._id.toString();
+                                        return member._id.toString() === $scope.currentUser._id.toString();
                                     });
                                     if (memberIndex !== -1) {
                                         _.each(tenderer.teamMember, function(member) {
@@ -329,7 +333,7 @@ angular.module('buiiltApp')
                             } else {
                                 $scope.projectMembers.push(tender.tenderers[0]._id);
                                 _.each(tender.tenderers, function(tenderer) {
-                                    if (tenderer._id._id.toString() === $rootScope.currentUser._id.toString()) {
+                                    if (tenderer._id._id.toString() === $scope.currentUser._id.toString()) {
                                         _.each(tenderer.teamMember, function(member) {
                                             member.select = false;
                                             $scope.projectMembers.push(member);
@@ -344,6 +348,8 @@ angular.module('buiiltApp')
                     $scope.modalCreateThread.show();
                 } else if ($scope.currentTab==="task") {
                     $scope.modalCreateTask.show();
+                } else if ($scope.currentTab==="file") {
+                    $scope.createNewFile()
                 }
             });
         }
@@ -351,6 +357,8 @@ angular.module('buiiltApp')
             $scope.modalCreateThread.show();
         } else if ($scope.currentTab==="task") {
             $scope.modalCreateTask.show();
+        } else if ($scope.currentTab==="file") {
+            $scope.createNewFile()
         }
     };
 
@@ -494,6 +502,24 @@ angular.module('buiiltApp')
         } else {
             $scope.error.team = "Please check your input";
         }
+    };
+
+    $scope.createNewFile = function() {
+        $ionicLoading.show();
+        $scope.uploadFile = {
+            members: [],
+            tags: [],
+            type: "file"
+        };
+        fileService.create({id: $scope.selectedProject._id}, $scope.uploadFile).$promise.then(function(res) {
+            $ionicLoading.hide();
+            $ionicLoading.show({ template: 'Create New File Successfully!', noBackdrop: true, duration: 2000 });
+            $scope.files.push(res);
+            $state.go("fileDetail", {fileId: res._id});
+        }, function(err) {
+            $ionicLoading.hide();
+            dialogService.showToast("There Has Been An Error...");
+        });
     };
 
     //function hide modal
