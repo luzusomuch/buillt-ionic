@@ -1,8 +1,8 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, team, currentUser, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
     $scope.error = {};
     $scope.currentTeam = team;
-    $scope.currentUser = currentUser;
+    $scope.currentUser = $rootScope.currentUser;
     $scope.projects = [];
     $scope.submitted = false;
     _.each($scope.currentUser.projects, function(project) {

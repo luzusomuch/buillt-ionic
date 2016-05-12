@@ -1,4 +1,4 @@
-angular.module("buiiltApp").controller("FileDetailCtrl", function($scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, currentUser, file, socket, notificationService, uploadService) {
+angular.module("buiiltApp").controller("FileDetailCtrl", function($scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, file, socket, notificationService, uploadService) {
     socket.emit("join", file._id);
     socket.on("file:update", function(data) {
         $scope.file = data;
@@ -31,7 +31,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($scope, $rootS
 
     $scope.file = file;
     fileInitial($scope.file);
-    $scope.currentUser = currentUser;
+    $scope.currentUser = $rootScope.currentUser;
 
     $ionicPopover.fromTemplateUrl('modalCreateDocument.html', {
         scope: $scope

@@ -1,7 +1,7 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($rootScope, $ionicLoading, $timeout, $scope,task,currentUser,taskService, socket, notificationService) {
+.controller('TaskDetailCtrl', function($rootScope, $ionicLoading, $timeout, $scope,task,taskService, socket, notificationService) {
     $scope.task = task;
-    $scope.currentUser = currentUser;
+    $scope.currentUser = $rootScope.currentUser;
 
     socket.emit("join", task._id);
     socket.on("task:update", function(data) {

@@ -98,9 +98,9 @@ angular.module('buiiltApp')
               $rootScope.modalNotification.hide();
             })
         };
-        authService.getCurrentUser().$promise.then(function(currentUser){
-          $rootScope.currentUser = $scope.currentUser = currentUser;
-        });
+        // authService.getCurrentUser().$promise.then(function(currentUser){
+        //   $rootScope.currentUser = $scope.currentUser = currentUser;
+        // });
       }
     }
   })

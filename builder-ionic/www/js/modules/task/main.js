@@ -8,9 +8,6 @@ angular.module('buiiltApp').config(function($stateProvider) {
         resolve: {
             task: function(taskService, $stateParams) {
                 return taskService.get({id:$stateParams.taskId}).$promise;
-            },
-            currentUser: function(authService) {
-                return authService.getCurrentUser({isMobile: true}).$promise;
             }
         }
     })   

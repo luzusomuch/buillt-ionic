@@ -2,7 +2,7 @@ angular.module('buiiltApp')
 .factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $q,$state) {
   var currentUser = {};
   if (window.localStorage.getItem('token')) {
-    currentUser = userService.get({isMobile: true});
+    $rootScope.currentUser = currentUser = userService.get({isMobile: true});
   }
   return {
     /**
@@ -66,7 +66,7 @@ angular.module('buiiltApp')
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
           userService.get().$promise.then(function(res) {
-            currentUser = res;
+            $rootScope.currentUser = currentUser = res;
             mixpanel.identify(res._id);
             mixpanel.people.set({
               "$first_name": res.firstName,

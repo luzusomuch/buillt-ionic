@@ -1,7 +1,7 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, thread, messageService, $anchorScroll, $ionicModal, currentUser, notificationService) {
+.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, thread, messageService, $anchorScroll, $ionicModal, notificationService) {
     $scope.thread = thread;
-    $scope.currentUser = currentUser;
+    $scope.currentUser = $rootScope.currentUser;
 
     $scope.message = {};
 

@@ -1,0 +1,10 @@
+<ion-view title='{{document.name}}'>
+    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
+
+    <ion-content class="has-header document-content">
+        <div class="space" style="margin-top: 20px;"></div>
+        <div id="document-detail-content">
+            <img file-picker-thumbnail url="{{document.selectedPath}}" src="" alt="" style="width: 100%; height: auto">
+        </div>
+    </ion-content>
+</ion-view>
