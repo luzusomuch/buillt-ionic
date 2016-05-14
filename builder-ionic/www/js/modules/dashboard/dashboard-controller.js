@@ -1,8 +1,8 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
     $scope.error = {};
     $scope.currentTeam = team;
-    $scope.currentUser = $rootScope.currentUser;
+    $scope.currentUser = currentUser;
     $scope.projects = [];
     $scope.submitted = false;
     _.each($scope.currentUser.projects, function(project) {
@@ -344,17 +344,17 @@ angular.module('buiiltApp')
                         }
                     });
                 });
-                if ($scope.currentTab==="thread") {
-                    $scope.modalCreateThread.show();
-                } else if ($scope.currentTab==="task") {
-                    $scope.modalCreateTask.show();
-                } else if ($scope.currentTab==="file") {
-                    $scope.createNewFile()
-                }
+                // if ($scope.currentTab==="thread") {
+                //     $scope.createNewThread();
+                // } else if ($scope.currentTab==="task") {
+                //     $scope.modalCreateTask.show();
+                // } else if ($scope.currentTab==="file") {
+                //     $scope.createNewFile()
+                // }
             });
-        }
+        } 
         if ($scope.currentTab==="thread") {
-            $scope.modalCreateThread.show();
+            $scope.createNewThread();
         } else if ($scope.currentTab==="task") {
             $scope.modalCreateTask.show();
         } else if ($scope.currentTab==="file") {
@@ -371,13 +371,22 @@ angular.module('buiiltApp')
     });
 
     $scope.isShowInputDate = false;
-    $scope.callDateInput = function(){
-        $scope.isShowInputDate = true;
-        $("input#dueDate").trigger('click');
+    $scope.callDateInput = function(type){
+        if (type==="dateStart") {
+            $scope.isShowInputStartDate = true;
+            $("input#startdate").trigger('click');
+        } else if (type==="dateEnd") {
+            $scope.isShowInputEndDate = true;
+            $("input#dateEnd").trigger('click');
+        }
     };
 
     $scope.task = {
-        members : []
+        members : [],
+        dateEnd: new Date(),
+        dateStart: new Date(),
+        time: {},
+        type: "task-project"
     };
 
     $scope.assign = function(member, index, type) {
@@ -399,25 +408,27 @@ angular.module('buiiltApp')
     $scope.createNewTask = function() {
         $scope.submitted = true;
         if ($scope.task.members.length===0) {
-            $scope.error.task="Please Select At Least 1 Member";
-            return;
-        } else if (!$scope.task.dateEnd) {
-            $scope.error.task="Please Select Due Date";
-            return;
-        } else if ($scope.task.description.length === 0 || ($scope.task.description && $scope.task.description.trim()==="")) {
-            $scope.error.task="Please check your task description";
-            return;
+            return $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 });
+        } else if (!$scope.task.dateEnd || !$scope.task.dateStart) {
+            return $ionicLoading.show({ template: 'Please Select Due Date Or Start Date!', noBackdrop: true, duration: 2000 });
+        } else if ($scope.task.description && $scope.task.description.trim().length===0) {
+            return $ionicLoading.show({ template: 'Please Enter Task Description!', noBackdrop: true, duration: 2000 });
+        } else if (!$scope.task.time.start || !$scope.task.time.end) {
+            return $ionicLoading.show({ template: 'Please Enter Task Start Time Or End Time!', noBackdrop: true, duration: 2000 });
         }
-        $scope.task.type = "task-project";
-        taskService.create({id : $rootScope.selectedProject._id},$scope.task)
-        .$promise.then(function(res) {
+        taskService.create({id : $rootScope.selectedProject._id},$scope.task).$promise.then(function(res) {
             $scope.modalCreateTask.hide();
-            $scope.task = {members:[]};
-            $scope.error = {};
+            $scope.task = {
+                members : [],
+                dateEnd: new Date(),
+                dateStart: new Date(),
+                time: {},
+                type: "task-project"
+            };
             $scope.tasks.push(res);
-            $scope.submitted = false;
+            $ionicLoading.show({ template: 'Create New Task Successfully!', noBackdrop: true, duration: 2000 });
         }, function(err) {
-            $scope.error.task = "Somethings went wrong";
+            $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
         });
     };
 
@@ -430,27 +441,22 @@ angular.module('buiiltApp')
     });
 
     $scope.thread = {
-        members : []
+        members : [],
+        type: "project-message"
     };
 
-    $scope.createNewThread = function(form) {
-        $scope.submitted = true;
-        if ($scope.thread.members.length === 0) {
-            $scope.error.thread = "Please Select At Least 1 Members";
-            return;
-        } else {
-            $scope.thread.type = "project-message";
-            messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
-            .$promise.then(function (res) {
-                $scope.modalCreateThread.hide();
-                $scope.thread = {members: []};
-                $scope.error = {};
-                $scope.threads.push(res);
-                $scope.submitted = false;
-            }, function(err) {
-                $scope.error.thread = "Error When Create";
-            });
-        }
+    $scope.createNewThread = function() {
+        messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
+        .$promise.then(function (res) {
+            $scope.thread = {
+                members: [],
+                type: "project-message"
+            };
+            $scope.threads.push(res);
+            $ionicLoading.show({ template: 'Create New Thread Successfully!', noBackdrop: true, duration: 2000 })
+        }, function(err) {
+            $ionicLoading.show({ template: 'Error', noBackdrop: true, duration: 2000 })
+        });
     };
 
     //show confirm modal
@@ -494,13 +500,14 @@ angular.module('buiiltApp')
             $scope.newTeam.isMobile = true;
             $scope.newTeam.emails = [];
             teamService.create($scope.newTeam, function (team) {
+                $ionicLoading.show({ template: 'Create New Team Successfully!', noBackdrop: true, duration: 2000 })
                 $rootScope.currentTeam = $scope.currentTeam = team;
                 $scope.modalCreateTeam.hide();
             }, function (err) {
-                $scope.error.team = "Error When Create New Team";
+                $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 })
             });
         } else {
-            $scope.error.team = "Please check your input";
+            $ionicLoading.show({ template: 'Please check your input!', noBackdrop: true, duration: 2000 });
         }
     };
 
@@ -515,7 +522,6 @@ angular.module('buiiltApp')
             $ionicLoading.hide();
             $ionicLoading.show({ template: 'Create New File Successfully!', noBackdrop: true, duration: 2000 });
             $scope.files.push(res);
-            $state.go("fileDetail", {fileId: res._id});
         }, function(err) {
             $ionicLoading.hide();
             dialogService.showToast("There Has Been An Error...");

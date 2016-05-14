@@ -2,7 +2,7 @@ angular.module('buiiltApp')
 .factory('authService', function(API_URL,$location, $rootScope, $http, userService,teamService, $q,$state) {
   var currentUser = {};
   if (window.localStorage.getItem('token')) {
-    $rootScope.currentUser = currentUser = userService.get({isMobile: true});
+    currentUser = userService.get({isMobile: true});
   }
   return {
     /**
@@ -22,9 +22,9 @@ angular.module('buiiltApp')
       })
       .success(function(data) {
         window.localStorage.setItem('token', data.token);
-        currentUser = userService.get().$promise.then(function(res) {
-          $rootScope.currentUser = currentUser; 
-          mixpanel.identify($rootScope.currentUser._id);
+        userService.get({isMobile: true}).$promise.then(function(res) {
+          currentUser = res;
+          mixpanel.identify(currentUser._id);
           mixpanel.track("Sign In From Mobile");
           deferred.resolve(data);
           return cb();
@@ -43,7 +43,8 @@ angular.module('buiiltApp')
      *
      * @param  {Function}
      */
-    logout: function(cb) {
+    logout: function(callback) {
+      var cb = callback || angular.noop;
       window.localStorage.removeItem('token');
       currentUser = {};
       $rootScope.currentUser = {};
@@ -65,8 +66,8 @@ angular.module('buiiltApp')
       function(data) {
         if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
-          userService.get().$promise.then(function(res) {
-            $rootScope.currentUser = currentUser = res;
+          userService.get({isMobile: true}).$promise.then(function(res) {
+            currentUser = res;
             mixpanel.identify(res._id);
             mixpanel.people.set({
               "$first_name": res.firstName,

@@ -231,10 +231,28 @@
                     <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
                 </div>
 
+                <!-- Task Start Date -->
+                <div class="item item-input">
+                    <input ng-if="!isShowInputStartDate" id="showStartDate" type="text" placeholder="Start Date" ng-click="callDateInput('dateStart')" ng-value="date">
+                    <input ng-if="isShowInputStartDate" type="date" placeholder="Start Date" name="created" id="startdate" ng-model="task.dateStart" format="mm/dd/yyyy"/>
+                </div>
+
 				<!-- Task Due Date -->
                 <div class="item item-input">
-                    <input ng-if="!isShowInputDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput()" ng-value="date">
-                    <input ng-if="isShowInputDate" type="date" placeholder="Due Date" name="created" id="dueDate" ng-model="task.dateEnd" format="mm/dd/yyyy"/>
+                    <input ng-if="!isShowInputEndDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput('dateEnd')" ng-value="date">
+                    <input ng-if="isShowInputEndDate" type="date" placeholder="Due Date" name="created" id="dateEnd" ng-model="task.dateEnd" format="mm/dd/yyyy"/>
+                </div>
+
+                <!-- Task Start Time -->
+                <div class="item item-input">
+                    <p>Start Time: </p>
+                    <input style="margin-left: 15px" type="time" placeholder="Start Time" name="created" ng-model="task.time.start"/>
+                </div>
+
+                <!-- Task End Time -->
+                <div class="item item-input">
+                    <p>End Time: </p>
+                    <input style="margin-left: 15px" type="time" placeholder="End Time" name="created" ng-model="task.time.end"/>
                 </div>
 				
 				<!-- Task Assignees -->

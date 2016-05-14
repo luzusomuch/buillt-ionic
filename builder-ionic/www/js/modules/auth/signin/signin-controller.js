@@ -5,8 +5,8 @@ angular.module('buiiltApp')
   $scope.submitted = false;
 
   if (window.localStorage.getItem('token')) {
-    userService.get({isMobile: true}).$promise.then(function(currentUser){
-      $rootScope.currentUser = currentUser;  
+    authService.getCurrentUser().$promise.then(function(currentUser){
+      // $rootScope.currentUser = currentUser;  
       $state.go('dashboard');
     });
   }

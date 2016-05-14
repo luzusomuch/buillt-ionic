@@ -3,14 +3,11 @@ angular.module('buiiltApp')
   .directive('spSocket', [function () {
     return {
       restrict: 'AE',
-      controller:['socket','authService', "$rootScope", function(socket, authService, $rootScope){
-        // authService.getCurrentUser().$promise
-        //   .then(function(user) {
-        //     socket.emit('join',user._id);
-        //   });
-        if ($rootScope.currentUser) {
-          socket.emit("join", $rootScope.currentUser._id);
-        }
+      controller:['socket','authService', function(socket, authService){
+        authService.getCurrentUser().$promise
+          .then(function(user) {
+            socket.emit('join',user._id);
+          });
       }]
     };
   }])

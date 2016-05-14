@@ -11,6 +11,9 @@ angular.module('buiiltApp').config(function($stateProvider) {
             },
             totalNotifications: function(notificationService) {
                 return notificationService.getTotalForIos().$promise;
+            },
+            currentUser: function(authService) {
+                return authService.getCurrentUser().$promise;
             }
         } 
     });
