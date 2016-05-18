@@ -1,7 +1,8 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, thread, messageService, $anchorScroll, $ionicModal, notificationService) {
+.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, thread, messageService, $anchorScroll, $ionicModal, notificationService, currentUser) {
     $scope.thread = thread;
-    $scope.currentUser = $rootScope.currentUser;
+    $scope.currentUser = currentUser;
+    console.log(currentUser);
 
     $scope.message = {};
 
@@ -36,46 +37,53 @@ angular.module('buiiltApp')
         if ($scope.message.text && $scope.message.text.trim() != '') {
             messageService.sendMessage({id: $scope.thread._id, type: $scope.thread.type}, $scope.message).$promise
             .then(function (res) {
-                $scope.message.text = '';
+                $scope.message.text = null;
                 $scope.thread = res;
-                $("textarea#textarea1").css('height', 0+'px');
                 //Track Reply Sent
                 mixpanel.identify($scope.currentUser._id);
                 mixpanel.track("Reply Sent From Mobile");
+
+                var element = document.getElementById("textarea1");
+                element.style.height =  "auto";
             });
         }
     };
+
+    $scope.expandText = function() {
+        var element = document.getElementById("textarea1");
+        element.style.height =  element.scrollHeight + "px";
+    };
 })
-.directive('textarea', function() {
-    return {
-        restrict: 'E',
-        controller: function($scope, $element) {
-            $element.css('overflow-y','hidden');
-            $element.css('resize','none');
-            resetHeight();
-            adjustHeight();
+// .directive('textarea', function() {
+//     return {
+//         restrict: 'E',
+//         controller: function($scope, $element) {
+//             $element.css('overflow-y','hidden');
+//             $element.css('resize','none');
+//             resetHeight();
+//             adjustHeight();
 
-            function resetHeight() {
-                $element.css('height', 0 + 'px');
-            }
+//             function resetHeight() {
+//                 $element.css('height', 0 + 'px');
+//             }
 
-            function adjustHeight() {
-                var height = angular.element($element)[0]
-                  .scrollHeight + 1;
-                $element.css('height', height + 'px');
-                $element.css('max-height', height + 'px');
-            }
+//             function adjustHeight() {
+//                 var height = angular.element($element)[0]
+//                   .scrollHeight + 1;
+//                 $element.css('height', height + 'px');
+//                 $element.css('max-height', height + 'px');
+//             }
 
-            function keyPress(event) {
-                // this handles backspace and delete
-                if (_.contains([8, 46], event.keyCode)) {
-                  resetHeight();
-                }
-                adjustHeight();
-            }
+//             function keyPress(event) {
+//                 // this handles backspace and delete
+//                 if (_.contains([8, 46], event.keyCode)) {
+//                   resetHeight();
+//                 }
+//                 adjustHeight();
+//             }
 
-            $element.bind('keyup change blur', keyPress);
+//             $element.bind('keyup change blur', keyPress);
 
-        }
-    };    
-});
+//         }
+//     };    
+// });

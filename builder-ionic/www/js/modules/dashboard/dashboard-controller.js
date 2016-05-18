@@ -116,32 +116,34 @@ angular.module('buiiltApp')
     //start recieve socket from server
     socket.emit("join", $scope.currentUser._id);
 
-    socket.on("thread:new", function(data) {
-        if (data.owner._id!==$rootScope.currentUser._id) {
-            $scope.threads.push(data);
-            var index = getItemIndex($scope.projects, data.project._id);
-            if (index !== -1) {
-                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-            }
-        }
-        $scope.threads = _.uniq($scope.threads, "_id");
-    });
+    // socket.on("thread:new", function(data) {
+    //     if (data.owner._id!==$rootScope.currentUser._id) {
+    //         $scope.threads.push(data);
+    //         var index = getItemIndex($scope.projects, data.project._id);
+    //         if (index !== -1) {
+    //             $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+    //         }
+    //     }
+    //     $scope.threads = _.uniq($scope.threads, "_id");
+    // });
 
     socket.on("task:new", function(data) {
-        if (data.owner._id!==$scope.currentUser._id) {
+        if (data.project._id==$rootScope.selectedProject._id) {
             $scope.tasks.push(data);
-            var index = getItemIndex($scope.projects, data.project._id);
-            if (index !== -1) {
-                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-            }
+            // var index = getItemIndex($scope.projects, data.project._id);
+            // if (index !== -1) {
+            //     $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+            // }
         }
-        $scope.tasks = _.uniq($scope.tasks, "_id");
+        // $scope.tasks = _.uniq($scope.tasks, "_id");
         filterAndSortTaskDueDate($scope.tasks);
     });
 
-    socket.on("file:new", function(data) {
-
-    });
+    // socket.on("file:new", function(data) {
+    //     if (data.owner._id!==$scope.currentUser._id) {
+    //         $scope.files.push(data);
+    //     }
+    // });
 
     socket.on("dashboard:new", function(data) {
         if (data.type==="task") {
@@ -241,24 +243,29 @@ angular.module('buiiltApp')
 
     function findAllByProject(project) {
         $ionicLoading.show();
-        var prom = [
+        var prom1 = [
             taskService.getProjectTask({id: project._id}).$promise, 
             messageService.getProjectThread({id : project._id}).$promise,
+        ];
+        var prom2 = [
             fileService.getProjectFiles({id: project._id, type: "file"}).$promise,
             documentService.me({id: project._id}).$promise,
             fileService.getProjectFiles({id: project._id, type: "document"}).$promise
         ];
-        $q.all(prom).then(function(res) {
+
+        $q.all(prom1).then(function(res) {
             $scope.tasks = res[0];
             $scope.threads = res[1];
-            $scope.files = res[2];
-            $scope.documentSets = res[3];
-            $scope.documents = res[4];
-            filterAndSortTaskDueDate($scope.tasks);
-            documentSetInitial();
             getThreadsLastAccess($scope.threads);
-            getFilesLastAccess($scope.files);
-            $ionicLoading.hide();
+            filterAndSortTaskDueDate($scope.tasks);
+            $q.all(prom2).then(function(res) {
+                $scope.files = res[0];
+                $scope.documentSets = res[1];
+                $scope.documents = res[2];
+                documentSetInitial();
+                getFilesLastAccess($scope.files);
+                $ionicLoading.hide();
+            });
         });
     };
 

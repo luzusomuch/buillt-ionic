@@ -8,6 +8,9 @@ angular.module('buiiltApp').config(function($stateProvider) {
         resolve: {
             thread: function(messageService, $stateParams) {
                 return messageService.get({id:$stateParams.threadId}).$promise;
+            },
+            currentUser: function(authService) {
+                return authService.getCurrentUser().$promise;
             }
         }
     })   

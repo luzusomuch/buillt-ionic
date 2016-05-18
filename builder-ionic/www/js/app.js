@@ -22,7 +22,7 @@ angular.module('buiiltApp', [
 
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
-  $urlRouterProvider.otherwise('/signin');
+  $urlRouterProvider.otherwise('/');
   $httpProvider.interceptors.push('authInterceptor');
   filepickerProvider.setKey('AM6Wn3DzwRimryydBnsj7z');
 

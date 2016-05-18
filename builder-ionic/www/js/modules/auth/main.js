@@ -1,7 +1,7 @@
 angular.module('buiiltApp').config(function($stateProvider) {
   $stateProvider
   .state('signin', {
-    url: '/signin?action&error',
+    url: '/signin',
     templateUrl: 'js/modules/auth/signin/signin.html',
     controller: 'SigninCtrl'
   })
