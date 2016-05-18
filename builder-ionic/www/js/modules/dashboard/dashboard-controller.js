@@ -103,29 +103,35 @@ angular.module('buiiltApp')
     }
 
     // get thread with notifications and task with notifications
-    function getThreadAndTaskWithNotification() {
+    function countTotalProjectNotifications() {
         var notificationThreads = _.filter($scope.threads, function(thread) {
             return thread.__v > 0;
         });
         var notificationTasks = _.filter($scope.tasks, function(task) {
             return task.__v > 0;
         }); 
-        return notificationTasks.length + notificationThreads.length;
+        var notificationFiles = _.filter($scope.files, function(file) {
+            return file.__v > 0;
+        });
+        var notificationDocuments = _.filter($scope.documentSets, function(doc) {
+            return doc.__v > 0;
+        });
+        return notificationTasks.length + notificationThreads.length + notificationFiles.length + notificationDocuments.length;
     };
 
     //start recieve socket from server
     socket.emit("join", $scope.currentUser._id);
 
-    // socket.on("thread:new", function(data) {
-    //     if (data.owner._id!==$rootScope.currentUser._id) {
-    //         $scope.threads.push(data);
-    //         var index = getItemIndex($scope.projects, data.project._id);
-    //         if (index !== -1) {
-    //             $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-    //         }
-    //     }
-    //     $scope.threads = _.uniq($scope.threads, "_id");
-    // });
+    socket.on("thread:new", function(data) {
+        if (data.project._id!==$rootScope.selectedProject._id) {
+            $scope.threads.push(data);
+            // var index = getItemIndex($scope.projects, data.project._id);
+            // if (index !== -1) {
+            //     $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+            // }
+        }
+        // $scope.threads = _.uniq($scope.threads, "_id");
+    });
 
     socket.on("task:new", function(data) {
         if (data.project._id==$rootScope.selectedProject._id) {
@@ -146,28 +152,46 @@ angular.module('buiiltApp')
     // });
 
     socket.on("dashboard:new", function(data) {
+        console.log(data);
         if (data.type==="task") {
             var index = getItemIndex($scope.tasks, data.task._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
-                var originalTask = angular.copy($scope.tasks[index]);
                 var projectIndex = getItemIndex($scope.projects, data.task.project._id);
                 $scope.tasks[index].uniqId = data.uniqId;
-                $scope.tasks[index].__v += 1;
-                if (projectIndex !== -1 && originalTask.__v === 0) {
-                    $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+                if (projectIndex!==-1 && $scope.tasks[index].__v===0) {
+                    $scope.projects[projectIndex].__v +=1;
                 }
-            } 
+                $scope.tasks[index].__v += 1;
+            }
         } else if (data.type==="thread") {
             var index = getItemIndex($scope.threads, data.thread._id);
+            var projectIndex = getItemIndex($scope.projects, data.thread.project._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.threads[index].uniqId != data.uniqId) {
-                var originalThread = angular.copy($scope.threads[index]);
-                var projectIndex = getItemIndex($scope.projects, data.thread.project._id);
                 $scope.threads[index].uniqId = data.uniqId;
-                $scope.threads[index].__v += 1;
-                if (projectIndex !== -1 && originalThread.__v === 0) {
-                    $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+                if (projectIndex !== -1 && $scope.threads[index].__v === 0) {
+                    $scope.projects[projectIndex].__v +=1;
                 }
-            } 
+                $scope.threads[index].__v += 1;
+            } else if (index === -1 && projectIndex !== -1) {
+                data.thread.__v = 1;
+                $scope.threads.push(data.thread);
+                $scope.projects[projectIndex].__v +=1;
+            }
+        } else if (data.type==="file") {
+            var index = getItemIndex($scope.files, data.file._id);
+            var projectIndex = getItemIndex($scope.projects, data.file.project._id);
+            if (index !== -1 && data.user._id.toString()!==$scope.currentUser.toString()) {
+                if (projectIndex!==-1 && $scope.files[index].__v===0) {
+                    $scope.projects[projectIndex].__v +=1;
+                }
+                $scope.files[index].__v+=1;
+            } else if (index === -1 && projectIndex !== -1) {
+                data.file.__v = 1;
+                $scope.files.push(data.file);
+                $scope.projects[projectIndex].__v +=1;
+            }
+        } else if (data.type==="document") {
+
         }
     });
 
