@@ -22,10 +22,9 @@ angular.module('buiiltApp', [
 
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/signin');
   $httpProvider.interceptors.push('authInterceptor');
   filepickerProvider.setKey('AM6Wn3DzwRimryydBnsj7z');
-
 })
 .factory('authInterceptor', function ($q, $location) {
   return {
@@ -41,7 +40,6 @@ angular.module('buiiltApp', [
     responseError: function (response) {
       if (response.status === 401) {
         $location.path('/#/signin');
-        // $state.go('signin');
         // remove any stale tokens
         window.localStorage.removeItem('token');
         return $q.reject(response);
@@ -69,11 +67,11 @@ angular.module('buiiltApp', [
     }
   });
    
-  if (window.localStorage.getItem('token')) {
-    userService.get({isMobile: true}).$promise.then(function(currentUser){
-      $rootScope.currentUser = currentUser;  
-    });
-  }
+  // if (window.localStorage.getItem('token')) {
+  //   userService.get({isMobile: true}).$promise.then(function(currentUser){
+  //     $rootScope.currentUser = currentUser;  
+  //   });
+  // }
 
   $rootScope.roles = ["builders", "clients", "architects", "subcontractors", "consultants"];
 
@@ -101,7 +99,6 @@ angular.module('buiiltApp', [
   });
 
   $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
-                 
     $rootScope.previousState = from;
     $rootScope.previousParams = fromParams;
   });

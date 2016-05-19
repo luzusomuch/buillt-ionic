@@ -1,4 +1,4 @@
-angular.module('buiiltApp').factory('messageService', function($rootScope, $q, $resource,API_URL) {
+angular.module('buiiltApp').factory('messageService', function($resource,API_URL) {
   return $resource(API_URL + 'api/messages/:id/:type/:action',{
     id : '@_id',
     type : '@_type'},
