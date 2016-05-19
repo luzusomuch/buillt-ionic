@@ -1,12 +1,16 @@
-<ion-view title='{{file.name}}'>
-    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
+<ion-view>
+    <!-- <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button> -->
+
+    <ion-nav-title>
+      {{file.name}}
+    </ion-nav-title>
 
     <!-- show upload reversion modal -->
-    <ion-nav-buttons side="right" >
-        <button ng-click="openUploadReversion()" class="button button-clear icon-right ion-ios-plus-empty" style="margin-right: 10px;"></button> 
+    <ion-nav-buttons side="right" ng-show="file.owner._id==currentUser._id">
+        <button ng-click="showModalEditFile()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
     </ion-nav-buttons>
 
-    <ion-content class="has-header file-content">
+    <ion-content class="has-header file-content has-footer">
         <div class="space" style="margin-top: 20px;"></div>
         <div id="file-detail-content">
             <div class="item-text-wrap">
@@ -52,7 +56,69 @@
             </div>
         </div>
     </ion-content>
+
+    <ion-footer>
+        <button ng-click="openUploadReversion()" class="button button-clear icon-right ion-ios-plus-empty" style="width:100%"></button> 
+    </ion-footer>
 </ion-view>
+
+<script id="modalEditFile.html" type="text/ng-template">
+    <div class="modal">
+        <!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Edit File {{file.name}}</h1>
+            <div class="buttons">
+                <button ng-click="showModalEditFile.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <!-- Thread Name and Assignees -->
+        <ion-content padding="true" class="has-header">
+            
+            <form ng-submit="editFile(form)" name="form" novalidate>
+                
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">File Name</span>
+                    <input placeholder="File Name" id="name" type="text" ng-model="file.name" required name="name">
+                </div>
+
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">Event</div>
+                        <select ng-model="file.selectedEvent">
+                            <option ng-selected="file.selectedEvent==ev._id" ng-repeat="ev in events" ng-value="ev._id">{{ev.name}}</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">Tag</div>
+                        <select ng-model="file.selectedTag">
+                            <option ng-selected="file.selectedTag==tag.name" ng-repeat="tag in tags" ng-value="tag.name">{{tag.name}}</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Assignees:</span>
+                    </label>
+                    <ion-list>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member._id) ? member.name : member.email}}</ion-checkbox>
+                    </ion-list>
+                </div>
+
+                <div>
+                    <button style="width: 100%" type="submit" class="button button-calm">Save</button>
+                </div>
+
+                <div class="space" style="height: 50px">
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
 
 <script id="modalCreateDocument.html" type="text/ng-template">
     <div class="modal">
