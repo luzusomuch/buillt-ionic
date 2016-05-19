@@ -9,9 +9,6 @@ angular.module('buiiltApp').config(function($stateProvider) {
             team: function(authService){
                 return authService.getCurrentTeam().$promise;
             },
-            totalNotifications: function(notificationService) {
-                return notificationService.getTotalForIos().$promise;
-            },
             currentUser: function(authService) {
                 return authService.getCurrentUser().$promise;
             }

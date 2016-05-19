@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, totalNotifications, socket, $ionicPopup, teamService, documentService, fileService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService) {
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -152,7 +152,6 @@ angular.module('buiiltApp')
     // });
 
     socket.on("dashboard:new", function(data) {
-        console.log(data);
         if (data.type==="task") {
             var index = getItemIndex($scope.tasks, data.task._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
@@ -191,7 +190,27 @@ angular.module('buiiltApp')
                 $scope.projects[projectIndex].__v +=1;
             }
         } else if (data.type==="document") {
-
+            var index = getItemIndex($scope.documentSets, data.documentSet._id);
+            var projectIndex = getItemIndex($scope.projects, data.file.project._id);
+            if (index !== -1 && data.user._id.toString()!==$scope.currentUser.toString()) {
+                $scope.documentSets[index].__v +=1;
+                var fileIndex = _.findIndex($scope.documentSets[index].documents, function(doc) {
+                    return doc._id.toString()===data.file._id.toString();
+                });
+                if (fileIndex!==-1) {
+                    $scope.documentSets[index].documents[fileIndex].__v+=1;
+                } else if (fileIndex===-1) {
+                    data.file.__v = 1;
+                    $scope.documentSets[index].documents.push(data.file);
+                    $scope.projects[projectIndex].__v +=1;
+                }
+            } else if (index === -1 && projectIndex !== -1) {
+                data.documentSet.__v = 1;
+                data.file.__v = 1;
+                data.documentSet.documents.push(data.file);
+                $scope.documentSets.push(data.documentset);
+                $scope.projects[projectIndex].__v +=1;
+            }
         }
     });
 

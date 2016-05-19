@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, messageService, notificationService, authService, $stateParams) {
+.controller('ThreadDetailCtrl', function($rootScope, socket, $timeout, $scope, $state, messageService, notificationService, authService, $stateParams) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         $scope.thread = thread;
         $scope.currentUser = authService.getCurrentUser();
@@ -31,7 +31,6 @@ angular.module('buiiltApp')
             // mark all notifications related to this thread is read
             notificationService.markItemsAsRead({id: thread._id}).$promise;
         }, 500);
-
 
         $scope.sendMessage = function() {
             if ($scope.message.text && $scope.message.text.trim() != '') {

@@ -1,14 +1,9 @@
 angular.module('buiiltApp').config(function($stateProvider) {
     $stateProvider
     .state('taskDetail', {
-        url: '/task/:taskId',
+        url: '/:taskId/task',
         templateUrl: 'js/modules/task/view.html',
         controller: 'TaskDetailCtrl',
         authenticate : true,
-        resolve: {
-            task: function(taskService, $stateParams) {
-                return taskService.get({id:$stateParams.taskId}).$promise;
-            }
-        }
     })   
 });

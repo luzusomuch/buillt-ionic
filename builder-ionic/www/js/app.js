@@ -50,7 +50,7 @@ angular.module('buiiltApp', [
     }
   };
 })
-.run(function ($rootScope,notificationService,userService, authService, $location,projectService,$state, $ionicPlatform, $ionicTabsDelegate) {
+.run(function ($ionicHistory, $rootScope, authService, $location,$state, $ionicPlatform, $ionicTabsDelegate) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs).
@@ -98,11 +98,11 @@ angular.module('buiiltApp', [
     });
   });
 
-  $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
-    $rootScope.previousState = from;
-    $rootScope.previousParams = fromParams;
-  });
+  // $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
+  //   $rootScope.previousState = from;
+  //   $rootScope.previousParams = fromParams;
+  // });
 
-  $rootScope.overlay = false;
+  // $rootScope.overlay = false;
 
 });
