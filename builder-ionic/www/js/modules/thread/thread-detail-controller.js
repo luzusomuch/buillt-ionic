@@ -149,7 +149,7 @@ angular.module('buiiltApp')
             }
             if (prom.length > 0) {
                 $q.all(prom).then(function(res) {
-                    modalEditThread.hide();
+                    $scope.modalEditThread.hide();
                     $ionicLoading.show({ template: 'Thread Updated!', noBackdrop: true, duration: 2000 });
                 }, function(err) {
                     $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
