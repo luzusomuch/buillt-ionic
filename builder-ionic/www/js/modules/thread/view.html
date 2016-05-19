@@ -1,5 +1,12 @@
-<ion-view title='{{thread.name}}'>
+<ion-view>
     <!-- <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button> -->
+    <ion-nav-title>
+      {{thread.name}}
+    </ion-nav-title>
+
+    <ion-nav-buttons side="right" >
+        <button ng-click="showModalEditThread()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
+    </ion-nav-buttons>
 	
     <ion-content padding="false" class="has-header has-footer">
         <div id="thread-detail-content">
@@ -54,3 +61,53 @@
     </ion-footer-bar>
 	
 </ion-view>
+
+<script id="modalEditThread.html" type="text/ng-template">
+    <div class="modal">
+        <!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Edit Thread {{thread.name}}</h1>
+            <div class="buttons">
+                <button ng-click="modalEditThread.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <!-- Thread Name and Assignees -->
+        <ion-content padding="true" class="has-header">
+            
+            <form ng-submit="editThread(form)" name="form" novalidate>
+                
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Message Thread Name</span>
+                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
+                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
+                </div>
+
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">Event</div>
+                        <select ng-model="thread.selectedEvent">
+                            <option ng-repeat="ev in events" ng-value="ev._id">{{ev.name}}</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Assignees:</span>
+                    </label>
+                    <ion-list>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member._id) ? member.name : member.email}}</ion-checkbox>
+                    </ion-list>
+                </div>
+
+                <div>
+                    <button style="width: 100%" type="submit" class="button button-calm">Save</button>
+                </div>
+
+                <div class="space" style="height: 50px">
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
