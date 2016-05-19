@@ -1,9 +1,20 @@
-<ion-view title='{{task.description}}'>
-    <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button>
+<ion-view>
+    <!-- <ion-nav-back-button ng-click="$ionicGoBack($event)" class="button-icon icon ion-ios7-arrow-left"> Back</ion-nav-back-button> -->
+    <ion-nav-title>
+      {{task.description}}
+    </ion-nav-title>
+
+    <ion-nav-buttons side="right" ng-show="task.owner._id===currentUser._id">
+        <button ng-click="showModalEditTask()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
+    </ion-nav-buttons>
+
     <ion-content class="has-header task-content">
         <div class="space" style="margin-top: 20px;"></div>
+        <div>
+            <button class="button button" style="width:100%" ng-click="modalAddComment.show()">Add a Comment</button>
+        </div>
         <div id="task-detail-content">
-            <div class="item-text-wrap" ng-repeat="activity in task.activities">
+            <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task'">
 				
 				<div class="activity-item">
 			
@@ -16,27 +27,18 @@
 	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 
 	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
-
-	                        <span ng-switch-when="edit-task"> edited this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}: </span>
-
-	                        <span ng-switch-when="assign"> assigned the following people at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-
-	                        <span ng-switch-when="insert-note"> added a note at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
 	                    </small>
 					</div>
-
-	                <div class="activity-body" ng-switch="activity.type">
-	                    <span ng-switch-when="edit-task">{{(activity.element.description) ? "Description: "+activity.element.description+", " : ""}} {{(activity.element.dateEnd) ? "End Date: " : ""}}{{activity.element.dateEnd | date: 'dd/MM/yyyy'}}</span>
-
-	                    <span ng-switch-when="assign">
-	                        <span ng-repeat="member in activity.element.members"><strong>{{member}}, </strong></span>
-	                    </span>
-
-	                    <span ng-switch-when="insert-note">{{activity.element.content}}</span>
-	                </div>
 					
 				</div>
 			</div>
+
+            <div class="item-text-wrap" ng-repeat="comment in task.comments">
+                <div class="activity-item">
+                    <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented at {{comment.sentAt | date: 'hh:mm dd-MM-yyyy'}}</p>
+                    <small ng-bind-html="comment.content | htmlize"></small>
+                </div>
+            </div>
         </div>
     </ion-content>
 
@@ -46,3 +48,67 @@
         </div>
     </div>
 </ion-view>
+
+<script id="modalAddComment.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Add A Comment for {{task.description}}</h1>
+            <div class="buttons">
+                <button ng-click="modalAddComment.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+
+        <ion-content padding="true" class="has-header">
+            <form ng-submit="enterComment(comment)" name="form">
+                <div class="list">
+                    <label class="item item-input">
+                        <textarea name="text" id="commentArea" placeholder="Enter Your Comment ..." ng-model="comment" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
+                    </label>
+                </div>
+                <div>
+                    <button style="width: 100%" class="button button-calm" type="submit">Send</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
+
+<script id="modalEditTask.html" type="text/ng-template">
+    <div class="modal">
+        <!-- Header -->
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Edit Task {{task.description}}</h1>
+            <div class="buttons">
+                <button ng-click="modalEditTask.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <!-- Thread Name and Assignees -->
+        <ion-content padding="true" class="has-header">
+            
+            <form ng-submit="editTask(form)" name="form" novalidate>
+                
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Task Description</span>
+                    <input placeholder="Task Description" id="description" type="text" ng-model="task.description" required name="description">
+                </div>
+
+                <div>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Assignees:</span>
+                    </label>
+                    <ion-list>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member._id) ? member.name : member.email}}</ion-checkbox>
+                    </ion-list>
+                </div>
+
+                <div>
+                    <button style="width: 100%" type="submit" class="button button-calm">Save</button>
+                </div>
+
+                <div class="space" style="height: 50px">
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
