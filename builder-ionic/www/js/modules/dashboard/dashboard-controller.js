@@ -91,7 +91,7 @@ angular.module('buiiltApp')
             }
         });
         if (allowAddedSet1) 
-            $scope.documentSets.push({name: "Set 1", documents: [], notAllowEditOrCopy: true});
+            $scope.documentSets.push({_id: "set1-"+$rootScope.selectedProject._id, name: "Set 1", documents: [], notAllowEditOrCopy: true});
 
         /*Add documents to document set 1 which haven't belong to any document set */
         _.each($scope.documents, function(document) {

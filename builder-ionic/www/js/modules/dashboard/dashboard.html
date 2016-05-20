@@ -98,18 +98,8 @@
         <!-- when documents tab is selected -->
         <ion-nav-view ng-show="currentTab == 'document'" name="Documentations">
             <div class="list" ng-show="currentTab=='document'">
-                <ion-item ng-click="set.show=!set.show" class="item-text-wrap" ng-repeat="set in documentSets">
+                <ion-item ui-sref="document.set({setId: set._id})" class="item-text-wrap" ng-repeat="set in documentSets">
                     <h2>{{set.name}}</h2>
-                    <div ng-show="set.show" class="list">
-                        <ion-item ui-sref="documentDetail({documentId: document._id})" ng-repeat="document in set.documents" ng-show="document.__v > 0">
-                            <h3>{{document.name}}</h3>
-                            <p class="item-notifications">Updates: {{document.__v}}</p>
-                        </ion-item>
-                        <ion-item ui-sref="documentDetail({documentId: document._id})" ng-repeat="document in set.documents" ng-show="document.__v == 0">
-                            <h3>{{document.name}}</h3>
-                            <p>No Updates</p>
-                        </ion-item>
-                    </div>
                 </ion-item>
             </div>
         </ion-nav-view>

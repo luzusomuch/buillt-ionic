@@ -89,11 +89,11 @@ angular.module('buiiltApp', [
   $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {
     $rootScope.currentState = toState;
     authService.isLoggedInAsync(function (loggedIn) {
-      if (loggedIn) {
-        $location.path('/#/dashboard');
+      if (!loggedIn) {
+        $location.path('/signin');
       }
       if (!toState.authenticate && loggedIn) {
-        $location.path('/#/dashboard');
+        $location.path('/dashboard');
       }
     });
   });

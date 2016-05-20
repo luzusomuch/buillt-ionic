@@ -6,6 +6,9 @@ angular.module('buiiltApp').factory('documentService', function($resource, API_U
                 action: "me"
             },
             isArray: true
+        },
+        get: {
+            method: "GET"
         }
     });
 });
