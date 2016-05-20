@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('SigninCtrl', function ($ionicLoading, $rootScope, $scope, deviceService, authService, $window,$stateParams, $state, $location, $ionicModal, userService) {
+.controller('SigninCtrl', function ($ionicLoading, $rootScope, $scope, deviceService, authService, $window,$stateParams, $state, $location, $ionicModal, userService, tokenService) {
   $scope.user = {
     rememberMe: true
   };
@@ -32,6 +32,32 @@ angular.module('buiiltApp')
 
   $scope.closeAlert = function (key) {
     delete $scope.errors[key];
+  };
+
+  $scope.step=1;
+  $scope.next = function() {
+    if ($scope.step==1 && (!$scope.user.phoneNumber || $scope.user.phoneNumber.trim().length===0)) {
+      $ionicLoading.show({ template: 'Please Enter Your Phone Number!', noBackdrop: true, duration: 2000 });
+    } else if ($scope.step==2 && (!$scope.user.verifyCode || $scope.user.verifyCode.length===0)) {
+      $ionicLoading.show({ template: 'Please Enter Verify Code!', noBackdrop: true, duration: 2000 });
+    } else {
+      if ($scope.step===1) {
+        tokenService.create({}, $scope.user).$promise.then(function(res) {
+          $ionicLoading.show({ template: 'Successfully! We will send token to that phone number!', noBackdrop: true, duration: 2000 });
+          $scope.step+=1;
+        }, function(err) {
+          $ionicLoading.show({ template: err.data.msg, noBackdrop: true, duration: 2000 });
+        });
+      } else if ($scope.step===2) {
+        tokenService.get({token: $scope.user.verifyCode}).$promise.then(function(res) {
+          $ionicLoading.show({ template: "Verify Successfully!", noBackdrop: true, duration: 2000 });
+          $scope.step+=1;
+        }, function(err) {
+          console.log(err);
+          $ionicLoading.show({ template: err.data.msg, noBackdrop: true, duration: 2000 });
+        });
+      }
+    }
   };
 
   //create new account modal

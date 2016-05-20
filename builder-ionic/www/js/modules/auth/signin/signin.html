@@ -70,15 +70,22 @@
             <form id="form" name="form" novalidate>
 
                 <!-- Phone Number -->
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==1">
                     <span class="input-label">Phone Number</span>
                     <input placeholder="Phone Number" id="phoneNumber" type="text" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
                     <p class="validate-message" style="color: #F44336" ng-show="form.phoneNumber.$error.required && submitted">Phone Number is required...</p>
                     <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.pattern">Not a valid number</p>
                 </div>
 
+                <!-- Verify Phone Number -->
+                <div class="item item-input item-floating-label" ng-show="step==2">
+                    <span class="input-label">Verify Code</span>
+                    <input placeholder="Verify Code" id="verifyCode" type="text" ng-model="user.verifyCode" name="verifyCode" required >
+                    <p class="validate-message" style="color: #F44336" ng-show="form.verifyCode.$error.required && submitted">Phone Number is required...</p>
+                </div>
+
                 <!-- Email -->
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==3">
                     <span class="input-label">Phone Number</span>
                     <input placeholder="Email" id="email" type="email" ng-model="user.email" name="email" required>
                     <p class="validate-message" style="color: #F44336" ng-show="form.email.$error.required && submitted">Email is required...</p>
@@ -86,14 +93,14 @@
                 </div>
 
                 <!-- First Name-->
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==3">
                     <span class="input-label">First Name</span>
                     <input placeholder="First Name" id="firstName" type="text" ng-model="user.firstName" name="firstName" ng-class="{'invalid' : form.firstName.$invalid && submitted}" required>
                     <p class="validate-message" style="color: #F44336" ng-show="form.firstName.$error.required && submitted">First Name is required...</p>
                 </div>
 
                 <!-- Last Name-->
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==3">
                     <span class="input-label">Last Name</span>
                     <input placeholder="Last Name" id="lastName" type="text" ng-model="user.lastName" name="lastName" ng-class="{'invalid' : form.lastName.$invalid && submitted}" required>
                     <p class="validate-message" style="color: #F44336" ng-show="form.lastName.$error.required && submitted">Last Name is required...</p>
@@ -126,8 +133,10 @@
         
         <div class="space" style="height: 50px"></div>
 
-        <div class="bar bar-footer bar-calm">
-          <div class="title" style="cursor:pointer" ng-click="signup()">Create Account</div>
+        <div class="bar bar-footer bar-calm row">
+            <button class="button button-state col" ng-show="step!==1" ng-click="step=step-1">Back</button>
+            <button class="button button-state col" ng-hide="step==3" ng-click="next()">Next</button>
+            <button class="button button-state col" ng-show="step==3" ng-click="signup()">Create Account</button>
         </div>
         
     </div>
