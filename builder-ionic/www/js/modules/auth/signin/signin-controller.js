@@ -41,15 +41,15 @@ angular.module('buiiltApp')
 
   $scope.signup = function() {
     $scope.submitted = true;
-    if (!$scope.user.email || !$scope.user.password || !$scope.user.firstName || !$scope.user.lastName) {
+    if (!$scope.user.firstName || !$scope.user.lastName) {
       $scope.errors.signup = "Please check your input";
-    } else if ($scope.user.password !== $scope.user.repassword) {
-      $scope.errors.signup = "Please check your password";
     } else {
+      $ionicLoading.show();
       $scope.user.isMobile = true;
       authService.createUser($scope.user).then(function (data) {
-        deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $scope.modalSignup.hide();
+        $ionicLoading.show({ template: 'Create New User Successfully!', noBackdrop: true, duration: 2000 });
+        // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $scope.user = {
           allowNewsletter: true
         };

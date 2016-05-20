@@ -66,10 +66,10 @@ angular.module('buiiltApp')
 
       return userService.save(user,
       function(data) {
-        if (data.emailVerified == true) {
+        // if (data.emailVerified == true) {
           window.localStorage.setItem('token', data.token);
           userService.get({isMobile: true}).$promise.then(function(res) {
-            currentUser = res;
+            // currentUser = res;
             mixpanel.identify(res._id);
             mixpanel.people.set({
               "$first_name": res.firstName,
@@ -83,11 +83,11 @@ angular.module('buiiltApp')
               "created": new Date(),
               "email": res.email,
             }, function() {
-              $state.go('dashboard')
+              // $state.go('dashboard')
+              window.localStorage.removeItem('token');
+              return cb(data);
             });
           });
-        }
-        return cb(user);
       },
       function(err) {
         this.logout();
