@@ -16,9 +16,11 @@ angular.module('buiiltApp')
       var cb = callback || angular.noop;
       var deferred = $q.defer();
 
-      $http.post(API_URL + 'auth/local', {
+      $http.post(API_URL + 'auth/mobile', {
         email: user.email,
-        password: user.password
+        password: user.password,
+        phoneNumber: user.phoneNumber,
+        isMobile: true
       })
       .success(function(data) {
         window.localStorage.setItem('token', data.token);

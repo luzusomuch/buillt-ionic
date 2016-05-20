@@ -3,9 +3,10 @@
 		<form method="post" name="form" ng-submit="signin(form)" novalidate>
 			
             <div class="item item-input item-floating-label">
-				<span class="input-label" style="">Email Address</span>
-                <input type="email" ng-model="user.email" name="email" required ng-class="{'invalid' : form.email.$invalid && submitted}" placeholder="Email Address">
-                <p class="validate-message" style="color: #EF5350" ng-show="form.email.$error.required && submitted">Your email address is required...</p>
+				<span class="input-label" style="">Your Phone Number</span>
+                <input type="text" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
+                <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.required && submitted">Your phone number is required...</p>
+                <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.pattern">Not a valid number</p>
             </div>
 			
             <div class="item item-input item-floating-label">
@@ -15,7 +16,7 @@
             </div>
 			
 			<ion-list>
-				<ion-checkbox class="checkbox-calm" ng-model="rememberMe">Remember Me</ion-checkbox>
+				<ion-checkbox class="checkbox-calm" ng-model="user.rememberMe">Remember Me</ion-checkbox>
 			</ion-list>
 				
 			<p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>

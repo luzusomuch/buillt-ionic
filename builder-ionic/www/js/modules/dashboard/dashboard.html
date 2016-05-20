@@ -137,65 +137,6 @@
 	</ion-popover-view>
 </script>
 
-<!-- Create message thread dialog. -->
-<script id="modalCreateThread.html" type="text/ng-template">
-    <div class="modal">
-		
-		<!-- Header -->
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Create a New Message...</h1>
-            <div class="buttons">
-                <button ng-click="closeModal('CreateThread')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
-            </div>
-        </ion-header-bar>
-		
-		<!-- Thread Name and Assignees -->
-        <ion-content padding="true" class="has-header">
-			
-            <form ng-show="selectedProject._id" style="" id="createThreadForm" name="form" novalidate>
-				
-                <div class="item item-input item-floating-label">
-					<span class="input-label">Message Thread Name</span>
-                    <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
-                </div>
-
-                <div>
-					<label class="item item-input item-stacked-label">
-					    <span class="input-label">Assignees:</span>
-					</label>
-					<ion-list>
-						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="user in projectMembers track by $index" ng-click="assign(user, $index, 'thread')">{{(user._id) ? user.name : user.email}}</ion-checkbox>
-					</ion-list>
-				</div>
-					
-                    <!-- <ul class="list">
-                        <li class="item item-checkbox" ng-repeat="user in projectMembers track by $index">
-                            <div class="checkbox">
-                                <input type="checkbox" ng-click="assign(user, $index, 'thread')">
-                            </div>
-                            {{(user._id) ? user.name : user.email}}
-                        </li>
-                    </ul> -->
-
-                <div class="error" ng-show="error.thread" style="margin-top: 15px; margin-left: 15px; color: #ff0000">
-                    <p>{{error.thread}}</p>
-                </div>
-                    
-                <div class="space" style="height: 50px">
-                </div>
-
-            </form>
-        </ion-content>
-		
-		<div class="bar bar-footer bar-calm">
-		  <div class="title" ng-click="createNewThread()" style="cursor:pointer">Create New Thread</div>
-		</div>
-		
-    </div>
-</script>
-
-
 <!-- Create task dialog. -->
 <script id="modalCreateTask.html" type="text/ng-template">
     <div class="modal">

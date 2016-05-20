@@ -482,14 +482,6 @@ angular.module('buiiltApp')
         });
     };
 
-    //create new thread
-    $ionicModal.fromTemplateUrl('modalCreateThread.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal){
-        $scope.modalCreateThread = modal;
-    });
-
     $scope.thread = {
         members : [],
         type: "project-message"
