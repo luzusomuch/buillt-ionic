@@ -129,6 +129,11 @@ angular.module('buiiltApp')
             });
         };
 
+        if ($rootScope.isCreateNewThread) {
+            $scope.showModalEditThread();
+            $rootScope.isCreateNewThread = false;
+        }
+
         $scope.editThread = function(form) {
             var prom = [];
             $scope.thread.newMembers = _.filter($scope.membersList, {select : true});

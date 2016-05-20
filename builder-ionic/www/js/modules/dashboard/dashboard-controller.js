@@ -497,7 +497,9 @@ angular.module('buiiltApp')
                 members: [],
                 type: "project-message"
             };
-            $scope.threads.push(res);
+            // $scope.threads.push(res);
+            $state.go("threadDetail", {threadId: res._id});
+            $rootScope.isCreateNewThread = true;
             $ionicLoading.show({ template: 'Create New Thread Successfully!', noBackdrop: true, duration: 2000 })
         }, function(err) {
             $ionicLoading.show({ template: 'Error', noBackdrop: true, duration: 2000 })
