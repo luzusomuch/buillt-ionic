@@ -101,7 +101,7 @@ angular.module('buiiltApp')
         $ionicLoading.show({ template: 'Create New User Successfully!', noBackdrop: true, duration: 2000 });
         // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $scope.user = {
-          allowNewsletter: true
+          rememberMe: true
         };
         $scope.submitted = false;
       }, function (res) {
