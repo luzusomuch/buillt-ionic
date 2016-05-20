@@ -150,12 +150,16 @@
             function onResume(){
                 setTimeout(function() {
                     if (relatedto === "thread") {
-                        window.location.href = "#/thread/"+itemId;
+                        window.location.href = "#/"+itemId+"/thread";
                     } else if (relatedto === "task") {
-                        window.location.href = "#/task/"+itemId;
+                        window.location.href = "#/"+itemId+"/task";
                     } else if (relatedto === "project") {
                         window.location.href = "#/dashboard";
                         window.localStorage.setItem("pushProject", projectId);
+                    } else if (relatedto==="document") {
+                        window.location.href="#/"+itemId+"/document";
+                    } else if (relatedto==="file") {
+                        window.location.href="#/"+itemId+"/file";
                     }
                     relatedto = null;
                 }, 1000);
