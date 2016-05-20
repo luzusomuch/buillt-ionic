@@ -1,6 +1,8 @@
 angular.module('buiiltApp')
 .controller('SigninCtrl', function ($ionicLoading, $rootScope, $scope, deviceService, authService, $window,$stateParams, $state, $location, $ionicModal, userService) {
-  $scope.user = {};
+  $scope.user = {
+    rememberMe: true
+  };
   $scope.errors = {};
   $scope.submitted = false;
 
@@ -16,6 +18,7 @@ angular.module('buiiltApp')
     if (form.$valid) {  
       $ionicLoading.show();
       authService.login($scope.user).then(function () {
+        $scope.modalSignin.hide();
         $ionicLoading.hide();
         // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $state.go('dashboard');
@@ -38,6 +41,27 @@ angular.module('buiiltApp')
   }).then(function(modal){
     $scope.modalSignup = modal;
   });
+
+  //show sign in modal
+  $ionicModal.fromTemplateUrl('modalSignin.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modalSignin = modal;
+  });
+
+  $scope.getToken = function(form) {
+    if (form.$valid) {
+      userService.getToken({phoneNumber: $scope.user.phoneNumber}).$promise.then(function(res) {
+        $ionicLoading.show({ template: 'Please Enter Your Token To Continue!', noBackdrop: true, duration: 2000 });
+        $scope.modalSignin.show();
+      }, function(err) {
+        $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+      });
+    } else {
+      $ionicLoading.show({ template: 'Check Your Input!', noBackdrop: true, duration: 2000 });
+    }
+  };
 
   $scope.signup = function() {
     $scope.submitted = true;

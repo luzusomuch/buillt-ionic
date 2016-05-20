@@ -20,6 +20,7 @@ angular.module('buiiltApp')
         email: user.email,
         password: user.password,
         phoneNumber: user.phoneNumber,
+        phoneNumberLoginToken: user.phoneNumberLoginToken,
         isMobile: true
       })
       .success(function(data) {

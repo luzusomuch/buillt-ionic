@@ -39,6 +39,7 @@ run these following cmd:
     -npm install -g gulp
     -npm install
 
-
+    -ionic plugin add ionic-plugin-deploy
+    -ionic add ionic-platform-web-client
 
     Remove line 7635 in css/ionic.app.css

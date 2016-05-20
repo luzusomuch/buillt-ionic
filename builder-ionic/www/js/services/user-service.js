@@ -4,6 +4,12 @@ angular.module('buiiltApp')
     id: '@uuid'
   },
   {
+    getToken: {
+      method: "GET",
+      params: {
+        action: "get-token"
+      }
+    },
     loginAndroid: {
       method: "POST",
       params: {

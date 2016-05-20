@@ -1,18 +1,12 @@
 <ion-view title="Sign In">
 	<ion-content class="has-header">
-		<form method="post" name="form" ng-submit="signin(form)" novalidate>
+		<form method="post" name="form" ng-submit="getToken(form)" novalidate>
 			
             <div class="item item-input item-floating-label">
 				<span class="input-label" style="">Your Phone Number</span>
-                <input type="text" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
+                <input type="text" placeholder="Your Phone Number" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
                 <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.required && submitted">Your phone number is required...</p>
                 <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.pattern">Not a valid number</p>
-            </div>
-			
-            <div class="item item-input item-floating-label">
-				<span class="input-label">Password</span>
-                <input ng-model="user.password" name="password" required type="Password" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Password">
-                <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your password is required...</p>
             </div>
 			
 			<ion-list>
@@ -22,7 +16,7 @@
 			<p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
 			
 			<div class="padding">
-				<button class="button button-calm button-block">Sign In</button>
+				<button class="button button-calm button-block">Next</button>
 			</div>
 			
 		</form>
@@ -32,6 +26,32 @@
 	</ion-content>
 	
 </ion-view>
+
+<script id="modalSignin.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Sign In</h1>
+            <div class="buttons">
+                <button ng-click="modalSignin.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        <ion-content>
+            <form method="post" name="form" ng-submit="signin(form)" novalidate>
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">Enter Your Token</span>
+                    <input ng-model="user.phoneNumberLoginToken" name="password" required type="text" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Enter Your Token">
+                    <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your token is required...</p>
+                </div>
+                    
+                <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
+                
+                <div class="padding">
+                    <button class="button button-calm button-block">Sign In</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
 
 <!-- sign up dialog. -->
 <script id="modalSignup.html" type="text/ng-template">

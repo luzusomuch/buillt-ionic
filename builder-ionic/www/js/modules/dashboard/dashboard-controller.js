@@ -1,5 +1,8 @@
 angular.module('buiiltApp')
     .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService) {
+    // var deploy = new Ionic.Deploy();
+    // console.log(deploy);
+
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
