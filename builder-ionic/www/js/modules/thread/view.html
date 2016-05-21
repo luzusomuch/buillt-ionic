@@ -53,16 +53,53 @@
             </form>
         </div>
         <div class="row" style="margin-top: 5px;">
-            <button class="col button icon ion-document" style="border:none"></button>
+            <button ng-click="modalCreateRelatedFile.show()" class="col button icon ion-document" style="border:none"></button>
             <button ng-click="modalCreateRelatedTask.show()" class="col button icon ion-checkmark" style="border:none"></button>
         </div>
     </ion-footer-bar>
-	
 </ion-view>
+
+<script id="modalCreateRelatedFile.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Create Related File</h1>
+            <div class="buttons">
+                <button ng-click="modalCreateRelatedFile.hide()" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        <ion-content padding="true" class="has-header">
+            <form ng-submit="createRelatedFile(form)" name="form">
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+
+                <div class="item item-input">
+                    <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
+                </div>
+
+                <div class="item item-input item-floating-label">
+                    <span class="input-label">File Name</span>
+                    <input placeholder="File Name" id="name" type="text" ng-model="file.file.filename" name="name" maxlength="300" required>
+                </div>
+
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">Tag</div>
+                        <select ng-model="file.selectedTag">
+                            <option ng-selected="file.selectedTag==tag.name" ng-repeat="tag in tags" ng-value="tag.name">{{tag.name}}</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
+                <div class="row" style="">
+                    <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+                </div>
+            </form>
+        </ion-content>
+    </div>
+</script>
 
 <script id="modalCreateRelatedTask.html" type="text/ng-template">
     <div class="modal">
-        
         <!-- Header -->
         <ion-header-bar class="bar-light">
             <h1 class="title">Create a New Related Task...</h1>

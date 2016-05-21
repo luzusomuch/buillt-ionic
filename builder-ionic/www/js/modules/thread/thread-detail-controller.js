@@ -1,10 +1,10 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService) {
+.controller('ThreadDetailCtrl', function($ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
         $scope.thread.selectedEvent = thread.event;
-        $scope.currentUser = authService.getCurrentUser();
+        $scope.currentUser = authService.getCurrentUser().$promise;
 
         // Setting new related task
         $scope.task = {
@@ -76,6 +76,78 @@ angular.module('buiiltApp')
         });
         // End related task setting
 
+        // Create related file 
+        $ionicModal.fromTemplateUrl('modalCreateRelatedFile.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal){
+            $scope.modalCreateRelatedFile = modal;
+        });
+
+        $scope.tags = [];
+        authService.getCurrentTeam().$promise.then(function(team) {
+            $scope.currentTeam = team;
+            _.each($scope.currentTeam.fileTags, function(tag) {
+                $scope.tags.push({name: tag, select: false});
+            });
+        });
+
+        $scope.file = {
+            belongTo: thread._id,
+            belongToType: "thread",
+            type: "file",
+            selectedEvent: $scope.thread.event
+        };
+
+        $scope.getFileUpload = function() {
+            $ionicLoading.show();
+            var input = document.getElementById("read-input");
+            filepicker.store(
+                input,
+                function(Blob) {
+                    console.log(Blob);
+                    $scope.file.file = Blob;
+                },
+                function(fperror) {
+                    console.log(FPError.toString());// - print errors to console
+                },
+                function(progress) {
+                    console.log(progress);
+                    if (progress===100) {
+                        $ionicLoading.hide();
+                    }
+                }
+            )
+        };
+
+        $scope.createRelatedFile = function(form) {
+            if (form.$valid) {
+                $scope.file.members = $scope.thread.members;
+                _.each($scope.thread.notMembers, function(email) {
+                    $scope.file.members.push({email: email});
+                });
+                if (!$scope.file.selectedTag) {
+                    $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                } else {
+                    uploadService.upload({id: thread.project}, $scope.file).$promise.then(function(res) {
+                        $scope.modalCreateRelatedFile.hide();
+                        $ionicLoading.show({ template: 'Create Related File Successfully!', noBackdrop: true, duration: 2000 });
+                        $scope.file = {
+                            belongTo: thread._id,
+                            belongToType: "thread",
+                            type: "file",
+                            selectedEvent: $scope.thread.event
+                        };
+                    }, function(err){
+                        $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                    });
+                }
+            } else {
+                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+            }
+        };
+        // end create related file
+
         $scope.message = {};
 
         socket.emit("join", thread._id);
@@ -90,6 +162,7 @@ angular.module('buiiltApp')
             $scope.thread = data;
             $scope.thread.selectedEvent = data.event;
             $scope.task.selectedEvent = data.event;
+            $scope.file.selectedEvent = data.event;
             notificationService.markItemsAsRead({id: thread._id}).$promise.then();
         });
 
