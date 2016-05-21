@@ -15,8 +15,7 @@ angular.module('buiiltApp')
     login: function(user, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
-
-      $http.post(API_URL + 'auth/mobile', {
+      $http.post(API_URL + user.url, {
         email: user.email,
         password: user.password,
         phoneNumber: user.phoneNumber,
