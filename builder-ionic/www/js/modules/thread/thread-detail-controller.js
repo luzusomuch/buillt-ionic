@@ -55,6 +55,7 @@ angular.module('buiiltApp')
                             belongTo: $scope.thread._id,
                             type: "task-project"
                         };
+                        $state.go("taskDetail", {taskId: res._id});
                     }, function(err) {
                         $ionicLoading.show({ template: "Error", noBackdrop: true, duration: 2000 });
                     });
@@ -138,6 +139,7 @@ angular.module('buiiltApp')
                             type: "file",
                             selectedEvent: $scope.thread.event
                         };
+                        $state.go("fileDetail", {fileId: res._id});
                     }, function(err){
                         $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
                     });

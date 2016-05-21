@@ -1,4 +1,4 @@
-angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, socket, notificationService, uploadService, fileService, authService, activityService, peopleService) {
+angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService) {
     fileService.get({id: $stateParams.fileId}).$promise.then(function(file) {
         socket.emit("join", file._id);
         socket.on("file:update", function(data) {
@@ -192,5 +192,116 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModa
                 });
             }
         };
+
+        // Setting new related task
+        $scope.task = {
+            selectedEvent: $scope.file.event,
+            dateStart: new Date(),
+            dateEnd: new Date(),
+            time: {},
+            belongToType: "file",
+            belongTo: $scope.file._id,
+            type: "task-project"
+        };
+
+        $ionicModal.fromTemplateUrl('modalCreateRelatedTask.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal){
+            $scope.modalCreateRelatedTask = modal;
+        });
+
+        $scope.callDateInput = function(type){
+            if (type==="dateStart") {
+                $scope.isShowInputStartDate = true;
+                $("input#startdate").trigger('click');
+            } else if (type==="dateEnd") {
+                $scope.isShowInputEndDate = true;
+                $("input#dateEnd").trigger('click');
+            }
+        };
+
+        $scope.createRelatedTask = function(form) {
+            if (form.$valid) {
+                if (!$scope.task.dateStart || !$scope.task.dateEnd || !$scope.task.time.start || !$scope.task.time.end) {
+                    $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                } else {
+                    $scope.task.members = $scope.file.members;
+                    _.each($scope.file.notMembers, function(email) {
+                        $scope.task.members.push({email: email});
+                    });
+                    taskService.create({id: file.project}, $scope.task).$promise.then(function(res) {
+                        $scope.modalCreateRelatedTask.hide();
+                        $ionicLoading.show({ template: 'Create Related Task Successfully!', noBackdrop: true, duration: 2000 });
+                        $scope.task = {
+                            selectedEvent: $scope.file.event,
+                            dateStart: new Date(),
+                            dateEnd: new Date(),
+                            time: {},
+                            belongToType: "file",
+                            belongTo: $scope.file._id,
+                            type: "task-project"
+                        };
+                        $state.go("taskDetail", {taskId: res._id});
+                    }, function(err) {
+                        $ionicLoading.show({ template: "Error", noBackdrop: true, duration: 2000 });
+                    });
+                }
+            } else {
+                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+            }
+        };
+
+        socket.on("relatedItem:new", function(data) {
+            if (data.belongTo.toString()===file._id.toString()) {
+                $scope.file.relatedItem.push({type: data.type, item: data.data});
+                $scope.file.activities.push({
+                    user: {_id: data.excuteUser._id, name: data.excuteUser.name, email: data.excuteUser.email},
+                    type: "related-"+data.type,
+                    element: {item: data.data._id, name: (data.data.name) ? data.data.name : data.data.description, related: true}
+                });
+            }
+        });
+        // End related task setting
+
+        // Start related thread setting
+        $ionicModal.fromTemplateUrl('modalCreateRelatedThread.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal){
+            $scope.modalCreateRelatedThread = modal;
+        });
+
+        $scope.thread = {
+            selectedEvent: $scope.file.event,
+            belongToType: "file",
+            belongTo: file._id,
+            type: "project-message"
+        };
+
+        $scope.createRelatedThread = function(form) {
+            if (form.$valid) {
+                $scope.thread.members = $scope.file.members;
+                _.each($scope.file.notMembers, function(email) {
+                    $scope.thread.members.push({email: email});
+                });
+                messageService.create({id: file.project}, $scope.thread).$promise.then(function(res) {
+                    $scope.modalCreateRelatedThread.hide();
+                    $ionicLoading.show({ template: 'Create Related Thread Successfully!', noBackdrop: true, duration: 2000 });
+                    $scope.thread = {
+                        selectedEvent: $scope.file.event,
+                        belongToType: "file",
+                        belongTo: file._id,
+                        type: "project-message"
+                    };
+                    $state.go("threadDetail", {threadId: res._id});
+                }, function(err) {
+                    $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                });
+            } else {
+                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+            }
+        };
+        // End related thread setting
     });
 });
