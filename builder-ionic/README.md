@@ -39,7 +39,8 @@ run these following cmd:
     -npm install -g gulp
     -npm install
 
+These cmd is use for our latest version
+    -npm install -g ionic //This cmd use to update current version of ionic cli to latest
+    -ionic io init
     -ionic plugin add ionic-plugin-deploy
     -ionic add ionic-platform-web-client
-
-    Remove line 7635 in css/ionic.app.css

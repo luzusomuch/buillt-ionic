@@ -7,6 +7,7 @@
 	
 	<!-- Add message thread or task. -->
     <ion-nav-buttons side="right" >
+        <button ng-show="hasUpdate" class="button button-clear icon ion-ios-checkmark-empty" ng-click="doUpdate()"></button>
         <button ng-show="currentTab=='thread' || currentTab=='task' || currentTab=='file'" ng-hide="selectedProject.name == null" ng-click="openCreateThreadOrTaskModal()" class="button button-clear icon-right ion-ios-plus-empty" style="margin-right: 10px;"></button> 
     </ion-nav-buttons>
 	

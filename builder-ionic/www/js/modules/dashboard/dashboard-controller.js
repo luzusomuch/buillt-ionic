@@ -1,7 +1,35 @@
 angular.module('buiiltApp')
     .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService) {
-    // var deploy = new Ionic.Deploy();
-    // console.log(deploy);    
+    // These function use to check update for ionic deploy
+    var deploy = new Ionic.Deploy();
+    deploy.setChannel("Dev");
+    console.log(deploy);
+    
+    $ionicLoading.show();
+    deploy.check().then(function(res) {
+        $ionicLoading.hide();        
+        $scope.hasUpdate = res;
+    }, function(err) {
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: 'Error When Check Update', noBackdrop: true, duration: 2000 });
+    });
+
+    // If it has update then apply it
+    $scope.doUpdate = function() {
+        $ionicLoading.show();
+        deploy.update().then(function(res) {
+            $ionicLoading.show({ template: 'Update Successfully', noBackdrop: true, duration: 2000 });
+        }, function(err) {
+            $ionicLoading.show({ template: 'Error When Check Update', noBackdrop: true, duration: 2000 });
+        }, function(progress) {
+            if (progress===100) {
+                $ionicLoading.hide();
+            }
+        });
+    };
+
+
+
     $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
