@@ -422,7 +422,6 @@ angular.module('buiiltApp')
         $scope.modalCreateTask = modal;
     });
 
-    $scope.isShowInputDate = false;
     $scope.callDateInput = function(type){
         if (type==="dateStart") {
             $scope.isShowInputStartDate = true;

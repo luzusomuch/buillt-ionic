@@ -1,10 +1,80 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService) {
+.controller('ThreadDetailCtrl', function($ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
         $scope.thread.selectedEvent = thread.event;
         $scope.currentUser = authService.getCurrentUser();
+
+        // Setting new related task
+        $scope.task = {
+            selectedEvent: $scope.thread.event,
+            dateStart: new Date(),
+            dateEnd: new Date(),
+            time: {},
+            belongToType: "thread",
+            belongTo: $scope.thread._id,
+            type: "task-project"
+        };
+
+        $ionicModal.fromTemplateUrl('modalCreateRelatedTask.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal){
+            $scope.modalCreateRelatedTask = modal;
+        });
+
+        $scope.callDateInput = function(type){
+            if (type==="dateStart") {
+                $scope.isShowInputStartDate = true;
+                $("input#startdate").trigger('click');
+            } else if (type==="dateEnd") {
+                $scope.isShowInputEndDate = true;
+                $("input#dateEnd").trigger('click');
+            }
+        };
+
+        $scope.createRelatedTask = function(form) {
+            if (form.$valid) {
+                if (!$scope.task.dateStart || !$scope.task.dateEnd || !$scope.task.time.start || !$scope.task.time.end) {
+                    $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                } else {
+                    $scope.task.members = $scope.thread.members;
+                    _.each($scope.thread.notMembers, function(email) {
+                        $scope.task.members.push({email: email});
+                    });
+                    taskService.create({id: thread.project}, $scope.task).$promise.then(function(res) {
+                        $scope.modalCreateRelatedTask.hide();
+                        $ionicLoading.show({ template: 'Create Related Task Successfully!', noBackdrop: true, duration: 2000 });
+                        $scope.task = {
+                            selectedEvent: $scope.thread.event,
+                            dateStart: new Date(),
+                            dateEnd: new Date(),
+                            time: {},
+                            belongToType: "thread",
+                            belongTo: $scope.thread._id,
+                            type: "task-project"
+                        };
+                    }, function(err) {
+                        $ionicLoading.show({ template: "Error", noBackdrop: true, duration: 2000 });
+                    });
+                }
+            } else {
+                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+            }
+        };
+
+        socket.on("relatedItem:new", function(data) {
+            if (data.belongTo.toString()===thread._id.toString()) {
+                $scope.thread.relatedItem.push({type: data.type, item: data.data});
+                $scope.thread.activities.push({
+                    user: {_id: data.excuteUser._id, name: data.excuteUser.name, email: data.excuteUser.email},
+                    type: "related-"+data.type,
+                    element: {item: data.data._id, path: (data.data.path) ? data.data.path : null, name: (data.data.name) ? data.data.name : data.data.description, related: true}
+                });
+            }
+        });
+        // End related task setting
 
         $scope.message = {};
 
@@ -19,6 +89,7 @@ angular.module('buiiltApp')
             originalThread = angular.copy(data);
             $scope.thread = data;
             $scope.thread.selectedEvent = data.event;
+            $scope.task.selectedEvent = data.event;
             notificationService.markItemsAsRead({id: thread._id}).$promise.then();
         });
 
