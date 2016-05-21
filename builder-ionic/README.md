@@ -39,7 +39,7 @@ run these following cmd:
     -npm install -g gulp
     -npm install
 
-These cmd is use for our latest version
+These cmds are use for our latest version
     -npm install -g ionic //This cmd use to update current version of ionic cli to latest
     -ionic io init
     -ionic plugin add ionic-plugin-deploy

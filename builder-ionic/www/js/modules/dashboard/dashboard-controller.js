@@ -3,7 +3,6 @@ angular.module('buiiltApp')
     // These function use to check update for ionic deploy
     var deploy = new Ionic.Deploy();
     deploy.setChannel("Dev");
-    console.log(deploy);
     
     $ionicLoading.show();
     deploy.check().then(function(res) {
