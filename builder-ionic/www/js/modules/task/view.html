@@ -5,31 +5,23 @@
     </ion-nav-title>
 
     <ion-nav-buttons side="right" ng-show="task.owner._id===currentUser._id">
-        <button ng-click="showModalEditTask()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
+        <button ng-click="showModalEditTask()" class="button button-clear" style="margin-right: 10px; font-size: 15px">Edit</button> 
     </ion-nav-buttons>
 
     <ion-content class="has-header task-content">
-        <div class="space" style="margin-top: 20px;"></div>
-        <div>
-            <button class="button button" style="width:100%" ng-click="modalAddComment.show()">Add a Comment</button>
-        </div>
+	
         <div id="task-detail-content">
             <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task'">
-				
 				<div class="activity-item">
-			
 					<div class="activity-header">
 	                    <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
 				
 	                    <small ng-switch="activity.type">
 	                        <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
-
 	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
-
 	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
 	                    </small>
 					</div>
-					
 				</div>
 			</div>
 
@@ -39,14 +31,18 @@
                     <small ng-bind-html="comment.content | htmlize"></small>
                 </div>
             </div>
+			
         </div>
     </ion-content>
 
-    <div class="bar bar-footer bar-calm">
-        <div class="title" style="cursor:pointer" ng-click="complete(task)">
-            {{(task.completed) ? "Re-open this Task" : "Mark this Task as Complete"}}
-        </div>
+    <div class="bar bar-footer bar-light">
+		<div class="row">
+			<i ng-click="modalAddComment.show()" class="icon calm ion-ios-chatboxes-outline" style="margin-left: 20px; font-size: 24px;"></i>
+			<div class="col"></div>
+			<button class="button button-clear button-calm" ng-click="complete(task)" style="margin-top: -6px; margin-right: 10px; font-size: 15px">{{(task.completed) ? "Mark Incomplete" : "Mark Completed"}}</button>
+		</div>
     </div>
+	
 </ion-view>
 
 <script id="modalAddComment.html" type="text/ng-template">

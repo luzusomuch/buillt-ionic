@@ -5,20 +5,26 @@
     </ion-nav-title>
 
     <ion-nav-buttons side="right" ng-show="thread.owner._id===currentUser._id">
-        <button ng-click="showModalEditThread()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
+        <button ng-click="showModalEditThread()" class="button button-clear" style="margin-right: 10px;"><span style="font-size: 15px">Edit</span></button> 
     </ion-nav-buttons>
 	
     <ion-content padding="false" class="has-header has-footer">
         <div id="thread-detail-content">
-            <div class="item-text-wrap" ng-repeat="activity in thread.activities | orderBy: '-createdAt'" ng-show="activity.type==='chat' || activity.type==='related-task' || activity.type==='related-file'">
+			
+			<div class="activity-item">
+                <div class="activity-header">
+                    {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread at {{thread.createdAt | date: 'dd/MM/yyyy'}}
+                </div>
+			</div>
+			
+            <div class="item-text-wrap" ng-repeat="activity in thread.activities | orderBy: 'createdAt'" ng-show="activity.type==='chat' || activity.type==='related-task' || activity.type==='related-file'">
 				<div class="activity-item">
-               
 				    <div class="activity-header">
                         <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
                         <small ng-switch="activity.type">
-                            <span ng-switch-when="chat">sent a reply at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                            <span ng-switch-when="related-task">created related task at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
-                            <span ng-switch-when="related-file">created related task at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
+                            <span ng-switch-when="chat"> at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
+                            <span ng-switch-when="related-task">attached a task at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
+                            <span ng-switch-when="related-file">attached a file at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
                         </small>
                     </div>
                
@@ -27,74 +33,69 @@
                         <span ng-switch-when="related-task"><a ui-sref="taskDetail({taskId: activity.element.item})">{{activity.element.name}}</a></span>
                         <span ng-switch-when="related-file"><a ui-sref="fileDetail({fileId: activity.element.item})">{{activity.element.name}}</a></span>
                     </div>
-					
 				</div>
-				
-			</div>
-			
-			<div class="activity-item">
-                <div class="activity-header">
-                    {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread at {{thread.createdAt | date: 'dd/MM/yyyy'}}
-                </div>
 			</div>
         </div>
+		
         <div class="space" style="height:50px"></div>
     </ion-content>
 
-    <ion-footer-bar class="bar-calm" style="height: auto; display: block !important">
-        <div class="row">
-            <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage()" style="width: 100%;">
-                <div class="item item-input remove-border">
-                    <textarea style="width:80%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
-                    <button class="button button-calm button-clear button-stable button-block" type="submit" style="width:20%; margin-right:10px;" name="action">Send
-                        <i class="mdi-content-send right"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="row" style="margin-top: 5px;">
-            <button ng-click="modalCreateRelatedFile.show()" class="col button icon ion-document" style="border:none"></button>
-            <button ng-click="modalCreateRelatedTask.show()" class="col button icon ion-checkmark" style="border:none"></button>
-        </div>
+    <ion-footer-bar style="height: auto; display: block !important">
+        <form class="ng-pristine ng-valid" name="messageForm" novalidate ng-submit="sendMessage()" style="width: 100%;">
+            <div class="item item-input remove-border">
+                <textarea style="width: 95%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
+            </div>
+	        <div class="row">
+				<i ng-click="modalCreateRelatedFile.show()" class="icon ion-ios-copy-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<i ng-click="modalCreateRelatedTask.show()" class="icon ion-ios-checkmark-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<div class="col"></div>
+				<button class="button button-calm button-clear" style="margin-top: -6px; margin-right: 20px; font-size: 15px" type="submit" name="action">Send</button>
+	        </div>
+        </form>
     </ion-footer-bar>
 </ion-view>
 
 <script id="modalCreateRelatedFile.html" type="text/ng-template">
     <div class="modal">
+		
         <ion-header-bar class="bar-light">
-            <h1 class="title">Create Related File</h1>
+            <h1 class="title">Attach a Related File</h1>
             <div class="buttons">
                 <button ng-click="modalCreateRelatedFile.hide()" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
-        <ion-content padding="true" class="has-header">
+		
+        <ion-content class="has-header padding">
             <form ng-submit="createRelatedFile(form)" name="form">
-                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
-
-                <div class="item item-input">
-                    <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
-                </div>
-
-                <div class="item item-input item-floating-label">
+				
+                <div class="space" style="height: 50px;"></div>
+				
+                <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                     <span class="input-label">File Name</span>
                     <input placeholder="File Name" id="name" type="text" ng-model="file.file.filename" name="name" maxlength="300" required>
                 </div>
 
+                <div class="item item-input" style="border-right: none; border-left: none; border-top: none">
+					
+                    <input class="button button-clear button-calm" onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
+                </div>
+
                 <div class="list">
-                    <label class="item item-input item-select">
-                        <div class="input-label">Tag</div>
+                    <label class="item item-input item-select" style="border-right: none; border-left: none; border-top: none">
+                        <div class="input-label">File Tag</div>
                         <select ng-model="file.selectedTag">
                             <option ng-selected="file.selectedTag==tag.name" ng-repeat="tag in tags" ng-value="tag.name">{{tag.name}}</option>
                         </select>
                     </label>
                 </div>
 
-                <div class="spacer" style="display: inline-block; width: 300px; height: 50px;"></div>
                 <div class="row" style="">
-                    <button class="button button-positive button-outline button-block" type="submit">Add document</button>
+                    <button class="button button-clear button-calm button-block" type="submit">Attach File</button>
                 </div>
+				
             </form>
         </ion-content>
+		
     </div>
 </script>
 

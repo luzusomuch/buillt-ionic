@@ -32,19 +32,17 @@
 .activity-item {
 	margin: 8px;
 	padding: 10px;
-	border: 1px solid #EEEEEE;
-	border-radius: 2px;
 }
 
 .activity-header {
 	text-transform: uppercase;
 	font-size: 10px;
-	color: #616161;
+	color: #424242;
 	font-weight: 500;
+	border-bottom: 1px solid #EEEEEE;
 }
 
 .activity-body {
-	border-top: 1px solid #EEEEEE;
 	padding-top: 10px;
 }
 

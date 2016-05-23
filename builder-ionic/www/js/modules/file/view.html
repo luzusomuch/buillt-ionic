@@ -7,18 +7,22 @@
 
     <!-- show upload reversion modal -->
     <ion-nav-buttons side="right" ng-show="file.owner._id==currentUser._id">
-        <button ng-click="showModalEditFile()" class="button button-clear icon-right ion-edit" style="margin-right: 10px;"></button> 
+        <button ng-click="showModalEditFile()" class="button button-clear" style="margin-right: 10px; font-size: 15px">Edit</button> 
     </ion-nav-buttons>
 
     <ion-content class="has-header file-content has-footer">
+	
         <div class="space" style="margin-top: 20px;"></div>
+		
         <div id="file-detail-content">
             <div class="item-text-wrap">
                 <div class="activity-item">
+					
                     <div class="activity-header">
                         <span class="activity-creator"><strong>{{(file.owner._id==currentUser._id) ? "You" : file.owner.name}}</strong></span>
-                        <small> has created this file at {{file.createdAt | date : 'hh:mm a dd-MM-yyyy'}}</small>
+                        <small> created this file on {{file.createdAt | date : 'hh:mm a dd-MM-yyyy'}}</small>
                     </div>
+					
                 </div>
             </div>
 
@@ -30,11 +34,9 @@
                         <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
                 
                         <small ng-switch="activity.type">
-                            <span ng-switch-when="upload-reversion"> has uploaded reversion of this file at {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
-
-                            <span ng-switch-when="related-thread"> has created related thread at {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
-
-                            <span ng-switch-when="related-task"> has created related thread at {{activity.createdAt | date:'hh:mm a dd-MM-yyyy'}}.</span>
+                            <span ng-switch-when="upload-reversion"> uploaded a new version of this file on {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
+                            <span ng-switch-when="related-thread"> attached a related thread on {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
+                            <span ng-switch-when="related-task"> attached a related task on {{activity.createdAt | date:'hh:mm a dd-MM-yyyy'}}.</span>
                         </small>
                     </div>
 
@@ -56,17 +58,15 @@
             </div>
         </div>
     </ion-content>
-
-    <ion-footer-bar class="bar-calm" style="height: auto; display: block !important">
-        <div class="row" style="margin-top: 5px;">
-            <button ng-click="modalCreateRelatedTask.show()" class="col button icon ion-checkmark" style="border:none"></button>
-            <button ng-click="modalCreateRelatedThread.show()" class="col button icon ion-chatbubble" style="border:none"></button>
-        </div>
-    </ion-footer-bar>
-
-    <ion-footer>
-        <button ng-click="openUploadReversion()" class="button button-clear icon-right ion-ios-plus-empty" style="width:100%"></button> 
-    </ion-footer>
+	
+    <div class="bar bar-footer bar-light">
+		<div class="row">
+			<i ng-click="modalCreateRelatedThread.show()" class="icon calm ion-ios-chatbubble-outline" style="margin-left: 20px; font-size: 24px;"></i>
+            <i ng-click="modalCreateRelatedTask.show()" class="icon calm ion-ios-checkmark-outline" style="margin-left: 20px; font-size: 24px;"></i>
+			<div class="col"></div>
+			<button class="button button-clear button-calm" ng-click="openUploadReversion()" style="margin-top: -6px; margin-right: 10px; font-size: 15px">Attach New Version</button>
+		</div>
+    </div>
 </ion-view>
 
 <script id="modalCreateRelatedThread.html" type="text/ng-template">

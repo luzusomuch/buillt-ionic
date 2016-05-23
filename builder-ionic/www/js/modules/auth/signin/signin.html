@@ -1,30 +1,42 @@
 <ion-view title="Sign In">
-	<ion-content class="has-header">
-        <div class="button-bar">
-            <a ng-click="usePhoneNumber=false" class="button button-calm">Sign in with Email</a>
-            <a ng-click="usePhoneNumber=true" class="button button-calm">Sign in with Phone Number</a>
-        </div>
+
+    <ion-nav-buttons side="right" >
+        <button ng-click="modalSignup.show()" class="button button-clear" style="margin-right: 10px; font-size:15px">Sign Up</button> 
+    </ion-nav-buttons>
+	
+	<ion-content class="has-header" padding="true">
+	
+		<div class="space" style="height: 50px"></div>
 
         <!-- sign in with email -->
         <form ng-show="!usePhoneNumber" name="signInWithEmailForm" ng-submit="signInWithEmail(signInWithEmailForm)" novalidate>
-            <div class="item item-input item-floating-label">
+            <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                 <span class="input-label">Your Email</span>
                 <input type="email" placeholder="Your Email" ng-model="user.email" name="email" required>
                 <p class="validate-message" style="color: red" ng-show="form.email.$error.required">Your Email Is Required</p>
                 <p class="validate-message" style="color: red" ng-show="form.email.$error.email">Not Valid Email</p>
             </div>
-            <div class="item item-input item-floating-label">
+            <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                 <span class="input-label">Your Password</span>
                 <input type="password" placeholder="Your Password" ng-model="user.password" name="password" required>
                 <p class="validate-message" style="color: red" ng-show="form.password.$error.required">Your Email Is Required</p>
             </div>
+			
+			<div class="space" style="height: 30px"></div>
+			
             <div>
-                <button class="col button button-calm">Sign In</button>
+                <button class="button button-calm button-block">Sign In</button>
             </div>
+			
+	        <div style="margin-top: 30px">
+	            <a class="button button-clear button-calm button-small button-block" ng-click="usePhoneNumber=true">Or, Sign In With Mobile Here</a>
+	        </div>
+			
         </form>
+		
         <!-- sign in with phone number -->
 		<form ng-show="usePhoneNumber" name="form" ng-submit="getToken(form)" novalidate>
-            <div class="item item-input item-floating-label">
+            <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none; margin-top: 69px">
 				<span class="input-label" style="">Your Phone Number</span>
                 <input type="text" placeholder="Your Phone Number" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
                 <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.required && submitted">Your phone number is required...</p>
@@ -33,14 +45,33 @@
 				
 			<p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
 			
-			<div class="padding">
+			<div class="space" style="height: 30px"></div>
+			
+			<div>
 				<button class="button button-calm button-block">Next</button>
 			</div>
+			
+	        <div style="margin-top: 30px">
+	            <a class="button button-clear button-calm button-small button-block" ng-click="usePhoneNumber=false">Or, Sign In With Email Here</a>
+	        </div>
+			
 		</form>
-
-        <div style="text-align: center;">
-            <button class="button button-calm button-clear" ng-click="modalSignup.show()">Or Sign Up Here...</button>
-        </div>
+		
+        <form ng-show="" name="form" ng-submit="signInWithPhoneNumber(form)" novalidate>
+			<p>We sent a PIN to the phone number you entered. Please enter it below to verify your identity.</p>
+            <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none;">
+                <span class="input-label">Your Verification PIN</span>
+                <input ng-model="user.phoneNumberLoginToken" name="password" required type="text" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Enter Your PIN">
+                <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your verification PIN is required...</p>
+            </div>
+                
+            <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
+            
+            <div class="padding">
+                <button class="button button-calm button-block">Sign In</button>
+            </div>
+        </form>
+		
 	</ion-content>
 	
 </ion-view>
@@ -54,19 +85,7 @@
             </div>
         </ion-header-bar>
         <ion-content>
-            <form name="form" ng-submit="signInWithPhoneNumber(form)" novalidate>
-                <div class="item item-input item-floating-label">
-                    <span class="input-label">Enter Your Token</span>
-                    <input ng-model="user.phoneNumberLoginToken" name="password" required type="text" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Enter Your Token">
-                    <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your token is required...</p>
-                </div>
-                    
-                <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
-                
-                <div class="padding">
-                    <button class="button button-calm button-block">Sign In</button>
-                </div>
-            </form>
+            
         </ion-content>
     </div>
 </script>
@@ -76,86 +95,67 @@
     <div class="modal">
         
         <!-- Header -->
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Create New Account On Buiilt...</h1>
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Create Account</h1>
             <div class="buttons">
                 <button ng-click="modalSignup.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
-        <ion-content class="has-header">
+        <ion-content class="has-header" >
         
-            <form id="form" name="form" novalidate>
+            <form id="form" name="form" novalidate class="padding">
+				
+				<div class="space" style="height: 50px"></div>
 
                 <!-- Phone Number -->
-                <div class="item item-input item-floating-label" ng-show="step==1">
-                    <span class="input-label">Phone Number</span>
+                <div class="item item-input item-floating-label" ng-show="step==1" style="border-right: none; border-left: none; border-top: none; margin-top: 69px">
+                    <span class="input-label">Your Phone Number</span>
                     <input placeholder="Phone Number" id="phoneNumber" type="text" ng-model="user.phoneNumber" name="phoneNumber" required ng-pattern="/^[0-9]{1,15}$/">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.phoneNumber.$error.required && submitted">Phone Number is required...</p>
-                    <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.pattern">Not a valid number</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.phoneNumber.$error.required && submitted">Your phone number is required...</p>
+                    <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.pattern">This is not a valid phone number.</p>
                 </div>
 
                 <!-- Verify Phone Number -->
-                <div class="item item-input item-floating-label" ng-show="step==2">
-                    <span class="input-label">Verify Code</span>
+                <div class="item item-input item-floating-label" ng-show="step==2" style="border-right: none; border-left: none; border-top: none; margin-top: 69px">
+                    <span class="input-label">Your Verification PIN</span>
                     <input placeholder="Verify Code" id="verifyCode" type="text" ng-model="user.verifyCode" name="verifyCode" required >
-                    <p class="validate-message" style="color: #F44336" ng-show="form.verifyCode.$error.required && submitted">Phone Number is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.verifyCode.$error.required && submitted">Your verification PIN is required...</p>
                 </div>
 
                 <!-- Email -->
-                <div class="item item-input item-floating-label" ng-show="step==3">
-                    <span class="input-label">Phone Number</span>
+                <div class="item item-input item-floating-label" ng-show="step==3" style="border-right: none; border-left: none; border-top: none">
+                    <span class="input-label">Your Email Address</span>
                     <input placeholder="Email" id="email" type="email" ng-model="user.email" name="email" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.email.$error.required && submitted">Email is required...</p>
-                    <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.email">Not a valid email</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.email.$error.required && submitted">Your email address is required...</p>
+                    <p class="validate-message" style="color: #EF5350" ng-show="form.phoneNumber.$error.email">This is not a valid email address.</p>
                 </div>
 
                 <!-- First Name-->
-                <div class="item item-input item-floating-label" ng-show="step==3">
-                    <span class="input-label">First Name</span>
+                <div class="item item-input item-floating-label" ng-show="step==3" style="border-right: none; border-left: none; border-top: none">
+                    <span class="input-label">Your First Name</span>
                     <input placeholder="First Name" id="firstName" type="text" ng-model="user.firstName" name="firstName" ng-class="{'invalid' : form.firstName.$invalid && submitted}" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.firstName.$error.required && submitted">First Name is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.firstName.$error.required && submitted">Your first name is required...</p>
                 </div>
 
                 <!-- Last Name-->
-                <div class="item item-input item-floating-label" ng-show="step==3">
-                    <span class="input-label">Last Name</span>
+                <div class="item item-input item-floating-label" ng-show="step==3" style="border-right: none; border-left: none; border-top: none">
+                    <span class="input-label">Your Last Name</span>
                     <input placeholder="Last Name" id="lastName" type="text" ng-model="user.lastName" name="lastName" ng-class="{'invalid' : form.lastName.$invalid && submitted}" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.lastName.$error.required && submitted">Last Name is required...</p>
+                    <p class="validate-message" style="color: #F44336" ng-show="form.lastName.$error.required && submitted">Your last name is required...</p>
                 </div>
 
-                <!-- Password-->
-                <!--<div class="item item-input item-floating-label">
-                    <span class="input-label">Password</span>
-                    <input placeholder="Password" id="password" type="password" ng-model="user.password" name="password" ng-class="{'invalid' : form.password.$invalid && submitted}" required ng-minlength="6">
-                    <p class="validate-message" style="color: #F44336" ng-show="form.password.$error.required && submitted">Password is required...</p>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.password.$error.minlength && submitted">Password should be a minimum of 6 characters...</p>
-                </div>-->
-
-                <!-- Re-type Password-->
-                <!--<div class="item item-input item-floating-label">
-                    <span class="input-label">Retype Password</span>
-                    <input placeholder="Retype Password" id="repassword" type="password" ng-model="user.repassword" compare-to="user.password" name="repassword" ng-class="{'invalid' : form.repassword.$invalid && submitted}" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.repassword.$error.required && submitted">Retype Password is required...</p>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.repassword.$error.compareTo && submitted">The passwords you have entered do not match...</p>
-                </div>-->
-
                 <div style="color: red; margin-left: 20px;" ng-show="errors.signup">{{errors.signup}}</div>
-                
-                <div class="space" style="height: 50px"></div>   
+				
+				<div class="space" style="height: 30px"></div>
+		        
+	            <button class="button button-block button-calm" ng-show="step!==1" ng-click="step=step-1">Back</button>
+	            <button class="button button-block button-calm" ng-hide="step==3" ng-click="next()">Next</button>
+	            <button class="button button-block button-calm" ng-show="step==3" ng-click="signup()">Sign Up</button>
+				
             </form>
 
-
         </ion-content>
-
-        
-        <div class="space" style="height: 50px"></div>
-
-        <div class="bar bar-footer bar-calm row">
-            <button class="button button-state col" ng-show="step!==1" ng-click="step=step-1">Back</button>
-            <button class="button button-state col" ng-hide="step==3" ng-click="next()">Next</button>
-            <button class="button button-state col" ng-show="step==3" ng-click="signup()">Create Account</button>
-        </div>
-        
+		
     </div>
 </script>

@@ -29,21 +29,19 @@
 	    <ion-nav-view ng-show="currentTab == 'thread'" name="Messages">
 	        <div class="list" ng-show="currentTab == 'thread'">
 	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v > 0">
-	                <h2>{{thread.name}}</h2>
-                    <p>Assignees: 
+	                <span><h2><i class="icon calm ion-ios-circle-filled"></i> {{thread.name}}</h2></span>
+                    <p>
                         <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in thread.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p ng-show="thread.__v > 0" class="item-notifications">Updates: {{thread.__v}}</p>
 	            </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="thread in threads | orderBy: '-updatedAt'" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v==0">
                     <h2>{{thread.name}}</h2>
-                    <p>Assignees: 
+                    <p>
                         <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in thread.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p>No New Updates</p>
                 </ion-item>
 	        </div>
 	    </ion-nav-view>
@@ -52,23 +50,21 @@
 	    <ion-nav-view ng-show="currentTab == 'task'" name="Tasks">
 	        <div class="list" ng-show="currentTab == 'task'">
 	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v > 0">
-	                <h2>{{task.description}}</h2>
-                    <p>
-                        Due: {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}} | Assignees: 
+					<span><h2><i class="icon calm ion-ios-circle-filled"></i> {{task.description}}</h2></span>
+                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
+					<p>
                         <span ng-repeat="member in task.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in task.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p ng-show="task.__v > 0" class="item-notifications">Updates: {{task.__v}}</p>
 	            </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v == 0 && !task.completed">
                     <h2>{{task.description}}</h2>
-                    <p>
-                        Due: {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}} | Assignees: 
+                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
+					<p>
                         <span ng-repeat="member in task.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
                         <span ng-repeat="email in task.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p>No New Updates</p>
                 </ion-item>
 	        </div>
 	    </ion-nav-view>
@@ -77,12 +73,11 @@
         <ion-nav-view ng-show="currentTab == 'file'" name="Files">
             <div class="list" ng-show="currentTab=='file'">
                 <ion-item class="item-text-wrap" ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})" ng-show="file.__v > 0">
-                    <h2>{{file.name}}</h2>
+					<span><h2><i class="icon calm ion-ios-circle-filled"></i> {{file.name}}</h2></span>
                     <p>
                         <span ng-repeat="member in file.members | unique: '_id' track by $index">{{member.name}}, </span>
                         <span ng-repeat="email in file.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p class="item-notifications">Updates: {{file.__v}}</p>
                 </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="file in files" ui-sref="fileDetail({fileId: file._id})" ng-show="file.__v == 0">
@@ -91,7 +86,6 @@
                         <span ng-repeat="member in file.members | unique: '_id' track by $index">{{member.name}}, </span>
                         <span ng-repeat="email in file.notMembers track by $index">{{email}}, </span>
                     </p>
-                    <p>No Update</p>
                 </ion-item>
             </div>
         </ion-nav-view>
@@ -109,16 +103,16 @@
 	
 	<!-- Tabs bar at bottom of list view screen. -->
     <ion-footer-bar>
-        <ion-tabs class="tabs-icon-top tabs-calm" style="margin-left:-5px">
+        <ion-tabs class="tabs-icon-top tabs-light" style="margin-left:-5px">
 		
 			<!-- Tab for messages. -->
-            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatbubble"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatbubble calm" badge="3" badge-style="badge-assertive"></ion-tab>
 			<!-- Tab for tasks. -->
-            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark calm" badge="3" badge-style="badge-assertive"></ion-tab>
             <!-- Tab for files. -->
-            <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-document-text"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-ios-copy calm" badge="3" badge-style="badge-assertive"></ion-tab>
             <!-- Tab for documents. -->
-            <ion-tab ng-click="selectTabWithIndex(3)" title="Documentations" icon="ion-ios-folder"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(3)" title="Documentation" icon="ion-ios-box calm" badge="3" badge-style="badge-assertive"></ion-tab>
 			
         </ion-tabs>
     </ion-footer-bar>
