@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($ionicScrollDelegate, currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
+.controller('ThreadDetailCtrl', function($ionicScrollDelegate, currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService, contactBookService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
@@ -219,7 +219,11 @@ angular.module('buiiltApp')
 
         $scope.showModalEditThread = function() {
             $scope.membersList = [];
-            var prom = [peopleService.getInvitePeople({id: thread.project}).$promise, activityService.me({id: thread.project}).$promise];
+            var prom = [
+                peopleService.getInvitePeople({id: thread.project}).$promise, 
+                activityService.me({id: thread.project}).$promise,
+                contactBookService.me().$promise
+            ];
             $q.all(prom).then(function(res) {
                 var people = res[0];
                 $scope.events = res[1];
@@ -273,6 +277,17 @@ angular.module('buiiltApp')
                 })
                 // remove current user from the members list
                 _.remove($scope.membersList, {_id: $scope.currentUser._id});
+
+                _.each($scope.membersList, function(member) {
+                    if (!member._id) {
+                        var index = _.findIndex(res[2], function(contact){
+                            return member.email===contact.email;
+                        });
+                        if (index !== -1) {
+                            member.name = res[2][index].name;
+                        }
+                    }
+                });
 
                 $scope.modalEditThread.show();
             });

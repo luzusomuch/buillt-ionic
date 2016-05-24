@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($ionicScrollDelegate, $q, $rootScope, $ionicModal, $ionicLoading, $timeout, $scope, $stateParams, taskService, socket, notificationService, authService, activityService, peopleService) {
+.controller('TaskDetailCtrl', function($ionicScrollDelegate, $q, $rootScope, $ionicModal, $ionicLoading, $timeout, $scope, $stateParams, taskService, socket, notificationService, authService, activityService, peopleService, contactBookService) {
     taskService.get({id: $stateParams.taskId}).$promise.then(function(task) {
         var originalTask = angular.copy(task);
         $scope.task = task;
@@ -56,8 +56,13 @@ angular.module('buiiltApp')
 
         $scope.showModalEditTask = function() {
             $scope.membersList = [];
-            // Get available project member that can add to thread
-            peopleService.getInvitePeople({id: task.project}).$promise.then(function(people) {
+            var prom = [
+                peopleService.getInvitePeople({id: task.project}).$promise,
+                contactBookService.me().$promise
+            ];
+            $q.all(prom).then(function(res) {
+                var people = res[0];
+                contactBooks = res[1];
                 _.each($rootScope.roles, function(role) {
                     _.each(people[role], function(tender){
                         if (tender.hasSelect) {
@@ -106,6 +111,17 @@ angular.module('buiiltApp')
                 })
                 // remove current user from the members list
                 _.remove($scope.membersList, {_id: $scope.currentUser._id});
+                // Change email to name from contact books
+                _.each($scope.membersList, function(member) {
+                    if (!member._id) {
+                        var index = _.findIndex(contactBooks, function(contact) {
+                            return member.email===contact.email;
+                        });
+                        if (index !== -1) {
+                            member.name = contactBooks[index].name;
+                        }
+                    }
+                });
 
                 $scope.modalEditTask.show();
             });

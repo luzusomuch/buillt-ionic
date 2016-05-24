@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="space" style="margin-top: 20px;"></div>
 
     </ion-content>
@@ -175,7 +175,7 @@
         <ion-header-bar class="bar-light">
             <h1 class="title">Edit File {{file.name}}</h1>
             <div class="buttons">
-                <button ng-click="showModalEditFile.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+                <button ng-click="modalEditFile.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
@@ -212,7 +212,7 @@
                         <span class="input-label">Assignees:</span>
                     </label>
                     <ion-list>
-                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member._id) ? member.name : member.email}}</ion-checkbox>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member.name) ? member.name : member.email}}</ion-checkbox>
                     </ion-list>
                 </div>
 

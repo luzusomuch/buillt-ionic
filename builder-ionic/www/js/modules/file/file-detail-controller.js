@@ -1,4 +1,4 @@
-angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDelegate, $q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService) {
+angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDelegate, $q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService, contactBookService) {
     fileService.get({id: $stateParams.fileId}).$promise.then(function(file) {
         socket.emit("join", file._id);
         socket.on("file:update", function(data) {
@@ -100,15 +100,23 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         $scope.showModalEditFile = function() {
             $scope.membersList = [];
             $scope.tags = [];
-            var prom = [peopleService.getInvitePeople({id: file.project}).$promise, activityService.me({id: file.project}).$promise, authService.getCurrentTeam().$promise];
+            var prom = [
+                peopleService.getInvitePeople({id: file.project}).$promise, 
+                activityService.me({id: file.project}).$promise, 
+                authService.getCurrentTeam().$promise,
+                contactBookService.me().$promise
+            ];
             $q.all(prom).then(function(res) {
                 var people = res[0];
                 $scope.events = res[1];
                 var currentTeam = res[2];
+                var contactBooks = res[3];
                 // Get all file tags
-                _.each(currentTeam.fileTags, function(tag) {
-                    $scope.tags.push({name: tag, select: false});
-                });
+                if (currentTeam) {
+                    _.each(currentTeam.fileTags, function(tag) {
+                        $scope.tags.push({name: tag, select: false});
+                    });
+                }
                 // Get available project member that can add to file
                 _.each($rootScope.roles, function(role) {
                     _.each(people[role], function(tender){
@@ -158,6 +166,17 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                 })
                 // remove current user from the members list
                 _.remove($scope.membersList, {_id: $scope.currentUser._id});
+                // get user name from contact books for non-user
+                _.each($scope.membersList, function(member) {
+                    if (!member._id) {
+                        var index = _.findIndex(contactBooks, function(contact) {
+                            return member.email===contact.email;
+                        });
+                        if (index !== -1) {
+                            member.name = contactBooks[index].name;
+                        }
+                    }
+                });
 
                 $scope.modalEditFile.show();
             });
