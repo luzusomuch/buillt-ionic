@@ -10,7 +10,7 @@ angular.module('buiiltApp')
         $scope.hasUpdate = res;
     }, function(err) {
         $ionicLoading.hide();
-        $ionicLoading.show({ template: 'Error When Check Update', noBackdrop: true, duration: 2000 });
+        $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
     });
 
     // If it has update then apply it
@@ -314,6 +314,7 @@ angular.module('buiiltApp')
     };
 
     function findAllByProject(project) {
+        console.log(project);
         $ionicLoading.show();
         var prom1 = [
             taskService.getProjectTask({id: project._id}).$promise, 
@@ -342,7 +343,7 @@ angular.module('buiiltApp')
     };
 
     $scope.headingName = "Project";
-
+$scope.abc = 1;
     $scope.selectProject = function(project) {
 		$scope.projectPopover.hide();
         $scope.headingName = " ";

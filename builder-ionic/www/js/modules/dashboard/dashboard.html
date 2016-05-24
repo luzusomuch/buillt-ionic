@@ -104,15 +104,14 @@
 	<!-- Tabs bar at bottom of list view screen. -->
     <ion-footer-bar>
         <ion-tabs class="tabs-icon-top tabs-light" style="margin-left:-5px">
-		
 			<!-- Tab for messages. -->
-            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatbubble calm" badge="3" badge-style="badge-assertive"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(0)" title="Messages" icon="ion-ios-chatbubble calm" badge="selectedProject.element.thread" badge-style="badge-assertive"></ion-tab>
 			<!-- Tab for tasks. -->
-            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark calm" badge="3" badge-style="badge-assertive"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(1)" title="Tasks" icon="ion-ios-checkmark calm" badge="selectedProject.element.task" badge-style="badge-assertive"></ion-tab>
             <!-- Tab for files. -->
-            <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-ios-copy calm" badge="3" badge-style="badge-assertive"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(2)" title="Files" icon="ion-ios-copy calm" badge="selectedProject.element.file" badge-style="badge-assertive"></ion-tab>
             <!-- Tab for documents. -->
-            <ion-tab ng-click="selectTabWithIndex(3)" title="Documentation" icon="ion-ios-box calm" badge="3" badge-style="badge-assertive"></ion-tab>
+            <ion-tab ng-click="selectTabWithIndex(3)" title="Documentation" icon="ion-ios-box calm" badge="selectedProject.element.document" badge-style="badge-assertive"></ion-tab>
 			
         </ion-tabs>
     </ion-footer-bar>

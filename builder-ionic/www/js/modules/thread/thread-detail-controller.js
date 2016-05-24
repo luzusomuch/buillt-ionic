@@ -1,10 +1,10 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function($ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
+.controller('ThreadDetailCtrl', function(currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
         $scope.thread.selectedEvent = thread.event;
-        $scope.currentUser = authService.getCurrentUser().$promise;
+        $scope.currentUser = currentUser;
 
         // Setting new related task
         $scope.task = {
@@ -86,12 +86,11 @@ angular.module('buiiltApp')
         });
 
         $scope.tags = [];
-        authService.getCurrentTeam().$promise.then(function(team) {
-            $scope.currentTeam = team;
-            _.each($scope.currentTeam.fileTags, function(tag) {
+        if (currentTeam) {
+            _.each(currentTeam.fileTags, function(tag) {
                 $scope.tags.push({name: tag, select: false});
             });
-        });
+        }
 
         $scope.file = {
             belongTo: thread._id,
