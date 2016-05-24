@@ -17,9 +17,9 @@
 	                    <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
 				
 	                    <small ng-switch="activity.type">
-	                        <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
-	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
-	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}.</span>
+	                        <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
+	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
+	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
 	                    </small>
 					</div>
 				</div>
@@ -27,7 +27,7 @@
 
             <div class="item-text-wrap" ng-repeat="comment in task.comments">
                 <div class="activity-item">
-                    <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented at {{comment.sentAt | date: 'hh:mm dd-MM-yyyy'}}</p>
+                    <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented at {{comment.createdAt | date:'hh:mm a'}}, {{comment.createdAt |date:'dd MMMM yyyy'}}</p>
                     <small ng-bind-html="comment.content | htmlize"></small>
                 </div>
             </div>

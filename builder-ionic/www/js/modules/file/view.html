@@ -20,7 +20,7 @@
 					
                     <div class="activity-header">
                         <span class="activity-creator"><strong>{{(file.owner._id==currentUser._id) ? "You" : file.owner.name}}</strong></span>
-                        <small> created this file on {{file.createdAt | date : 'hh:mm a dd-MM-yyyy'}}</small>
+                        <small> created this file on {{file.createdAt | date : 'dd MMMM yyyy'}}</small>
                     </div>
 					
                 </div>
@@ -34,9 +34,9 @@
                         <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
                 
                         <small ng-switch="activity.type">
-                            <span ng-switch-when="upload-reversion"> uploaded a new version of this file on {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
-                            <span ng-switch-when="related-thread"> attached a related thread on {{activity.createdAt | date : 'hh:mm a dd-MM-yyyy'}}.</span>
-                            <span ng-switch-when="related-task"> attached a related task on {{activity.createdAt | date:'hh:mm a dd-MM-yyyy'}}.</span>
+                            <span ng-switch-when="upload-reversion"> uploaded a new version of this file at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
+                            <span ng-switch-when="related-thread"> attached a related thread at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
+                            <span ng-switch-when="related-task"> attached a related task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
                         </small>
                     </div>
 

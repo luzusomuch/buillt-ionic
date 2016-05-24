@@ -13,18 +13,18 @@
 			
 			<div class="activity-item">
                 <div class="activity-header">
-                    {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread at {{thread.createdAt | date: 'dd/MM/yyyy'}}
+                    {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread at {{thread.createdAt | date: 'dd MMMM yyyy'}}
                 </div>
 			</div>
 			
-            <div class="item-text-wrap" ng-repeat="activity in thread.activities | orderBy: 'createdAt'" ng-show="activity.type==='chat' || activity.type==='related-task' || activity.type==='related-file'">
+            <div class="item-text-wrap" ng-repeat="activity in thread.activities" ng-show="activity.type==='chat' || activity.type==='related-task' || activity.type==='related-file'">
 				<div class="activity-item">
 				    <div class="activity-header">
                         <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
                         <small ng-switch="activity.type">
-                            <span ng-switch-when="chat"> at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd-MM-yyyy'}}:</span>
-                            <span ng-switch-when="related-task">attached a task at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
-                            <span ng-switch-when="related-file">attached a file at {{activity.createdAt | date: 'hh:mm a dd-MM-yyyy'}}</span>
+                            <span ng-switch-when="chat"> sent a reply at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}:</span>
+                            <span ng-switch-when="related-task">attached a task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}</span>
+                            <span ng-switch-when="related-file">attached a file at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}</span>
                         </small>
                     </div>
                
