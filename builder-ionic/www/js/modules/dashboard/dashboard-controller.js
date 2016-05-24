@@ -333,7 +333,6 @@ angular.module('buiiltApp')
     };
 
     function findAllByProject(project) {
-        console.log(project);
         $ionicLoading.show();
         var prom1 = [
             taskService.getProjectTask({id: project._id}).$promise, 
@@ -468,6 +467,25 @@ angular.module('buiiltApp')
         }
     };
 
+    $scope.step = 1;
+    $scope.next = function(type) {
+        if (type==="create-task") {
+            if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length===0)) {
+                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+            } else if ($scope.step==2 && (!$scope.task.dateStart || !$scope.task.dateEnd)) {
+                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+            } else {
+                $scope.step +=1;
+            }
+        }
+    };
+
+    function refreshProjectMembers() {
+        _.each($scope.projectMembers, function(member) {
+            member.select = false;
+        });
+    };
+
     //create new task
     $ionicModal.fromTemplateUrl('modalCreateTask.html', {
         scope: $scope,
@@ -488,7 +506,7 @@ angular.module('buiiltApp')
 
     $scope.task = {
         members : [],
-        dateEnd: new Date(),
+        dateEnd: new Date(moment().add(1, "hours")),
         dateStart: new Date(),
         time: {},
         type: "task-project"
@@ -511,16 +529,17 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewTask = function() {
-        $scope.submitted = true;
+        // $scope.submitted = true;
         if ($scope.task.members.length===0) {
             return $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 });
         } else if (!$scope.task.dateEnd || !$scope.task.dateStart) {
             return $ionicLoading.show({ template: 'Please Select Due Date Or Start Date!', noBackdrop: true, duration: 2000 });
         } else if ($scope.task.description && $scope.task.description.trim().length===0) {
             return $ionicLoading.show({ template: 'Please Enter Task Description!', noBackdrop: true, duration: 2000 });
-        } else if (!$scope.task.time.start || !$scope.task.time.end) {
-            return $ionicLoading.show({ template: 'Please Enter Task Start Time Or End Time!', noBackdrop: true, duration: 2000 });
         }
+        $scope.task.time.start = $scope.task.dateStart;
+        $scope.task.time.end = $scope.task.dateEnd;
+        
         taskService.create({id : $rootScope.selectedProject._id},$scope.task).$promise.then(function(res) {
             $scope.modalCreateTask.hide();
             $scope.task = {
@@ -530,7 +549,9 @@ angular.module('buiiltApp')
                 time: {},
                 type: "task-project"
             };
+            refreshProjectMembers();
             $scope.tasks.push(res);
+            filterAndSortTaskDueDate($scope.tasks);
             $ionicLoading.show({ template: 'Create New Task Successfully!', noBackdrop: true, duration: 2000 });
         }, function(err) {
             $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });

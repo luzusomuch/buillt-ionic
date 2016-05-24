@@ -28,7 +28,8 @@
     "restangular": "1.4.0",
     "angular-filepicker": "master",
     "filepicker-js": "2.3.1",
-    "angular-file-upload": "~1.1.5"
+    "angular-file-upload": "~1.1.5",
+    "ion-datetime-picker": "~0.2.0"
   },
   "resolutions": {
     "angular": "~1.3"

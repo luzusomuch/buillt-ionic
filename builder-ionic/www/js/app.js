@@ -16,6 +16,7 @@ angular.module('buiiltApp', [
   'restangular',
   'btford.socket-io',
   'angular-filepicker',
+  "ion-datetime-picker"
   ])
 .constant('API_URL', 'http://localhost:9000/')
 // .constant('API_URL', 'https://buiilt.com.au/')

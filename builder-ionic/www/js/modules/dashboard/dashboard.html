@@ -146,42 +146,29 @@
 		<!-- Description and Assignee -->
         <ion-content class="has-header">
 		
-            <form ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
+            <form ng-submit="createNewTask(form)" ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
 				
 				<!-- Task Description -->
 				
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==1">
 					<span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
-                    <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
                 </div>
 
-                <!-- Task Start Date -->
-                <div class="item item-input">
-                    <input ng-if="!isShowInputStartDate" id="showStartDate" type="text" placeholder="Start Date" ng-click="callDateInput('dateStart')" ng-value="date">
-                    <input ng-if="isShowInputStartDate" type="date" placeholder="Start Date" name="created" id="startdate" ng-model="task.dateStart" format="mm/dd/yyyy"/>
+                <!-- Task Start Date Time -->
+                <div class="item" ng-show="step==2">
+                    <span>Task Start Date Time</span>
+                    <div ion-datetime-picker ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
-				<!-- Task Due Date -->
-                <div class="item item-input">
-                    <input ng-if="!isShowInputEndDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput('dateEnd')" ng-value="date">
-                    <input ng-if="isShowInputEndDate" type="date" placeholder="Due Date" name="created" id="dateEnd" ng-model="task.dateEnd" format="mm/dd/yyyy"/>
-                </div>
-
-                <!-- Task Start Time -->
-                <div class="item item-input">
-                    <p>Start Time: </p>
-                    <input style="margin-left: 15px" type="time" placeholder="Start Time" name="created" ng-model="task.time.start"/>
-                </div>
-
-                <!-- Task End Time -->
-                <div class="item item-input">
-                    <p>End Time: </p>
-                    <input style="margin-left: 15px" type="time" placeholder="End Time" name="created" ng-model="task.time.end"/>
+				<!-- Task Due Date Time-->
+                <div class="item" ng-show="step==2">
+                    <span>Task End Date Time</span>
+                    <div ion-datetime-picker ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 				
 				<!-- Task Assignees -->
-                <div class="available-assign">
+                <div class="available-assign" ng-show="step==3">
 					<label class="item item-input item-stacked-label">
 					    <span class="input-label">Assignees:</span>
 					</label>
@@ -191,19 +178,16 @@
 					</ion-list>
                 </div>
 
-                <div class="error" ng-show="error.task" style="margin-top: 15px; margin-left: 15px; color: #ff0000">
-                    <p>{{error.task}}</p>
-                </div>
+                <div class="row">
+                    <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button>
+                    <button type="button" class="button col" ng-click="next('create-task')" ng-hide="step==3">Next</button>
+                    <button type="submit" class="button col button-calm" ng-show="step==3">Create Task</button>
+                <div>
 				
                 <div class="space" style="height: 50px"></div>
 
             </form>
         </ion-content>
-		
-		<div class="bar bar-footer bar-calm">
-		  <div class="title" style="cursor:pointer" ng-click="createNewTask()">Create Task</div>
-		</div>
-		
     </div>
 </script>
 
