@@ -358,9 +358,10 @@ angular.module('buiiltApp')
                 $scope.files = res[0];
                 $scope.documentSets = res[1];
                 $scope.documents = res[2];
+                $scope.contactBooks = res[3];
                 documentSetInitial();
                 getFilesLastAccess($scope.files);
-                convertEmailToNameByContactBooks(res[3]);
+                convertEmailToNameByContactBooks($scope.contactBooks);
                 $ionicLoading.hide();
             });
         });
@@ -448,13 +449,17 @@ angular.module('buiiltApp')
                         }
                     });
                 });
-                // if ($scope.currentTab==="thread") {
-                //     $scope.createNewThread();
-                // } else if ($scope.currentTab==="task") {
-                //     $scope.modalCreateTask.show();
-                // } else if ($scope.currentTab==="file") {
-                //     $scope.createNewFile()
-                // }
+                // Get project member name for non-user via contact books
+                _.each($scope.projectMembers, function(member) {
+                    if (!member._id) {
+                        var index = _.findIndex($scope.contactBooks, function(contact) {
+                            return member.email === contact.email;
+                        });
+                        if (index !== -1) {
+                            member.name = $scope.contactBooks[index].name;
+                        }
+                    }
+                })
             });
         } 
         if ($scope.currentTab==="thread") {
