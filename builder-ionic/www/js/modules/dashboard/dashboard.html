@@ -131,11 +131,50 @@
 	</ion-popover-view>
 </script>
 
+<script id="modalCreateThread.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar class="bar-light">
+            <h1 class="title">Create a New Thread...</h1>
+            <div class="buttons">
+                <button ng-click="modalCreateThread.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
+            </div>
+        </ion-header-bar>
+        
+        <ion-content class="has-header">
+        
+            <form ng-submit="createNewThread(form)" ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
+                
+                <div class="item item-input item-floating-label" ng-show="step==1">
+                    <span class="input-label">Thread Name</span>
+                    <input placeholder="Thread Name" id="name" type="text" ng-model="thread.name" name="name" maxlength="300" required>
+                </div>
+                
+                <div class="available-assign" ng-show="step==2">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Assignees:</span>
+                    </label>
+                    
+                    <ion-list>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
+                    </ion-list>
+                </div>
+
+                <div class="row">
+                    <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button>
+                    <button type="button" class="button col" ng-click="next('create-thread')" ng-hide="step==2">Next</button>
+                    <button type="submit" class="button col button-calm" ng-show="step==2">Create Thread</button>
+                <div>
+                
+                <div class="space" style="height: 50px"></div>
+
+            </form>
+        </ion-content>
+    </div>
+</script>
+
 <!-- Create task dialog. -->
 <script id="modalCreateTask.html" type="text/ng-template">
     <div class="modal">
-		
-		<!-- Header -->
         <ion-header-bar class="bar-light">
             <h1 class="title">Create a New Task...</h1>
             <div class="buttons">
@@ -143,38 +182,32 @@
             </div>
         </ion-header-bar>
 		
-		<!-- Description and Assignee -->
         <ion-content class="has-header">
 		
             <form ng-submit="createNewTask(form)" ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
-				
-				<!-- Task Description -->
 				
                 <div class="item item-input item-floating-label" ng-show="step==1">
 					<span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
                 </div>
 
-                <!-- Task Start Date Time -->
                 <div class="item" ng-show="step==2">
                     <span>Task Start Date Time</span>
                     <div ion-datetime-picker ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
-				<!-- Task Due Date Time-->
                 <div class="item" ng-show="step==2">
                     <span>Task End Date Time</span>
                     <div ion-datetime-picker ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 				
-				<!-- Task Assignees -->
                 <div class="available-assign" ng-show="step==3">
 					<label class="item item-input item-stacked-label">
 					    <span class="input-label">Assignees:</span>
 					</label>
 					
 					<ion-list>
-						<ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="staff in projectMembers track by $index" ng-click="assign(staff, $index, 'task')">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
+						<ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
 					</ion-list>
                 </div>
 

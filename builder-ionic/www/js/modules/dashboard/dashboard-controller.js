@@ -402,6 +402,7 @@ angular.module('buiiltApp')
     };
 
     $scope.openCreateThreadOrTaskModal = function() {
+        $scope.step = 1;
         if ($rootScope.selectedProject) {
             peopleService.getInvitePeople({id: $rootScope.selectedProject._id}).$promise.then(function(people) {
                 $scope.projectMembers = [];
@@ -459,7 +460,7 @@ angular.module('buiiltApp')
             });
         } 
         if ($scope.currentTab==="thread") {
-            $scope.createNewThread();
+            $scope.modalCreateThread.show();
         } else if ($scope.currentTab==="task") {
             $scope.modalCreateTask.show();
         } else if ($scope.currentTab==="file") {
@@ -467,7 +468,6 @@ angular.module('buiiltApp')
         }
     };
 
-    $scope.step = 1;
     $scope.next = function(type) {
         if (type==="create-task") {
             if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length===0)) {
@@ -477,13 +477,20 @@ angular.module('buiiltApp')
             } else {
                 $scope.step +=1;
             }
+        } else if (type==="create-thread") {
+            if ($scope.step==1 && (!$scope.thread.name || $scope.thread.name.trim().length==0)) {
+                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+            } else {
+                $scope.step +=1;
+            }
         }
     };
 
-    function refreshProjectMembers() {
+    function refreshProjectMembersAndStep() {
         _.each($scope.projectMembers, function(member) {
             member.select = false;
         });
+        $scope.step = 1;
     };
 
     //create new task
@@ -512,24 +519,25 @@ angular.module('buiiltApp')
         type: "task-project"
     };
 
-    $scope.assign = function(member, index, type) {
-        member.isSelect = !member.isSelect;
-        var memberIndex = _.findIndex($scope[type].members, function(item) {
-            if (member._id && item._id) {
-                return item._id.toString()===member._id.toString();
-            } else {
-                return item.email===member.email;
-            }
-        });
-        if (memberIndex===-1) {
-            $scope[type].members.push(member);
-        } else {
-            $scope[type].members.splice(memberIndex, 1);
-        }
+    $scope.assign = function(index) {
+        // member.isSelect = !member.isSelect;
+        // var memberIndex = _.findIndex($scope[type].members, function(item) {
+        //     if (member._id && item._id) {
+        //         return item._id.toString()===member._id.toString();
+        //     } else {
+        //         return item.email===member.email;
+        //     }
+        // });
+        // if (memberIndex===-1) {
+        //     $scope[type].members.push(member);
+        // } else {
+        //     $scope[type].members.splice(memberIndex, 1);
+        // }
+        $scope.projectMembers[index].select = !$scope.projectMembers[index].select;
     };
 
     $scope.createNewTask = function() {
-        // $scope.submitted = true;
+        $scope.task.members = _.filter($scope.projectMembers, {select: true});
         if ($scope.task.members.length===0) {
             return $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 });
         } else if (!$scope.task.dateEnd || !$scope.task.dateStart) {
@@ -549,7 +557,7 @@ angular.module('buiiltApp')
                 time: {},
                 type: "task-project"
             };
-            refreshProjectMembers();
+            refreshProjectMembersAndStep();
             $scope.tasks.push(res);
             filterAndSortTaskDueDate($scope.tasks);
             $ionicLoading.show({ template: 'Create New Task Successfully!', noBackdrop: true, duration: 2000 });
@@ -558,25 +566,39 @@ angular.module('buiiltApp')
         });
     };
 
+    // Create new thread section
+    $ionicModal.fromTemplateUrl('modalCreateThread.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalCreateThread = modal;
+    });
+
     $scope.thread = {
         members : [],
         type: "project-message"
     };
 
     $scope.createNewThread = function() {
-        messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
-        .$promise.then(function (res) {
-            $scope.thread = {
-                members: [],
-                type: "project-message"
-            };
-            // $scope.threads.push(res);
-            $state.go("threadDetail", {threadId: res._id});
-            $rootScope.isCreateNewThread = true;
-            $ionicLoading.show({ template: 'Create New Thread Successfully!', noBackdrop: true, duration: 2000 })
-        }, function(err) {
-            $ionicLoading.show({ template: 'Error', noBackdrop: true, duration: 2000 })
-        });
+        $scope.thread.members = _.filter($scope.projectMembers, {select: true});
+        if ($scope.thread.members.length ===0) {
+            $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 })
+        } else {
+            messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
+            .$promise.then(function (res) {
+                $scope.modalCreateThread.hide();
+                $scope.thread = {
+                    members: [],
+                    type: "project-message"
+                };
+                $scope.threads.push(res);
+                refreshProjectMembersAndStep();
+                $state.go("threadDetail", {threadId: res._id});
+                $ionicLoading.show({ template: 'Create New Thread Successfully!', noBackdrop: true, duration: 2000 })
+            }, function(err) {
+                $ionicLoading.show({ template: 'Error', noBackdrop: true, duration: 2000 })
+            });
+        }
     };
 
     //show confirm modal
