@@ -247,10 +247,10 @@ angular.module('buiiltApp')
         var index = getItemIndex($scope.threads, data._id);
         if (index !== -1) {
             $scope.threads.splice(index, 1);
-            var projectIndex = getItemIndex($scope.projects, data.project);
-            if (projectIndex !== -1) {
-                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-            }
+            // var projectIndex = getItemIndex($scope.projects, data.project);
+            // if (projectIndex !== -1) {
+            //     $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
+            // }
         }
     });
     //end recieve socket from server
@@ -260,34 +260,13 @@ angular.module('buiiltApp')
         functionClearThreadCount();
         functionClearTaskCount();
         functionUpdateThreadLastAccess();
+        functionClearFileCount();
     });
 
     var functionUpdateThreadLastAccess = $rootScope.$on("UpdateDashboardThreadLastAccess", function(event, data) {
         var index = getItemIndex($scope.threads, data._id);
         if (index !== -1) {
             $scope.threads[index].updatedAt = data.updatedAt;
-        }
-    });
-
-    var functionClearThreadCount = $rootScope.$on("UpdateDashboardThreadCount", function(event, data) {
-        var index = getItemIndex($scope.threads, data._id);
-        if (index !== -1) {
-            $scope.threads[index].__v = 0;
-            var projectIndex = getItemIndex($scope.projects, data.project);
-            if (projectIndex !== -1 && data.__v > 0) {
-                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-            }
-        }
-    });
-
-    var functionClearTaskCount = $rootScope.$on("UpdateDashboardTaskCount", function(event, data) {
-        var index = getItemIndex($scope.tasks, data._id);
-        if (index !== -1) {
-            $scope.tasks[index].__v = 0;
-            var projectIndex = getItemIndex($scope.projects, data.project);
-            if (projectIndex !== -1 && data.__v > 0) {
-                $scope.projects[projectIndex].__v = getThreadAndTaskWithNotification();
-            }
         }
     });
 
@@ -298,6 +277,30 @@ angular.module('buiiltApp')
         });
         return index;
     };
+
+    function updateItemCount(itemArr, item, type) {
+        var index = getItemIndex(itemArr, item._id);
+        if (index !== -1) {
+            itemArr[index].__v = 0;
+            var projectIndex = getItemIndex($scope.projects, item.project);
+            if (projectIndex !== -1 && item.__v > 0) {
+                $scope.projects[projectIndex].__v -=1;
+                $scope.projects[projectIndex].element[type] -=1;
+            }
+        }
+    };
+
+    var functionClearThreadCount = $rootScope.$on("UpdateDashboardThreadCount", function(event, data) {
+        updateItemCount($scope.threads, data, "thread");
+    });
+
+    var functionClearTaskCount = $rootScope.$on("UpdateDashboardTaskCount", function(event, data) {
+        updateItemCount($scope.tasks, data, 'task');
+    });
+
+    var functionClearFileCount = $rootScope.$on("UpdateDashboardFileCount", function(event, data) {
+        updateItemCount($scope.files, data, 'file');
+    });
 
     $scope.currentTab = 'thread';
     $scope.selectTabWithIndex = function(value){
@@ -343,7 +346,7 @@ angular.module('buiiltApp')
     };
 
     $scope.headingName = "Project";
-$scope.abc = 1;
+
     $scope.selectProject = function(project) {
 		$scope.projectPopover.hide();
         $scope.headingName = " ";

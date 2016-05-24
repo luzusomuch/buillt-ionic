@@ -14,7 +14,8 @@ angular.module('buiiltApp')
 
         $timeout(function() {
             // remove task count number for current task
-            $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
+            if (task.__v > 0) 
+                $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
             
             // mark all notifications related to this task is read
             notificationService.markItemsAsRead({id: task._id}).$promise;

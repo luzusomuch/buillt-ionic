@@ -3,7 +3,7 @@ angular.module('buiiltApp').config(function($stateProvider) {
     .state('document', {
         url: '/',
         template: "<ion-nav-view></ion-nav-view>",
-        abstract: true
+        // abstract: true
     })
     .state("document.set", {
         url: ":setId/set",
