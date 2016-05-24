@@ -46,8 +46,8 @@
                 <textarea style="width: 95%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
             </div>
 	        <div class="row">
-				<i ng-click="modalCreateRelatedFile.show()" class="icon ion-ios-copy-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
-				<i ng-click="modalCreateRelatedTask.show()" class="icon ion-ios-checkmark-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<i ng-click="modalCreateRelatedFile.show(); step=1" class="icon ion-ios-copy-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<i ng-click="modalCreateRelatedTask.show(); step=1" class="icon ion-ios-checkmark-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
 				<div class="col"></div>
 				<button class="button button-calm button-clear" style="margin-top: -6px; margin-right: 20px; font-size: 15px" type="submit" name="action">Send</button>
 	        </div>
@@ -70,17 +70,12 @@
 				
                 <div class="space" style="height: 50px;"></div>
 				
-                <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
+                <div ng-show="step==1" class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                     <span class="input-label">File Name</span>
-                    <input placeholder="File Name" id="name" type="text" ng-model="file.file.filename" name="name" maxlength="300" required>
+                    <input placeholder="File Name" id="name" type="text" ng-model="file.name" name="name" maxlength="300" required>
                 </div>
 
-                <div class="item item-input" style="border-right: none; border-left: none; border-top: none">
-					
-                    <input class="button button-clear button-calm" onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
-                </div>
-
-                <div class="list">
+                <div class="list" ng-show="step==1">
                     <label class="item item-input item-select" style="border-right: none; border-left: none; border-top: none">
                         <div class="input-label">File Tag</div>
                         <select ng-model="file.selectedTag">
@@ -89,8 +84,16 @@
                     </label>
                 </div>
 
+                <div ng-show="step==2" class="item item-input" style="border-right: none; border-left: none; border-top: none">
+                    
+                    <input class="button button-clear button-calm" onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
+                </div>
+
+
                 <div class="row" style="">
-                    <button class="button button-clear button-calm button-block" type="submit">Attach File</button>
+                    <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button>
+                    <button type="button" class="col button" ng-hide="step==2" ng-click="next('file')">Next</button>
+                    <button ng-show="step==2" class="col button button-clear button-calm button-block" type="submit">Attach File</button>
                 </div>
 				
             </form>
@@ -114,46 +117,28 @@
         
             <form ng-submit="createRelatedTask(form)" name="form" novalidate>
                 
-                <!-- Task Description -->
-                
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-show="step==1">
                     <span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
                     <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
                 </div>
 
-                <!-- Task Start Date -->
-                <div class="item item-input">
-                    <input ng-if="!isShowInputStartDate" id="showStartDate" type="text" placeholder="Start Date" ng-click="callDateInput('dateStart')" ng-value="date">
-                    <input ng-if="isShowInputStartDate" type="date" placeholder="Start Date" name="created" id="startdate" ng-model="task.dateStart" format="mm/dd/yyyy"/>
+                <div class="item" ng-show="step==2">
+                    <span>Task Start Date Time</span>
+                    <div ion-datetime-picker ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
-                <!-- Task Due Date -->
-                <div class="item item-input">
-                    <input ng-if="!isShowInputEndDate" id="showDueDate" type="text" placeholder="Due Date" ng-click="callDateInput('dateEnd')" ng-value="date">
-                    <input ng-if="isShowInputEndDate" type="date" placeholder="Due Date" name="created" id="dateEnd" ng-model="task.dateEnd" format="mm/dd/yyyy"/>
-                </div>
-
-                <!-- Task Start Time -->
-                <div class="item item-input">
-                    <p>Start Time: </p>
-                    <input style="margin-left: 15px" type="time" placeholder="Start Time" name="created" ng-model="task.time.start"/>
-                </div>
-
-                <!-- Task End Time -->
-                <div class="item item-input">
-                    <p>End Time: </p>
-                    <input style="margin-left: 15px" type="time" placeholder="End Time" name="created" ng-model="task.time.end"/>
-                </div>
-
-                <div class="error" ng-show="error.task" style="margin-top: 15px; margin-left: 15px; color: #ff0000">
-                    <p>{{error.task}}</p>
+                <div class="item" ng-show="step==2">
+                    <span>Task End Date Time</span>
+                    <div ion-datetime-picker ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
                 <div class="space" style="height: 50px"></div>
 
-                <div>
-                    <button style="width:100%" type="submit" class="button button-calm">Create Related Task</button>
+                <div class="row">
+                    <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button>
+                    <button type="button" class="col button" ng-hide="step==2" ng-click="next('task')">Next</button>
+                    <button ng-show="step==2" type="submit" class="col button button-calm">Create Related Task</button>
                 </div>
             </form>
         </ion-content>

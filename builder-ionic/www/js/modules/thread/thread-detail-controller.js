@@ -6,11 +6,29 @@ angular.module('buiiltApp')
         $scope.thread.selectedEvent = thread.event;
         $scope.currentUser = currentUser;
 
+        $scope.step=1;
+        $scope.next = function(type) {
+            console.log(type);
+            if (type==="file") {
+                if ($scope.step==1 && (!$scope.file.name || $scope.file.name.trim().length==0 || !$scope.file.selectedTag)) {
+                    $ionicLoading.show({ template: 'Check Your Data!', noBackdrop: true, duration: 2000 });
+                } else {
+                    $scope.step +=1;
+                }
+            } else if (type==="task") {
+                if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length ===0)) {
+                    $ionicLoading.show({ template: 'Check Your Data!', noBackdrop: true, duration: 2000 });
+                } else {
+                    $scope.step+=1;
+                }
+            }
+        };
+
         // Setting new related task
         $scope.task = {
             selectedEvent: $scope.thread.event,
             dateStart: new Date(),
-            dateEnd: new Date(),
+            dateEnd: new Date(moment().add(1, "hours")),
             time: {},
             belongToType: "thread",
             belongTo: $scope.thread._id,
@@ -38,9 +56,11 @@ angular.module('buiiltApp')
 
         $scope.createRelatedTask = function(form) {
             if (form.$valid) {
-                if (!$scope.task.dateStart || !$scope.task.dateEnd || !$scope.task.time.start || !$scope.task.time.end) {
+                if (!$scope.task.dateStart || !$scope.task.dateEnd) {
                     $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
                 } else {
+                    $scope.task.time.start = $scope.task.dateStart;
+                    $scope.task.time.end = $scope.task.dateEnd;
                     $scope.task.members = $scope.thread.members;
                     _.each($scope.thread.notMembers, function(email) {
                         $scope.task.members.push({email: email});
@@ -128,8 +148,8 @@ angular.module('buiiltApp')
                 _.each($scope.thread.notMembers, function(email) {
                     $scope.file.members.push({email: email});
                 });
-                if (!$scope.file.selectedTag) {
-                    $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                if (!$scope.file.file) {
+                    return $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
                 } else {
                     uploadService.upload({id: thread.project}, $scope.file).$promise.then(function(res) {
                         $scope.modalCreateRelatedFile.hide();
@@ -141,6 +161,7 @@ angular.module('buiiltApp')
                             selectedEvent: $scope.thread.event
                         };
                         $state.go("fileDetail", {fileId: res._id});
+                        $scope.step = 1;
                     }, function(err){
                         $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
                     });

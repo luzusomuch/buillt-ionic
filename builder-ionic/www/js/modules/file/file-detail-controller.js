@@ -48,6 +48,15 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
             $scope.modalCreateDocument = popover;
         });
 
+        $scope.step=1;
+        $scope.next = function() {
+            if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length==0)) {
+                $ionicLoading.show({ template: 'Check Your Data!', noBackdrop: true, duration: 2000 })
+            } else {
+                $scope.step += 1;
+            }
+        };
+
         $scope.openUploadReversion = function() {
             $scope.modalCreateDocument.show();
         };
@@ -218,7 +227,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         $scope.task = {
             selectedEvent: $scope.file.event,
             dateStart: new Date(),
-            dateEnd: new Date(),
+            dateEnd: new Date(moment().add(1, "hours")),
             time: {},
             belongToType: "file",
             belongTo: $scope.file._id,
@@ -244,9 +253,11 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
 
         $scope.createRelatedTask = function(form) {
             if (form.$valid) {
-                if (!$scope.task.dateStart || !$scope.task.dateEnd || !$scope.task.time.start || !$scope.task.time.end) {
+                if (!$scope.task.dateStart || !$scope.task.dateEnd) {
                     $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
                 } else {
+                    $scope.task.time.start = $scope.task.dateStart;
+                    $scope.task.time.end = $scope.task.dateEnd;
                     $scope.task.members = $scope.file.members;
                     _.each($scope.file.notMembers, function(email) {
                         $scope.task.members.push({email: email});
@@ -264,6 +275,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                             type: "task-project"
                         };
                         $state.go("taskDetail", {taskId: res._id});
+                        $scope.step=1;
                     }, function(err) {
                         $ionicLoading.show({ template: "Error", noBackdrop: true, duration: 2000 });
                     });
