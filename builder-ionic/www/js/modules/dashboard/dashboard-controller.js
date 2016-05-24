@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService) {
     // These function use to check update for ionic deploy
     var deploy = new Ionic.Deploy();
     deploy.setChannel("Dev");
@@ -316,6 +316,25 @@ angular.module('buiiltApp')
         }
     };
 
+    function convertEmailToNameByContactBooks(contactBooks) {
+        var availableTypes = ["tasks", "threads", "files"];
+        _.each(availableTypes, function(type) {
+            _.each($scope[type], function(item) {
+                if (item.notMembers && item.notMembers.length > 0) {
+                    item.notMemberNames = [];
+                    _.each(item.notMembers, function(email) {
+                        var index = _.findIndex(contactBooks, function(contact) {
+                            return email === contact.email;
+                        });
+                        if (index !== -1) {
+                            item.notMemberNames.push(contactBooks[index].name);
+                        }
+                    });
+                }
+            });
+        });
+    };
+
     function findAllByProject(project) {
         console.log(project);
         $ionicLoading.show();
@@ -326,7 +345,8 @@ angular.module('buiiltApp')
         var prom2 = [
             fileService.getProjectFiles({id: project._id, type: "file"}).$promise,
             documentService.me({id: project._id}).$promise,
-            fileService.getProjectFiles({id: project._id, type: "document"}).$promise
+            fileService.getProjectFiles({id: project._id, type: "document"}).$promise,
+            contactBookService.me().$promise
         ];
 
         $q.all(prom1).then(function(res) {
@@ -340,6 +360,7 @@ angular.module('buiiltApp')
                 $scope.documents = res[2];
                 documentSetInitial();
                 getFilesLastAccess($scope.files);
+                convertEmailToNameByContactBooks(res[3]);
                 $ionicLoading.hide();
             });
         });

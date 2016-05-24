@@ -31,16 +31,16 @@
 	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v > 0">
 	                <span><h2><i class="icon calm ion-ios-circle-filled"></i> {{thread.name}}</h2></span>
                     <p>
-                        <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
-                        <span ng-repeat="email in thread.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{member.name}}, </span>
+                        <span ng-repeat="name in thread.notMemberNames track by $index">{{name}}, </span>
                     </p>
 	            </ion-item>
 
                 <ion-item class="item-text-wrap" ng-repeat="thread in threads | orderBy: '-updatedAt'" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v==0">
                     <h2>{{thread.name}}</h2>
                     <p>
-                        <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
-                        <span ng-repeat="email in thread.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{member.name}}, </span>
+                        <span ng-repeat="name in thread.notMemberNames track by $index">{{name}}, </span>
                     </p>
                 </ion-item>
 	        </div>
@@ -53,8 +53,8 @@
 					<span><h2><i class="icon calm ion-ios-circle-filled"></i> {{task.description}}</h2></span>
                     <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
 					<p>
-                        <span ng-repeat="member in task.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
-                        <span ng-repeat="email in task.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="member in task.members | unique: '_id' track by $index">{{member.name}}, </span>
+                        <span ng-repeat="name in task.notMemberNames track by $index">{{name}}, </span>
                     </p>
 	            </ion-item>
 
@@ -62,8 +62,8 @@
                     <h2>{{task.description}}</h2>
                     <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
 					<p>
-                        <span ng-repeat="member in task.members | unique: '_id' track by $index">{{(member._id==currentUser._id) ? "You" : member.name}}, </span>
-                        <span ng-repeat="email in task.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="member in task.members | unique: '_id' track by $index">{{member.name}}, </span>
+                        <span ng-repeat="name in task.notMemberNames track by $index">{{name}}, </span>
                     </p>
                 </ion-item>
 	        </div>
@@ -76,7 +76,7 @@
 					<span><h2><i class="icon calm ion-ios-circle-filled"></i> {{file.name}}</h2></span>
                     <p>
                         <span ng-repeat="member in file.members | unique: '_id' track by $index">{{member.name}}, </span>
-                        <span ng-repeat="email in file.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="name in file.notMemberNames track by $index">{{name}}, </span>
                     </p>
                 </ion-item>
 
@@ -84,7 +84,7 @@
                     <h2>{{file.name}}</h2>
                     <p>
                         <span ng-repeat="member in file.members | unique: '_id' track by $index">{{member.name}}, </span>
-                        <span ng-repeat="email in file.notMembers track by $index">{{email}}, </span>
+                        <span ng-repeat="name in file.notMemberNames track by $index">{{name}}, </span>
                     </p>
                 </ion-item>
             </div>
