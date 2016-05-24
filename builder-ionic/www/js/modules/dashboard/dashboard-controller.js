@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService) {
+    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService, uploadService) {
     // These function use to check update for ionic deploy
     var deploy = new Ionic.Deploy();
     deploy.setChannel("Dev");
@@ -149,7 +149,7 @@ angular.module('buiiltApp')
     socket.emit("join", $scope.currentUser._id);
 
     socket.on("thread:new", function(data) {
-        if (data.project._id!==$rootScope.selectedProject._id) {
+        if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
             $scope.threads.push(data);
             // var index = getItemIndex($scope.projects, data.project._id);
             // if (index !== -1) {
@@ -160,7 +160,7 @@ angular.module('buiiltApp')
     });
 
     socket.on("task:new", function(data) {
-        if (data.project._id==$rootScope.selectedProject._id) {
+        if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
             $scope.tasks.push(data);
             // var index = getItemIndex($scope.projects, data.project._id);
             // if (index !== -1) {
@@ -171,11 +171,11 @@ angular.module('buiiltApp')
         filterAndSortTaskDueDate($scope.tasks);
     });
 
-    // socket.on("file:new", function(data) {
-    //     if (data.owner._id!==$scope.currentUser._id) {
-    //         $scope.files.push(data);
-    //     }
-    // });
+    socket.on("file:new", function(data) {
+        if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
+            $scope.files.push(data);
+        }
+    });
 
     socket.on("dashboard:new", function(data) {
         if (data.type==="task") {
@@ -464,7 +464,7 @@ angular.module('buiiltApp')
         } else if ($scope.currentTab==="task") {
             $scope.modalCreateTask.show();
         } else if ($scope.currentTab==="file") {
-            $scope.createNewFile()
+            $scope.modalCreateFile.show();
         }
     };
 
@@ -479,6 +479,15 @@ angular.module('buiiltApp')
             }
         } else if (type==="create-thread") {
             if ($scope.step==1 && (!$scope.thread.name || $scope.thread.name.trim().length==0)) {
+                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+            } else {
+                $scope.step +=1;
+            }
+        } else if (type==="create-file") {
+            $scope.uploadFile.members = _.filter($scope.projectMembers, {select: true});
+            if ($scope.step==1 && (!$scope.uploadFile.name || $scope.uploadFile.name.trim().length===0 || !$scope.uploadFile.selectedTag)) {
+                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+            } else if ($scope.step==2 && $scope.uploadFile.members.length===0) {
                 $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
             } else {
                 $scope.step +=1;
@@ -520,19 +529,6 @@ angular.module('buiiltApp')
     };
 
     $scope.assign = function(index) {
-        // member.isSelect = !member.isSelect;
-        // var memberIndex = _.findIndex($scope[type].members, function(item) {
-        //     if (member._id && item._id) {
-        //         return item._id.toString()===member._id.toString();
-        //     } else {
-        //         return item.email===member.email;
-        //     }
-        // });
-        // if (memberIndex===-1) {
-        //     $scope[type].members.push(member);
-        // } else {
-        //     $scope[type].members.splice(memberIndex, 1);
-        // }
         $scope.projectMembers[index].select = !$scope.projectMembers[index].select;
     };
 
@@ -653,21 +649,72 @@ angular.module('buiiltApp')
         }
     };
 
-    $scope.createNewFile = function() {
-        $ionicLoading.show();
-        $scope.uploadFile = {
-            members: [],
-            tags: [],
-            type: "file"
-        };
-        fileService.create({id: $scope.selectedProject._id}, $scope.uploadFile).$promise.then(function(res) {
-            $ionicLoading.hide();
-            $ionicLoading.show({ template: 'Create New File Successfully!', noBackdrop: true, duration: 2000 });
-            $scope.files.push(res);
-        }, function(err) {
-            $ionicLoading.hide();
-            dialogService.showToast("There Has Been An Error...");
+    // Create new File
+    $scope.tags = [];
+    if ($scope.currentTeam) {
+        _.each($scope.currentTeam.fileTags, function(tag) {
+            $scope.tags.push({name: tag, select: false});
         });
+    }
+
+    $ionicModal.fromTemplateUrl('modalCreateFile.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal){
+        $scope.modalCreateFile = modal;
+    });
+
+    $scope.uploadFile = {
+        members: [],
+        tags: [],
+        type: "file"
+    };
+
+    $scope.getFileUpload = function() {
+        $ionicLoading.show();
+        var input = document.getElementById("read-input");
+        filepicker.store(
+            input,
+            function(Blob) {
+                console.log(Blob);
+                $scope.uploadFile.file = Blob;
+            },
+            function(fperror) {
+                console.log(FPError.toString());// - print errors to console
+            },
+            function(progress) {
+                console.log(progress);
+                if (progress===100) {
+                    $ionicLoading.hide();
+                }
+            }
+        )
+    };
+
+    $scope.createNewFile = function() {
+        if (!$scope.uploadFile.file) {
+            $ionicLoading.show({ template: 'Select Your Upload File!', noBackdrop: true, duration: 2000 });
+        } else {
+            $ionicLoading.show();
+            $scope.uploadFile.file.filename = $scope.uploadFile.name;
+            uploadService.upload({id: $scope.selectedProject._id}, $scope.uploadFile).$promise.then(function(res) {
+                $ionicLoading.hide();
+                $scope.modalCreateFile.hide();
+                $scope.uploadFile = {
+                    members: [],
+                    tags: [],
+                    type: "file",
+                    selectedTag: null
+                };
+                refreshProjectMembersAndStep();
+                $ionicLoading.show({ template: 'Create New File Successfully!', noBackdrop: true, duration: 2000 });
+                $scope.files.push(res);
+                $state.go("fileDetail", {fileId: res._id});
+            }, function(err) {
+                $ionicLoading.hide();
+                $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+            });
+        }
     };
 
     //function hide modal
