@@ -1,4 +1,4 @@
-angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService) {
+angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDelegate, $q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService) {
     fileService.get({id: $stateParams.fileId}).$promise.then(function(file) {
         socket.emit("join", file._id);
         socket.on("file:update", function(data) {
@@ -12,13 +12,15 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModa
 
         $timeout(function() {
             // remove file count number for current file
-            $rootScope.$emit("UpdateDashboardFileCount", $scope.file);
-            
+            if (file.__v > 0) 
+                $rootScope.$emit("UpdateDashboardFileCount", $scope.file);
+            $ionicScrollDelegate.scrollBottom();
             // mark all notifications related to this file is read
             notificationService.markItemsAsRead({id: file._id}).$promise;
         }, 500);
 
         function fileInitial(file) {
+            $ionicScrollDelegate.scrollBottom();
             _.each(file.activities, function(activity) {
                 // grant the link from file history to the activity to get the thumbnail
                 if (activity.activityAndHisToryId) {

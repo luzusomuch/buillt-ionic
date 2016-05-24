@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('ThreadDetailCtrl', function(currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
+.controller('ThreadDetailCtrl', function($ionicScrollDelegate, currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
@@ -23,6 +23,8 @@ angular.module('buiiltApp')
         }).then(function(modal){
             $scope.modalCreateRelatedTask = modal;
         });
+
+        $ionicScrollDelegate.scrollBottom();
 
         $scope.callDateInput = function(type){
             if (type==="dateStart") {
@@ -164,6 +166,7 @@ angular.module('buiiltApp')
             $scope.thread.selectedEvent = data.event;
             $scope.task.selectedEvent = data.event;
             $scope.file.selectedEvent = data.event;
+            $ionicScrollDelegate.scrollBottom();
             notificationService.markItemsAsRead({id: thread._id}).$promise.then();
         });
 

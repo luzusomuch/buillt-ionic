@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-.controller('TaskDetailCtrl', function($q, $rootScope, $ionicModal, $ionicLoading, $timeout, $scope, $stateParams, taskService, socket, notificationService, authService, activityService, peopleService) {
+.controller('TaskDetailCtrl', function($ionicScrollDelegate, $q, $rootScope, $ionicModal, $ionicLoading, $timeout, $scope, $stateParams, taskService, socket, notificationService, authService, activityService, peopleService) {
     taskService.get({id: $stateParams.taskId}).$promise.then(function(task) {
         var originalTask = angular.copy(task);
         $scope.task = task;
@@ -9,6 +9,7 @@ angular.module('buiiltApp')
         socket.on("task:update", function(data) {
             originalTask = angular.copy(data);
             $scope.task = data;
+            $ionicScrollDelegate.scrollBottom();
             notificationService.markItemsAsRead({id: task._id}).$promise.then();
         });
 
@@ -17,6 +18,7 @@ angular.module('buiiltApp')
             if (task.__v > 0) 
                 $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
             
+            $ionicScrollDelegate.scrollBottom();
             // mark all notifications related to this task is read
             notificationService.markItemsAsRead({id: task._id}).$promise;
         }, 500);

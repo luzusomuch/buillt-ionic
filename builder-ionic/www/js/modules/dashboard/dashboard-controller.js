@@ -27,9 +27,6 @@ angular.module('buiiltApp')
         });
     };
 
-
-
-    $scope.error = {};
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
     $scope.projects = [];
