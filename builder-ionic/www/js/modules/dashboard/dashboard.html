@@ -133,36 +133,36 @@
 
 <script id="modalCreateThread.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Create a New Thread...</h1>
             <div class="buttons">
                 <button ng-click="modalCreateThread.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
-        <ion-content class="has-header">
+        <ion-content class="has-header padding">
         
             <form ng-submit="createNewThread(form)" ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
                 
-                <div class="item item-input item-floating-label" ng-show="step==1">
+                <div class="item item-input item-floating-label" ng-show="step==1" style="border-right: none; border-left: none; border-top: none; margin-top: 119px">
                     <span class="input-label">Thread Name</span>
                     <input placeholder="Thread Name" id="name" type="text" ng-model="thread.name" name="name" maxlength="300" required>
                 </div>
                 
                 <div class="available-assign" ng-show="step==2">
-                    <label class="item item-input item-stacked-label">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
                     </label>
                     
                     <ion-list>
-                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)" style="border-left: none; border-right: none;">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
                     </ion-list>
                 </div>
 
                 <div class="row">
-                    <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button>
-                    <button type="button" class="button col" ng-click="next('create-thread')" ng-hide="step==2">Next</button>
-                    <button type="submit" class="button col button-calm" ng-show="step==2">Create Thread</button>
+                    <!-- <button type="button" class="button button-calm button-clear button-block" ng-click="step=step-1" ng-hide="step==1">Back</button> -->
+                    <button type="button" class="button button-calm button-clear button-block" ng-click="next('create-thread')" ng-hide="step==2">Next</button>
+                    <button type="submit" class="button button-calm button-clear button-block" ng-show="step==2">Create Thread</button>
                 <div>
                 
                 <div class="space" style="height: 50px"></div>
@@ -175,24 +175,24 @@
 <!-- Create file dialog. -->
 <script id="modalCreateFile.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Create a New File...</h1>
             <div class="buttons">
                 <button ng-click="modalCreateFile.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
-        <ion-content class="has-header">
+        <ion-content class="has-header padding">
         
             <form ng-submit="createNewFile(form)" ng-show="selectedProject._id" name="form" novalidate>
                 
-                <div class="item item-input item-floating-label" ng-show="step==1">
+                <div class="item item-input item-floating-label" ng-show="step==1" style="border-right: none; border-left: none; border-top: none; margin-top: 100px">
                     <span class="input-label">File Name</span>
                     <input placeholder="File Name" type="text" ng-model="uploadFile.name" name="name" maxlength="300" required>
                 </div>
 
                 <div class="list" ng-show="step==1">
-                    <label class="item item-input item-select">
+                    <label class="item item-input item-select" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-top: 15px">
                         <div class="input-label">Tag</div>
                         <select ng-model="uploadFile.selectedTag">
                             <option ng-selected="file.selectedTag==tag.name" ng-repeat="tag in tags" ng-value="tag.name">{{tag.name}}</option>
@@ -201,28 +201,26 @@
                 </div>
                 
                 <div class="available-assign" ng-show="step==2">
-                    <label class="item item-input item-stacked-label">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
                     </label>
                     
                     <ion-list>
-                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)" style="border-left: none; border-right: none;">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
                     </ion-list>
                 </div>
 
                 <div ng-show="step==3">
-                    <div class="item item-input">
-                        <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file" style="color: transparent"></input>
+                    <div class="item item-input" style="border-right: none; border-left: none; border-top: none; margin-top: 170px">
+                        <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file"></input>
                     </div>
                 </div>
 
                 <div class="row">
-                    <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button>
-                    <button type="button" class="button col" ng-click="next('create-file')" ng-hide="step==3">Next</button>
-                    <button type="submit" class="button col button-calm" ng-show="step==3">Create File</button>
+                    <!-- <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button> -->
+                    <button type="button" class="button button-calm button-clear button-block" ng-click="next('create-file')" ng-hide="step==3">Next</button>
+                    <button type="submit" class="button button-calm button-clear button-block" ng-show="step==3">Create File</button>
                 <div>
-                
-                <div class="space" style="height: 50px"></div>
 
             </form>
         </ion-content>
@@ -232,46 +230,50 @@
 <!-- Create task dialog. -->
 <script id="modalCreateTask.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Create a New Task...</h1>
             <div class="buttons">
                 <button ng-click="closeModal('CreateTask')" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
 		
-        <ion-content class="has-header">
+        <ion-content class="has-header padding">
 		
             <form ng-submit="createNewTask(form)" ng-show="selectedProject._id" id="createTaskForm" name="form" novalidate>
 				
-                <div class="item item-input item-floating-label" ng-show="step==1">
+                <div class="item item-input item-floating-label" ng-show="step==1" style="border-right: none; border-left: none; border-top: none; margin-top: 129px">
 					<span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
                 </div>
 
-                <div class="item" ng-show="step==2">
-                    <span>Task Start Date Time</span>
-                    <div ion-datetime-picker ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
+                <div class="item" ng-show="step==2" style="border-right: none; border-left:none; border-top: none; margin-top: 69px">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
+                        <span class="input-label">Task Start:</span>
+                    </label>
+                    <div ion-datetime-picker ng-model="task.dateStart" class="col" style="text-align: center"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
-                <div class="item" ng-show="step==2">
-                    <span>Task End Date Time</span>
-                    <div ion-datetime-picker ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
+                <div class="item" ng-show="step==2" style="border-right: none; border-left:none; border-top: none;">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none;  margin-bottom: 15px">
+                        <span class="input-label">Task End:</span>
+                    </label>
+                    <div ion-datetime-picker ng-model="task.dateEnd" class="col" style="text-align: center"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 				
                 <div class="available-assign" ng-show="step==3">
-					<label class="item item-input item-stacked-label">
+					<label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
 					    <span class="input-label">Assignees:</span>
 					</label>
 					
 					<ion-list>
-						<ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
+						<ion-checkbox class="item item-checkbox checkbox-calm" ng-checked="staff.select" ng-repeat="staff in projectMembers track by $index" ng-click="assign($index)" style="border-left: none; border-right: none;">{{(staff.name) ? staff.name : staff.email}}</ion-checkbox>
 					</ion-list>
                 </div>
 
                 <div class="row">
-                    <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button>
-                    <button type="button" class="button col" ng-click="next('create-task')" ng-hide="step==3">Next</button>
-                    <button type="submit" class="button col button-calm" ng-show="step==3">Create Task</button>
+                    <!-- <button type="button" class="button col" ng-click="step=step-1" ng-hide="step==1">Back</button> -->
+                    <button type="button" class="button button-calm button-clear button-block" ng-click="next('create-task')" ng-hide="step==3">Next</button>
+                    <button type="submit" class="button button-calm button-clear button-block" ng-show="step==3">Create Task</button>
                 <div>
 				
                 <div class="space" style="height: 50px"></div>
@@ -286,14 +288,14 @@
     <div class="modal">
         
         <!-- Header -->
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Create New Team...</h1>
             <div class="buttons">
                 <button ng-click="modalCreateTeam.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
-        <ion-content class="has-header">
+        <ion-content class="has-header padding">
         
             <form id="form" name="form" novalidate>
 
