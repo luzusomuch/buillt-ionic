@@ -12,31 +12,32 @@
 	
         <div id="task-detail-content">
             <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task'">
+				
 				<div class="activity-item">
 					<div class="activity-header">
 	                    <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
 				
 	                    <small ng-switch="activity.type">
-	                        <span ng-switch-when="create-task">created this task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
-	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
-	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
+	                        <span ng-switch-when="create-task">created this task on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
+	                        <span ng-switch-when="complete-task"> marked this task complete on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
+	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
 	                    </small>
 
-                        <p ng-switch="activity.type">
-                            <span ng-switch-when="create-task"><strong>{{task.description}}</strong></span>
+                        <p ng-switch="activity.type" style="margin-top: 15px">
+                            <span ng-switch-when="create-task" style="font-size: 16px; font-weight: 400; color: black; text-transform: none;">Description: {{task.description}}</span>
                         </p>
+						
 					</div>
 				</div>
 			</div>
 
             <div class="item-text-wrap" ng-repeat="comment in task.comments">
                 <div class="activity-item">
-                    <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented at {{comment.sentAt | date:'hh:mm a'}}, {{comment.sentAt |date:'dd MMMM yyyy'}}</p>
+                    <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented on {{comment.sentAt |date:'dd MMMM yyyy'}} at {{comment.sentAt | date:'hh:mm a'}}</p>
                     <small ng-bind-html="comment.content | htmlize"></small>
                 </div>
             </div>
         </div>
-        <div style="height: 50px;"></div>
     </ion-content>
 
     <div class="bar bar-footer bar-light">
@@ -51,24 +52,26 @@
 
 <script id="modalAddComment.html" type="text/ng-template">
     <div class="modal">
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Add A Comment for {{task.description}}</h1>
             <div class="buttons">
                 <button ng-click="modalAddComment.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
 
-        <ion-content padding="true" class="has-header">
+        <ion-content class="has-header padding">
+		
             <form ng-submit="enterComment(comment)" name="form">
-                <div class="list">
-                    <label class="item item-input">
+                <div class="list" style="margin-top: 15px">
+                    <label class="item item-input" style="border-top: none; border-left: none; border-right: none">
                         <textarea name="text" id="commentArea" placeholder="Enter Your Comment ..." ng-model="comment" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
                     </label>
                 </div>
                 <div>
-                    <button style="width: 100%" class="button button-calm" type="submit">Send</button>
+                    <button class="button button-calm button-block button-clear" type="submit">Send</button>
                 </div>
             </form>
+			
         </ion-content>
     </div>
 </script>
@@ -76,7 +79,7 @@
 <script id="modalEditTask.html" type="text/ng-template">
     <div class="modal">
         <!-- Header -->
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Edit Task {{task.description}}</h1>
             <div class="buttons">
                 <button ng-click="modalEditTask.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
@@ -84,29 +87,26 @@
         </ion-header-bar>
         
         <!-- Thread Name and Assignees -->
-        <ion-content padding="true" class="has-header">
+        <ion-content class="has-header padding">
             
             <form ng-submit="editTask(form)" name="form" novalidate>
                 
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none; margin-bottom: 15px">
                     <span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="description" type="text" ng-model="task.description" required name="description">
                 </div>
 
                 <div>
-                    <label class="item item-input item-stacked-label">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
                     </label>
                     <ion-list>
-                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member.name) ? member.name : member.email}}</ion-checkbox>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)" style="border-left: none; border-right: none;">{{(member.name) ? member.name : member.email}}</ion-checkbox>
                     </ion-list>
                 </div>
 
                 <div>
-                    <button style="width: 100%" type="submit" class="button button-calm">Save</button>
-                </div>
-
-                <div class="space" style="height: 50px">
+                    <button type="submit" class="button button-calm button-block button-clear">Save</button>
                 </div>
             </form>
         </ion-content>
