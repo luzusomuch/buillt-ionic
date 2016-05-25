@@ -69,15 +69,13 @@
         <ion-content class="has-header padding">
             <form ng-submit="createRelatedFile(form)" name="form">
 				
-                <div class="space" style="height: 50px;"></div>
-				
-                <div ng-show="step==1" class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
+                <div ng-show="step==1" class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none; margin-top: 100px">
                     <span class="input-label">File Name</span>
                     <input placeholder="File Name" id="name" type="text" ng-model="file.name" name="name" maxlength="300" required>
                 </div>
 
                 <div class="list" ng-show="step==1">
-                    <label class="item item-input item-select" style="border-right: none; border-left: none; border-top: none">
+                    <label class="item item-input item-select" style="border-right: none; border-left: none; border-top: none; border-bottom: none; margin-top: 20px">
                         <div class="input-label">File Tag</div>
                         <select ng-model="file.selectedTag">
                             <option ng-selected="file.selectedTag==tag.name" ng-repeat="tag in tags" ng-value="tag.name">{{tag.name}}</option>
@@ -85,16 +83,15 @@
                     </label>
                 </div>
 
-                <div ng-show="step==2" class="item item-input" style="border-right: none; border-left: none; border-top: none">
-                    
+                <div ng-show="step==2" class="item item-input" style="border-right: none; border-left: none; border-top: none; margin-top: 170px; align: center">
                     <input class="button button-clear button-calm" onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file" style="color: transparent"></input>
                 </div>
 
 
                 <div class="row" style="">
-                    <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button>
-                    <button type="button" class="col button" ng-hide="step==2" ng-click="next('file')">Next</button>
-                    <button ng-show="step==2" class="col button button-clear button-calm button-block" type="submit">Attach File</button>
+                    <!-- <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button> -->
+                    <button type="button" class="button button-clear button-calm button-block" ng-hide="step==2" ng-click="next('file')">Next</button>
+                    <button ng-show="step==2" class="button button-clear button-calm button-block" type="submit">Attach File</button>
                 </div>
 				
             </form>
@@ -106,7 +103,7 @@
 <script id="modalCreateRelatedTask.html" type="text/ng-template">
     <div class="modal">
         <!-- Header -->
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Create a New Related Task...</h1>
             <div class="buttons">
                 <button ng-click="modalCreateRelatedTask.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
@@ -114,32 +111,34 @@
         </ion-header-bar>
         
         <!-- Description and Assignee -->
-        <ion-content class="has-header">
+        <ion-content class="has-header padding">
         
             <form ng-submit="createRelatedTask(form)" name="form" novalidate>
                 
-                <div class="item item-input item-floating-label" ng-show="step==1">
+                <div class="item item-input item-floating-label" ng-show="step==1" style="border-right: none; border-left: none; border-top: none; margin-top: 129px">
                     <span class="input-label">Task Description</span>
                     <input placeholder="Task Description" id="task_description" type="text" ng-model="task.description" name="description" maxlength="300" ng-class="{'invalid' : form.description.$invalid && submitted}" required>
                     <p class="validate-message" style="color: #F44336" ng-show="form.description.$error.required && submitted">A description is required...</p>
                 </div>
 
-                <div class="item" ng-show="step==2">
-                    <span>Task Start Date Time</span>
-                    <div ion-datetime-picker ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
+                <div class="item" ng-show="step==2" style="border-right: none; border-left:none; border-top: none; margin-top: 69px">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
+                        <span class="input-label">Task Start:</span>
+                    </label>
+                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
-                <div class="item" ng-show="step==2">
-                    <span>Task End Date Time</span>
-                    <div ion-datetime-picker ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
+                <div class="item" ng-show="step==2" style="border-right: none; border-left:none; border-top: none;">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none;  margin-bottom: 15px">
+                        <span class="input-label">Task End:</span>
+                    </label>
+                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
-
-                <div class="space" style="height: 50px"></div>
 
                 <div class="row">
-                    <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button>
-                    <button type="button" class="col button" ng-hide="step==2" ng-click="next('task')">Next</button>
-                    <button ng-show="step==2" type="submit" class="col button button-calm">Create Related Task</button>
+                    <!-- <button type="button" class="col button" ng-hide="step==1" ng-click="step=step-1">Back</button> -->
+                    <button type="button" class="button button-calm button-block button-clear" ng-hide="step==2" ng-click="next('task')">Next</button>
+                    <button ng-show="step==2" type="submit" class="button button-calm button-block button-clear">Create Related Task</button>
                 </div>
             </form>
         </ion-content>
@@ -149,26 +148,26 @@
 <script id="modalEditThread.html" type="text/ng-template">
     <div class="modal">
         <!-- Header -->
-        <ion-header-bar class="bar-light">
-            <h1 class="title">Edit Thread {{thread.name}}</h1>
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Edit {{thread.name}}</h1>
             <div class="buttons">
                 <button ng-click="modalEditThread.hide()" class="button button-stable button-icon icon ion-ios-close-empty"></button>
             </div>
         </ion-header-bar>
         
         <!-- Thread Name and Assignees -->
-        <ion-content padding="true" class="has-header">
+        <ion-content class="has-header padding">
             
             <form ng-submit="editThread(form)" name="form" novalidate>
                 
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none; margin-bottom: 20px">
                     <span class="input-label">Message Thread Name</span>
                     <input placeholder="Message Thread Name" id="thread_name" type="text" ng-model="thread.name" required name="name" ng-class="{'invalid' : form.name.$invalid && submitted}">
                     <p class="validate-message" style="color: #F44336" ng-show="form.name.$error.required && submitted">A message thread name is required...</p>
                 </div>
 
                 <div class="list">
-                    <label class="item item-input item-select">
+                    <label class="item item-input item-select" style="border-right: none; border-left: none; border-top: none;">
                         <div class="input-label">Event</div>
                         <select ng-model="thread.selectedEvent">
                             <option ng-selected="thread.selectedEvent==ev._id" ng-repeat="ev in events" ng-value="ev._id">{{ev.name}}</option>
@@ -177,19 +176,16 @@
                 </div>
 
                 <div>
-                    <label class="item item-input item-stacked-label">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
                     </label>
                     <ion-list>
-                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)">{{(member.name) ? member.name : member.email}}</ion-checkbox>
+                        <ion-checkbox class="item item-checkbox checkbox-calm" ng-repeat="member in membersList track by $index" ng-click="chooseMember($index)" style="border-left: none; border-right: none;">{{(member.name) ? member.name : member.email}}</ion-checkbox>
                     </ion-list>
                 </div>
 
                 <div>
-                    <button style="width: 100%" type="submit" class="button button-calm">Save</button>
-                </div>
-
-                <div class="space" style="height: 50px">
+                    <button type="submit" class="button button-calm button-clear button-block">Save</button>
                 </div>
             </form>
         </ion-content>
