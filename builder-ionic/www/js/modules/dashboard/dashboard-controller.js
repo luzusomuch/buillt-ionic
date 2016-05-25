@@ -1,21 +1,23 @@
 angular.module('buiiltApp')
     .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService, uploadService) {
     // These function use to check update for ionic deploy
-    var deploy = new Ionic.Deploy();
-    deploy.setChannel("Dev");
+    // var deploy = new Ionic.Deploy();
+    // deploy.setChannel("Dev");
     
-    $ionicLoading.show();
-    deploy.check().then(function(res) {
-        $ionicLoading.hide();        
-        $scope.hasUpdate = res;
-    }, function(err) {
-        $ionicLoading.hide();
-        $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
-    });
+    // $ionicLoading.show();
+    // deploy.check().then(function(res) {
+    //     $ionicLoading.hide();        
+    //     $scope.hasUpdate = res;
+    // }, function(err) {
+    //     $ionicLoading.hide();
+    //     $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+    // });
 
     // If it has update then apply it
     $scope.doUpdate = function() {
         $ionicLoading.show();
+        var deploy = new Ionic.Deploy();
+        deploy.setChannel("Dev");
         deploy.update().then(function(res) {
             $ionicLoading.show({ template: 'Update Successfully', noBackdrop: true, duration: 2000 });
         }, function(err) {

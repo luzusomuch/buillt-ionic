@@ -51,7 +51,7 @@ angular.module('buiiltApp', [
     }
   };
 })
-.run(function ($ionicScrollDelegate, $rootScope, authService, $location,$state, $ionicPlatform, $ionicTabsDelegate) {
+.run(function ($ionicLoading, $ionicScrollDelegate, $rootScope, authService, $location,$state, $ionicPlatform, $ionicTabsDelegate) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs).
@@ -66,6 +66,18 @@ angular.module('buiiltApp', [
     if (window.StatusBar) {
       StatusBar.hide();
     }
+
+    var deploy = new Ionic.Deploy();
+    deploy.setChannel("Dev");
+    
+    $ionicLoading.show();
+    deploy.check().then(function(res) {
+        $ionicLoading.hide();        
+        $rootScope.hasUpdate = res;
+    }, function(err) {
+        $ionicLoading.hide();
+        $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+    });
   });
    
   // if (window.localStorage.getItem('token')) {
