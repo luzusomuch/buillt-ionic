@@ -21,6 +21,10 @@
 	                        <span ng-switch-when="complete-task"> marked this task complete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
 	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}.</span>
 	                    </small>
+
+                        <p ng-switch="activity.type">
+                            <span ng-switch-when="create-task"><strong>{{task.description}}</strong></span>
+                        </p>
 					</div>
 				</div>
 			</div>
