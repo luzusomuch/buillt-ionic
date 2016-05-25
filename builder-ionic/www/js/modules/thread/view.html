@@ -13,7 +13,7 @@
 			
 			<div class="activity-item">
                 <div class="activity-header">
-                    {{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}} created this thread at {{thread.createdAt | date: 'dd MMMM yyyy'}}
+                    <span class="activity-creator">{{(thread.owner._id==currentUser._id) ? "You" : thread.owner.name}}</span> created this thread on {{thread.createdAt | date: 'dd MMMM yyyy'}}
                 </div>
 			</div>
 			
@@ -22,17 +22,18 @@
 				    <div class="activity-header">
                         <span class="activity-creator"><strong>{{(activity.user._id==currentUser._id) ? "You" : activity.user.name}}</strong></span>
                         <small ng-switch="activity.type">
-                            <span ng-switch-when="chat"> sent a reply at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}:</span>
-                            <span ng-switch-when="related-task">attached a task at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}</span>
-                            <span ng-switch-when="related-file">attached a file at {{activity.createdAt | date:'hh:mm a'}}, {{activity.createdAt |date:'dd MMMM yyyy'}}</span>
+                            <span ng-switch-when="chat"> sent a reply on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}:</span>
+                            <span ng-switch-when="related-task">attached a task on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
+                            <span ng-switch-when="related-file">attached a file on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
                         </small>
                     </div>
                
-				    <div class="activity-body" ng-switch="activity.type">
+				    <div class="activity-body" ng-switch="activity.type" style="font-size: 16px; font-weight: 400">
                         <span ng-switch-when="chat" ng-bind-html="activity.element.message | htmlize"></span>
                         <span ng-switch-when="related-task"><a ui-sref="taskDetail({taskId: activity.element.item})">{{activity.element.name}}</a></span>
                         <span ng-switch-when="related-file"><a ui-sref="fileDetail({fileId: activity.element.item})">{{activity.element.name}}</a></span>
                     </div>
+					
 				</div>
 			</div>
         </div>
@@ -58,7 +59,7 @@
 <script id="modalCreateRelatedFile.html" type="text/ng-template">
     <div class="modal">
 		
-        <ion-header-bar class="bar-light">
+        <ion-header-bar class="bar-stable">
             <h1 class="title">Attach a Related File</h1>
             <div class="buttons">
                 <button ng-click="modalCreateRelatedFile.hide()" class="button button-stable button-icon icon icon ion-ios-close-empty"></button>
