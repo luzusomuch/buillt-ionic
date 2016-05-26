@@ -177,7 +177,7 @@ angular.module('buiiltApp')
                     $ionicLoading.show({ template: 'Add New Comment Successfully!', noBackdrop: true, duration: 2000 });
                     var element = document.getElementById("commentArea");
                     element.style.height =  "auto";
-                    $scope.comment = null;
+                    $("#commentArea").val("");
                 }, function() {
                     $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
                 });

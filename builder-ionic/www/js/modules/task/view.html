@@ -11,7 +11,7 @@
     <ion-content class="has-header task-content">
 	
         <div id="task-detail-content">
-            <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task'">
+            <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task' || activity.type==='enter-comment'">
 				
 				<div class="activity-item">
 					<div class="activity-header">
@@ -20,23 +20,25 @@
 	                    <small ng-switch="activity.type">
 	                        <span ng-switch-when="create-task">created this task on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
 	                        <span ng-switch-when="complete-task"> marked this task complete on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
-	                        <span ng-switch-when="uncomplete-task"> marked this task incomplete on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
+                            <span ng-switch-when="uncomplete-task"> marked this task incomplete on {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
+	                        <span ng-switch-when="enter-comment"> entered new comment at {{activity.createdAt |date:'dd MMMM yyyy'}} at {{activity.createdAt | date:'hh:mm a'}}</span>
 	                    </small>
 
                         <p ng-switch="activity.type" style="margin-top: 15px">
                             <span ng-switch-when="create-task" style="font-size: 16px; font-weight: 400; color: black; text-transform: none;">Description: {{task.description}}</span>
+                            <small ng-switch-when="enter-comment" ng-bind-html="activity.element.comment | htmlize"></small>
                         </p>
 						
 					</div>
 				</div>
 			</div>
 
-            <div class="item-text-wrap" ng-repeat="comment in task.comments">
+            <!-- <div class="item-text-wrap" ng-repeat="comment in task.comments">
                 <div class="activity-item">
                     <p><strong>{{(comment.user._id==currentUser._id) ? "You" : comment.user.name}}</strong> commented on {{comment.sentAt |date:'dd MMMM yyyy'}} at {{comment.sentAt | date:'hh:mm a'}}</p>
                     <small ng-bind-html="comment.content | htmlize"></small>
                 </div>
-            </div>
+            </div> -->
         </div>
     </ion-content>
 
