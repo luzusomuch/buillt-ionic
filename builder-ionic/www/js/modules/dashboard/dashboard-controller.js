@@ -498,24 +498,24 @@ angular.module('buiiltApp')
     $scope.next = function(type) {
         if (type==="create-task") {
             if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length===0)) {
-                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Description is missing...', noBackdrop: true, duration: 2000 });
             } else if ($scope.step==2 && (!$scope.task.dateStart || !$scope.task.dateEnd)) {
-                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Start date is missing...', noBackdrop: true, duration: 2000 });
             } else {
                 $scope.step +=1;
             }
         } else if (type==="create-thread") {
             if ($scope.step==1 && (!$scope.thread.name || $scope.thread.name.trim().length==0)) {
-                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Thread name is missing...', noBackdrop: true, duration: 2000 });
             } else {
                 $scope.step +=1;
             }
         } else if (type==="create-file") {
             $scope.uploadFile.members = _.filter($scope.projectMembers, {select: true});
             if ($scope.step==1 && (!$scope.uploadFile.name || $scope.uploadFile.name.trim().length===0 || !$scope.uploadFile.selectedTag)) {
-                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'File name is missing...', noBackdrop: true, duration: 2000 });
             } else if ($scope.step==2 && $scope.uploadFile.members.length===0) {
-                $ionicLoading.show({ template: 'Check Your Data Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'File has no assignees...', noBackdrop: true, duration: 2000 });
             } else {
                 $scope.step +=1;
             }
@@ -562,11 +562,11 @@ angular.module('buiiltApp')
     $scope.createNewTask = function() {
         $scope.task.members = _.filter($scope.projectMembers, {select: true});
         if ($scope.task.members.length===0) {
-            return $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 });
+            return $ionicLoading.show({ template: 'Task has no assignees...', noBackdrop: true, duration: 2000 });
         } else if (!$scope.task.dateEnd || !$scope.task.dateStart) {
-            return $ionicLoading.show({ template: 'Please Select Due Date Or Start Date!', noBackdrop: true, duration: 2000 });
+            return $ionicLoading.show({ template: 'Start or End date is missing...', noBackdrop: true, duration: 2000 });
         } else if ($scope.task.description && $scope.task.description.trim().length===0) {
-            return $ionicLoading.show({ template: 'Please Enter Task Description!', noBackdrop: true, duration: 2000 });
+            return $ionicLoading.show({ template: 'Description is missing...', noBackdrop: true, duration: 2000 });
         }
         $scope.task.time.start = $scope.task.dateStart;
         $scope.task.time.end = $scope.task.dateEnd;
@@ -583,9 +583,9 @@ angular.module('buiiltApp')
             refreshProjectMembersAndStep();
             $scope.tasks.push(res);
             filterAndSortTaskDueDate($scope.tasks);
-            $ionicLoading.show({ template: 'Create New Task Successfully!', noBackdrop: true, duration: 2000 });
+            $ionicLoading.show({ template: 'New Task Created!', noBackdrop: true, duration: 2000 });
         }, function(err) {
-            $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+            $ionicLoading.show({ template: 'There was an Error...', noBackdrop: true, duration: 2000 });
         });
     };
 
@@ -605,7 +605,7 @@ angular.module('buiiltApp')
     $scope.createNewThread = function() {
         $scope.thread.members = _.filter($scope.projectMembers, {select: true});
         if ($scope.thread.members.length ===0) {
-            $ionicLoading.show({ template: 'Please Select At Least 1 Member!', noBackdrop: true, duration: 2000 })
+            $ionicLoading.show({ template: 'Assignees are missing...', noBackdrop: true, duration: 2000 })
         } else {
             messageService.create({id: $rootScope.selectedProject._id}, $scope.thread)
             .$promise.then(function (res) {
@@ -617,9 +617,9 @@ angular.module('buiiltApp')
                 $scope.threads.push(res);
                 refreshProjectMembersAndStep();
                 $state.go("threadDetail", {threadId: res._id});
-                $ionicLoading.show({ template: 'Create New Thread Successfully!', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'New Message Created!', noBackdrop: true, duration: 2000 })
             }, function(err) {
-                $ionicLoading.show({ template: 'Error', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 })
             });
         }
     };
@@ -665,11 +665,11 @@ angular.module('buiiltApp')
             $scope.newTeam.isMobile = true;
             $scope.newTeam.emails = [];
             teamService.create($scope.newTeam, function (team) {
-                $ionicLoading.show({ template: 'Create New Team Successfully!', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'New Team Created!', noBackdrop: true, duration: 2000 })
                 $rootScope.currentTeam = $scope.currentTeam = team;
                 $scope.modalCreateTeam.hide();
             }, function (err) {
-                $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 })
             });
         } else {
             $ionicLoading.show({ template: 'Please check your input!', noBackdrop: true, duration: 2000 });
@@ -720,7 +720,7 @@ angular.module('buiiltApp')
 
     $scope.createNewFile = function() {
         if (!$scope.uploadFile.file) {
-            $ionicLoading.show({ template: 'Select Your Upload File!', noBackdrop: true, duration: 2000 });
+            $ionicLoading.show({ template: 'File is missing...', noBackdrop: true, duration: 2000 });
         } else {
             $ionicLoading.show();
             $scope.uploadFile.file.filename = $scope.uploadFile.name;
@@ -734,12 +734,12 @@ angular.module('buiiltApp')
                     selectedTag: null
                 };
                 refreshProjectMembersAndStep();
-                $ionicLoading.show({ template: 'Create New File Successfully!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'New File Created!', noBackdrop: true, duration: 2000 });
                 $scope.files.push(res);
                 $state.go("fileDetail", {fileId: res._id});
             }, function(err) {
                 $ionicLoading.hide();
-                $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
             });
         }
     };

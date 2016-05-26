@@ -31,7 +31,7 @@ angular.module('buiiltApp')
       $scope.user.url = "auth/local";
       $scope.login();
     } else {
-      $ionicLoading.show({ template: 'Check Your Input!', noBackdrop: true, duration: 2000 });
+      $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
     }
   };
 
@@ -41,7 +41,7 @@ angular.module('buiiltApp')
       $scope.user.url = "auth/mobile";
       $scope.login();
     } else {
-      $ionicLoading.show({ template: 'Check Your Input!', noBackdrop: true, duration: 2000 });
+      $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
     }
   };
 
@@ -52,20 +52,20 @@ angular.module('buiiltApp')
   $scope.step=1;
   $scope.next = function() {
     if ($scope.step==1 && (!$scope.user.phoneNumber || $scope.user.phoneNumber.trim().length===0)) {
-      $ionicLoading.show({ template: 'Please Enter Your Phone Number!', noBackdrop: true, duration: 2000 });
+      $ionicLoading.show({ template: 'Phone number missing...', noBackdrop: true, duration: 2000 });
     } else if ($scope.step==2 && (!$scope.user.verifyCode || $scope.user.verifyCode.length===0)) {
-      $ionicLoading.show({ template: 'Please Enter Verify Code!', noBackdrop: true, duration: 2000 });
+      $ionicLoading.show({ template: 'PIN missing...', noBackdrop: true, duration: 2000 });
     } else {
       if ($scope.step===1) {
         tokenService.create({}, $scope.user).$promise.then(function(res) {
-          $ionicLoading.show({ template: 'Successfully! We will send token to that phone number!', noBackdrop: true, duration: 2000 });
+          $ionicLoading.show({ template: 'We sent you a verification PIN...', noBackdrop: true, duration: 2000 });
           $scope.step+=1;
         }, function(err) {
           $ionicLoading.show({ template: err.data.msg, noBackdrop: true, duration: 2000 });
         });
       } else if ($scope.step===2) {
         tokenService.get({token: $scope.user.verifyCode}).$promise.then(function(res) {
-          $ionicLoading.show({ template: "Verify Successfully!", noBackdrop: true, duration: 2000 });
+          $ionicLoading.show({ template: "Verified!", noBackdrop: true, duration: 2000 });
           $scope.step+=1;
         }, function(err) {
           $ionicLoading.show({ template: err.data.msg, noBackdrop: true, duration: 2000 });
@@ -93,26 +93,26 @@ angular.module('buiiltApp')
   $scope.getToken = function(form) {
     if (form.$valid) {
       userService.getToken({phoneNumber: $scope.user.phoneNumber}).$promise.then(function(res) {
-        $ionicLoading.show({ template: 'Please Enter Your Token To Continue!', noBackdrop: true, duration: 2000 });
+        $ionicLoading.show({ template: 'Your PIN is missing...', noBackdrop: true, duration: 2000 });
         $scope.modalSignin.show();
       }, function(err) {
-        $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+        $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
       });
     } else {
-      $ionicLoading.show({ template: 'Check Your Input!', noBackdrop: true, duration: 2000 });
+      $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
     }
   };
 
   $scope.signup = function() {
     $scope.submitted = true;
     if (!$scope.user.firstName || !$scope.user.lastName) {
-      $scope.errors.signup = "Please check your input";
+      $scope.errors.signup = "Check your inputs...";
     } else {
       $ionicLoading.show();
       $scope.user.isMobile = true;
       authService.createUser($scope.user).then(function (data) {
         $scope.modalSignup.hide();
-        $ionicLoading.show({ template: 'Create New User Successfully!', noBackdrop: true, duration: 2000 });
+        $ionicLoading.show({ template: 'Account Created!', noBackdrop: true, duration: 2000 });
         // deviceService.insertDevice({deviceToken: window.deviceToken, deviceplatform: window.deviceplatform}).$promise.then();
         $scope.user = {};
         $scope.submitted = false;

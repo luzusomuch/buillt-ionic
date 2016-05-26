@@ -51,7 +51,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         $scope.step=1;
         $scope.next = function() {
             if ($scope.step==1 && (!$scope.task.description || $scope.task.description.trim().length==0)) {
-                $ionicLoading.show({ template: 'Check Your Data!', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'Task description missing...', noBackdrop: true, duration: 2000 })
             } else {
                 $scope.step += 1;
             }
@@ -91,7 +91,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
             $ionicLoading.show();
             uploadService.uploadReversion({id: file._id}, $scope.reversion).$promise.then(function(res) {
                 $ionicLoading.hide();
-                $ionicLoading.show({ template: 'Uploaded File Reversion Successfully!', noBackdrop: true, duration: 2000 })
+                $ionicLoading.show({ template: 'New version uploaded!', noBackdrop: true, duration: 2000 })
                 $scope.closeModal();
             }, function(err) {
                 console.log(err);
@@ -218,7 +218,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                     $scope.modalEditFile.hide();
                     $ionicLoading.show({ template: 'File Updated!', noBackdrop: true, duration: 2000 });
                 }, function(err) {
-                    $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
                 });
             }
         };
@@ -254,7 +254,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         $scope.createRelatedTask = function(form) {
             if (form.$valid) {
                 if (!$scope.task.dateStart || !$scope.task.dateEnd) {
-                    $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
                 } else {
                     $scope.task.time.start = $scope.task.dateStart;
                     $scope.task.time.end = $scope.task.dateEnd;
@@ -264,7 +264,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                     });
                     taskService.create({id: file.project}, $scope.task).$promise.then(function(res) {
                         $scope.modalCreateRelatedTask.hide();
-                        $ionicLoading.show({ template: 'Create Related Task Successfully!', noBackdrop: true, duration: 2000 });
+                        $ionicLoading.show({ template: 'Task Created!', noBackdrop: true, duration: 2000 });
                         $scope.task = {
                             selectedEvent: $scope.file.event,
                             dateStart: new Date(),
@@ -277,11 +277,11 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                         $state.go("taskDetail", {taskId: res._id});
                         $scope.step=1;
                     }, function(err) {
-                        $ionicLoading.show({ template: "Error", noBackdrop: true, duration: 2000 });
+                        $ionicLoading.show({ template: "There was an error...", noBackdrop: true, duration: 2000 });
                     });
                 }
             } else {
-                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
             }
         };
 
@@ -320,7 +320,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                 });
                 messageService.create({id: file.project}, $scope.thread).$promise.then(function(res) {
                     $scope.modalCreateRelatedThread.hide();
-                    $ionicLoading.show({ template: 'Create Related Thread Successfully!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'Message Created!', noBackdrop: true, duration: 2000 });
                     $scope.thread = {
                         selectedEvent: $scope.file.event,
                         belongToType: "file",
@@ -329,10 +329,10 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                     };
                     $state.go("threadDetail", {threadId: res._id});
                 }, function(err) {
-                    $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
                 });
             } else {
-                $ionicLoading.show({ template: 'Please Check Your Input!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
             }
         };
         // End related thread setting

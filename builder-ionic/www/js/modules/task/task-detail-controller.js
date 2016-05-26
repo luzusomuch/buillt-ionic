@@ -144,7 +144,7 @@ angular.module('buiiltApp')
                 $scope.task.editType="edit-task";
                 prom.push(taskService.update({id: $scope.task._id}, $scope.task).$promise);
             } else {
-                $ionicLoading.show({ template: 'Check Your Description!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Check your description...', noBackdrop: true, duration: 2000 });
             }
 
             if ($scope.task.newMembers.length > 0) {
@@ -163,7 +163,7 @@ angular.module('buiiltApp')
                     $scope.modalEditTask.hide();
                     $ionicLoading.show({ template: 'Task Updated!', noBackdrop: true, duration: 2000 });
                 }, function(err) {
-                    $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
                 });
             }
         };
@@ -174,15 +174,15 @@ angular.module('buiiltApp')
                 $scope.task.comment = comment;
                 taskService.update({id: $scope.task._id}, $scope.task).$promise.then(function(res) {
                     $scope.modalAddComment.hide();
-                    $ionicLoading.show({ template: 'Add New Comment Successfully!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'Comment Added!', noBackdrop: true, duration: 2000 });
                     var element = document.getElementById("commentArea");
                     element.style.height =  "auto";
                     $("#commentArea").val("");
                 }, function() {
-                    $ionicLoading.show({ template: 'Error!', noBackdrop: true, duration: 2000 });
+                    $ionicLoading.show({ template: 'There was an error...', noBackdrop: true, duration: 2000 });
                 });
             } else {
-                $ionicLoading.show({ template: 'Check Your Comment Again!', noBackdrop: true, duration: 2000 });
+                $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
             }
         };
 
