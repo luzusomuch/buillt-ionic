@@ -161,7 +161,6 @@ angular.module('buiiltApp')
 
     socket.on("dashboard:new", function(data) {
         if (data.type==="task") {
-            console.log("DASHBOARD NEW TASK");
             var index = getItemIndex($scope.tasks, data.task._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
                 var projectIndex = getItemIndex($scope.projects, data.task.project._id);
@@ -212,6 +211,10 @@ angular.module('buiiltApp')
                     return doc._id.toString()===data.file._id.toString();
                 });
                 if (fileIndex!==-1) {
+                    if ($scope.documentSets[index].documents[fileIndex].__v==0) {
+                        $scope.projects[projectIndex].__v +=1;
+                        $scope.projects[projectIndex].element.document +=1;    
+                    }
                     $scope.documentSets[index].documents[fileIndex].__v+=1;
                 } else if (fileIndex===-1) {
                     data.file.__v = 1;
@@ -248,6 +251,7 @@ angular.module('buiiltApp')
         functionClearTaskCount();
         functionUpdateThreadLastAccess();
         functionClearFileCount();
+        functionClearDocumentCount();
     });
 
     var functionUpdateThreadLastAccess = $rootScope.$on("UpdateDashboardThreadLastAccess", function(event, data) {
@@ -287,6 +291,39 @@ angular.module('buiiltApp')
 
     var functionClearFileCount = $rootScope.$on("UpdateDashboardFileCount", function(event, data) {
         updateItemCount($scope.files, data, 'file');
+    });
+
+    var functionClearDocumentCount = $rootScope.$on("Document.Read", function(event, data) {
+        var allowUpdate = false;
+        var index;
+        if (data.documentSet) {
+            index = _.findIndex($scope.documentSets, function(set) {
+                return set._id.toString()===data.documentSet.toString();
+            });
+            if (index !== -1) {
+                allowUpdate = true;
+            }
+        } else {
+            index = _.findIndex($scope.documentSets, function(set) {
+                return set.name==="Set 1";
+            });
+            if (index !== -1) {
+                allowUpdate = true;
+            }
+        }
+        if (allowUpdate) {
+            var documentIndex = _.findIndex($scope.documentSets[index].documents, function(doc) {
+                return doc._id.toString()===data._id.toString();
+            });
+            if (documentIndex !== -1) {
+                $scope.documentSets[index].documents[documentIndex].__v = 0;
+            }
+            var projectIndex = getItemIndex($scope.projects, data.project);
+            if (projectIndex !== -1 && data.__v > 0) {
+                $scope.projects[projectIndex].__v -=1;
+                $scope.projects[projectIndex].element.document -=1;
+            }
+        }
     });
 
     $scope.currentTab = 'thread';

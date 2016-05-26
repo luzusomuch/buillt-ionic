@@ -6,6 +6,7 @@ angular.module("buiiltApp").controller("DocumentSetCtrl", function($state, $q, $
     } else {
         prom.push(documentService.get({id: $stateParams.setId}).$promise);
     }
+
     if (prom.length > 0) {
         $q.all(prom).then(function(res) {
             if ($stateParams.setId.indexOf("set1")!==-1) {
@@ -17,4 +18,17 @@ angular.module("buiiltApp").controller("DocumentSetCtrl", function($state, $q, $
     } else {
         $state.go("dashboard");
     }
+
+    $scope.$on("$destroy", function() {
+        functionClearDocumentCount
+    });
+
+    var functionClearDocumentCount = $rootScope.$on("Document.Read", function(event, data) {
+        var index = _.findIndex($scope.documentSet.documents, function(doc) {
+            return doc._id.toString()===data._id.toString();
+        });
+        if (index !== -1) {
+            $scope.documentSet.documents[index].__v = 0;
+        }
+    });
 });
