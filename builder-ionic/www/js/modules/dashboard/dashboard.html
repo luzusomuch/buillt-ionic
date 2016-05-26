@@ -209,14 +209,10 @@
                     </ion-list>
                 </div>
 
-                <div class="row row-center" ng-show="step==3">
-                    <div class="col-33"></div>
-                    <div class="col-33">
-                        <div class="item item-input" style="border-right: none; border-left: none; border-top: none; margin-top: 170px">
-                            <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file" style="color: transparent"></input>
-                        </div>
+                <div ng-show="step==3">
+                    <div class="item item-input" style="border-right: none; border-left: none; border-top: none; margin-top: 170px">
+                        <input onchange="angular.element(this).scope().getFileUpload()" id="read-input" type="file" style="color: transparent"></input>
                     </div>
-                    <div class="col-33"></div>
                 </div>
 
                 <div class="row">
