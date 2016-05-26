@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('buiiltApp', [
-  'ionic','ionic.service.core',
+  'ionic',
   'ngCordova',
   'ui.utils',
   'ui.router',
@@ -66,18 +66,6 @@ angular.module('buiiltApp', [
     if (window.StatusBar) {
       StatusBar.hide();
     }
-
-    var deploy = new Ionic.Deploy();
-    deploy.setChannel("Dev");
-    
-    $ionicLoading.show();
-    deploy.check().then(function(res) {
-        $ionicLoading.hide();        
-        $rootScope.hasUpdate = res;
-    }, function(err) {
-        $ionicLoading.hide();
-        $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
-    });
   });
    
   // if (window.localStorage.getItem('token')) {
