@@ -3,6 +3,9 @@ angular.module('buiiltApp')
     taskService.get({id: $stateParams.taskId}).$promise.then(function(task) {
         var originalTask = angular.copy(task);
         $scope.task = task;
+        $scope.task.dateStart = new Date($scope.task.dateStart);
+        $scope.task.dateEnd = new Date($scope.task.dateEnd);
+        $scope.task.time = {start: $scope.task.dateStart, end: $scope.task.dateEnd};
         $scope.currentUser = authService.getCurrentUser();
 
         socket.emit("join", task._id);
@@ -143,10 +146,18 @@ angular.module('buiiltApp')
             } else {
                 $ionicLoading.show({ template: 'Check Your Description!', noBackdrop: true, duration: 2000 });
             }
+
             if ($scope.task.newMembers.length > 0) {
                 $scope.task.editType="assign";
                 prom.push(taskService.update({id: $scope.task._id}, $scope.task).$promise);
             }
+
+            $scope.task.time = {start: $scope.task.dateStart, end: $scope.task.dateEnd};
+            if (new Date(originalTask.dateStart).getTime() !== $scope.task.dateStart.getTime() || new Date(originalTask.dateEnd).getTime() !== $scope.task.dateEnd.getTime()) {
+                $scope.task.editType="change-date-time";
+                prom.push(taskService.update({id: $scope.task._id}, $scope.task).$promise);
+            }
+            
             if (prom.length > 0) {
                 $q.all(prom).then(function(res) {
                     $scope.modalEditTask.hide();

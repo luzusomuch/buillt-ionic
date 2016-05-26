@@ -96,6 +96,20 @@
                     <input placeholder="Task Description" id="description" type="text" ng-model="task.description" required name="description">
                 </div>
 
+                <div class="item" style="border-right: none; border-left:none; border-top: none; margin-top: 69px">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
+                        <span class="input-label">Task Start:</span>
+                    </label>
+                    <div ion-datetime-picker ng-model="task.dateStart" class="col" style="text-align: center"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
+                </div>
+
+                <div class="item" style="border-right: none; border-left:none; border-top: none;">
+                    <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none;  margin-bottom: 15px">
+                        <span class="input-label">Task End:</span>
+                    </label>
+                    <div ion-datetime-picker ng-model="task.dateEnd" class="col" style="text-align: center"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
+                </div>
+
                 <div>
                     <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
