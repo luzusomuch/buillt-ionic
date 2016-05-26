@@ -125,14 +125,14 @@
                     <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Task Start:</span>
                     </label>
-                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateStart"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
+                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateStart" month-step="1" hour-step="1" minute-step="10" second-step="30"> {{task.dateStart| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
                 <div class="item" ng-show="step==2" style="border-right: none; border-left:none; border-top: none;">
                     <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none;  margin-bottom: 15px">
                         <span class="input-label">Task End:</span>
                     </label>
-                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateEnd"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
+                    <div ion-datetime-picker class="col" style="text-align: center" ng-model="task.dateEnd" month-step="1" hour-step="1" minute-step="10" second-step="30"> {{task.dateEnd| date: "dd MMMM yyyy H:mm"}} </div>
                 </div>
 
                 <div class="row">
