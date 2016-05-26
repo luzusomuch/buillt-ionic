@@ -37,13 +37,13 @@
 .activity-header {
 	text-transform: uppercase;
 	font-size: 10px;
-	color: #757575;
+	color: #9E9E9E;
 	font-weight: 500;
 	border-bottom: 1px solid #EEEEEE;
 }
 
 .activity-creator {
-	color: #212121;
+	color: #9E9E9E;
 }
 
 .activity-body {
