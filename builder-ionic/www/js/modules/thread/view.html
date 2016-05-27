@@ -47,8 +47,8 @@
                 <textarea style="width: 95%" name="text" id="textarea1" placeholder="Send a message ..." ng-model="message.text" ng-keyup="expandText()" ng-keydown="expandText()"></textarea>
             </div>
 	        <div class="row">
-				<i ng-click="modalCreateRelatedFile.show(); step=1" class="icon ion-ios-copy-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
-				<i ng-click="modalCreateRelatedTask.show(); step=1" class="icon ion-ios-checkmark-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<i ng-hide="thread.element.type==='tender'" ng-click="modalCreateRelatedFile.show(); step=1" class="icon ion-ios-copy-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
+				<i ng-hide="thread.element.type==='tender'" ng-click="modalCreateRelatedTask.show(); step=1" class="icon ion-ios-checkmark-outline calm" style="margin-left: 20px; font-size: 24px;"></i>
 				<div class="col"></div>
 				<button class="button button-calm button-clear" style="margin-top: -6px; margin-right: 20px; font-size: 15px" type="submit" name="action">Send</button>
 	        </div>
@@ -175,7 +175,7 @@
                     </label>
                 </div>
 
-                <div>
+                <div ng-hide="thread.element.type==='tender'">
                     <label class="item item-input item-stacked-label" style="border-right: none; border-left:none; border-top: none; border-bottom: none; margin-bottom: 15px">
                         <span class="input-label">Assignees:</span>
                     </label>
