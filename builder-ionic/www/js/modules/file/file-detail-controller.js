@@ -1,4 +1,4 @@
-angular.module("buiiltApp").controller("FileDetailCtrl", function($q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService, contactBookService) {
+angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDelegate, $q, $ionicModal, $scope, $rootScope, $timeout, $ionicPopover, $ionicLoading, $stateParams, $state, socket, notificationService, uploadService, fileService, authService, activityService, peopleService, taskService, messageService, contactBookService) {
     fileService.get({id: $stateParams.fileId}).$promise.then(function(file) {
         socket.emit("join", file._id);
         socket.on("file:update", function(data) {
