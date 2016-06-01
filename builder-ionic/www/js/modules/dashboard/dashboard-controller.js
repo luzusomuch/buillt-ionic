@@ -338,7 +338,9 @@ angular.module('buiiltApp')
             });
             if (documentIndex !== -1) {
                 var projectIndex = getItemIndex($scope.projects, data.project);
-                $scope.documentSets[index].__v -= 1;
+                if ($scope.documentSets[index].__v > 0) {
+                    $scope.documentSets[index].__v -= 1;
+                }
                 if (projectIndex !== -1 && $scope.documentSets[index].__v === 0) {
                     $scope.projects[projectIndex].__v -=1;
                     $scope.projects[projectIndex].element.document -=1;
