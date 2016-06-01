@@ -13,7 +13,7 @@ angular.module('buiiltApp')
             originalTask = angular.copy(data);
             $scope.task = data;
             if (data._id.toString()===$stateParams.taskId.toString()) {
-                $ionicScrollDelegate.scrollBottom();
+                $ionicScrollDelegate.$getByHandle("taskScroll").scrollBottom();
                 notificationService.markItemsAsRead({id: task._id}).$promise.then();
             }
         });
@@ -22,7 +22,7 @@ angular.module('buiiltApp')
             // remove task count number for current task
             $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
             
-            $ionicScrollDelegate.scrollBottom();
+            $ionicScrollDelegate.$getByHandle("taskScroll").scrollBottom();
             // mark all notifications related to this task is read
             notificationService.markItemsAsRead({id: task._id}).$promise;
         }, 500);

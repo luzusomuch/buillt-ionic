@@ -42,7 +42,7 @@ angular.module('buiiltApp')
             $scope.modalCreateRelatedTask = modal;
         });
 
-        $ionicScrollDelegate.scrollBottom();
+        $ionicScrollDelegate.$getByHandle("threadScroll").scrollBottom();
 
         $scope.callDateInput = function(type){
             if (type==="dateStart") {
@@ -188,7 +188,7 @@ angular.module('buiiltApp')
             $scope.task.selectedEvent = data.event;
             $scope.file.selectedEvent = data.event;
             if ($stateParams.threadId.toString()===data._id.toString()) {
-                $ionicScrollDelegate.scrollBottom();
+                $ionicScrollDelegate.$getByHandle("threadScroll").scrollBottom();
                 notificationService.markItemsAsRead({id: thread._id}).$promise.then();
             }
         });

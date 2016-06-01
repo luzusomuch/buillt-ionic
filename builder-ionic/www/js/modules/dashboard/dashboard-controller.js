@@ -1,5 +1,5 @@
 angular.module('buiiltApp')
-    .controller('DashboardCtrl', function($q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService, uploadService) {
+    .controller('DashboardCtrl', function($ionicScrollDelegate, $q, $ionicLoading, currentUser, team, peopleService, notificationService, projectService,$ionicSideMenuDelegate,$timeout,$scope,$state, authService, $rootScope,$ionicTabsDelegate,notificationService, $ionicModal, $ionicPopover, taskService, messageService, socket, $ionicPopup, teamService, documentService, fileService, contactBookService, uploadService) {
 
     $scope.currentTeam = team;
     $scope.currentUser = currentUser;
@@ -10,6 +10,14 @@ angular.module('buiiltApp')
             $scope.projects.push(project);
         }
     });
+
+    // $scope.state = $state;
+    // $scope.$watch("state", function(state) {
+    //     console.log(state);
+    //     if (state.current.name==="dashboard") {
+    //         $ionicScrollDelegate.scrollTop();
+    //     }
+    // });
 
     // convert last access of current user to thread to show it first
     function getThreadsLastAccess(threads) {

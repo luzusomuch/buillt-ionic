@@ -8,7 +8,7 @@
         <button ng-click="showModalEditTask()" class="button button-clear" style="margin-right: 10px; font-size: 15px">Edit</button> 
     </ion-nav-buttons>
 
-    <ion-content class="has-header task-content">
+    <ion-content class="has-header task-content" delegate-handle="taskScroll">
 	
         <div id="task-detail-content">
             <div class="item-text-wrap" ng-repeat="activity in task.activities" ng-show="activity.type=='complete-task' || activity.type=='uncomplete-task' || activity.type=='create-task' || activity.type==='enter-comment'">
