@@ -11,14 +11,6 @@ angular.module('buiiltApp')
         }
     });
 
-    // $scope.state = $state;
-    // $scope.$watch("state", function(state) {
-    //     console.log(state);
-    //     if (state.current.name==="dashboard") {
-    //         $ionicScrollDelegate.scrollTop();
-    //     }
-    // });
-
     // convert last access of current user to thread to show it first
     function getThreadsLastAccess(threads) {
         _.each(threads, function(thread) {
@@ -235,11 +227,13 @@ angular.module('buiiltApp')
                         $scope.projects[projectIndex].__v +=1;
                         $scope.projects[projectIndex].element.document +=1;    
                     }
+                    $scope.documentSets[index].__v += 1;
                     $scope.documentSets[index].documents[fileIndex].__v+=1;
                 } else if (fileIndex===-1) {
                     data.file.__v = 1;
                     if ($scope.documentSets) {
                         $scope.documentSets[index].documents.push(data.file);
+                        $scope.documentSets[index].__v += 1;
                     }
                     $scope.projects[projectIndex].__v +=1;
                     $scope.projects[projectIndex].element.document +=1;
@@ -248,9 +242,9 @@ angular.module('buiiltApp')
                 $rootScope.uniqId = data.uniqId;
                 data.documentSet.__v = 1;
                 data.file.__v = 1;
-                data.documentSet.documents.push(data.file);
+                data.documentSet.documents = [data.file];
                 if ($scope.documentSets) {
-                    $scope.documentSets.push(data.documentset);
+                    $scope.documentSets.push(data.documentSet);
                 }
                 $scope.projects[projectIndex].__v +=1;
                 $scope.projects[projectIndex].element.document +=1;
@@ -344,7 +338,8 @@ angular.module('buiiltApp')
             });
             if (documentIndex !== -1) {
                 var projectIndex = getItemIndex($scope.projects, data.project);
-                if (projectIndex !== -1 && $scope.documentSets[index].documents[documentIndex].__v > 0) {
+                $scope.documentSets[index].__v -= 1;
+                if (projectIndex !== -1 && $scope.documentSets[index].__v === 0) {
                     $scope.projects[projectIndex].__v -=1;
                     $scope.projects[projectIndex].element.document -=1;
                 }

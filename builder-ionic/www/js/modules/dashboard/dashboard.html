@@ -93,7 +93,7 @@
         <ion-nav-view ng-show="currentTab == 'document'" name="Documentations">
             <div class="list" ng-show="currentTab=='document'">
                 <ion-item ui-sref="document.set({setId: set._id})" class="item-text-wrap" ng-repeat="set in documentSets">
-                    <h2>{{set.name}}</h2>
+                    <h2><i ng-show="set.__v > 0" class="icon calm ion-ios-circle-filled"></i> {{set.name}}</h2>
                 </ion-item>
             </div>
         </ion-nav-view>
