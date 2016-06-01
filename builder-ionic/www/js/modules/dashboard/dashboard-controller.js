@@ -163,7 +163,7 @@ angular.module('buiiltApp')
         if (data.type==="task") {
             var index = getItemIndex($scope.tasks, data.task._id);
             if (index !== -1 && data.user._id.toString()!== $scope.currentUser._id.toString() && $scope.tasks[index].uniqId != data.uniqId) {
-                var projectIndex = getItemIndex($scope.projects, data.task.project._id);
+                var projectIndex = getItemIndex($scope.projects, (data.task.project._id) ? data.task.project._id : data.task.project);
                 $scope.tasks[index].uniqId = data.uniqId;
                 if (projectIndex!==-1 && $scope.tasks[index].__v===0) {
                     $scope.projects[projectIndex].__v +=1;
@@ -272,12 +272,12 @@ angular.module('buiiltApp')
     function updateItemCount(itemArr, item, type) {
         var index = getItemIndex(itemArr, item._id);
         if (index !== -1) {
-            itemArr[index].__v = 0;
             var projectIndex = getItemIndex($scope.projects, item.project);
-            if (projectIndex !== -1 && item.__v > 0) {
+            if (projectIndex !== -1 && itemArr[index].__v > 0) {
                 $scope.projects[projectIndex].__v -=1;
                 $scope.projects[projectIndex].element[type] -=1;
             }
+            itemArr[index].__v = 0;
         }
     };
 
@@ -316,12 +316,12 @@ angular.module('buiiltApp')
                 return doc._id.toString()===data._id.toString();
             });
             if (documentIndex !== -1) {
+                var projectIndex = getItemIndex($scope.projects, data.project);
+                if (projectIndex !== -1 && $scope.documentSets[index].documents[documentIndex].__v > 0) {
+                    $scope.projects[projectIndex].__v -=1;
+                    $scope.projects[projectIndex].element.document -=1;
+                }
                 $scope.documentSets[index].documents[documentIndex].__v = 0;
-            }
-            var projectIndex = getItemIndex($scope.projects, data.project);
-            if (projectIndex !== -1 && data.__v > 0) {
-                $scope.projects[projectIndex].__v -=1;
-                $scope.projects[projectIndex].element.document -=1;
             }
         }
     });

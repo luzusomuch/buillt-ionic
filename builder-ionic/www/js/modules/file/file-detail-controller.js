@@ -6,14 +6,15 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
             $scope.file = data;
             $scope.file.selectedEvent = data.event;
             $scope.file.selectedTag = (data.tags.length > 0) ? data.tags[0] : null;
-            notificationService.markItemsAsRead({id: file._id}).$promise.then();
-            fileInitial($scope.file);
+            if ($stateParams.fileId.toString()===data._id.toString()) {
+                notificationService.markItemsAsRead({id: file._id}).$promise.then();
+                fileInitial($scope.file);
+            }
         });
 
         $timeout(function() {
             // remove file count number for current file
-            if (file.__v > 0) 
-                $rootScope.$emit("UpdateDashboardFileCount", $scope.file);
+            $rootScope.$emit("UpdateDashboardFileCount", $scope.file);
             $ionicScrollDelegate.scrollBottom();
             // mark all notifications related to this file is read
             notificationService.markItemsAsRead({id: file._id}).$promise;

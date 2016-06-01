@@ -187,14 +187,15 @@ angular.module('buiiltApp')
             $scope.thread.selectedEvent = data.event;
             $scope.task.selectedEvent = data.event;
             $scope.file.selectedEvent = data.event;
-            $ionicScrollDelegate.scrollBottom();
-            notificationService.markItemsAsRead({id: thread._id}).$promise.then();
+            if ($stateParams.threadId.toString()===data._id.toString()) {
+                $ionicScrollDelegate.scrollBottom();
+                notificationService.markItemsAsRead({id: thread._id}).$promise.then();
+            }
         });
 
         $timeout(function() {
             // remove thread count number for current thread
-            if (thread.__v > 0) 
-                $rootScope.$emit("UpdateDashboardThreadCount", $scope.thread);
+            $rootScope.$emit("UpdateDashboardThreadCount", $scope.thread);
 
             // update the last access to current thread
             messageService.lastAccess({id: thread._id}).$promise.then(function(res) {

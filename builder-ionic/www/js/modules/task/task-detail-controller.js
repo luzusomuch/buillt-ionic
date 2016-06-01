@@ -12,14 +12,15 @@ angular.module('buiiltApp')
         socket.on("task:update", function(data) {
             originalTask = angular.copy(data);
             $scope.task = data;
-            $ionicScrollDelegate.scrollBottom();
-            notificationService.markItemsAsRead({id: task._id}).$promise.then();
+            if (data._id.toString()===$stateParams.taskId.toString()) {
+                $ionicScrollDelegate.scrollBottom();
+                notificationService.markItemsAsRead({id: task._id}).$promise.then();
+            }
         });
 
         $timeout(function() {
             // remove task count number for current task
-            if (task.__v > 0) 
-                $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
+            $rootScope.$emit("UpdateDashboardTaskCount", $scope.task);
             
             $ionicScrollDelegate.scrollBottom();
             // mark all notifications related to this task is read

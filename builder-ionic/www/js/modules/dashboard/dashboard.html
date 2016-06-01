@@ -27,7 +27,7 @@
 		<!-- When messages tab is selected. -->
 	    <ion-nav-view ng-show="currentTab == 'thread'" name="Messages">
 	        <div class="list" ng-show="currentTab == 'thread'">
-	            <ion-item class="item-text-wrap" ng-repeat="thread in threads" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v > 0">
+	            <ion-item class="item-text-wrap" ng-repeat="thread in threads | orderBy: '-updatedAt'" ui-sref="threadDetail({threadId: thread._id})" ng-show="!thread.isArchive&&thread.__v > 0">
 	                <span><h2><i class="icon calm ion-ios-circle-filled"></i> {{thread.name}}</h2></span>
                     <p>
                         <span ng-repeat="member in thread.members | unique: '_id' track by $index">{{member.name}}, </span>
@@ -50,7 +50,7 @@
 	        <div class="list" ng-show="currentTab == 'task'">
 	            <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v > 0">
 					<span><h2><i class="icon calm ion-ios-circle-filled"></i> {{task.description}}</h2></span>
-                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
+                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd MMMM yyyy'}}</p>
 					<p>
                         <span ng-repeat="member in task.members | unique: '_id' track by $index">{{member.name}}, </span>
                         <span ng-repeat="name in task.notMemberNames track by $index">{{name}}, </span>
@@ -59,7 +59,7 @@
 
                 <ion-item class="item-text-wrap" ng-repeat="task in tasks" ui-sref="taskDetail({taskId: task._id})" ng-show="task.__v == 0 && !task.completed">
                     <h2>{{task.description}}</h2>
-                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd/MM/yyyy'}}</p>
+                    <p>Due {{(task.dueDate) ? task.dueDate : task.dateEnd | date: 'dd MMMM yyyy'}}</p>
 					<p>
                         <span ng-repeat="member in task.members | unique: '_id' track by $index">{{member.name}}, </span>
                         <span ng-repeat="name in task.notMemberNames track by $index">{{name}}, </span>

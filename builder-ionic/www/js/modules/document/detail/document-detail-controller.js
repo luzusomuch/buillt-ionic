@@ -7,11 +7,11 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function(document, 
     socket.on("document:update", function(data) {
         $scope.document = data;
         $scope.document.selectedPath = data.path;
-        notificationService.markItemsAsRead({id: $stateParams.documentId}).$promise;
+        if ($stateParams.documentId.toString()===data._id.toString()) {
+            notificationService.markItemsAsRead({id: $stateParams.documentId}).$promise;
+        }
     });
 
-    if ($scope.document.__v > 0) {
-        notificationService.markItemsAsRead({id: $stateParams.documentId}).$promise;
-        $rootScope.$emit("Document.Read", $scope.document);
-    }
+    notificationService.markItemsAsRead({id: $stateParams.documentId}).$promise;
+    $rootScope.$emit("Document.Read", $scope.document);
 });
