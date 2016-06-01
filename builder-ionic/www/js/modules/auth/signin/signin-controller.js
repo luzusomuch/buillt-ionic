@@ -15,6 +15,7 @@ angular.module('buiiltApp')
   $scope.login = function() {
     $ionicLoading.show();
     authService.login($scope.user).then(function () {
+      $scope.submitted = false;
       $scope.modalSignin.hide();
       $ionicLoading.hide();
       if (window.deviceToken && window.deviceplatform) {

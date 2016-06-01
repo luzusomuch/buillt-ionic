@@ -9,20 +9,22 @@
 		<div class="space" style="height: 50px"></div>
 
         <!-- sign in with email -->
-        <form ng-show="!usePhoneNumber" name="signInWithEmailForm" ng-submit="signInWithEmail(signInWithEmailForm)" novalidate>
+        <form ng-show="!usePhoneNumber" name="formSignInWithEmail" ng-submit="signInWithEmail(formSignInWithEmail)" novalidate>
             <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                 <span class="input-label">Your Email</span>
                 <input type="email" placeholder="Your Email" ng-model="user.email" name="email" required>
-                <p class="validate-message" style="color: red" ng-show="form.email.$error.required">Your Email Is Required</p>
-                <p class="validate-message" style="color: red" ng-show="form.email.$error.email">Not a Valid Email</p>
+                <p class="validate-message" style="color: red" ng-show="formSignInWithEmail.email.$error.required && formSignInWithEmail.$dirty">Your Email Is Required</p>
+                <p class="validate-message" style="color: red" ng-show="formSignInWithEmail.email.$error.email && formSignInWithEmail.$dirty">Not a Valid Email</p>
             </div>
             <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none">
                 <span class="input-label">Your Password</span>
                 <input type="password" placeholder="Your Password" ng-model="user.password" name="password" required>
-                <p class="validate-message" style="color: red" ng-show="form.password.$error.required">Your Email Is Required</p>
+                <p class="validate-message" style="color: red" ng-show="formSignInWithEmail.password.$error.required && formSignInWithEmail.$dirty">Your Password Is Required</p>
             </div>
 			
 			<div class="space" style="height: 30px"></div>
+
+            <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
 			
             <div>
                 <button class="button button-calm button-block">Sign In</button>
@@ -61,8 +63,8 @@
 			<p>We sent a PIN to the phone number you entered. Please enter it below to verify your identity.</p>
             <div class="item item-input item-floating-label" style="border-right: none; border-left: none; border-top: none;">
                 <span class="input-label">Your Verification PIN</span>
-                <input ng-model="user.phoneNumberLoginToken" name="password" required type="text" ng-class="{'invalid' : form.password.$invalid && submitted}" placeholder="Enter Your PIN">
-                <p class="validate-message" style="color: #EF5350" ng-show="form.password.$error.required && submitted">Your verification PIN is required...</p>
+                <input ng-model="user.phoneNumberLoginToken" name="pin" required type="text" ng-class="{'invalid' : form.pin.$invalid && submitted}" placeholder="Enter Your PIN">
+                <p class="validate-message" style="color: #EF5350" ng-show="form.pin.$error.required && submitted">Your verification PIN is required...</p>
             </div>
                 
             <p style="margin-left: 15px; margin-top: 25px; color: #EF5350" class="validate-message" ng-if="error">{{errorMsg}}</p>
