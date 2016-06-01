@@ -125,7 +125,9 @@ angular.module('buiiltApp')
     socket.on("thread:new", function(data) {
         if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
             data.__v = 1;
-            $scope.threads.push(data);
+            if ($scope.threads) {
+                $scope.threads.push(data);
+            }
             var index = getItemIndex($scope.projects, data.project._id);
             if (index !== -1) {
                 $scope.projects[index].__v +=1;
@@ -137,20 +139,24 @@ angular.module('buiiltApp')
     socket.on("task:new", function(data) {
         if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
             data.__v = 1;
-            $scope.tasks.push(data);
+            if ($scope.tasks) {
+                $scope.tasks.push(data);
+                filterAndSortTaskDueDate($scope.tasks);
+            }
             var index = getItemIndex($scope.projects, data.project._id);
             if (index !== -1) {
                 $scope.projects[index].__v +=1;
                 $scope.projects[index].element.task +=1;
             }
-            filterAndSortTaskDueDate($scope.tasks);
         }
     });
 
     socket.on("file:new", function(data) {
         if ($rootScope.selectedProject && data.project._id==$rootScope.selectedProject._id) {
             data.__v = 1;
-            $scope.files.push(data);
+            if ($scope.files) {
+                $scope.files.push(data);
+            }
             var index = getItemIndex($scope.projects, data.project._id);
             if (index !== -1) {
                 $scope.projects[index].__v +=1;
@@ -181,9 +187,12 @@ angular.module('buiiltApp')
                     $scope.projects[projectIndex].element.thread +=1;
                 }
                 $scope.threads[index].__v += 1;
-            } else if (index === -1 && projectIndex !== -1) {
+            } else if (index === -1 && projectIndex !== -1 && $rootScope.uniqId != data.uniqId) {
+                $rootScope.uniqId = data.uniqId;
                 data.thread.__v = 1;
-                $scope.threads.push(data.thread);
+                if ($scope.threads) {
+                    $scope.threads.push(data.thread);
+                }
                 $scope.projects[projectIndex].__v +=1;
                 $scope.projects[projectIndex].element.thread +=1;
             }
@@ -196,9 +205,12 @@ angular.module('buiiltApp')
                     $scope.projects[projectIndex].element.file +=1;
                 }
                 $scope.files[index].__v+=1;
-            } else if (index === -1 && projectIndex !== -1) {
+            } else if (index === -1 && projectIndex !== -1 && $rootScope.uniqId != data.uniqId) {
                 data.file.__v = 1;
-                $scope.files.push(data.file);
+                $rootScope.uniqId = data.uniqId;
+                if ($scope.files) {
+                    $scope.files.push(data.file);
+                }
                 $scope.projects[projectIndex].__v +=1;
                 $scope.projects[projectIndex].element.file +=1;
             }
@@ -218,15 +230,20 @@ angular.module('buiiltApp')
                     $scope.documentSets[index].documents[fileIndex].__v+=1;
                 } else if (fileIndex===-1) {
                     data.file.__v = 1;
-                    $scope.documentSets[index].documents.push(data.file);
+                    if ($scope.documentSets) {
+                        $scope.documentSets[index].documents.push(data.file);
+                    }
                     $scope.projects[projectIndex].__v +=1;
                     $scope.projects[projectIndex].element.document +=1;
                 }
-            } else if (index === -1 && projectIndex !== -1) {
+            } else if (index === -1 && projectIndex !== -1 && $rootScope.uniqId != data.uniqId) {
+                $rootScope.uniqId = data.uniqId;
                 data.documentSet.__v = 1;
                 data.file.__v = 1;
                 data.documentSet.documents.push(data.file);
-                $scope.documentSets.push(data.documentset);
+                if ($scope.documentSets) {
+                    $scope.documentSets.push(data.documentset);
+                }
                 $scope.projects[projectIndex].__v +=1;
                 $scope.projects[projectIndex].element.document +=1;
             }
@@ -274,8 +291,10 @@ angular.module('buiiltApp')
         if (index !== -1) {
             var projectIndex = getItemIndex($scope.projects, item.project);
             if (projectIndex !== -1 && itemArr[index].__v > 0) {
-                $scope.projects[projectIndex].__v -=1;
-                $scope.projects[projectIndex].element[type] -=1;
+                if ($scope.projects[projectIndex].__v > 0) {
+                    $scope.projects[projectIndex].__v -=1;
+                    $scope.projects[projectIndex].element[type] -=1;
+                }
             }
             itemArr[index].__v = 0;
         }
