@@ -9,9 +9,9 @@
 }
 
 .item-floating-label > .input-label {
-	color: #BDBDBD; 
+	color: #616161; 
 	font-weight: 500; 
-	font-size: 14px
+	font-size: 15px
 }
 
 .validate-message {
@@ -19,10 +19,24 @@
 	text-color: red;
 }
 
-.item-stacked-label > .input-label {
-	color: #616161;
-	font-weight: 500;
-	font-size: 14px;
+input[type="email"] {
+	font-weight: 400;
+	font-size: 16px;
+}
+
+input[type="password"] {
+	font-weight: 400;
+	font-size: 16px;
+}
+
+input[type="number"] {
+	font-weight: 400;
+	font-size: 16px;
+}
+
+input[type="text"] {
+	font-weight: 400;
+	font-size: 16px;
 }
 
 .item-notifications {
