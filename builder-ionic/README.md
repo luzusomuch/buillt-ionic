@@ -44,3 +44,5 @@ These cmds are use for our latest version
     -ionic io init
     -ionic plugin add ionic-plugin-deploy
     -ionic add ionic-platform-web-client
+
+    -cordova plugin add cordova-plugin-file
