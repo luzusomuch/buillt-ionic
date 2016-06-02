@@ -217,8 +217,8 @@ angular.module('buiiltApp')
         } else if (data.type==="document") {
             var index = getItemIndex($scope.documentSets, data.documentSet._id);
             var projectIndex = getItemIndex($scope.projects, data.file.project._id);
-            if (index !== -1 && data.user._id.toString()!==$scope.currentUser.toString()) {
-                $scope.documentSets[index].__v +=1;
+            if (index !== -1 && data.user._id.toString()!==$scope.currentUser.toString() && $scope.documentSets[index].uniqId!=data.uniqId) {
+                $scope.documentSets[index].uniqId = data.uniqId;
                 var fileIndex = _.findIndex($scope.documentSets[index].documents, function(doc) {
                     return doc._id.toString()===data.file._id.toString();
                 });
@@ -315,24 +315,14 @@ angular.module('buiiltApp')
     });
 
     var functionClearDocumentCount = $rootScope.$on("Document.Read", function(event, data) {
-        var allowUpdate = false;
-        var index;
-        if (data.documentSet) {
-            index = _.findIndex($scope.documentSets, function(set) {
+        var index = _.findIndex($scope.documentSets, function(set) {
+            if (data.documentSet) {
                 return set._id.toString()===data.documentSet.toString();
-            });
-            if (index !== -1) {
-                allowUpdate = true;
-            }
-        } else {
-            index = _.findIndex($scope.documentSets, function(set) {
+            } else {
                 return set.name==="Set 1";
-            });
-            if (index !== -1) {
-                allowUpdate = true;
             }
-        }
-        if (allowUpdate) {
+        });
+        if (index !== -1) {
             var documentIndex = _.findIndex($scope.documentSets[index].documents, function(doc) {
                 return doc._id.toString()===data._id.toString();
             });
@@ -340,12 +330,12 @@ angular.module('buiiltApp')
                 var projectIndex = getItemIndex($scope.projects, data.project);
                 if ($scope.documentSets[index].__v > 0) {
                     $scope.documentSets[index].__v -= 1;
+                    if (projectIndex !== -1 && $scope.documentSets[index].__v === 0) {
+                        $scope.projects[projectIndex].__v -=1;
+                        $scope.projects[projectIndex].element.document -=1;
+                    }
+                    $scope.documentSets[index].documents[documentIndex].__v = 0;
                 }
-                if (projectIndex !== -1 && $scope.documentSets[index].__v === 0) {
-                    $scope.projects[projectIndex].__v -=1;
-                    $scope.projects[projectIndex].element.document -=1;
-                }
-                $scope.documentSets[index].documents[documentIndex].__v = 0;
             }
         }
     });
