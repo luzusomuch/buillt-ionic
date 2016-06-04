@@ -46,3 +46,4 @@ These cmds are use for our latest version
     -ionic add ionic-platform-web-client
 
     -cordova plugin add cordova-plugin-file
+    =cordova plugin add cordova-plugin-inappbrowser
