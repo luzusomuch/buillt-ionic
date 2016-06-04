@@ -50,7 +50,7 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
 
             //     });
             // }
-            $cordovaInAppBrowser.open($scope.document.selectedPath, "_blank", 'location=no,toolbar=yes,closebuttoncaption=Close PDF,enableViewportScale=yes')
+            $cordovaInAppBrowser.open($scope.document.selectedPath, "_blank", {location: "no", toolbar: "yes", clearcache: 'no'})
             .then(function(event) {
                 $ionicLoading.hide();
             }).catch(function(event) {
