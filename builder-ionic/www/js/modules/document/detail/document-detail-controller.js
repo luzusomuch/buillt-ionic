@@ -18,13 +18,21 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
     $scope.download = function() {
         ionic.Platform.ready(function() {
             $ionicLoading.show();
-            $cordovaFileTransfer.download($scope.document.selectedPath, cordova.file.documentsDirectory + $scope.document.name, {}, true)
+            var path = "";
+            if (window.deviceplatform === "ios") {
+                path = cordova.file.documentsDirectory + $scope.document.name;
+            } else {
+                path = cordova.file.dataDirectory + $scope.document.name;
+            }
+            alert(path);
+            $cordovaFileTransfer.download($scope.document.selectedPath, path, {}, true)
             .then(function(result) {
                 $ionicLoading.hide();
                 $ionicLoading.show({ template: 'Download Successfully...', noBackdrop: true, duration: 2000 });
             }, function(err) {
                 $ionicLoading.hide();
-                $ionicLoading.show({ template: 'Error When Download...', noBackdrop: true, duration: 2000 });
+                alert(err);
+                $ionicLoading.show({ template: 'Error When Download...' + err.code, noBackdrop: true, duration: 2000 });
             });
         }, false);
     };
