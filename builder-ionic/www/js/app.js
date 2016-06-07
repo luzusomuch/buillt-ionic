@@ -18,8 +18,8 @@ angular.module('buiiltApp', [
   'angular-filepicker',
   "ion-datetime-picker"
   ])
-// .constant('API_URL', 'http://localhost:9000/')
-.constant('API_URL', 'https://buiilt.com.au/')
+.constant('API_URL', 'http://localhost:9000/')
+// .constant('API_URL', 'https://buiilt.com.au/')
 
 
 .config(function($ionicConfigProvider,$stateProvider, $urlRouterProvider, $locationProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, filepickerProvider){
@@ -85,6 +85,30 @@ angular.module('buiiltApp', [
     } else {
       this.$apply(fn);
     }
+  };
+
+  $rootScope.checkPrivilageInProjectMember = function(people, currentUser) {
+    var allow = false;
+    _.each($rootScope.roles, function(role) {
+      _.each(people[role], function(tender) {
+        if (tender.tenderers[0]._id && tender.tenderers[0]._id._id.toString()===currentUser._id.toString()) {
+          allow = !tender.archive;
+          return false;
+        } else {
+          var index = _.findIndex(tender.tenderers[0].teamMember, function(member) {
+              return member._id.toString()===currentUser._id;
+          });
+          if (index !== -1 && (!tender.tenderers[0].archivedTeamMembers || (tender.tenderers[0].archivedTeamMembers && tender.tenderers[0].archivedTeamMembers.indexOf(currentUser._id) === -1))) {
+              allow = true;
+              return false;
+          }
+        }
+      });
+      if (allow) {
+        return false;
+      }
+    });
+    return allow;
   };
 
   $rootScope.$on('$stateChangeStart', function (event,toState, toParams, next) {

@@ -1,6 +1,11 @@
 angular.module('buiiltApp')
 .controller('ThreadDetailCtrl', function($ionicScrollDelegate, currentTeam, currentUser, $ionicLoading, $q, $rootScope, socket, $timeout, $scope, $state, $ionicModal, messageService, notificationService, authService, $stateParams, activityService, peopleService, taskService, uploadService, contactBookService) {
     messageService.get({id:$stateParams.threadId}).$promise.then(function(thread) {
+        // Check privilage for current user in project member
+        peopleService.getInvitePeople({id: thread.project}).$promise.then(function(res) {
+            $scope.hasPrivilageInProjectMember = $rootScope.checkPrivilageInProjectMember(res, currentUser);
+        });
+        // end checking
         var originalThread = angular.copy(thread);
         $scope.thread = thread;
         $scope.thread.selectedEvent = thread.event;
@@ -55,6 +60,9 @@ angular.module('buiiltApp')
         };
 
         $scope.createRelatedTask = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if (form.$valid) {
                 if (!$scope.task.dateStart || !$scope.task.dateEnd) {
                     $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
@@ -143,6 +151,9 @@ angular.module('buiiltApp')
         };
 
         $scope.createRelatedFile = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if (form.$valid) {
                 $scope.file.members = $scope.thread.members;
                 _.each($scope.thread.notMembers, function(email) {
@@ -208,6 +219,9 @@ angular.module('buiiltApp')
         }, 500);
 
         $scope.sendMessage = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if ($scope.message.text && $scope.message.text.trim() != '') {
                 messageService.sendMessage({id: $scope.thread._id, type: $scope.thread.type}, $scope.message).$promise
                 .then(function (res) {
@@ -240,6 +254,9 @@ angular.module('buiiltApp')
         });
 
         $scope.showModalEditThread = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $scope.membersList = [];
             var prom = [
                 peopleService.getInvitePeople({id: thread.project}).$promise, 
@@ -321,6 +338,9 @@ angular.module('buiiltApp')
         // }
 
         $scope.editThread = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             var prom = [];
             $scope.thread.newMembers = _.filter($scope.membersList, {select : true});
             if ($scope.thread.name.length!==originalThread.name.length && $scope.thread.name.trim().length > 0) {

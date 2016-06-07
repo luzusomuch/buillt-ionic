@@ -497,7 +497,8 @@ angular.module('buiiltApp')
                             member.name = $scope.contactBooks[index].name;
                         }
                     }
-                })
+                });
+                $scope.hasPrivilageInProjectMember = $rootScope.checkPrivilageInProjectMember(people, $scope.currentUser);
             });
         } 
         if ($scope.currentTab==="thread") {
@@ -574,6 +575,9 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewTask = function() {
+        if (!$scope.hasPrivilageInProjectMember) {
+            return $ionicLoading.show({template: "Not Allow To Create", noBackdrop: true, duration: 2000});
+        }
         $scope.task.members = _.filter($scope.projectMembers, {select: true});
         if ($scope.task.members.length===0) {
             return $ionicLoading.show({ template: 'Task has no assignees...', noBackdrop: true, duration: 2000 });
@@ -617,6 +621,9 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewThread = function() {
+        if (!$scope.hasPrivilageInProjectMember) {
+            return $ionicLoading.show({template: "Not Allow To Create", noBackdrop: true, duration: 2000});
+        }
         $scope.thread.members = _.filter($scope.projectMembers, {select: true});
         if ($scope.thread.members.length ===0) {
             $ionicLoading.show({ template: 'Assignees are missing...', noBackdrop: true, duration: 2000 })
@@ -733,6 +740,9 @@ angular.module('buiiltApp')
     };
 
     $scope.createNewFile = function() {
+        if (!$scope.hasPrivilageInProjectMember) {
+            return $ionicLoading.show({template: "Not Allow To Create", noBackdrop: true, duration: 2000});
+        }
         if (!$scope.uploadFile.file) {
             $ionicLoading.show({ template: 'File is missing...', noBackdrop: true, duration: 2000 });
         } else {

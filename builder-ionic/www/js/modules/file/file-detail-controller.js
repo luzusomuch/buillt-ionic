@@ -43,6 +43,12 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         fileInitial($scope.file);
         $scope.currentUser = authService.getCurrentUser();
 
+        // Check privilage for current user in project member
+        peopleService.getInvitePeople({id: file.project}).$promise.then(function(res) {
+            $scope.hasPrivilageInProjectMember = $rootScope.checkPrivilageInProjectMember(res, $scope.currentUser);
+        });
+        // End check
+
         $ionicPopover.fromTemplateUrl('modalCreateDocument.html', {
             scope: $scope
           }).then(function(popover) {
@@ -59,6 +65,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         };
 
         $scope.openUploadReversion = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $scope.modalCreateDocument.show();
         };
 
@@ -89,6 +98,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         };
 
         $scope.uploadReversion = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $ionicLoading.show();
             uploadService.uploadReversion({id: file._id}, $scope.reversion).$promise.then(function(res) {
                 $ionicLoading.hide();
@@ -108,6 +120,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         });
 
         $scope.showModalEditFile = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $scope.membersList = [];
             $scope.tags = [];
             var prom = [
@@ -193,6 +208,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         };
 
         $scope.editFile = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             var prom = [];
             $scope.file.newMembers = _.filter($scope.membersList , {select: true});
             if ($scope.file.name.length!==originalFile.name.length && $scope.file.name.trim().length > 0) {
@@ -253,6 +271,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         };
 
         $scope.createRelatedTask = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if (form.$valid) {
                 if (!$scope.task.dateStart || !$scope.task.dateEnd) {
                     $ionicLoading.show({ template: 'Check your inputs...', noBackdrop: true, duration: 2000 });
@@ -314,6 +335,9 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
         };
 
         $scope.createRelatedThread = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if (form.$valid) {
                 $scope.thread.members = $scope.file.members;
                 _.each($scope.file.notMembers, function(email) {

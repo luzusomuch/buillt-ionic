@@ -8,6 +8,12 @@ angular.module('buiiltApp')
         $scope.task.time = {start: $scope.task.dateStart, end: $scope.task.dateEnd};
         $scope.currentUser = authService.getCurrentUser();
 
+        // Check privilage for current user in project member
+        peopleService.getInvitePeople({id: task.project}).$promise.then(function(res) {
+            $scope.hasPrivilageInProjectMember = $rootScope.checkPrivilageInProjectMember(res, $scope.currentUser);
+        });
+        // End check
+
         socket.emit("join", task._id);
         socket.on("task:update", function(data) {
             originalTask = angular.copy(data);
@@ -28,6 +34,9 @@ angular.module('buiiltApp')
         }, 500);
 
         $scope.complete = function(task) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $ionicLoading.show();
             task.completed = !task.completed;
             if (task.completed) {
@@ -59,6 +68,9 @@ angular.module('buiiltApp')
         });
 
         $scope.showModalEditTask = function() {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             $scope.membersList = [];
             var prom = [
                 peopleService.getInvitePeople({id: task.project}).$promise,
@@ -139,6 +151,9 @@ angular.module('buiiltApp')
         });
 
         $scope.editTask = function(form) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             var prom = [];
             $scope.task.newMembers = _.filter($scope.membersList, {select: true});
             if (originalTask.description!==$scope.task.description && $scope.task.description.trim().length > 0) {
@@ -170,6 +185,9 @@ angular.module('buiiltApp')
         };
 
         $scope.enterComment = function(comment) {
+            if (!$scope.hasPrivilageInProjectMember) {
+                return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
+            }
             if (comment && comment.trim().length > 0) {
                 $scope.task.editType="enter-comment";
                 $scope.task.comment = comment;
