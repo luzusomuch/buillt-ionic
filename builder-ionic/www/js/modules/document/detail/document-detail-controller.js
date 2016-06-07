@@ -36,7 +36,7 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
                         $cordovaFileOpener2.appIsInstalled('com.adobe.reader').then(function(res) {
                             if (res.status === 0) {
                               // Adobe Reader is not installed.
-                                $ionicLoading.show({template: "Please Download Appication To Read File", noBackdrop: true, duration: 2000});
+                                $ionicLoading.show({template: "Please Download Adobe Read to View", noBackdrop: true, duration: 2000});
                             } else {
                               // Adobe Reader is installed.
                                 var fileUrl = cordova.file.externalDataDirectory +"/"+ $scope.document.name;
