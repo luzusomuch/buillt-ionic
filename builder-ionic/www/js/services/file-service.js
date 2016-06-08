@@ -11,6 +11,10 @@ angular.module('buiiltApp').factory('fileService', function($rootScope, $q, $res
         action: "project-files"
       },
       isArray: true
+    },
+    getPublicS3Link: {
+      method: "GET",
+      params: {action: "get-public-s3-link"}
     }
   });
 });
