@@ -123,7 +123,6 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
             if (!$scope.hasPrivilageInProjectMember) {
                 return $ionicLoading.show({template: "Not allow...", noBackdrop: true, duration: 2000});
             }
-            $scope.membersList = [];
             $scope.tags = [];
             var prom = [
                 peopleService.getInvitePeople({id: file.project}).$promise, 
@@ -132,7 +131,8 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                 contactBookService.me().$promise
             ];
             $q.all(prom).then(function(res) {
-                var people = res[0];
+                $scope.membersList = $rootScope.getProjectMembers(res[0], $scope.currentUser);
+                // var people = res[0];
                 $scope.events = res[1];
                 var currentTeam = res[2];
                 var contactBooks = res[3];
@@ -142,46 +142,7 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                         $scope.tags.push({name: tag, select: false});
                     });
                 }
-                // Get available project member that can add to file
-                _.each($rootScope.roles, function(role) {
-                    _.each(people[role], function(tender){
-                        if (tender.hasSelect) {
-                            var isLeader = (_.findIndex(tender.tenderers, function(tenderer) {
-                                if (tenderer._id) {
-                                    return tenderer._id._id.toString() === $scope.currentUser._id.toString();
-                                }
-                            }) !== -1) ? true : false;
-                            if (!isLeader) {
-                                _.each(tender.tenderers, function(tenderer) {
-                                    var memberIndex = _.findIndex(tenderer.teamMember, function(member) {
-                                        return member._id.toString() === $scope.currentUser._id.toString();
-                                    });
-                                    if (memberIndex !== -1) {
-                                        _.each(tenderer.teamMember, function(member) {
-                                            member.select = false;
-                                            $scope.membersList.push(member);
-                                        });
-                                    }
-                                });
-                                if (tender.tenderers[0]._id) {
-                                    tender.tenderers[0]._id.select = false;
-                                    $scope.membersList.push(tender.tenderers[0]._id);
-                                } else {
-                                    $scope.membersList.push({email: tender.tenderers[0].email, select: false});
-                                }
-                            } else {
-                                _.each(tender.tenderers, function(tenderer) {
-                                    if (tenderer._id._id.toString() === $scope.currentUser._id.toString()) {
-                                        _.each(tenderer.teamMember, function(member) {
-                                            member.select = false;
-                                            $scope.membersList.push(member);
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    });
-                });
+                
                 // filter out members who has invited
                 _.each($scope.file.members, function(member) {
                     _.remove($scope.membersList, {_id: member._id});
@@ -191,6 +152,8 @@ angular.module("buiiltApp").controller("FileDetailCtrl", function($ionicScrollDe
                 })
                 // remove current user from the members list
                 _.remove($scope.membersList, {_id: $scope.currentUser._id});
+                // remove file owner from available assignees
+                _.remove($scope.membersList, {_id: $scope.file.owner._id});
                 // get user name from contact books for non-user
                 _.each($scope.membersList, function(member) {
                     if (!member._id) {

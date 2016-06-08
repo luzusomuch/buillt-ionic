@@ -4,11 +4,11 @@
 
     <ion-content class="has-header document-content">
         <div class="list">
-            <ion-item ui-sref="document.detail({documentId: document._id})" class="item-text-wrap" ng-repeat="document in documentSet.documents" ng-show="document.__v > 0">
+            <ion-item ng-click="openDetail(document._id)" class="item-text-wrap" ng-repeat="document in documentSet.documents" ng-show="document.__v > 0">
                 <h2>{{document.name}}</h2>
                 <p class="item-notifications">Updates: {{document.__v}}</p>
             </ion-item>
-            <ion-item ui-sref="document.detail({documentId: document._id})" class="item-text-wrap" ng-repeat="document in documentSet.documents" ng-show="document.__v == 0">
+            <ion-item ng-click="openDetail(document._id)" class="item-text-wrap" ng-repeat="document in documentSet.documents" ng-show="document.__v == 0">
                 <h2>{{document.name}}</h2>
                 <p>No Update</p>
             </ion-item>

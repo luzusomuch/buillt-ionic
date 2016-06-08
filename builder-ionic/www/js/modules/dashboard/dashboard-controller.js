@@ -446,47 +446,8 @@ angular.module('buiiltApp')
         $scope.step = 1;
         if ($rootScope.selectedProject) {
             peopleService.getInvitePeople({id: $rootScope.selectedProject._id}).$promise.then(function(people) {
-                $scope.projectMembers = [];
-                _.each($rootScope.roles, function(role) {
-                    _.each(people[role], function(tender){
-                        if (tender.hasSelect) {
-                            var isLeader = (_.findIndex(tender.tenderers, function(tenderer) {
-                                if (tenderer._id) {
-                                    return tenderer._id._id.toString() === $scope.currentUser._id.toString();
-                                }
-                            }) !== -1) ? true : false;
-                            if (!isLeader) {
-                                _.each(tender.tenderers, function(tenderer) {
-                                    var memberIndex = _.findIndex(tenderer.teamMember, function(member) {
-                                        return member._id.toString() === $scope.currentUser._id.toString();
-                                    });
-                                    if (memberIndex !== -1) {
-                                        _.each(tenderer.teamMember, function(member) {
-                                            member.select = false;
-                                            $scope.projectMembers.push(member);
-                                        });
-                                    }
-                                });
-                                if (tender.tenderers[0]._id) {
-                                    tender.tenderers[0]._id.select = false;
-                                    $scope.projectMembers.push(tender.tenderers[0]._id);
-                                } else {
-                                    $scope.projectMembers.push({email: tender.tenderers[0].email, select: false});
-                                }
-                            } else {
-                                $scope.projectMembers.push(tender.tenderers[0]._id);
-                                _.each(tender.tenderers, function(tenderer) {
-                                    if (tenderer._id._id.toString() === $scope.currentUser._id.toString()) {
-                                        _.each(tenderer.teamMember, function(member) {
-                                            member.select = false;
-                                            $scope.projectMembers.push(member);
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                    });
-                });
+                $scope.projectMembers = $rootScope.getProjectMembers(people, $scope.currentUser);
+                
                 // Get project member name for non-user via contact books
                 _.each($scope.projectMembers, function(member) {
                     if (!member._id) {
