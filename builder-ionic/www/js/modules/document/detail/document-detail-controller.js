@@ -24,7 +24,7 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function(fileServic
                 ionic.Platform.ready(function() {
                     $ionicLoading.show();
                     fileService.getPublicS3Link({id: document._id}).$promise.then(function(res) {
-                        $cordovaInAppBrowser.open(res.publicUrl, "_blank", {"location": "no", "toolbar": "no", "enableViewportScale":"yes", "closebuttoncaption": "Close"})
+                        $cordovaInAppBrowser.open(res.publicUrl, "_blank", {"location": "no", "toolbar": "yes", "enableViewportScale":"yes", "closebuttoncaption": "Close"})
                         .then(function(event) {
                             // alert("Success: " + event);
                             $ionicLoading.hide();
