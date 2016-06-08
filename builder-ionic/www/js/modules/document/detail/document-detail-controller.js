@@ -25,9 +25,11 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
                     $ionicLoading.show();
                     if (window.deviceplatform==="ios") {
                         var fileUrl = cordova.file.documentsDirectory + data.name;
+                        console.log(fileUrl);
                         $cordovaFileTransfer.download(encodeURI($scope.document.selectedPath), fileUrl, {}, true)
                         .then(function(result) {
                             alert("Download Success");
+                            alert(JSON.stringify(result));
                             $cordovaFileOpener2.open(fileUrl, data.mimetype).then(function() {
                                 $ionicLoading.hide();
                                 alert("Open Success");
