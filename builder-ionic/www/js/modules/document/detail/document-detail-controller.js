@@ -24,13 +24,22 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
                 ionic.Platform.ready(function() {
                     $ionicLoading.show();
                     if (window.deviceplatform==="ios") {
-                        $cordovaInAppBrowser.open($scope.document.selectedPath, "_blank", {location: "no", toolbar: "yes", clearcache: 'no'})
-                        .then(function(event) {
+                        var fileUrl = cordova.file.documentsDirectory + data.name;
+                        $cordovaFileTransfer.download(encodeURI($scope.document.selectedPath), fileUrl, {}, true)
+                        .then(function(result) {
+                            alert("Download Success");
+                            $cordovaFileOpener2.open(fileUrl, data.mimetype).then(function() {
+                                $ionicLoading.hide();
+                                alert("Open Success");
+                            }, function(err) {
+                                $ionicLoading.hide();
+                                alert("Error while open: " + err.code + " message: "+ err.message);
+                                alert(err);
+                            });
+                        }, function(err) {
                             $ionicLoading.hide();
-                        }).catch(function(event) {
-                            $ionicLoading.hide();
-                            alert(event);
-                            $ionicLoading.show({ template: 'Error When Open...', noBackdrop: true, duration: 2000 });
+                            alert("Download Error :" + err.code);
+                            alert(err.message);
                         });
                     } else if (window.deviceplatform==="android") {
                         $cordovaFileOpener2.appIsInstalled('com.adobe.reader').then(function(res) {
@@ -56,56 +65,5 @@ angular.module("buiiltApp").controller("DocumentDetailCtrl", function($ionicLoad
                 });
             }
         );
-        // return;
-        // ionic.Platform.ready(function() {
-        //     $ionicLoading.show();
-            // var path = "";
-            // if (window.deviceplatform === "ios") {
-            //     path = cordova.file.documentsDirectory + $scope.document.name;
-            // } else {
-            //     path = cordova.file.dataDirectory + $scope.document.name;
-            // }
-            // alert(path);
-            // $cordovaFileTransfer.download($scope.document.selectedPath, path, {}, true)
-            // .then(function(result) {
-            //     $ionicLoading.hide();
-            //     $ionicLoading.show({ template: 'Download Successfully...', noBackdrop: true, duration: 2000 });
-            // }, function(err) {
-            //     $ionicLoading.hide();
-            //     alert(err);
-            //     $ionicLoading.show({ template: 'Error When Download...' + err.code, noBackdrop: true, duration: 2000 });
-            // });
-            // if (window.deviceplatform==="ios") {
-            //     $cordovaInAppBrowser.open($scope.document.selectedPath, "_blank", {location: "no", toolbar: "yes", clearcache: 'no'})
-            //     .then(function(event) {
-            //         $ionicLoading.hide();
-            //     }).catch(function(event) {
-            //         $ionicLoading.hide();
-            //         alert(event);
-            //         $ionicLoading.show({ template: 'Error When Open...', noBackdrop: true, duration: 2000 });
-            //     });
-            // } else if (window.deviceplatform==="android") {
-            //     var fileUrl = cordova.file.dataDirectory +"/"+ $scope.document.name;
-            //     $cordovaFileTransfer.download(encodeURI($scope.document.selectedPath), fileUrl, {}, true)
-            //     .then(function(reuslt) {
-            //         alert("Download Success"); 
-            //         $cordovaFileOpener2.open({fileUrl})
-            //     }, function(err) {
-            //         $ionicLoading.show({template: "Error When Download...", noBackdrop: true, duration: 2000});
-            //     });
-            // }
-            // alert("Redirect");
-            // alert($cordovaInAppBrowser);
-            // $cordovaInAppBrowser.open($scope.document.selectedPath, "_blank", {location: "no", toolbar: "yes", clearcache: 'no'})
-            // .then(function(event) {
-            //     alert("Success");
-            //     $ionicLoading.hide();
-            // }).catch(function(event) {
-            //     $ionicLoading.hide();
-            //     alert("error : " +event);
-            //     $ionicLoading.show({ template: 'Error When Open...', noBackdrop: true, duration: 2000 });
-            // });
-            // $cordovaInAppBrowser.close();
-        // }, false);
     };
 });
