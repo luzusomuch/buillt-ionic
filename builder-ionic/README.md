@@ -48,3 +48,13 @@ These cmds are use for our latest version
     -cordova plugin add cordova-plugin-file
     -cordova plugin add cordova-plugin-inappbrowser
     -cordova plugin add https://github.com/pwlin/cordova-plugin-file-opener2.git
+
+
+Using this for build android release 
+-ionic build --release android
+-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore buiilt-release-key.keystore platforms/android/build/outputs/apk/android-release-unsigned.apk buiilt
+-zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk buiilt.apk
+
+
+--this will save your life when build android release 
+http://ivancevich.me/articles/ignoring-invalid-ssl-certificates-on-cordova-android-ios/
